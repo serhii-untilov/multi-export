@@ -1,0 +1,38 @@
+{
+  "name": "multi-export",
+  "version": "0.1.0",
+  "description": "Multi export for import into A5",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "install-app-deps",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "repository": "https://github.com/sergey-untilov/multi-export",
+  "keywords": [
+    "Electron",
+    "export",
+    "A5"
+  ],
+  "author": "UncleZeppelin",
+  "license": "MIT",
+  "build": {
+    "appId": "multi-export",
+    "win": {
+      "target": "portable",
+      "icon": "build/multi-export.ico"
+    }
+  },
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron": "^7.1.2",
+    "electron-builder": "^21.2.0",
+    "standard": "^14.3.1"
+  },
+  "dependencies": {
+    "electron-reload": "^1.5.0",
+    "electron-store": "^5.1.0",
+    "spectre.css": "^0.5.8"
+  }
+}
