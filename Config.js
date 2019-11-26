@@ -9,7 +9,7 @@ const C1 = '1C'
 class Config {
     constructor() {
         // common data
-        this.panel = HOME   // default panel is HOME
+        this.panel = this.HOME   // default panel is HOME
         this.path = ''
         this.isArchive = true
 

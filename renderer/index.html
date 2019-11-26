@@ -13,13 +13,14 @@
 
     <header class="navbar">
       <section class="navbar-section">
-        <a href="..." class="navbar-brand mr-2">
+        <a href="#" class="navbar-brand mr-2" id="selectHome">
           <h1>Multi Export</h1>
         </a>
-        <a href="..." class="btn btn-link">ІС-Про</a>
-        <a href="..." class="btn btn-link" disabled>Афіна</a>
-        <a href="..." class="btn btn-link" disabled>Парус</a>
-        <a href="..." class="btn btn-link" disabled>1С</a>
+        <a href="#" class="btn btn-link" id="selectISPro">ІС-Про</a>
+        <a href="#" class="btn btn-link" id="selectAfina" disabled>Афіна</a>
+        <a href="#" class="btn btn-link" id="selectParus" disabled>Парус</a>
+        <a href="#" class="btn btn-link" id="select1C" disabled>1С</a>
+               
       </section>
     </header>
     <div class="panel" style="border: 0px;">
@@ -28,9 +29,9 @@
       </div>
       <div class="panel-nav">
         <!-- navigation components: tabs, breadcrumbs or pagination -->
-        <div class="form-group">
+        
+        <div class="form-group" id="panelISPro">
           <div class="columns">
-
             <div class="column col-4">
               <label class="form-label" for="server-name">Сервер бази даних</label>
               <input class="form-input" type="text" id="server-name" placeholder="localhost:1433">

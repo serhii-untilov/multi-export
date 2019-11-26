@@ -1,8 +1,42 @@
 'use strict'
 
 const { ipcRenderer } = require('electron')
+const Config = require('../Config')
 
 const config = null
+
+const panelISPro = document.getElementById('panelISPro')
+
+const buttonSelectHome = document.getElementById('selectHome')
+buttonSelectHome.addEventListener('click', () => {
+  this.config.panel = Config.HOME
+  ipcRenderer.send('set-config', this.config)
+})
+
+const buttonSelectISPro = document.getElementById('selectISPro')
+buttonSelectISPro.addEventListener('click', () => {
+  console.log('Config.ISPRO', Config.ISPRO)
+  this.config.panel = Config.ISPRO
+  ipcRenderer.send('set-config', this.config)
+})
+
+const buttonSelectAfina = document.getElementById('selectAfina')
+buttonSelectAfina.addEventListener('click', () => {
+  this.config.panel = Config.AFINA
+  ipcRenderer.send('set-config', this.config)
+})
+
+const buttonSelectParus = document.getElementById('selectParus')
+buttonSelectParus.addEventListener('click', () => {
+  this.config.panel = Config.PARUS
+  ipcRenderer.send('set-config', this.config)
+})
+
+const buttonSelect1C = document.getElementById('select1C')
+buttonSelect1C.addEventListener('click', () => {
+  this.config.panel = Config.C1
+  ipcRenderer.send('set-config', this.config)
+})
 
 const buttonRunExport = document.getElementById('runExport')
 buttonRunExport.addEventListener('click', () => {

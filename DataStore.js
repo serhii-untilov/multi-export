@@ -10,8 +10,8 @@ class DataStore extends Store {
   }
 
   saveConfig () {
-    console.log('saveConfig', this.config)
     this.set('config', this.config)
+    console.log('saveConfig', this.config)
     // returning 'this' allows method chaining
     return this
   }
