@@ -5,41 +5,79 @@ const Config = require('../Config')
 
 const config = null
 
-const panelISPro = document.getElementById('panelISPro')
+const homePanel = document.getElementById('home-panel')
+const isproPanel = document.getElementById('ispro-panel')
+//const controlPanel = document.getElementById('control-panel')
+const resultPanel = document.getElementById('result-panel')
+const bodyPanel = document.getElementById('body-panel')
+const footerPanel = document.getElementById('footer-panel')
+
+
+const renderPanels = () => {
+  if (this.config == null)
+    return
+  homePanel.style.display = 'none' // this.config.panel === Config.HOME ? 'block' : 'none'
+  isproPanel.style.display = this.config.panel === Config.ISPRO ? 'block' : 'none'
+  // controlPanel.style.display = this.config.panel === Config.HOME ? 'none' : 'block'
+  // bodyPanel.style.display = this.config.panel === Config.HOME ? 'none' : 'block'
+  footerPanel.style.display = 'none' // this.config.panel === Config.HOME ? 'none' : 'block'
+}
 
 const buttonSelectHome = document.getElementById('selectHome')
 buttonSelectHome.addEventListener('click', () => {
-  this.config.panel = Config.HOME
-  ipcRenderer.send('set-config', this.config)
+  // this.config.panel = Config.HOME
+  // ipcRenderer.send('set-config', this.config)
+  // renderPanels()
 })
 
 const buttonSelectISPro = document.getElementById('selectISPro')
 buttonSelectISPro.addEventListener('click', () => {
-  console.log('Config.ISPRO', Config.ISPRO)
+  if (this.config.panel == Config.ISPRO)
+    return
   this.config.panel = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
+  renderPanels()
+  bodyPanel.style.display = 'none'
+  resultPanel.style.display = 'none'
 })
 
 const buttonSelectAfina = document.getElementById('selectAfina')
 buttonSelectAfina.addEventListener('click', () => {
+  if (this.config.panel == Config.AFINA)
+    return
   this.config.panel = Config.AFINA
   ipcRenderer.send('set-config', this.config)
+  renderPanels()
+  bodyPanel.style.display = 'none'
+  resultPanel.style.display = 'none'
+
 })
 
 const buttonSelectParus = document.getElementById('selectParus')
 buttonSelectParus.addEventListener('click', () => {
+  if (this.config.panel == Config.PARUS)
+    return
   this.config.panel = Config.PARUS
   ipcRenderer.send('set-config', this.config)
+  renderPanels()
+  bodyPanel.style.display = 'none'
+  resultPanel.style.display = 'none'
 })
 
 const buttonSelect1C = document.getElementById('select1C')
 buttonSelect1C.addEventListener('click', () => {
+  if (this.config.panel == Config.C1)
+    return
   this.config.panel = Config.C1
   ipcRenderer.send('set-config', this.config)
+  renderPanels()
+  bodyPanel.style.display = 'none'
+  resultPanel.style.display = 'none'
 })
 
 const buttonRunExport = document.getElementById('runExport')
 buttonRunExport.addEventListener('click', () => {
+  bodyPanel.style.display = 'block'
   ipcRenderer.send('run-export')
 })
 
@@ -109,13 +147,19 @@ ipcRenderer.on('config', (event, config) => {
   codeSe.value = config.codeSe
   path.value = config.path
   isArchive.checked = config.isArchive
+  renderPanels()
 })
 
+renderPanels()
+bodyPanel.style.display = 'none'
+resultPanel.style.display = 'none'
+
 ipcRenderer.on('done', (event, fileList) => {
-  const fileListElement = document.getElementById('fileList')
-  var html = htmlFileList(fileList)
-  html += '<li class="file-item">Done!</li>'
-  fileListElement.innerHTML = html
+  // const fileListElement = document.getElementById('fileList')
+  // var html = htmlFileList(fileList)
+  // html += '<li class="file-item">Done!</li>'
+  // fileListElement.innerHTML = html
+  resultPanel.style.display = 'block'
 })
 
 const htmlFileList = (fileList) => {

@@ -2,7 +2,7 @@ body {
   font: caption;
 }
 
-.todo-item {
+/* .todo-item {
   background: none;
   padding: 0.5rem;
   margin: 0;
@@ -16,4 +16,13 @@ body {
 
 .todo-item:hover {
   background: #d8d8d8
+} */
+
+/* .a:visited {
+  color: transparent;
+  border: 0px;
 }
+
+.a:link {
+  color: transparent;
+} */
