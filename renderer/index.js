@@ -7,27 +7,41 @@ const config = null
 
 const homePanel = document.getElementById('home-panel')
 const isproPanel = document.getElementById('ispro-panel')
-//const controlPanel = document.getElementById('control-panel')
+const afinaPanel = document.getElementById('afina-panel')
+const parusPanel = document.getElementById('parus-panel')
+const c1Panel = document.getElementById('c1-panel')
+const controlPanel = document.getElementById('control-panel')
 const resultPanel = document.getElementById('result-panel')
 const bodyPanel = document.getElementById('body-panel')
 const footerPanel = document.getElementById('footer-panel')
 
+const setVisible = (element, visible) => {
+  if (visible)
+    element.classList.remove("d-hide")
+  else {
+    element.classList.remove("d-hide")
+    element.className += "d-hide"
+  }
+}
 
 const renderPanels = () => {
-  if (this.config == null)
-    return
-  homePanel.style.display = 'none' // this.config.panel === Config.HOME ? 'block' : 'none'
-  isproPanel.style.display = this.config.panel === Config.ISPRO ? 'block' : 'none'
-  // controlPanel.style.display = this.config.panel === Config.HOME ? 'none' : 'block'
-  // bodyPanel.style.display = this.config.panel === Config.HOME ? 'none' : 'block'
-  footerPanel.style.display = 'none' // this.config.panel === Config.HOME ? 'none' : 'block'
+  setVisible(homePanel, !this.config || this.config.panel === Config.HOME)
+  setVisible(isproPanel, this.config && this.config.panel === Config.ISPRO)
+  setVisible(afinaPanel, this.config && this.config.panel === Config.AFINA)
+  setVisible(parusPanel, this.config && this.config.panel === Config.PARUS)
+  setVisible(c1Panel, this.config && this.config.panel === Config.C1)
+  setVisible(controlPanel, this.config && this.config.panel != Config.HOME)
+  setVisible(bodyPanel, false)
+  setVisible(footerPanel, this.config && this.config.panel !== Config.HOME)
+  setVisible(resultPanel, false)
+  console.log('renderPanels', this.config, afinaPanel, parusPanel, c1Panel, bodyPanel, resultPanel)
 }
 
 const buttonSelectHome = document.getElementById('selectHome')
-buttonSelectHome.addEventListener('click', () => {
-  // this.config.panel = Config.HOME
-  // ipcRenderer.send('set-config', this.config)
-  // renderPanels()
+!buttonSelectHome || buttonSelectHome.addEventListener('click', () => {
+  this.config.panel = Config.HOME
+  ipcRenderer.send('set-config', this.config)
+  renderPanels()
 })
 
 const buttonSelectISPro = document.getElementById('selectISPro')
@@ -37,8 +51,6 @@ buttonSelectISPro.addEventListener('click', () => {
   this.config.panel = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
   renderPanels()
-  bodyPanel.style.display = 'none'
-  resultPanel.style.display = 'none'
 })
 
 const buttonSelectAfina = document.getElementById('selectAfina')
@@ -48,9 +60,6 @@ buttonSelectAfina.addEventListener('click', () => {
   this.config.panel = Config.AFINA
   ipcRenderer.send('set-config', this.config)
   renderPanels()
-  bodyPanel.style.display = 'none'
-  resultPanel.style.display = 'none'
-
 })
 
 const buttonSelectParus = document.getElementById('selectParus')
@@ -60,8 +69,6 @@ buttonSelectParus.addEventListener('click', () => {
   this.config.panel = Config.PARUS
   ipcRenderer.send('set-config', this.config)
   renderPanels()
-  bodyPanel.style.display = 'none'
-  resultPanel.style.display = 'none'
 })
 
 const buttonSelect1C = document.getElementById('select1C')
@@ -71,13 +78,11 @@ buttonSelect1C.addEventListener('click', () => {
   this.config.panel = Config.C1
   ipcRenderer.send('set-config', this.config)
   renderPanels()
-  bodyPanel.style.display = 'none'
-  resultPanel.style.display = 'none'
 })
 
 const buttonRunExport = document.getElementById('runExport')
 buttonRunExport.addEventListener('click', () => {
-  bodyPanel.style.display = 'block'
+  setVisible(bodyPanel, true)
   ipcRenderer.send('run-export')
 })
 
@@ -123,10 +128,31 @@ codeSe.addEventListener('change', (evt) => {
   ipcRenderer.send('set-config', this.config)
 })
 
-const path = document.getElementById('path')
-path.addEventListener('change', (evt) => {
+const afinaDbPath = document.getElementById('afina-db-path')
+afinaDbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
-  this.config.path = evt.target.value
+  this.config.afinaDbPath = evt.target.value
+  ipcRenderer.send('set-config', this.config)
+})
+
+const parusDbPath = document.getElementById('parus-db-path')
+parusDbPath.addEventListener('change', (evt) => {
+  evt.preventDefault()
+  this.config.parusDbPath = evt.target.value
+  ipcRenderer.send('set-config', this.config)
+})
+
+const c1DbPath = document.getElementById('c1-db-path')
+c1DbPath.addEventListener('change', (evt) => {
+  evt.preventDefault()
+  this.config.c1DbPath = evt.target.value
+  ipcRenderer.send('set-config', this.config)
+})
+
+const targetPath = document.getElementById('target-path')
+targetPath.addEventListener('change', (evt) => {
+  evt.preventDefault()
+  this.config.targetPath = evt.target.value
   ipcRenderer.send('set-config', this.config)
 })
 
@@ -139,27 +165,31 @@ isArchive.addEventListener('change', (evt) => {
 
 ipcRenderer.on('config', (event, config) => {
   this.config = config
+
   serverName.value = config.server
   login.value = config.login
   password.value = config.password
   schema.value = config.schema
   schemaSys.value = config.schemaSys
   codeSe.value = config.codeSe
-  path.value = config.path
+  targetPath.value = config.targetPath
+  afinaDbPath.value = config.afinaDbPath
+  parusDbPath.value = config.parusDbPath
+  c1DbPath.value = config.c1DbPath
+
   isArchive.checked = config.isArchive
+
   renderPanels()
 })
 
 renderPanels()
-bodyPanel.style.display = 'none'
-resultPanel.style.display = 'none'
 
 ipcRenderer.on('done', (event, fileList) => {
   // const fileListElement = document.getElementById('fileList')
   // var html = htmlFileList(fileList)
   // html += '<li class="file-item">Done!</li>'
   // fileListElement.innerHTML = html
-  resultPanel.style.display = 'block'
+  setVisible(resultPanel, true)
 })
 
 const htmlFileList = (fileList) => {

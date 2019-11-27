@@ -8,20 +8,23 @@ const C1 = '1C'
 
 class Config {
     constructor() {
-        // common data
+        // Params for targeted files
         this.panel = this.ISPRO   // default panel
-        this.path = ''
+        this.targetPath = ''
         this.isArchive = true
 
-        // DB connect
+        // ispro DB connect
         this.server = ''
         this.login = ''
         this.password = ''
         this.schema = ''
-
-        // ispro only
         this.schemaSys = ''
-        this.codeSE = ''
+        this.codeSe = ''
+
+        // Source DB path
+        this.afinaDbPath = ''
+        this.parusDbPath = ''
+        this.c1DbPath = ''
     }
 }
 

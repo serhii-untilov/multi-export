@@ -13,13 +13,14 @@
 
     <header class="navbar">
       <section class="navbar-section">
-        <a href="#" class="navbar-brand mr-2" id="selectHome">
+        <!-- <a href="#" class="navbar-brand mr-2" id="selectHome">
           <h1>Multi Export</h1>
-        </a>
+        </a> -->
+        <h1 class="text-primary mt-2 mr-2">Multi Export</h1>
         <a href="#" class="btn btn-link" id="selectISPro">ІС-Про</a>
-        <a href="#" class="btn btn-link" id="selectAfina" disabled>Афіна</a>
-        <a href="#" class="btn btn-link" id="selectParus" disabled>Парус</a>
-        <a href="#" class="btn btn-link" id="select1C" disabled>1С</a>
+        <a href="#" class="btn btn-link" id="selectAfina">Афіна</a>
+        <a href="#" class="btn btn-link" id="selectParus">Парус</a>
+        <a href="#" class="btn btn-link" id="select1C">1С</a>
       </section>
     </header>
     <div class="panel" style="border: 0px;">
@@ -29,7 +30,9 @@
       <div class="panel-nav">
         <!-- navigation components: tabs, breadcrumbs or pagination -->
 
-        <div id="home-panel">
+        <!-- Home panel -->
+
+        <div id="home-panel" class="d-hide">
           <p>Програма <a href="https://github.com/sergey-untilov/multi-export" target="_blank">Multi Export</a>
             виконує експорт даних із програмних систем: ІС-Про, Афіна, Парус, 1С та створює стандартні файли для
             завантаження
@@ -37,41 +40,85 @@
           </p>
         </div>
 
-        <div class="form-group" id="ispro-panel">
-          <div class="columns">
-            <div class="column col-4">
-              <label class="form-label" for="server-name">Сервер бази даних</label>
-              <input class="form-input" type="text" id="server-name" placeholder="localhost:1433">
+        <!-- Params panel -->
+
+        <div class="form-group">
+
+          <!-- IS-Pro params panel -->
+
+          <div id="ispro-panel">
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="server-name">Сервер бази даних</label>
+                <input class="form-input" type="text" id="server-name" placeholder="localhost:1433">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="login">Логін</label>
+                <input class="form-input" type="text" id="login" placeholder="sa">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="password">Пароль</label>
+                <input class="form-input" type="password" id="password" placeholder="system">
+              </div>
             </div>
-            <div class="column col-4">
-              <label class="form-label" for="login">Логін</label>
-              <input class="form-input" type="text" id="login" placeholder="sa">
-            </div>
-            <div class="column col-4">
-              <label class="form-label" for="password">Пароль</label>
-              <input class="form-input" type="password" id="password" placeholder="system">
+            <br />
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="sys-schema-name">Cистемна схема БД</label>
+                <input class="form-input" type="text" id="sys-schema-name" placeholder="i711_sys">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="org-schema-name">Схема БД організації</label>
+                <input class="form-input" type="text" id="org-schema-name" placeholder="i711_001">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="code-se">Код структурної одиниці</label>
+                <input class="form-input" type="text" id="code-se" placeholder="Не обов'язково">
+              </div>
             </div>
           </div>
-          <br />
-          <div class="columns">
-            <div class="column col-4">
-              <label class="form-label" for="sys-schema-name">Cистемна схема БД</label>
-              <input class="form-input" type="text" id="sys-schema-name" placeholder="i711_sys">
-            </div>
-            <div class="column col-4">
-              <label class="form-label" for="org-schema-name">Схема БД організації</label>
-              <input class="form-input" type="text" id="org-schema-name" placeholder="i711_001">
-            </div>
-            <div class="column col-4">
-              <label class="form-label" for="code-se">Код структурної одиниці</label>
-              <input class="form-input" type="text" id="code-se" placeholder="Не обов'язково">
+
+          <!-- Afina params panel -->
+
+          <div id="afina-panel">
+            <div class="columns">
+              <div class="column col-8">
+                <label class="form-label" for="afina-db-path">Каталог бази даних</label>
+                <input class="form-input" type="text" id="afina-db-path" placeholder="C:\Afina\DB">
+              </div>
             </div>
           </div>
+
+          <!-- Parus params panel -->
+
+          <div id="parus-panel">
+            <div class="columns">
+              <div class="column col-8">
+                <label class="form-label" for="parus-db-path">Каталог бази даних</label>
+                <input class="form-input" type="text" id="parus-db-path" placeholder="C:\Parus\DB">
+              </div>
+            </div>
+          </div>
+
+          <!-- 1C params panel -->
+
+          <div id="c1-panel">
+            <div class="columns">
+              <div class="column col-8">
+                <label class="form-label" for="c1-db-path">Каталог вихідних файлів</label>
+                <input class="form-input" type="text" id="c1-db-path" placeholder="C:\1C\Export">
+              </div>
+            </div>
+          </div>
+
           <br />
+
+          <!-- Common params panel -->
+
           <div class="columns">
             <div class="column col-8">
-              <label class="form-label" for="path">Каталог для збереження файлів</label>
-              <input class="form-input" type="text" id="path" placeholder="D:\">
+              <label class="form-label" for="target-path">Каталог для збереження файлів</label>
+              <input class="form-input" type="text" id="target-path" placeholder="C:\">
             </div>
             <div class="column col-4">
               <label class="form-label" for="is-arch-files">Додатково</label>
@@ -82,7 +129,11 @@
             </div>
           </div>
         </div>
+
         <br />
+
+        <!-- Control panel -->
+
         <div id="control-panel">
           <div class="columns">
 
@@ -90,6 +141,9 @@
               <button class="btn btn-primary" id="runExport">Виконати експорт</button>
             </div>
             <div class="column col-8">
+
+              <!-- Result panel -->
+
               <div id="result-panel">
                 <div class="toast toast-success">
                   <button class="btn btn-clear float-right"></button>
@@ -102,25 +156,33 @@
       </div>
     </div>
   </div>
-  <div class="panel-body" id="body-panel">
+
+  <!-- Body panel -->
+
+  <div class="panel-body">
     <!-- contents -->
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>Результат</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Підрозділи.csv</td>
-        </tr>
-        <tr>
-          <td>Посади.csv</td>
-        </tr>
-      </tbody>
-    </table>
+    <div id="body-panel">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Результат</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Підрозділи.csv</td>
+          </tr>
+          <tr>
+            <td>Посади.csv</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <br />
   </div>
+
+  <!-- Footer panel -->
+
   <div class="panel-footer" id="footer-panel" style="padding: 0px;">
     <!-- buttons or inputs -->
 
