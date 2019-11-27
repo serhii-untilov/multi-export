@@ -12,6 +12,7 @@ const parusPanel = document.getElementById('parus-panel')
 const c1Panel = document.getElementById('c1-panel')
 const controlPanel = document.getElementById('control-panel')
 const resultPanel = document.getElementById('result-panel')
+const resultTable = document.getElementById('resultTable')
 const bodyPanel = document.getElementById('body-panel')
 const footerPanel = document.getElementById('footer-panel')
 
@@ -213,23 +214,18 @@ renderMenu()
 renderPanels()
 
 ipcRenderer.on('done', (event, fileList) => {
-  // const fileListElement = document.getElementById('fileList')
-  // var html = htmlFileList(fileList)
-  // html += '<li class="file-item">Done!</li>'
-  // fileListElement.innerHTML = html
   setVisible(resultPanel, true)
 })
 
-const htmlFileList = (fileList) => {
-  var html = ''
-  for (var i = 0; i < fileList.length; i++) {
-    html += `<li class="file-item">${fileList[i]}</li>`
-  }
-  return html
-}
+ipcRenderer.on('failed', (event, err) => {
+  setVisible(resultPanel, true)
+})
 
 ipcRenderer.on('push-file', (event, fileList) => {
-  const fileListElement = document.getElementById('fileList')
-  fileListElement.innerHTML = htmlFileList(fileList)
+  var html = ''
+  for (var i = 0; i < fileList.length; i++) {
+    html += `<tr><td>${fileList[i].fileName}</td><td>${fileList[i].state}</td></tr>`
+  }
+  resultTable.innerHTML = html
 })
 

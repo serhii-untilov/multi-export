@@ -2,22 +2,15 @@
 
 const path = require('path')
 const { app, ipcMain } = require('electron')
-
 const Window = require('./Window')
 const DataStore = require('./DataStore')
+const makeSource = require('./SourceFactory')
 
 require('electron-reload')(__dirname)
 
-// create a new config store name "Multi Export Config"
 const dataStore = new DataStore({ name: 'multi-export-config' })
 
-let fileList = []
-
-const pushFile = (fileList, fileName) => {
-  fileList.push(fileName)
-}
-
-function main () {
+function main() {
 
   let mainWindow = new Window({
     file: path.join('renderer', 'index.html')
@@ -33,12 +26,19 @@ function main () {
   })
 
   ipcMain.on('run-export', () => {
-    fileList = []
-    for (var i = 0; i < 10; i++) {
-      pushFile(fileList, 'File ' + i.toString())
-      mainWindow.send('push-file', fileList)
+    let fileList = []
+    try {
+      let source = makeSource(dataStore.getConfig())
+      source.read(function (target) {
+        fileList.push(target)
+        mainWindow.send('push-file', fileList)
+      })
+      mainWindow.send('done', fileList)
     }
-    mainWindow.send('done', fileList)    
+    catch (err) {
+      console.log(err)
+      mainWindow.send('failed', err)
+    }
   })
 }
 
