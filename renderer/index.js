@@ -16,11 +16,23 @@ const bodyPanel = document.getElementById('body-panel')
 const footerPanel = document.getElementById('footer-panel')
 
 const setVisible = (element, visible) => {
+  let className = "d-hide"
   if (visible)
-    element.classList.remove("d-hide")
+    element.classList.remove(className)
   else {
-    element.classList.remove("d-hide")
-    element.className += "d-hide"
+    element.classList.remove(className)
+    element.classList.add(className)
+  }
+}
+
+const setSelected = (element, selected) => {
+  let className = "text-dark"
+  if (selected) {
+    element.classList.remove(className)
+  }
+  else {
+    element.classList.remove(className)
+    element.classList.add(className)
   }
 }
 
@@ -37,6 +49,16 @@ const renderPanels = () => {
   console.log('renderPanels', this.config, afinaPanel, parusPanel, c1Panel, bodyPanel, resultPanel)
 }
 
+const renderMenu = () => {
+  if (!this.config)
+    return
+  setSelected(buttonSelectISPro, this.config.panel == Config.ISPRO)
+  setSelected(buttonSelectAfina, this.config.panel == Config.AFINA)
+  setSelected(buttonSelectParus, this.config.panel == Config.PARUS)
+  setSelected(buttonSelect1C, this.config.panel == Config.C1)
+  console.log('renderMenu', this.config, buttonSelectISPro, buttonSelectAfina, buttonSelectParus, buttonSelect1C)
+}
+
 const buttonSelectHome = document.getElementById('selectHome')
 !buttonSelectHome || buttonSelectHome.addEventListener('click', () => {
   this.config.panel = Config.HOME
@@ -50,6 +72,7 @@ buttonSelectISPro.addEventListener('click', () => {
     return
   this.config.panel = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
+  renderMenu()
   renderPanels()
 })
 
@@ -59,6 +82,7 @@ buttonSelectAfina.addEventListener('click', () => {
     return
   this.config.panel = Config.AFINA
   ipcRenderer.send('set-config', this.config)
+  renderMenu()
   renderPanels()
 })
 
@@ -68,6 +92,7 @@ buttonSelectParus.addEventListener('click', () => {
     return
   this.config.panel = Config.PARUS
   ipcRenderer.send('set-config', this.config)
+  renderMenu()
   renderPanels()
 })
 
@@ -77,6 +102,7 @@ buttonSelect1C.addEventListener('click', () => {
     return
   this.config.panel = Config.C1
   ipcRenderer.send('set-config', this.config)
+  renderMenu()
   renderPanels()
 })
 
@@ -179,9 +205,11 @@ ipcRenderer.on('config', (event, config) => {
 
   isArchive.checked = config.isArchive
 
+  renderMenu()
   renderPanels()
 })
 
+renderMenu()
 renderPanels()
 
 ipcRenderer.on('done', (event, fileList) => {
