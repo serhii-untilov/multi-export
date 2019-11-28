@@ -23,7 +23,16 @@
     "win": {
       "target": "portable",
       "icon": "build/multi-export.ico"
-    }
+    },
+    "directories": {
+      "buildResources": "build"
+    },
+    "extraFiles": [
+          {
+            "from": "assets",
+            "to": "assets"
+          }
+        ]
   },
   "devDependencies": {
     "devtron": "^1.4.0",

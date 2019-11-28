@@ -1,18 +1,27 @@
 'use strict'
 
+const fs = require('fs')
 const Target = require('../Target')
 
 class IsproTarget extends Target.Target {
-    constructor (fileName, config) {
+    constructor(fileName, config) {
         super(fileName)
         this.config = config
-        this.sql = null        
     }
 
     makeFile() {
-        // TODO: Implement creating file
-        setTimeout(function(){}, 1000);
-        this.state = Target.FILE_CREATED
+        let config = this.config
+        let fileName = this.fileName
+        fs.readFile(this.fileName, 'utf8', function (err, contents) {
+            if (err) throw err        
+
+            // TODO: Implement creating file
+            let re = '(^\s?--\s?)([^(]*)(\()([^)]*)(.*)'
+            let resullt = re.exec(contents)
+            console.log(fileName, result)
+
+            this.state = Target.FILE_CREATED
+        })
     }
 }
 
