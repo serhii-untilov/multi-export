@@ -6,8 +6,6 @@ const AFINA = 'afina'
 const PARUS = 'parus'
 const C1 = '1C'
 
-
-
 class Config {
     constructor() {
         // Params for targeted files

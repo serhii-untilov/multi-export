@@ -6,11 +6,14 @@ const IsproTarget = require('./IsproTarget')
 
 class Ispro extends Source {
     constructor(config) {
+        console.log('Ispro.constructor', config)
         super()
         this.config = config
+        
     }
     read(resolve) {
         let fileList = this.makeFileList()
+        console.log('read', fileList)
         fileList.forEach(function (fileName, i, arr) {
             let target = new IsproTarget(fileName, this.config)
             try {
@@ -67,3 +70,5 @@ class Ispro extends Source {
         ]
     }
 }
+
+module.exports = Ispro
