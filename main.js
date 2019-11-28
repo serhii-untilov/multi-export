@@ -21,14 +21,13 @@ function main() {
   })
 
   ipcMain.on('set-config', (event, config) => {
-    console.log('set-config', config)
     dataStore.setConfig(config)
   })
 
-  ipcMain.on('run-export', () => {
+  ipcMain.on('run-export', (event, config) => {
     let fileList = []
     try {
-      let source = makeSource(dataStore.getConfig())
+      let source = makeSource(config)
       source.read(function (target) {
         fileList.push(target)
         mainWindow.send('push-file', fileList)

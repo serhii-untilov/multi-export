@@ -10,68 +10,72 @@ const isproPanel = document.getElementById('ispro-panel')
 const afinaPanel = document.getElementById('afina-panel')
 const parusPanel = document.getElementById('parus-panel')
 const c1Panel = document.getElementById('c1-panel')
+const commonParamsPanel = document.getElementById('common-params-panel')
 const controlPanel = document.getElementById('control-panel')
 const resultPanel = document.getElementById('result-panel')
-const resultTable = document.getElementById('resultTable')
+const resultToast = document.getElementById('result-toast')
+const resultTable = document.getElementById('result-table')
 const bodyPanel = document.getElementById('body-panel')
 const footerPanel = document.getElementById('footer-panel')
 
 const setVisible = (element, visible) => {
-  let className = "d-hide"
+  let hide = "d-hide"
   if (visible)
-    element.classList.remove(className)
+    element.classList.remove(hide)
   else {
-    element.classList.remove(className)
-    element.classList.add(className)
+    element.classList.remove(hide)
+    element.classList.add(hide)
   }
 }
 
 const setSelected = (element, selected) => {
-  let className = "text-dark"
+  let bold = "bold"
   if (selected) {
-    element.classList.remove(className)
+    element.classList.remove(bold)
+    element.classList.add(bold)
   }
   else {
-    element.classList.remove(className)
-    element.classList.add(className)
+    element.classList.remove(bold)
   }
 }
 
 const renderPanels = () => {
-  setVisible(homePanel, !this.config || this.config.panel === Config.HOME)
-  setVisible(isproPanel, this.config && this.config.panel === Config.ISPRO)
-  setVisible(afinaPanel, this.config && this.config.panel === Config.AFINA)
-  setVisible(parusPanel, this.config && this.config.panel === Config.PARUS)
-  setVisible(c1Panel, this.config && this.config.panel === Config.C1)
-  setVisible(controlPanel, this.config && this.config.panel != Config.HOME)
+  setVisible(homePanel, !this.config || this.config.source === Config.HOME)
+  setVisible(isproPanel, this.config && this.config.source === Config.ISPRO)
+  setVisible(afinaPanel, this.config && this.config.source === Config.AFINA)
+  setVisible(parusPanel, this.config && this.config.source === Config.PARUS)
+  setVisible(c1Panel, this.config && this.config.source === Config.C1)
+  setVisible(commonParamsPanel, this.config && this.config.source != Config.HOME)
+  setVisible(controlPanel, this.config && this.config.source != Config.HOME)
   setVisible(bodyPanel, false)
-  setVisible(footerPanel, this.config && this.config.panel !== Config.HOME)
+  setVisible(footerPanel, this.config && this.config.source !== Config.HOME)
   setVisible(resultPanel, false)
-  console.log('renderPanels', this.config, afinaPanel, parusPanel, c1Panel, bodyPanel, resultPanel)
 }
 
 const renderMenu = () => {
   if (!this.config)
     return
-  setSelected(buttonSelectISPro, this.config.panel == Config.ISPRO)
-  setSelected(buttonSelectAfina, this.config.panel == Config.AFINA)
-  setSelected(buttonSelectParus, this.config.panel == Config.PARUS)
-  setSelected(buttonSelect1C, this.config.panel == Config.C1)
-  console.log('renderMenu', this.config, buttonSelectISPro, buttonSelectAfina, buttonSelectParus, buttonSelect1C)
+  setSelected(buttonSelectISPro, this.config.source == Config.ISPRO)
+  setSelected(buttonSelectAfina, this.config.source == Config.AFINA)
+  setSelected(buttonSelectParus, this.config.source == Config.PARUS)
+  setSelected(buttonSelect1C, this.config.source == Config.C1)
 }
 
 const buttonSelectHome = document.getElementById('selectHome')
-!buttonSelectHome || buttonSelectHome.addEventListener('click', () => {
-  this.config.panel = Config.HOME
+buttonSelectHome.addEventListener('click', () => {
+  if (this.config.source == Config.HOME)
+    return
+  this.config.source = Config.HOME
   ipcRenderer.send('set-config', this.config)
+  renderMenu()
   renderPanels()
 })
 
 const buttonSelectISPro = document.getElementById('selectISPro')
 buttonSelectISPro.addEventListener('click', () => {
-  if (this.config.panel == Config.ISPRO)
+  if (this.config.source == Config.ISPRO)
     return
-  this.config.panel = Config.ISPRO
+  this.config.source = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
@@ -79,9 +83,9 @@ buttonSelectISPro.addEventListener('click', () => {
 
 const buttonSelectAfina = document.getElementById('selectAfina')
 buttonSelectAfina.addEventListener('click', () => {
-  if (this.config.panel == Config.AFINA)
+  if (this.config.source == Config.AFINA)
     return
-  this.config.panel = Config.AFINA
+  this.config.source = Config.AFINA
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
@@ -89,9 +93,9 @@ buttonSelectAfina.addEventListener('click', () => {
 
 const buttonSelectParus = document.getElementById('selectParus')
 buttonSelectParus.addEventListener('click', () => {
-  if (this.config.panel == Config.PARUS)
+  if (this.config.source == Config.PARUS)
     return
-  this.config.panel = Config.PARUS
+  this.config.source = Config.PARUS
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
@@ -99,18 +103,18 @@ buttonSelectParus.addEventListener('click', () => {
 
 const buttonSelect1C = document.getElementById('select1C')
 buttonSelect1C.addEventListener('click', () => {
-  if (this.config.panel == Config.C1)
+  if (this.config.source == Config.C1)
     return
-  this.config.panel = Config.C1
+  this.config.source = Config.C1
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
 })
 
-const buttonRunExport = document.getElementById('runExport')
+const buttonRunExport = document.getElementById('run-export')
 buttonRunExport.addEventListener('click', () => {
   setVisible(bodyPanel, true)
-  ipcRenderer.send('run-export')
+  ipcRenderer.send('run-export', this.config)
 })
 
 const serverName = document.getElementById('server-name')
@@ -214,10 +218,21 @@ renderMenu()
 renderPanels()
 
 ipcRenderer.on('done', (event, fileList) => {
+  resultToast.classList.remove('toast-error')
+  resultToast.classList.remove('toast-success')
+  resultToast.classList.add('toast-success')
+  resultToast.innerHTML = 'Експорт виконано успішно.'
   setVisible(resultPanel, true)
 })
 
+
 ipcRenderer.on('failed', (event, err) => {
+  resultToast.classList.remove('toast-success')
+  resultToast.classList.remove('toast-error')
+  resultToast.classList.add('toast-error')
+  resultToast.innerHTML = 'Експорт не виконано. ' + err
+  resultTable.innerHTML = ''
+  setVisible(bodyPanel, false)
   setVisible(resultPanel, true)
 })
 

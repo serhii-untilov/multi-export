@@ -1,9 +1,8 @@
 'use strict'
 
 const Target = require('../Target')
-const {Const} = require('../Constants')
 
-class IsproTarget extends Target {
+class IsproTarget extends Target.Target {
     constructor (fileName, config) {
         super(fileName)
         this.config = config
@@ -11,8 +10,9 @@ class IsproTarget extends Target {
     }
 
     makeFile() {
+        // TODO: Implement creating file
         setTimeout(function(){}, 1000);
-        this.state = Const.FILE_CREATED
+        this.state = Target.FILE_CREATED
     }
 }
 

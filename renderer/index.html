@@ -13,10 +13,11 @@
 
     <header class="navbar">
       <section class="navbar-section">
-        <!-- <a href="#" class="navbar-brand mr-2" id="selectHome">
+        <a href="#" class="navbar-brand mr-2" id="selectHome">
           <h1>Multi Export</h1>
-        </a> -->
-        <h1 class="text-primary mt-2 mr-2">Multi Export</h1>
+        </a>
+        <!-- <h1 class="text-primary mt-2 mr-2">Multi Export</h1> -->
+
         <a href="#" class="btn btn-link" id="selectISPro">ІС-Про</a>
         <a href="#" class="btn btn-link" id="selectAfina">Афіна</a>
         <a href="#" class="btn btn-link" id="selectParus">Парус</a>
@@ -33,11 +34,48 @@
         <!-- Home panel -->
 
         <div id="home-panel" class="d-hide">
+
           <p>Програма <a href="https://github.com/sergey-untilov/multi-export" target="_blank">Multi Export</a>
-            виконує експорт даних із програмних систем: ІС-Про, Афіна, Парус, 1С та створює стандартні файли для
-            завантаження
-            у базу даних програмного комплексу <a href="https://a5buh.com" target="_blank">А5 Системз</a>.
+            виконує експорт даних із програмних систем і створює стандартні вихідні файли для імпорту довідників і облікових даних у систему <a href="https://a5buh.com"
+              target="_blank">А5 Бухгалтерія</a>.
           </p>
+          <p>Для виконання експорту, у верхноьому меню виберіть програмну систему, вкажіть параметри та натисніть кнопку Виконати експорт.</p>
+
+          <h3>ІС-Про</h3>
+          <p> Экспорт виконується безпосередньо із бази даних. Для підключення до бази даних потрібно вказати:</p>
+          <ul>
+            <li>Назву (адресу) серверу бази даних</li>
+            <li>Логін і пароль користувача бази даних (не користувача ІС-Про)</li>
+            <li>Назву системної схеми бази даних, де розміщені загальносистемні довідники і константи</li>
+            <li>Назву схеми бази даних підприємства, де розміщені таблиці із обліковими даними</li>
+            <li>Код структурної одниниці - тільки у разі, якщо у одній схемі бази даних ведеться облік структурних одиниць
+            </li>
+          </ul>
+
+
+          <h3>Афіна</h3>
+          <p>Экспорт виконується із файлів бази даних. Для виконання експорту потрібно вказати:</p>
+          <ul>
+            <li>Каталог у якому розміщені файли бази даних</li>
+          </ul>
+
+          <h3>Парус</h3>
+          <p>Экспорт виконується із файлів бази даних. Для виконання експорту потрібно вказати:</p>
+          <ul>
+            <li>Каталог у якому розміщені файли бази даних</li>
+          </ul>
+
+          <h3>1С</h3>
+          <p> Экспорт виконується із файлів, у які попередньо були вивантажені довідники і облікові відомості із бази
+            даних.
+            Для виконання експорту потрібно вказати:</p>
+          <ul>
+            <li>Каталог у якому розміщені вихідні файли</li>
+          </ul>
+
+
+
+
         </div>
 
         <!-- Params panel -->
@@ -114,18 +152,19 @@
           <br />
 
           <!-- Common params panel -->
-
-          <div class="columns">
-            <div class="column col-8">
-              <label class="form-label" for="target-path">Каталог для збереження файлів</label>
-              <input class="form-input" type="text" id="target-path" placeholder="C:\">
-            </div>
-            <div class="column col-4">
-              <label class="form-label" for="is-arch-files">Додатково</label>
-              <label class="form-switch" id="is-arch-files">
-                <input type="checkbox" id="isArchive">
-                <i class="form-icon"></i> Запакувати у архів
-              </label>
+          <div id="common-params-panel">
+            <div class="columns">
+              <div class="column col-8">
+                <label class="form-label" for="target-path">Каталог для збереження файлів</label>
+                <input class="form-input" type="text" id="target-path" placeholder="C:\">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="is-arch-files">Додатково</label>
+                <label class="form-switch" id="is-arch-files">
+                  <input type="checkbox" id="isArchive">
+                  <i class="form-icon"></i> Запакувати у архів
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -133,26 +172,23 @@
         <br />
 
         <!-- Control panel -->
-
         <div id="control-panel">
           <div class="columns">
-
             <div class="column col-4">
-              <button class="btn btn-primary" id="runExport">Виконати експорт</button>
+              <button class="btn btn-primary" id="run-export">Виконати експорт</button>
             </div>
+            <!-- Result panel -->
             <div class="column col-8">
-
-              <!-- Result panel -->
-
               <div id="result-panel">
-                <div class="toast toast-success">
-                  <button class="btn btn-clear float-right"></button>
+                <div class="toast toast-success" id="result-toast">
+                  <!-- <button class="btn btn-clear float-right"></button> -->
                   Експорт виконано успішно. Створено файл D:\archive.zip.
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -162,6 +198,7 @@
   <div class="panel-body">
     <!-- contents -->
     <div id="body-panel">
+      <br />
       <table class="table table-striped table-hover">
         <thead>
           <tr>
@@ -170,12 +207,6 @@
           </tr>
         </thead>
         <tbody id="result-table">
-          <tr>
-            <td>Підрозділи.csv</td>
-          </tr>
-          <tr>
-            <td>Посади.csv</td>
-          </tr>
         </tbody>
       </table>
     </div>

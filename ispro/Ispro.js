@@ -1,29 +1,29 @@
 'use strict'
 
 const Source = require('../Source')
-const { Const } = require('../Constants')
+const Target = require('../Target')
 const IsproTarget = require('./IsproTarget')
 
 class Ispro extends Source {
     constructor(config) {
-        console.log('Ispro.constructor', config)
         super()
         this.config = config
         
     }
+
     read(resolve) {
         let fileList = this.makeFileList()
-        console.log('read', fileList)
-        fileList.forEach(function (fileName, i, arr) {
-            let target = new IsproTarget(fileName, this.config)
+        for (let i = 0; i < fileList.length; i++) {
+            let target = new IsproTarget(fileList[i], this.config)
             try {
                 target.makeFile()
             } catch (err) {
-                target.state = Const.FILE_ERROR
+                console.log(err)
+                target.state = Target.FILE_ERROR
                 target.err = err
             }
             resolve(target)
-        })
+        }
     }
 
     makeFileList() {

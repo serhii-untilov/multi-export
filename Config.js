@@ -9,7 +9,7 @@ const C1 = '1C'
 class Config {
     constructor() {
         // Params for targeted files
-        this.panel = this.ISPRO   // default panel
+        this.source = this.HOME   // default source
         this.targetPath = ''
         this.isArchive = true
 
@@ -34,5 +34,5 @@ module.exports = {
     ISPRO,
     AFINA,
     PARUS,
-    C1,
+    C1
 }
