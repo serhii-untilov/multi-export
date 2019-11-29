@@ -12,16 +12,22 @@ class IsproTarget extends Target.Target {
     makeFile() {
         let config = this.config
         let fileName = this.fileName
-        fs.readFile(this.fileName, 'utf8', function (err, contents) {
-            if (err) throw err        
+        try {
+            fs.readFile(this.fileName, 'utf8', function (err, contents) {
+                if (err) throw err        
 
-            // TODO: Implement creating file
-            let re = '(^\s?--\s?)([^(]*)(\()([^)]*)(.*)'
-            let resullt = re.exec(contents)
-            console.log(fileName, result)
+                let re = /(^--\s*)([\S ][^(]+)(.*$)/s
+                let result = re.exec(contents)
+                console.log('result', fileName, result)
 
+                // TODO: Implement creating file
+            })
             this.state = Target.FILE_CREATED
-        })
+        }
+        catch (err) {
+            this.state = Target.FILE_ERROR
+            this.err = err
+        }
     }
 }
 

@@ -24,13 +24,7 @@ class Ispro extends Source {
 
             for (let i = 0; i < fileList.length; i++) {
                 let target = new IsproTarget(fileList[i], config)
-                try {
-                    target.makeFile()
-                } catch (err) {
-                    console.log(err)
-                    target.state = Target.FILE_ERROR
-                    target.err = err
-                }
+                target.makeFile()
                 resolve(target)
             }
         })
