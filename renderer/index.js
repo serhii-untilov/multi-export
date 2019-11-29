@@ -48,7 +48,7 @@ const renderPanels = () => {
   setVisible(commonParamsPanel, this.config && this.config.source != Config.HOME)
   setVisible(controlPanel, this.config && this.config.source != Config.HOME)
   setVisible(bodyPanel, false)
-  setVisible(footerPanel, this.config && this.config.source !== Config.HOME)
+  setVisible(footerPanel, this.config && this.config.source === Config.HOME)
   setVisible(resultPanel, false)
 }
 
@@ -61,58 +61,65 @@ const renderMenu = () => {
   setSelected(buttonSelect1C, this.config.source == Config.C1)
 }
 
-const buttonSelectHome = document.getElementById('selectHome')
-buttonSelectHome.addEventListener('click', () => {
+const selectHome = () => {
   if (this.config.source == Config.HOME)
     return
   this.config.source = Config.HOME
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
-})
+}
+document.getElementById('selectHome').addEventListener('click', selectHome)
 
-const buttonSelectISPro = document.getElementById('selectISPro')
-buttonSelectISPro.addEventListener('click', () => {
+const selectIspro = () => {
   if (this.config.source == Config.ISPRO)
     return
   this.config.source = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
-})
+}
+const buttonSelectISPro = document.getElementById('selectISPro')
+buttonSelectISPro.addEventListener('click', selectIspro)
+document.getElementById('homeSelectISPro').addEventListener('click', selectIspro)
 
-const buttonSelectAfina = document.getElementById('selectAfina')
-buttonSelectAfina.addEventListener('click', () => {
+const selectAfina = () => {
   if (this.config.source == Config.AFINA)
     return
   this.config.source = Config.AFINA
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
-})
+}
+const buttonSelectAfina = document.getElementById('selectAfina')
+buttonSelectAfina.addEventListener('click', selectAfina)
+document.getElementById('homeSelectAfina').addEventListener('click', selectAfina)
 
-const buttonSelectParus = document.getElementById('selectParus')
-buttonSelectParus.addEventListener('click', () => {
+const selectParus = () => {
   if (this.config.source == Config.PARUS)
     return
   this.config.source = Config.PARUS
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
-})
+}
+const buttonSelectParus = document.getElementById('selectParus')
+buttonSelectParus.addEventListener('click', selectParus)
+document.getElementById('homeSelectParus').addEventListener('click', selectParus)
 
-const buttonSelect1C = document.getElementById('select1C')
-buttonSelect1C.addEventListener('click', () => {
+const select1C = () => {
   if (this.config.source == Config.C1)
     return
   this.config.source = Config.C1
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
-})
+}
+const buttonSelect1C = document.getElementById('select1C')
+buttonSelect1C.addEventListener('click', select1C)
+document.getElementById('homeSelect1C').addEventListener('click', select1C)
 
-const buttonRunExport = document.getElementById('run-export')
-buttonRunExport.addEventListener('click', () => {
+document.getElementById('run-export').addEventListener('click', () => {
   setVisible(bodyPanel, true)
   ipcRenderer.send('run-export', this.config)
 })
