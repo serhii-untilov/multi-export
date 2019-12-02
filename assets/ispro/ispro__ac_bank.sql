@@ -1,4 +1,4 @@
--- Р‘Р°РЅРєРё (ac_bank)
+-- Банки (ac_bank)
 select 'ID' ID, 'MFO' MFO, 'code' code, 'name' name, 'fullName' fullName, 'phones' phones, 'description' description
 union all
 select distinct

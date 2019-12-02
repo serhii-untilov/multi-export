@@ -9,19 +9,26 @@ class IsproTarget extends Target.Target {
         this.config = config
     }
 
+    fileContent(fileName) {
+        let Content = null
+        fs.readFile(fileName, 'utf8', function (err, content) {
+            if (err) throw err
+            Content = content
+        })
+        return Content
+    }
+
+    fileDescription(fileContent) {
+        let re = /^-- ([^(]+)\(.*$/s
+        let matchResult = fileContent.match(re)
+        console.log('matchResult', matchResult)
+        return matchResult && matchResult.length > 1 ? matchResult[1].trim() : null
+    }
+
     makeFile() {
-        let config = this.config
-        let fileName = this.fileName
         try {
-            fs.readFile(this.fileName, 'utf8', function (err, contents) {
-                if (err) throw err        
-
-                let re = /^-- ([^(]+)\(.*$/s
-                let result = contents.match(re)[1] || fileName
-                console.log('result', fileName, result)
-
-                // TODO: Implement creating file
-            })
+            let content = this.fileContent(this.fileName)
+            let description = this.fileDescription(content) || this.fileName
             this.state = Target.FILE_CREATED
         }
         catch (err) {
