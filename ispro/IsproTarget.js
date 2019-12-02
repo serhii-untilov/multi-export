@@ -16,8 +16,8 @@ class IsproTarget extends Target.Target {
             fs.readFile(this.fileName, 'utf8', function (err, contents) {
                 if (err) throw err        
 
-                let re = /(^--\s*)([\S ][^(]+)(.*$)/s
-                let result = re.exec(contents)
+                let re = /^-- ([^(]+)\(.*$/s
+                let result = contents.match(re)[1] || fileName
                 console.log('result', fileName, result)
 
                 // TODO: Implement creating file
