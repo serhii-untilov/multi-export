@@ -23,7 +23,7 @@ class IsproSource extends Source {
             for (let i = 0; i < fileList.length; i++) {
                 fs.readFile(fileList[i], 'utf8', function (err, content) {
                     if (err) throw err
-                    let target = new IsproTarget(fileList[i])
+                    let target = new IsproTarget(files[i])
                     target.makeFile(content, config)
                     resolve(target)
                 })

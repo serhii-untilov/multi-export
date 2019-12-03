@@ -1,5 +1,6 @@
 'use strict'
 
+const sql = require('mssql')
 const Target = require('../Target')
 
 class IsproTarget extends Target.Target {
@@ -7,8 +8,17 @@ class IsproTarget extends Target.Target {
         super(fileName)
     }
 
-    makeFile(content, config) {
+    makeConnectionString(config) {
+        return `mssql://${config.login}:${config.password}@${config.server}/${config.schema}`
+    }
+
+    async makeFile(content, config) {
         try {
+            let connectionString = makeConnectionString(config)
+            await sql.connect(connectionString)
+            const result = await sql.query(content)
+            console.dir(result)
+
             this.state = Target.FILE_CREATED
         }
         catch (err) {

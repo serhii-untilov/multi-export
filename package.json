@@ -46,6 +46,7 @@
     "electron-reload": "^1.5.0",
     "electron-store": "^5.1.0",
     "iconv": "^2.3.5",
+    "mssql": "^6.0.1",
     "spectre.css": "^0.5.8"
   }
 }
