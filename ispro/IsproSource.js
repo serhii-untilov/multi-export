@@ -7,14 +7,12 @@ const IsproTarget = require('./IsproTarget')
 
 const SQL_FILES_DIR = './assets/ispro'
 
-class Ispro extends Source {
-    constructor(config) {
+class IsproSource extends Source {
+    constructor() {
         super()
-        this.config = config
     }
 
-    read(resolve) {
-        let config = this.config
+    read(config, resolve) {
         fs.readdir(SQL_FILES_DIR, function(err, files) {
             if (err) throw err
 
@@ -23,12 +21,15 @@ class Ispro extends Source {
             })
 
             for (let i = 0; i < fileList.length; i++) {
-                let target = new IsproTarget(fileList[i], config)
-                target.makeFile()
-                resolve(target)
+                fs.readFile(fileList[i], 'utf8', function (err, content) {
+                    if (err) throw err
+                    let target = new IsproTarget(fileList[i])
+                    target.makeFile(content, config)
+                    resolve(target)
+                })
             }
         })
     }
 }
 
-module.exports = Ispro
+module.exports = IsproSource

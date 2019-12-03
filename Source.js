@@ -3,7 +3,7 @@
 class Source {
     constructor () {
     }
-    read (resolve, reject) {
+    read (config, resolve) {
         throw 'Not implemented method'
     }
 }

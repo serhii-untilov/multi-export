@@ -28,7 +28,7 @@ function main() {
     let fileList = []
     try {
       let source = makeSource(config)
-      source.read(function (target) {
+      source.read(config, function (target) {
         fileList.push(target)
         mainWindow.send('push-file', fileList)
       })

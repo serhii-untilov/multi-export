@@ -1,11 +1,11 @@
 'use strict'
 
 const Config = require('./Config')
-const Ispro = require('./ispro/Ispro')
+const IsproSource = require('./ispro/IsproSource')
 
 const makeSource = (config) => {
     if (config.source === Config.ISPRO)
-        return new Ispro(config)
+        return new IsproSource()
     else
         throw 'Not implemented source.'
 }
