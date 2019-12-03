@@ -1,7 +1,8 @@
 'use strict'
 
 const { ipcRenderer } = require('electron')
-const Config = require('../Config')
+const Config = require('../src/Config')
+const Target = require('../src/Target')
 
 const config = null
 
@@ -243,10 +244,25 @@ ipcRenderer.on('failed', (event, err) => {
   setVisible(resultPanel, true)
 })
 
+const getStateText = (target) => {
+  console.log(target.state)
+  switch (target.state) {
+    case Target.FILE_CREATED:
+      return `Створено файл ${target.targetFile}`
+    case Target.FILE_EMPTY:
+      return 'Файл не створено. Відсутні дані для експорту.'
+    case Target.FILE_ERROR:
+      return `Помилка. ${target.err}` 
+    default:
+      return 'Невідома помилка.'
+  }
+}
+
 ipcRenderer.on('push-file', (event, fileList) => {
   var html = ''
   for (var i = 0; i < fileList.length; i++) {
-    html += `<tr><td>${fileList[i].fileName}</td><td>${fileList[i].state}</td></tr>`
+    let stateText = getStateText(fileList[i])
+    html += `<tr><td>${fileList[i].fileName}</td><td>${stateText}</td></tr>`
   }
   resultTable.innerHTML = html
 })

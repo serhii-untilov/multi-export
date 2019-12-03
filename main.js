@@ -2,9 +2,9 @@
 
 const path = require('path')
 const { app, ipcMain } = require('electron')
-const Window = require('./Window')
-const DataStore = require('./DataStore')
-const makeSource = require('./SourceFactory')
+const Window = require('./src/Window')
+const DataStore = require('./src/DataStore')
+const makeSource = require('./src/SourceFactory')
 
 require('electron-reload')(__dirname)
 

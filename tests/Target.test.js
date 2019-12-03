@@ -1,4 +1,4 @@
-const { Target } = require('../Target')
+const { Target } = require('../src/Target')
 
 test('The Target must contain filled fileName field', () => {
     let target = new Target('testFileName')
