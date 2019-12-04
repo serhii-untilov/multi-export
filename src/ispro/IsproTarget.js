@@ -8,7 +8,7 @@ class IsproTarget extends Target.Target {
         super(fileName)
     }
 
-    makeConnectionString(config) {
+    getConnectionString(config) {
         return `mssql://${config.login}:${config.password}@${config.server}/${config.schema}`
     }
 
@@ -19,7 +19,7 @@ class IsproTarget extends Target.Target {
     }
 
     async makeFile(config, queryText) {
-            let connectionString = this.makeConnectionString(config)
+            let connectionString = this.getConnectionString(config)
             let recordset = this.doQuery(connectionString, queryText)
 
             let buffer = ''

@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const _fsExtra = require('fs-extra')
 const path = require('path')
 const Source = require('../Source')
 const Target = require('../Target')
@@ -13,20 +14,21 @@ class IsproSource extends Source {
         super()
     }
 
-    !!! getFileList() {
-        let fileList = []
-        try {
-            fs.readdir(SQL_FILES_DIR, function (err, files) {
-                console.log('debug', files)
-                fileList = files.map(function (file) {
-                    return SQL_FILES_DIR + path.sep + file
-                })
-                console.log('debug', fileList)
-            })
-        } catch (err) {
-            console.log(err)
-        }
-        console.log('debug', fileList)
+    getFileList() {
+        // let fileList = []
+        // try {
+        //     fs.readdir(SQL_FILES_DIR, function (err, files) {
+        //         console.log('debug', files)
+        //         fileList = files.map(function (file) {
+        //             return SQL_FILES_DIR + path.sep + file
+        //         })
+        //         console.log('debug', fileList)
+        //     })
+        // } catch (err) {
+        //     console.log(err)
+        // }
+        // console.log('debug', fileList)
+        let fileList = await (0, _fsExtra().readdir)(SQL_FILES_DIR);
         return fileList
     }
 

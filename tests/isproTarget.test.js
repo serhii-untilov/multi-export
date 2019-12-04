@@ -19,7 +19,7 @@ test('The Target must contain err field which equal to null', () => {
 test('Make a connection string', () => {
   let target = new IsproTarget('testFileName')
   let config = {login: 'login', password: 'password', server: 'server', schema: 'schema'}
-  let connectionString = target.makeConnectionString(config)
+  let connectionString = target.getConnectionString(config)
   expect(connectionString).toBe('mssql://login:password@server/schema')
 })
 
@@ -32,13 +32,12 @@ const getCurrentDateString = () => {
   return today
 }
 
-test.skip('Exec simple query', async () => {
+test('Exec simple query', async () => {
   let target = new IsproTarget('testFileName')
   let config = {login: 'acc_qa', password: 'rsm2', server: '91.214.182.7,1403', schema: 'acc_qa'}
-  let connectionString = target.makeConnectionString(config)
-  await sql.connect(connectionString)
-  const result = await sql.query('select cast(cast(getdate() as date) as varchar) as currentDate')
-  const buffer = result.recordset[0].currentDate.substring(0,10)
+  let connectionString = target.getConnectionString(config)
+  const result = target.doQuery(connectionString, 'select cast(cast(getdate() as date) as varchar) as currentDate')
+  const buffer = result.currentDate.substring(0,10)
   currentDateString = getCurrentDateString()
   expect(buffer).toBe(currentDateString)
 })
@@ -46,13 +45,13 @@ test.skip('Exec simple query', async () => {
 test('Make file name', () => {
   let target = new IsproTarget('testFileName.sql')
   let config = {targetPath: 'X:\\'} 
-  let fileName = target.makeFileName(config)
+  let fileName = target.getTargetFileName(config)
   expect(fileName).toBe('X:\\testFileName.csv')
 })
 
 test('Make file name without path.sep', () => {
   let target = new IsproTarget('testFileName.sql')
   let config = {targetPath: 'X:\\temp'} 
-  let fileName = target.makeFileName(config)
+  let fileName = target.getTargetFileName(config)
   expect(fileName).toBe('X:\\temp\\testFileName.csv')
 })
