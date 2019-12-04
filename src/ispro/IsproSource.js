@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
 const Source = require('../Source')
 const Target = require('../Target')
 const IsproTarget = require('./IsproTarget')
@@ -12,23 +13,39 @@ class IsproSource extends Source {
         super()
     }
 
-    read(config, resolve) {
-        fs.readdir(SQL_FILES_DIR, function(err, files) {
-            if (err) throw err
-
-            let fileList = files.map(function(file) {
-                return SQL_FILES_DIR + '/' + file
-            })
-
-            for (let i = 0; i < fileList.length; i++) {
-                fs.readFile(fileList[i], 'utf8', function (err, content) {
-                    if (err) throw err
-                    let target = new IsproTarget(files[i])
-                    target.makeFile(content, config)
-                    resolve(target)
+    !!! getFileList() {
+        let fileList = []
+        try {
+            fs.readdir(SQL_FILES_DIR, function (err, files) {
+                console.log('debug', files)
+                fileList = files.map(function (file) {
+                    return SQL_FILES_DIR + path.sep + file
                 })
+                console.log('debug', fileList)
+            })
+        } catch (err) {
+            console.log(err)
+        }
+        console.log('debug', fileList)
+        return fileList
+    }
+
+    read(config, resolve) {
+        let fileList = this.getFileList()
+        console.log('debug', fileList)
+        for (let i = 0; i < fileList.length; i++) {
+            let target = new IsproTarget(files[i])
+            try {
+                fs.readFile(fileList[i], 'utf8', function (err, queryText) {
+                    target.makeFile(config, queryText)
+                })
+            } catch (err) {
+                confole.log(err)
+                target.state = Target.FILE_ERROR
+                target.err = err
             }
-        })
+            resolve(target)
+        }
     }
 }
 

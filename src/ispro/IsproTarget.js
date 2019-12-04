@@ -12,13 +12,17 @@ class IsproTarget extends Target.Target {
         return `mssql://${config.login}:${config.password}@${config.server}/${config.schema}`
     }
 
-    async makeFile(content, config) {
-        try {
+    async doQuery(connectionString, queryText) {
+        await sql.connect(connectionString)
+        let result = await sql.query(queryText)
+        return result.recordsets[0]
+    }
+
+    async makeFile(config, queryText) {
             let connectionString = this.makeConnectionString(config)
-            await sql.connect(connectionString)
-            let result = await sql.query(content)
-            let recordset = result.recordsets[0]
-            buffer = ''
+            let recordset = this.doQuery(connectionString, queryText)
+
+            let buffer = ''
             for (let record = 0; record < recordset.length; record++) {
                 let fieldset = recordset[record].output
                 for (let field = 0; field < fieldset.length; field++) {
@@ -29,15 +33,10 @@ class IsproTarget extends Target.Target {
                 }
                 buffer += '\n\r'
             }
-            this.targetFile = makeFileName(config)
+
+            this.targetFile = this.getTargetFileName(config)
             fs.writeFile(this.targetFile, buffer)
             this.state = Target.FILE_CREATED
-        }
-        catch (err) {
-            console.log(this.fileName, err)
-            this.state = Target.FILE_ERROR
-            this.err = err
-        }
     }
 }
 

@@ -16,7 +16,7 @@ class Target {
         this.targetFile = null
     }
     
-    makeFileName(config) {
+    getTargetFileName(config) {
         let fileName = path.parse(this.fileName).name
         let targetPath = config.targetPath[config.targetPath.length - 1] == path.sep ? config.targetPath : `${config.targetPath}${path.sep}`
         return `${targetPath}${fileName}${FILE_EXT}`
