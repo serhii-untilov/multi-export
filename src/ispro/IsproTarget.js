@@ -13,9 +13,13 @@ class IsproTarget extends Target.Target {
     }
 
     async doQuery(connectionString, queryText) {
-        await sql.connect(connectionString)
-        let result = await sql.query(queryText)
-        return result.recordsets[0]
+        try {
+            await sql.connect(connectionString)
+            let result = await sql.query(queryText)
+            return result.recordset
+        } catch (err) {
+            return err
+        }
     }
 
     async makeFile(config, queryText) {

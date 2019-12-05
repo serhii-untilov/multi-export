@@ -1,6 +1,9 @@
 const sql = require('mssql')
 const IsproTarget = require('../src/ispro/IsproTarget')
 
+const dotenv = require('dotenv')
+dotenv.config()
+
 test('The Target must contain filled fileName field', () => {
   let target = new IsproTarget('testFileName')
   expect(target.fileName).toBe('testFileName')
@@ -32,12 +35,28 @@ const getCurrentDateString = () => {
   return today
 }
 
+test('Check environment variables initialized from .env file', () => {
+  // See README.md, Environment variables section
+  expect(process.env.server).not.toBe(undefined) 
+  expect(process.env.login).not.toBe(undefined) 
+  expect(process.env.password).not.toBe(undefined) 
+  expect(process.env.schema).not.toBe(undefined) 
+  // expect(process.env.schemasys).not.toBe(undefined) 
+})
+
 test('Exec simple query', async () => {
+  // See README.md, Environment variables section
+  let config = {
+    server: process.env.server, 
+    login: process.env.login, 
+    password: process.env.password, 
+    schema: process.env.schema,
+    // schemaSys: process.env.schemasys
+  }
   let target = new IsproTarget('testFileName')
-  let config = {login: 'acc_qa', password: 'rsm2', server: '91.214.182.7,1403', schema: 'acc_qa'}
   let connectionString = target.getConnectionString(config)
-  const result = target.doQuery(connectionString, 'select cast(cast(getdate() as date) as varchar) as currentDate')
-  const buffer = result.currentDate.substring(0,10)
+  const recordSet = await target.doQuery(connectionString, 'select cast(cast(getdate() as date) as varchar) as currentDate')
+  const buffer = recordSet[0].currentDate.substring(0,10)
   currentDateString = getCurrentDateString()
   expect(buffer).toBe(currentDateString)
 })
