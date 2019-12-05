@@ -1,6 +1,5 @@
 const sql = require('mssql')
 const IsproTarget = require('../src/ispro/IsproTarget')
-
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -44,7 +43,7 @@ test('Check environment variables initialized from .env file', () => {
   // expect(process.env.schemasys).not.toBe(undefined) 
 })
 
-test('Exec simple query', async () => {
+test('Exec a simple query', async () => {
   // See README.md, Environment variables section
   let config = {
     server: process.env.server, 
@@ -55,8 +54,8 @@ test('Exec simple query', async () => {
   }
   let target = new IsproTarget('testFileName')
   let connectionString = target.getConnectionString(config)
-  const recordSet = await target.doQuery(connectionString, 'select cast(cast(getdate() as date) as varchar) as currentDate')
-  const buffer = recordSet[0].currentDate.substring(0,10)
+  const recordset = await target.doQuery(connectionString, 'select cast(cast(getdate() as date) as varchar) as currentDate')
+  const buffer = recordset[0].currentDate.substring(0,10)
   currentDateString = getCurrentDateString()
   expect(buffer).toBe(currentDateString)
 })
@@ -74,3 +73,4 @@ test('Make file name without path.sep', () => {
   let fileName = target.getTargetFileName(config)
   expect(fileName).toBe('X:\\temp\\testFileName.csv')
 })
+

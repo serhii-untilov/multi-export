@@ -225,7 +225,7 @@ ipcRenderer.on('config', (event, config) => {
 renderMenu()
 renderPanels()
 
-ipcRenderer.on('done', (event, fileList) => {
+ipcRenderer.on('done', (event, targetList) => {
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-success')
   resultToast.classList.add('toast-success')
@@ -245,7 +245,6 @@ ipcRenderer.on('failed', (event, err) => {
 })
 
 const getStateText = (target) => {
-  console.log(target.state)
   switch (target.state) {
     case Target.FILE_CREATED:
       return `Створено файл ${target.targetFile}`
@@ -258,11 +257,11 @@ const getStateText = (target) => {
   }
 }
 
-ipcRenderer.on('push-file', (event, fileList) => {
+ipcRenderer.on('push-file', (event, targetList) => {
   var html = ''
-  for (var i = 0; i < fileList.length; i++) {
-    let stateText = getStateText(fileList[i])
-    html += `<tr><td>${fileList[i].fileName}</td><td>${stateText}</td></tr>`
+  for (var i = 0; i < targetList.length; i++) {
+    let stateText = getStateText(targetList[i])
+    html += `<tr><td>${targetList[i].fileName}</td><td>${stateText}</td></tr>`
   }
   resultTable.innerHTML = html
 })

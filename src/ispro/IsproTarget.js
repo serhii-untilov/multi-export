@@ -1,6 +1,7 @@
 'use strict'
 
 const sql = require('mssql')
+const fs = require('fs')
 const Target = require('../Target')
 
 class IsproTarget extends Target.Target {
@@ -22,25 +23,36 @@ class IsproTarget extends Target.Target {
         }
     }
 
-    async makeFile(config, queryText) {
-            let connectionString = this.getConnectionString(config)
-            let recordset = this.doQuery(connectionString, queryText)
+    makeFile(config, queryText) {
+        let connectionString = this.getConnectionString(config)
+        let recordset = this.doQuery(connectionString, queryText)
 
-            let buffer = ''
-            for (let record = 0; record < recordset.length; record++) {
-                let fieldset = recordset[record].output
-                for (let field = 0; field < fieldset.length; field++) {
-                    console.log(fieldset[field][1])
-                    if (field)
-                        buffer += ';'
-                    buffer += fieldset[field][1]
-                }
-                buffer += '\n\r'
-            }
+        if (recordset.length == 0) {
+            this.state = Target.FILE_EMPTY
+            return
+        }
 
-            this.targetFile = this.getTargetFileName(config)
-            fs.writeFile(this.targetFile, buffer)
-            this.state = Target.FILE_CREATED
+        let buffer = ''
+        // for (let record = 0; record < recordset.length; record++) {
+        //     let fieldset = recordset[record].output
+        //     for (let field = 0; field < fieldset.length; field++) {
+        //         console.log(fieldset[field][1])
+        //         if (field)
+        //             buffer += ';'
+        //         buffer += fieldset[field][1]
+        //     }
+        //     buffer += '\n\r'
+        // }
+
+        this.targetFile = this.getTargetFileName(config)
+        fs.writeFile(this.targetFile, buffer, (err) => {
+            console.log(err)
+            this.state = Target.FILE_ERROR
+            this.err = err
+            throw err
+        })
+
+        this.state = Target.FILE_CREATED
     }
 }
 

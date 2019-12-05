@@ -25,14 +25,14 @@ function main() {
   })
 
   ipcMain.on('run-export', (event, config) => {
-    let fileList = []
+    let targetList = []
     try {
       let source = makeSource(config)
       source.read(config, function (target) {
-        fileList.push(target)
-        mainWindow.send('push-file', fileList)
+        targetList.push(target)
+        mainWindow.send('push-file', targetList)
       })
-      mainWindow.send('done', fileList)
+      mainWindow.send('done', targetList)
     }
     catch (err) {
       console.log(err)
