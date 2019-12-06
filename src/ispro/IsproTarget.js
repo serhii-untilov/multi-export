@@ -32,7 +32,7 @@ class IsproTarget extends Target.Target {
             return
         }
 
-        let buffer = ''
+        let buffer = JSON.stringify(recordset)
         // for (let record = 0; record < recordset.length; record++) {
         //     let fieldset = recordset[record].output
         //     for (let field = 0; field < fieldset.length; field++) {
@@ -46,12 +46,10 @@ class IsproTarget extends Target.Target {
 
         this.targetFile = this.getTargetFileName(config)
         fs.writeFile(this.targetFile, buffer, (err) => {
-            console.log(err)
-            this.state = Target.FILE_ERROR
-            this.err = err
-            throw err
+            if (err) {
+                throw err
+            }
         })
-
         this.state = Target.FILE_CREATED
     }
 }
