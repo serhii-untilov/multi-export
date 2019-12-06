@@ -3,7 +3,8 @@
 class Source {
     constructor () {
     }
-    read (config, resolve) {
+
+    read (config, sendFile) {
         throw 'Not implemented method'
     }
 }

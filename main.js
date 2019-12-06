@@ -5,6 +5,7 @@ const { app, ipcMain } = require('electron')
 const Window = require('./src/Window')
 const DataStore = require('./src/DataStore')
 const makeSource = require('./src/SourceFactory')
+const ArchiveMaker = require('./src/ArchiveMaker')
 
 require('electron-reload')(__dirname)
 
@@ -24,15 +25,19 @@ function main() {
     dataStore.setConfig(config)
   })
 
+  const sendFile = (target) => {
+    mainWindow.send('push-file', targetList)
+  }
+
+  const sendDone = () => {
+    mainWindow.send('done', targetList)
+  }
+
   ipcMain.on('run-export', (event, config) => {
-    let targetList = []
     try {
-      let source = makeSource(config)
-      source.read(config, function (target) {
-        targetList.push(target)
-        mainWindow.send('push-file', targetList)
-      })
-      mainWindow.send('done', targetList)
+      let source = makeSource()
+      source.read(config, sendFile)
+      sendDone()
     }
     catch (err) {
       console.log(err)
