@@ -4,7 +4,7 @@ class Source {
     constructor () {
     }
 
-    read (config, sendFile) {
+    read (config, sendFile, sendDone) {
         throw 'Not implemented method'
     }
 }

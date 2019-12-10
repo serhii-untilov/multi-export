@@ -35,9 +35,8 @@ function main() {
 
   ipcMain.on('run-export', (event, config) => {
     try {
-      let source = makeSource()
-      source.read(config, sendFile)
-      sendDone()
+      let source = makeSource(config)
+      source.read(config, sendFile, sendDone)
     }
     catch (err) {
       console.log(err)
