@@ -11,6 +11,8 @@ require('electron-reload')(__dirname)
 
 const dataStore = new DataStore({ name: 'multi-export-config' })
 
+let targetList = []
+
 function main() {
 
   let mainWindow = new Window({
@@ -26,6 +28,7 @@ function main() {
   })
 
   const sendFile = (target) => {
+    targetList.push(target)
     mainWindow.send('push-file', targetList)
   }
 
@@ -34,6 +37,7 @@ function main() {
   }
 
   ipcMain.on('run-export', (event, config) => {
+    targetList = []
     try {
       let source = makeSource(config)
       source.read(config, sendFile, sendDone)

@@ -9,43 +9,47 @@ const IsproTarget = require('./IsproTarget')
 
 const SQL_FILES_DIR = './assets/ispro'
 
+function getFileList() {
+    return new Promise((resolve, reject) => {
+        fs.readdir(SQL_FILES_DIR, (err, fileList) => {
+            if (err) reject(err);
+            resolve(fileList)
+        })
+    })
+}
+
+function makeTaskList({ config, fileList, sendFile }) {
+    return fileList.map((fileName) => {
+        return new Promise((resolve, reject) => {
+            let target = makeFile(config, fileName)
+            sendFile(target)
+            resolve(fileName)
+        })
+    })
+}
+
+function makeFile(config, fileName) {
+    let target = new IsproTarget(fileName)
+    target.targetFile = fileName
+//    console.log(fileName)
+    return target
+}
+
 class IsproSource extends Source {
     constructor() {
         super()
     }
 
-    readDir() {
-        return new Promise((resolve, reject) => {
-            return fs.readdir(SQL_FILES_DIR, (err, fileList) => {
-                err === undefined ? resolve(fileList) : reject(err)
-            })
-        })
-    }
-
-    readFileList(config, fileList, sendFile) {
-        return fileList.map((fileName) => {
-            return new Promise((resolve, reject) => {
-                try {
-                    resolve(this.readFile(config, fileName, sendFile))
-                } catch (err) {
-                    reject(err)
-                }
-            })
-        })
-    }
-
-    readFile(config, fileName, sendFile) {
-        console.log(fileName)
-        return fileName
-    }
-
     read(config, sendFile, sendDone) {
-        this.readDir()
-            .then((fileList) => this.readFileList(config, fileList, sendFile))
-            .then(() => sendDone())
-            .catch((err) => {
-                throw(err)
-            } )
+        getFileList()
+            .then(fileList => makeTaskList({ config, fileList, sendFile }))
+            .then(taskList => Promise.all(taskList))
+            .then(sendDone())
+        // .then((fileList) => this.readFileList(config, fileList, sendFile))
+        //.then(sendDone())
+        //.catch((err) => {
+        //    throw(err)
+        //})
         // fs.readdir(SQL_FILES_DIR, function (err, files) {
         //     // Make files
         //     for (let i = 0; i < files.length; i++) {
