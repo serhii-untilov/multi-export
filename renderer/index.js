@@ -6,6 +6,8 @@ const Target = require('../src/Target')
 
 const config = null
 
+const targetList = []
+
 const homePanel = document.getElementById('home-panel')
 const isproPanel = document.getElementById('ispro-panel')
 const afinaPanel = document.getElementById('afina-panel')
@@ -65,6 +67,7 @@ const renderMenu = () => {
 const selectHome = () => {
   if (this.config.source == Config.HOME)
     return
+  targetList.length = 0
   this.config.source = Config.HOME
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -75,6 +78,7 @@ document.getElementById('selectHome').addEventListener('click', selectHome)
 const selectIspro = () => {
   if (this.config.source == Config.ISPRO)
     return
+  targetList.length = 0
   this.config.source = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -87,6 +91,7 @@ document.getElementById('homeSelectISPro').addEventListener('click', selectIspro
 const selectAfina = () => {
   if (this.config.source == Config.AFINA)
     return
+  targetList.length = 0    
   this.config.source = Config.AFINA
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -99,6 +104,7 @@ document.getElementById('homeSelectAfina').addEventListener('click', selectAfina
 const selectParus = () => {
   if (this.config.source == Config.PARUS)
     return
+  targetList.length = 0    
   this.config.source = Config.PARUS
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -111,6 +117,7 @@ document.getElementById('homeSelectParus').addEventListener('click', selectParus
 const select1C = () => {
   if (this.config.source == Config.C1)
     return
+  targetList.length = 0    
   this.config.source = Config.C1
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -122,6 +129,7 @@ document.getElementById('homeSelect1C').addEventListener('click', select1C)
 
 document.getElementById('run-export').addEventListener('click', () => {
   setVisible(bodyPanel, true)
+  targetList.length = 0
   ipcRenderer.send('run-export', this.config)
 })
 
@@ -257,7 +265,8 @@ const getStateText = (target) => {
   }
 }
 
-ipcRenderer.on('push-file', (event, targetList) => {
+ipcRenderer.on('push-file', (event, target) => {
+  targetList.push(target)
   var html = ''
   for (var i = 0; i < targetList.length; i++) {
     let stateText = getStateText(targetList[i])

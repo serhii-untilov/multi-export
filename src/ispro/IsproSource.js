@@ -7,7 +7,7 @@ const Source = require('../Source')
 const Target = require('../Target')
 const IsproTarget = require('./IsproTarget')
 
-const SQL_FILES_DIR = './assets/ispro'
+const SQL_FILES_DIR = './assets/ispro/'
 
 function getFileList() {
     return new Promise((resolve, reject) => {
@@ -18,21 +18,15 @@ function getFileList() {
     })
 }
 
-function makeTaskList({ config, fileList, sendFile }) {
+function makeTaskList(config, fileList, sendFile) {
     return fileList.map((fileName) => {
-        return new Promise((resolve, reject) => {
-            let target = makeFile(config, fileName)
+        return new Promise((resolve) => {
+            let target = new IsproTarget(config, SQL_FILES_DIR + fileName)
+            target.makeFile()
             sendFile(target)
             resolve(fileName)
         })
     })
-}
-
-function makeFile(config, fileName) {
-    let target = new IsproTarget(fileName)
-    target.targetFile = fileName
-//    console.log(fileName)
-    return target
 }
 
 class IsproSource extends Source {
@@ -40,34 +34,10 @@ class IsproSource extends Source {
         super()
     }
 
-    read(config, sendFile, sendDone) {
-        getFileList()
-            .then(fileList => makeTaskList({ config, fileList, sendFile }))
-            .then(taskList => Promise.all(taskList))
-            .then(sendDone())
-        // .then((fileList) => this.readFileList(config, fileList, sendFile))
-        //.then(sendDone())
-        //.catch((err) => {
-        //    throw(err)
-        //})
-        // fs.readdir(SQL_FILES_DIR, function (err, files) {
-        //     // Make files
-        //     for (let i = 0; i < files.length; i++) {
-        //         try {
-        //             fs.readFile(files[i], 'utf8', function (err, queryText) {
-        //                 let target = new IsproTarget(files[i])
-        //                 target.makeFile(config, queryText)
-        //                 sendFile(target)
-        //             })
-        //         } catch (err) {
-        //             confole.log(err)
-        //             let target = new IsproTarget(files[i])
-        //             target.state = Target.FILE_ERROR
-        //             target.err = err
-        //             sendFile(target)
-        //         }
-        //     }
-        // })
+    async read(config, sendFile, sendDone) {
+        let fileList = await getFileList()
+        let taskList = makeTaskList(config, fileList, sendFile)
+        await Promise.all(taskList)
     }
 }
 
