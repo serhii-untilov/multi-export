@@ -259,7 +259,7 @@ const getStateText = (target) => {
     case Target.FILE_EMPTY:
       return 'Файл не створено. Відсутні дані для експорту.'
     case Target.FILE_ERROR:
-      return `Помилка. ${target.err}` 
+      return `Помилка. ${target.err.message}` 
     default:
       return 'Невідома помилка.'
   }

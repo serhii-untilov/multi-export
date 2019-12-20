@@ -22,7 +22,7 @@ class Target {
         return `${targetPath}${fileName}${FILE_EXT}`
     }
 
-    makeFile() {
+    makeFile(config) {
         throw 'Not implemented method'
     }
 }

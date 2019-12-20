@@ -27,7 +27,12 @@ function readQueryFromFile(fileName) {
 }
 
 function getConnectionString(config) {
-    return `mssql://${this.config.login}:${this.config.password}@${this.config.server}/${this.config.schema}`
+    try {
+        return `mssql://${this.config.login}:${this.config.password}@${this.config.server}/${this.config.schema}`
+    } catch (err) {
+        console.log(err)
+        throw(err)
+    }
 }
 
 async function doQuery(connectionString, queryText) {
@@ -62,20 +67,20 @@ class IsproTarget extends Target.Target {
     constructor(config, fileName) {
         super(fileName)
         this.config = config
+        this.targetFile = getTargetFileName(config)
     }
     
-    async makeFile(config, queryText) {
+    async makeFile(config) {
         try {
-            const connectionString = getConnectionString(this.config)
-            this.targetFile = getTargetFileName(this.config)
-            const queryText = await readQueryFromFile(this.targetFile)
+            const connectionString = getConnectionString(config)
+            this.targetFile = getTargetFileName(config)
+            const queryText = await readQueryFromFile(targetFile)
             const recordset = await doQuery(connectionString, queryText)
 
             if (recordset.length == 0) {
                 this.state = Target.FILE_EMPTY
                 return
             }
-
             await writeFile(this.targetFile, recordset)
             this.state = Target.FILE_CREATED
 

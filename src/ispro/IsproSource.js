@@ -22,7 +22,7 @@ function makeTaskList(config, fileList, sendFile) {
     return fileList.map((fileName) => {
         return new Promise((resolve) => {
             let target = new IsproTarget(config, SQL_FILES_DIR + fileName)
-            target.makeFile()
+            target.makeFile(config)
             sendFile(target)
             resolve(fileName)
         })
@@ -34,7 +34,7 @@ class IsproSource extends Source {
         super()
     }
 
-    async read(config, sendFile, sendDone) {
+    async read(config, sendFile) {
         let fileList = await getFileList()
         let taskList = makeTaskList(config, fileList, sendFile)
         await Promise.all(taskList)
