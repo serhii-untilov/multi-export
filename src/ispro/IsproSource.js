@@ -1,8 +1,6 @@
 'use strict'
 
 const fs = require('fs')
-const archiver = require('archiver')
-
 const Source = require('../Source')
 const Target = require('../Target')
 const makeFile = require('./IsproTarget')
