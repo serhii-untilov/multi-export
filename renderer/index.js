@@ -233,11 +233,28 @@ ipcRenderer.on('config', (event, config) => {
 renderMenu()
 renderPanels()
 
-ipcRenderer.on('done', (event, targetList) => {
+const countErrors = (targetList) => {
+  let count = 0
+  for (var i = 0; i < targetList.length; i++) {
+    if (targetList[i].err)
+      count++
+  }
+  return count
+}
+
+const statusText = (errors) => {
+  if (errors) {
+    return `Експорт виконано з помилками (${errors}).`
+  } else {
+    return 'Експорт виконано успішно.'
+  }
+}
+
+ipcRenderer.on('done', (event) => {
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-success')
   resultToast.classList.add('toast-success')
-  resultToast.innerHTML = 'Експорт виконано успішно.'
+  resultToast.innerHTML = statusText(countErrors(targetList))
   setVisible(resultPanel, true)
 })
 
@@ -255,10 +272,11 @@ ipcRenderer.on('failed', (event, err) => {
 const getStateText = (target) => {
   switch (target.state) {
     case Target.FILE_CREATED:
-      return `Створено файл ${target.targetFile}`
+      return `Файл створено.`
     case Target.FILE_EMPTY:
       return 'Файл не створено. Відсутні дані для експорту.'
     case Target.FILE_ERROR:
+      console.log(target)
       return `Помилка. ${target.err.message}` 
     default:
       return 'Невідома помилка.'
