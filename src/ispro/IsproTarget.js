@@ -13,25 +13,6 @@ function readQueryFromFile(fileName) {
     })
 }
 
-// function getConnectionString(config) {
-//     try {
-//         return `mssql://${config.login}:${config.password}@${config.server}/${config.schema}`
-//     } catch (err) {
-//         console.log(err)
-//         throw(err)
-//     }
-// }
-
-// async function doQuery(connectionString, queryText) {
-//     try {
-//         await sql.connect(connectionString)
-//         let result = await sql.query(queryText)
-//         return result.recordset
-//     } catch (err) {
-//         return err
-//     }
-// }
-
 async function doQuery(pool, queryText) {
     try {
         const request = pool.request(); // or: new sql.Request(pool1)
@@ -43,18 +24,18 @@ async function doQuery(pool, queryText) {
 }
 
 async function writeFile(fileName, recordset) {
-    // let buffer = JSON.stringify(recordset)
     let buffer = ''
-
-    console.log(filename, recordset)
     for (let record in recordset) {
-        //console.log(fileName, record)
-        for (let field in recordset[record]) {
-            // console.log(record[field])
-            buffer += record[field]
-            buffer += ';'
+        const fieldset = recordset[record]
+        let needSeparator = false
+        for (let field in fieldset) {
+            if (fieldset.hasOwnProperty(field)) {
+                if (needSeparator) buffer += ';'
+                needSeparator = true
+                buffer += `${fieldset[field]}`
+            }
         }
-        buffer += '\n\r'
+        buffer += '\n'
     }
 
     fs.writeFile(fileName, buffer, (err) => {
@@ -66,7 +47,7 @@ async function makeFile(target) {
     try {
         const queryText = await readQueryFromFile(target.queryFileName)
         const recordset = await doQuery(target.pool, queryText)
-        if (recordset.length == 0) {
+        if (recordset.length <= 1) {
             target.state = Target.FILE_EMPTY
             return target
         }
