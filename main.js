@@ -14,7 +14,13 @@ const dataStore = new DataStore({ name: 'multi-export-config' })
 function main() {
 
   let mainWindow = new Window({
-    file: path.join('renderer', 'index.html')
+    _file: path.join('renderer', 'index.html'),
+    get file() {
+      return this._file
+    },
+    set file(value) {
+      this._file = value
+    },
   })
 
   mainWindow.once('show', () => {
