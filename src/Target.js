@@ -9,27 +9,29 @@ const FILE_EMPTY = 'empty'
 const FILE_EXT = '.csv'
 
 class Target {
-    constructor(fileName) {
-        this.fileName = fileName
+    constructor() {
+        this.fileName = null
         this.state = null
         this.err = null
-        this.targetFile = null
     }
-    
-    getTargetFileName(config) {
-        let fileName = path.parse(this.fileName).name
-        let targetPath = config.targetPath[config.targetPath.length - 1] == path.sep ? config.targetPath : `${config.targetPath}${path.sep}`
-        return `${targetPath}${fileName}${FILE_EXT}`
-    }
+}
 
-    makeFile() {
-        throw 'Not implemented method'
-    }
+function getTargetFileName(config, sourceFileName) {
+    let fileName = path.parse(sourceFileName).name
+    let targetPath = config.targetPath[config.targetPath.length - 1] == path.sep 
+        ? config.targetPath 
+        : `${config.targetPath}${path.sep}`
+    let targetFileName = `${targetPath}${fileName}${FILE_EXT}`
+    return targetFileName
 }
 
 module.exports = {
     Target,
+    getTargetFileName,
+
     FILE_CREATED,
     FILE_ERROR,
     FILE_EMPTY,
+
+    FILE_EXT
 }

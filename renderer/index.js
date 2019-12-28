@@ -6,6 +6,8 @@ const Target = require('../src/Target')
 
 const config = null
 
+const targetList = []
+
 const homePanel = document.getElementById('home-panel')
 const isproPanel = document.getElementById('ispro-panel')
 const afinaPanel = document.getElementById('afina-panel')
@@ -65,6 +67,7 @@ const renderMenu = () => {
 const selectHome = () => {
   if (this.config.source == Config.HOME)
     return
+  targetList.length = 0
   this.config.source = Config.HOME
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -75,6 +78,7 @@ document.getElementById('selectHome').addEventListener('click', selectHome)
 const selectIspro = () => {
   if (this.config.source == Config.ISPRO)
     return
+  targetList.length = 0
   this.config.source = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -87,6 +91,7 @@ document.getElementById('homeSelectISPro').addEventListener('click', selectIspro
 const selectAfina = () => {
   if (this.config.source == Config.AFINA)
     return
+  targetList.length = 0    
   this.config.source = Config.AFINA
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -99,6 +104,7 @@ document.getElementById('homeSelectAfina').addEventListener('click', selectAfina
 const selectParus = () => {
   if (this.config.source == Config.PARUS)
     return
+  targetList.length = 0    
   this.config.source = Config.PARUS
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -111,6 +117,7 @@ document.getElementById('homeSelectParus').addEventListener('click', selectParus
 const select1C = () => {
   if (this.config.source == Config.C1)
     return
+  targetList.length = 0    
   this.config.source = Config.C1
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -122,6 +129,7 @@ document.getElementById('homeSelect1C').addEventListener('click', select1C)
 
 document.getElementById('run-export').addEventListener('click', () => {
   setVisible(bodyPanel, true)
+  targetList.length = 0
   ipcRenderer.send('run-export', this.config)
 })
 
@@ -225,11 +233,28 @@ ipcRenderer.on('config', (event, config) => {
 renderMenu()
 renderPanels()
 
-ipcRenderer.on('done', (event, targetList) => {
+const countErrors = (targetList) => {
+  let count = 0
+  for (var i = 0; i < targetList.length; i++) {
+    if (targetList[i].err)
+      count++
+  }
+  return count
+}
+
+const statusText = (errors) => {
+  if (errors) {
+    return `Експорт виконано з помилками (${errors}).`
+  } else {
+    return 'Експорт виконано успішно.'
+  }
+}
+
+ipcRenderer.on('done', (event) => {
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-success')
   resultToast.classList.add('toast-success')
-  resultToast.innerHTML = 'Експорт виконано успішно.'
+  resultToast.innerHTML = statusText(countErrors(targetList))
   setVisible(resultPanel, true)
 })
 
@@ -247,17 +272,19 @@ ipcRenderer.on('failed', (event, err) => {
 const getStateText = (target) => {
   switch (target.state) {
     case Target.FILE_CREATED:
-      return `Створено файл ${target.targetFile}`
+      return `Файл створено.`
     case Target.FILE_EMPTY:
       return 'Файл не створено. Відсутні дані для експорту.'
     case Target.FILE_ERROR:
-      return `Помилка. ${target.err}` 
+      console.log(target)
+      return `Помилка. ${target.err.message}` 
     default:
       return 'Невідома помилка.'
   }
 }
 
-ipcRenderer.on('push-file', (event, targetList) => {
+ipcRenderer.on('push-file', (event, target) => {
+  targetList.push(target)
   var html = ''
   for (var i = 0; i < targetList.length; i++) {
     let stateText = getStateText(targetList[i])

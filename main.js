@@ -14,7 +14,13 @@ const dataStore = new DataStore({ name: 'multi-export-config' })
 function main() {
 
   let mainWindow = new Window({
-    file: path.join('renderer', 'index.html')
+    _file: path.join('renderer', 'index.html'),
+    get file() {
+      return this._file
+    },
+    set file(value) {
+      this._file = value
+    },
   })
 
   mainWindow.once('show', () => {
@@ -26,18 +32,14 @@ function main() {
   })
 
   const sendFile = (target) => {
-    mainWindow.send('push-file', targetList)
-  }
-
-  const sendDone = () => {
-    mainWindow.send('done', targetList)
+    mainWindow.send('push-file', target)
   }
 
   ipcMain.on('run-export', (event, config) => {
     try {
-      let source = makeSource()
+      let source = makeSource(config)
       source.read(config, sendFile)
-      sendDone()
+      mainWindow.send('done')
     }
     catch (err) {
       console.log(err)

@@ -4,54 +4,61 @@ const sql = require('mssql')
 const fs = require('fs')
 const Target = require('../Target')
 
-class IsproTarget extends Target.Target {
-    constructor(fileName) {
-        super(fileName)
-    }
-
-    getConnectionString(config) {
-        return `mssql://${config.login}:${config.password}@${config.server}/${config.schema}`
-    }
-
-    async doQuery(connectionString, queryText) {
-        try {
-            await sql.connect(connectionString)
-            let result = await sql.query(queryText)
-            return result.recordset
-        } catch (err) {
-            return err
-        }
-    }
-
-    makeFile(config, queryText) {
-        let connectionString = this.getConnectionString(config)
-        let recordset = this.doQuery(connectionString, queryText)
-
-        if (recordset.length == 0) {
-            this.state = Target.FILE_EMPTY
-            return
-        }
-
-        let buffer = JSON.stringify(recordset)
-        // for (let record = 0; record < recordset.length; record++) {
-        //     let fieldset = recordset[record].output
-        //     for (let field = 0; field < fieldset.length; field++) {
-        //         console.log(fieldset[field][1])
-        //         if (field)
-        //             buffer += ';'
-        //         buffer += fieldset[field][1]
-        //     }
-        //     buffer += '\n\r'
-        // }
-
-        this.targetFile = this.getTargetFileName(config)
-        fs.writeFile(this.targetFile, buffer, (err) => {
-            if (err) {
-                throw err
-            }
+function readQueryFromFile(fileName) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(fileName, 'utf8', (err, queryText) => {
+            if (err) reject(err);
+            resolve(queryText)
         })
-        this.state = Target.FILE_CREATED
+    })
+}
+
+async function doQuery(pool, queryText) {
+    try {
+        const request = pool.request(); // or: new sql.Request(pool1)
+        const result = await request.query(queryText)
+        return result.recordset
+    } catch (err) {
+        throw err
     }
 }
 
-module.exports = IsproTarget
+async function writeFile(fileName, recordset) {
+    let buffer = ''
+    for (let record in recordset) {
+        const fieldset = recordset[record]
+        let needSeparator = false
+        for (let field in fieldset) {
+            if (fieldset.hasOwnProperty(field)) {
+                if (needSeparator) buffer += ';'
+                needSeparator = true
+                buffer += `${fieldset[field]}`
+            }
+        }
+        buffer += '\n'
+    }
+
+    fs.writeFile(fileName, buffer, (err) => {
+        if (err) throw err;
+    })
+}
+
+async function makeFile(target) {
+    try {
+        const queryText = await readQueryFromFile(target.queryFileName)
+        const recordset = await doQuery(target.pool, queryText)
+        if (recordset.length <= 1) {
+            target.state = Target.FILE_EMPTY
+            return target
+        }
+        await writeFile(target.fileName, recordset)
+        target.state = Target.FILE_CREATED
+        return target
+    } catch (err) {
+        target.state = Target.FILE_ERROR
+        target.err = err
+        return target
+    }
+}
+
+module.exports = makeFile
