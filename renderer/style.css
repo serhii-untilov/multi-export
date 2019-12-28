@@ -37,5 +37,5 @@ body {
   /* make image black and white */ 
   /* -webkit-filter: grayscale(60%);*/
 .black-white {  
-    filter: grayscale(20%);  
+    filter: grayscale(50%);  
 }
