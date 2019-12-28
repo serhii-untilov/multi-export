@@ -10,7 +10,8 @@
     "dist": "electron-builder",
     "rmad": "rm -f -r %APPDATA%/multi-export",
     "test": "jest",
-    "lint": "standard"
+    "lint": "standard",
+    "scss": "sass .\\multi-export.scss .\\multi-export.css"
   },
   "repository": "https://github.com/sergey-untilov/multi-export",
   "keywords": [
@@ -50,6 +51,8 @@
     "electron-store": "^5.1.0",
     "iconv": "^2.3.5",
     "mssql": "^6.0.1",
+    "node-sass": "^4.13.0",
+    "sass": "^1.24.0",
     "spectre.css": "^0.5.8"
   }
 }

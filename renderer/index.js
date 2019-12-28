@@ -1,6 +1,7 @@
 'use strict'
 
 const { ipcRenderer } = require('electron')
+const { shell } = require('electron')
 const Config = require('../src/Config')
 const Target = require('../src/Target')
 
@@ -126,6 +127,18 @@ const select1C = () => {
 const buttonSelect1C = document.getElementById('select1C')
 buttonSelect1C.addEventListener('click', select1C)
 document.getElementById('homeSelect1C').addEventListener('click', select1C)
+
+document.getElementById('homeSelectA5').addEventListener('click', () => {
+  shell.openExternal('https://a5buh.com')
+})
+
+document.getElementById('selectA5').addEventListener('click', () => {
+  shell.openExternal('https://a5buh.com')
+})
+
+document.getElementById('selectGitHub').addEventListener('click', () => {
+  shell.openExternal('https://github.com/sergey-untilov/multi-export')
+})
 
 document.getElementById('run-export').addEventListener('click', () => {
   setVisible(bodyPanel, true)

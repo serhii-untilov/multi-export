@@ -4,10 +4,27 @@ const fs = require('fs')
 const Source = require('../Source')
 const Target = require('../Target')
 const makeFile = require('./IsproTarget')
+const sql = require('mssql')
 
 const SQL_FILES_DIR = './assets/ispro/'
 
-const sql = require('mssql')
+class IsproSource extends Source {
+    constructor() {
+        super()
+    }
+
+    async read(config, sendFile) {
+            let pool = new sql.ConnectionPool(dbConfig(config))
+            pool.on('error', (err) => {
+                throw err
+            })
+            await pool.connect()
+            let fileList = await getFileList()
+            let taskList = makeTaskList(config, pool, fileList, sendFile)
+            await Promise.all(taskList)
+            pool.close()
+    }
+}
 
 function getFileList() {
     return new Promise((resolve, reject) => {
@@ -33,32 +50,12 @@ function makeTaskList(config, pool, fileList, sendFile) {
     })
 }
 
-function sqlErrorHandler(err) {
-    console.log(err)
-    throw err
-}
-
 function dbConfig(config) {
     return {
         user: config.login,
         password: config.password,
         server: config.server,
         database: config.schema,
-    }
-}
-
-class IsproSource extends Source {
-    constructor() {
-        super()
-    }
-
-    async read(config, sendFile) {
-        let pool = new sql.ConnectionPool(dbConfig(config))
-        pool.on('error', sqlErrorHandler)
-        await pool.connect()
-        let fileList = await getFileList()
-        let taskList = makeTaskList(config, pool, fileList, sendFile)
-        await Promise.all(taskList)
     }
 }
 

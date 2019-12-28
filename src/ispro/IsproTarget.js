@@ -1,6 +1,5 @@
 'use strict'
 
-const sql = require('mssql')
 const fs = require('fs')
 const Target = require('../Target')
 

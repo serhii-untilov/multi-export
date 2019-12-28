@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>МультіЕкспорт</title>
-  <link rel="stylesheet" href="../node_modules/spectre.css/dist/spectre.min.css">
+  <link rel="stylesheet" href="../multi-export.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,7 +16,6 @@
         <a href="#" class="navbar-brand mr-2 mt-2" id="selectHome">
           <h1>МультіЕкспорт</h1>
         </a>
-        <!-- <h1 class="text-primary mt-2 mr-2">МультіЕкспорт</h1> -->
 
         <a href="#" class="btn btn-link" id="selectISPro">ІС-Про</a>
         <a href="#" class="btn btn-link" id="selectAfina">Афіна</a>
@@ -24,14 +23,17 @@
         <a href="#" class="btn btn-link" id="select1C">1С</a>
       </section>
       <section class="navbar-section">
-        <a href="https://a5buh.com" target="_blank" class="btn btn-link">А5</a>
-        <a href="https://github.com/sergey-untilov/multi-export" target="_blank" class="btn btn-link">GitHub</a>
+        <a href="#" class="btn btn-link black-white" id="selectA5">
+          <img src="../assets/images/a5.png" width="24" height="24" alt="A5">
+        </a>
+        <a href="#" class="btn btn-link black-white" id="selectGitHub">
+          <img class="black-white" src="../assets/images/github.png" width="22" height="22" alt="GitHub">
+        </a>
       </section>
     </header>
 
     <div class="panel" style="border: 0px;">
       <div class="panel-header" style="padding: 0px;">
-        <!-- <div class="panel-title">Експорт із бази даних системи "ІС-Про"</div> -->
       </div>
       <div class="panel-nav">
         <!-- navigation components: tabs, breadcrumbs or pagination -->
@@ -42,7 +44,7 @@
 
           <p>Експорт довідників і облікових даних із програмних систем та створення
             стандартних вихідних файлів для імпорту у систему
-            <a href="https://a5buh.com" target="_blank">А5 Бухгалтерія</a>
+            <a href="#" id="homeSelectA5">А5 Бухгалтерія</a>
           </p>
 
           <h3 class="mt-3 mb-1 ispro">ІС-Про</h3>
@@ -215,8 +217,6 @@
   <!-- Footer panel -->
 
   <div class="panel-footer" id="footer-panel" style="padding: 0px;">
-    <!-- buttons or inputs -->
-    <!-- <a href="https://github.com/sergey-untilov/multi-export" target="_blank">МультіЕкспорт</a> -->
   </div>
   </div>
   </div>

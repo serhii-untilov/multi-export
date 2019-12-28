@@ -42,7 +42,7 @@ function main() {
       mainWindow.send('done')
     }
     catch (err) {
-      console.log(err)
+      // console.log(err)
       mainWindow.send('failed', err)
     }
   })
