@@ -1,6 +1,7 @@
 -- Призначення працівників (hr_employeePosition)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @minDateRaiseSalary date = '2016-01-01'; -- Лист Мінсоцполітики від 14.06.2016 р. № 263/10/136-16
+/*
 select 'ID' ID
 	,'employeeID' employeeID
 	,'taxCode' taxCode
@@ -11,7 +12,7 @@ select 'ID' ID
 	,'dictRankID' dictRankID, 'dictStaffCatID' dictStaffCatID, 'payElID' payElID, 'accrualSum' accrualSum, 'raiseSalary' raiseSalary, 'isIndex' isIndex
 	,'isActive' isActive, 'workPlace' workPlace, 'dictFundSourceID' dictFundSourceID, 'dictCategoryECBID' dictCategoryECBID, 'accountID' accountID
 union all
-
+*/
 select ID
 	,cast(t2.kpu_rcd as varchar) employeeID
 	,taxCode

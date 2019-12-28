@@ -6,6 +6,7 @@ declare @currentPeriod date = (
 	where crtParm_cdBpr = 2
 	and crtParm_id = 'Period_DatOpen'
 )
+/*
 select 
 	'ID' ID
 	,'dateFrom' dateFrom
@@ -13,6 +14,7 @@ select
 	,'isClosed' isClosed
 	,'isCurrent' isCurrent
 union all
+*/
 select 
 	cast(bookmark as varchar) ID	
 	,cast(cast(PerBas_Period as date) as varchar) dateFrom

@@ -1,6 +1,8 @@
 -- Родинний стан (hr_employeeFamily)
+/*
 select 'ID' ID, 'employeeID' employeeID, 'peopleID' peopleID, 'description' description
 union all
+*/
 select ID, employeeID, peopleID, description
 from (
 	select

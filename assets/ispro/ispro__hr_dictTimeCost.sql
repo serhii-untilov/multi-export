@@ -1,4 +1,5 @@
 -- Види обліку робочого часу (hr_dictTimeCost)
+/*
 select
 	'ID' ID
 	,'code' code
@@ -11,6 +12,7 @@ select
 	,'nameSmall' nameSmall	
 	,'dictTimePrintID' dictTimePrintID
 union all
+*/
 select
 	'1' ID
 	,'РбДн' code

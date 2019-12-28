@@ -1,6 +1,8 @@
 -- Категорії персоналу (hr_dictStaffCat)
+/*
 select 'ID' ID,	'code' code, 'name' name, 'description' description, 'accCategory' accCategory
 union all
+*/
 select 
 	cast(spr_cd as varchar) ID	
 	,cast(spr_cd as varchar) code	

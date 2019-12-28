@@ -1,8 +1,10 @@
 -- Підрозділи (hr_department)
+/*
 select 'ID' ID, 'code' code, 'name' name, 'parentUnitID' parentUnitID, 'state' state, 'fullName' fullName, 'description' 
 	description, 'nameGen' nameGen, 
 	'fullNameGen' fullNameGen, 'nameDat' nameDat, 'nameOr' nameOr, 'fullNameGen' fullNameGen, 'fullNameDat' fullNameDat
 union all
+*/
 select 
 	cast(sprpdr_rcd as varchar) ID,
 	REPLACE(REPLACE(SprPdr_Pd, CHAR(13), ''), CHAR(10), '') code,

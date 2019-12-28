@@ -1,4 +1,5 @@
 -- Период графика работы (hr_workScheduleDays)
+/*
 select
 	'ID' ID
 	,'workScheduleID' workScheduleID
@@ -8,6 +9,7 @@ select
 	,'hoursWorkNight' hoursWorkNight
 	,'hoursWorkEvening' hoursWorkEvening
 union all
+*/
 select 
 	cast(Per_Id as varchar) ID	
 	,cast(p1.Grf_Cd as varchar) workScheduleID	

@@ -1,7 +1,9 @@
 -- Стаж роботи (hr_employeeExperience)
 declare @dateTo date = GETDATE()
+/*
 select 'ID' ID, 'employeeID' employeeID, 'dictExperienceID' dictExperienceID, 'calcDate' calcDate, 'startCalcDate' startCalcDate, 'comment' comment, 'impEmployeeID' impEmployeeID, 'importInfo' importInfo
 union all
+*/
 select 
 	cast(ROW_NUMBER() OVER(ORDER BY employeeID, dictExperienceID ASC) as varchar) AS id
 	,cast(employeeID as varchar) employeeID

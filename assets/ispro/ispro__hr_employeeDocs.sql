@@ -1,4 +1,5 @@
 -- Документи (hr_employeeDocs)
+/*
 select
 	'ID' ID
 	,'employeeID' employeeID
@@ -14,6 +15,7 @@ select
 	,'orderID' orderID
 	,'paraID' paraID
 union all
+*/
 select 
 	cast(d1.bookmark as varchar) ID	
 	,cast(d1.kpu_rcd as varchar) employeeID	

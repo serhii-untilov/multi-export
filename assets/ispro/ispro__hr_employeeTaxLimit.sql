@@ -1,9 +1,11 @@
 -- Пільги ПДФО працівників (hr_employeeTaxLimit)
+/*
 select 'ID' ID
 	,'tabNum' tabNum
 	,'employeeNumberID' employeeNumberID
 	,'dateFrom' dateFrom, 'dateTo' dateTo, 'taxLimitID' taxLimitID, 'amountChild' amountChild
 union all
+*/
 select 
 	cast(l1.bookmark as varchar) ID
 	,cast(x1.kpu_tn as varchar) tabNum	 

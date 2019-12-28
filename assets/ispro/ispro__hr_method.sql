@@ -1,7 +1,9 @@
 -- Методи розрахунку (hr_method)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+/*
 select 'ID', 'code', 'name'
 union all
+*/
 select cast(spr_cd as varchar) ID, cast(spr_cd as varchar) code, replace(spr_nm, ';', ' ') name
 from i711_sys.dbo.sspr
 where sprspr_cd = 131842

@@ -34,8 +34,10 @@ with
 			and kpurl_datup >= @dateFrom
 		)
 	)
+/*
 select 'ID' ID, 'payElID' payElID, 'payElBaseID' payElBaseID, 'dateFrom' dateFrom, 'dateTo' dateTo, 'entryType'	entryType
 union all
+*/
 select cast(ID as varchar) ID, cast(payElID as varchar) payElID, cast(payElBaseID as varchar) payElBaseID, 
 	cast(cast(dateFrom as date) as varchar), 
 	cast(cast(dateTo as date) as varchar), 

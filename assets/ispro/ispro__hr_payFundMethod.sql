@@ -1,6 +1,8 @@
 -- Методы расчёта фондов (hr_payFundMethod)
+/*
 select 'ID', 'code', 'name'
 union all
+*/
 select cast(spr_cd as varchar) ID, cast(spr_cd as varchar) code, spr_nm name
 from i711_sys.dbo.sspr
 where sprspr_cd = 133659

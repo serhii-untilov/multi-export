@@ -1,6 +1,8 @@
 -- Контрагенты - Счета (ac_contrAccount)
+/*
 select 'ID' ID, 'organizationID' organizationID, 'bankID' bankID, 'code' code, 'description' description
 union all
+*/
 select 
 	cast(s.bookmark as varchar) ID	
 	,cast(s.Ptn_Rcd as varchar) organizationID -- ID контрагента

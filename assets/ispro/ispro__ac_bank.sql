@@ -1,6 +1,8 @@
 -- Банки (ac_bank)
+/*
 select 'ID' ID, 'MFO' MFO, 'code' code, 'name' name, 'fullName' fullName, 'phones' phones, 'description' description
 union all
+*/
 select distinct
 	cast(b1.bank_rcd as varchar) ID
 	,b1.Bank_MFO MFO

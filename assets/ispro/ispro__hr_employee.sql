@@ -1,9 +1,11 @@
 -- Працівники (hr_employee)
+/*
 select 'ID' ID, 'lastName' lastName, 'firstName' firstName, 'middleName' middleName, 'shortFIO' shortFIO, 'fullFIO' fullFIO, 'genName' genName, 'datName' datName,
 	'accusativeName' accusativeName, 'insName' insName, 'tabNum' tabNum, 'state' state, 'sexType' sexType, 'birthDate' birthDate, 'taxCode' taxCode, 
 	'phoneMobile' phoneMobile, 'phoneWorking' phoneWorking, 'phoneHome' phoneHome, 'email' email, 'description' description, 
 	'locName' locName, 'dayBirthDate' dayBirthDate, 'monthBirthDate' monthBirthDate, 'yearBirthDate' yearBirthDate
 union all
+*/
 select 
 	cast(x1.kpu_rcd as varchar) ID
 	,dbo.fnKdrSegregateFio(c1.kpu_fio, 1) lastName

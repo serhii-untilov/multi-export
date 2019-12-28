@@ -1,4 +1,5 @@
 -- Довідник посад (не штатних позицій) (hr_position)
+/*
 select 
 	'ID' ID, 'code' code, 'name' name, 'fullName' fullName, 'parentUnitID' parentUnitID, 'state' state, 'psCategory' psCategory, 'positionType' positionType, 
 	'dictProfessionID' dictProfessionID, 'dictWagePayID' dictWagePayID, 'description' description, 'nameGen' nameGen, 'nameDat' nameDat, 'fullNameGen' fullNameGen, 
@@ -7,6 +8,7 @@ select
 	'fullNameAcc' fullNameAcc, 'entryOrderID' entryOrderID, 'nameLoc' nameLoc, 'fullNameLoc' fullNameLoc, 'nameNom' nameNom, 'nameVoc' nameVoc, 'fullNameNom' fullNameNom,
 	'fullNameVoc' fullNameVoc, 'liquidate' liquidate
 union all	
+*/
 select 
 	--cast(SprD_Cd as varchar) ID,
 	cast(positionID as varchar) ID,

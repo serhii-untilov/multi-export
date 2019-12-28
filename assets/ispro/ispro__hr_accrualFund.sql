@@ -6,6 +6,7 @@ declare @currentPeriod date = (
 	where crtParm_cdBpr = 2
 	and crtParm_id = 'Period_DatOpen'
 )
+/*
 select
 	'ID' ID
 	,'periodCalc' periodCalc
@@ -19,6 +20,7 @@ select
 	,'paySum' paySum
 	,'addMinSum' addMinSum
 union all	
+*/
 select
 	cast(min(kpufa1.bookmark) as varchar) ID	
 	,cast(cast(kpuf_datup as date) as varchar) periodCalc	

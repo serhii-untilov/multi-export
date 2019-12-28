@@ -1,4 +1,5 @@
 -- Особові рахунки працівників (hr_employeeNumber)
+/*
 select 
 	'ID' ID
 	,'employeeID' employeeID
@@ -10,6 +11,7 @@ select
 	,'payOutID' payOutID
 	,'personalAccount' personalAccount
 union all
+*/
 select 
 	ID
 	,cast(t4.kpu_rcd as varchar) employeeID

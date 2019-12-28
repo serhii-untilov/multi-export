@@ -1,7 +1,9 @@
 -- Контрагенты (ac_contractor)
+/*
 select 'ID' ID, 'code' code, 'OKPOCode' OKPOCode, 'taxCode' taxCode, 'vatCode' vatCode, 'name' name, 'fullName' fullName, 
 	'nameGen' nameGen, 'nameDat' nameDat, 'fullNameGen' fullNameGen, 'fullNameDat' fullNameDat, 'description' description, 'contrType' contrType
 union all
+*/
 select 
 	cast(Ptn_Rcd as varchar) ID	
 	,Ptn_Cd code	

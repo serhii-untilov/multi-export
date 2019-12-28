@@ -1,9 +1,11 @@
 -- Таблиця входження видів оплати у види доходу ПДФО (hr_payElTaxIndivid)
+/*
 select 
 	'ID' ID
 	,'taxIndividID' taxIndividID
 	,'payElID' payElID
 union all
+*/
 select 
 	cast(paytv.bookmark as varchar) ID
 	,cast(paytv_cdt as varchar) taxIndividID

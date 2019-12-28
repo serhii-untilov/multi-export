@@ -6,6 +6,7 @@ declare @currentPeriod date = (
 	where crtParm_cdBpr = 2
 	and crtParm_id = 'Period_DatOpen'
 )
+/*
 select 
 	'ID' ID	
 	,'periodCalc' periodCalc	
@@ -33,6 +34,7 @@ select
 	,'dateToAvg' dateToAvg	
 	,'sumAvg' sumAvg
 union all
+*/
 select 
 	cast(r1.bookmark as varchar) ID	
 	,cast(cast(r1.kpurl_datUp as DATE) as varchar) periodCalc	

@@ -1,5 +1,6 @@
 -- Постійні утримання працівника (hr_payRetention)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+/*
 select 'ID' ID
 	,'tabNum' tabNum
 	,'employeeNumberID' employeeNumberID
@@ -7,6 +8,7 @@ select 'ID' ID
 	'bankID' bankID, 'employeeFamilyID' employeeFamilyID, 'debtSum' debtSum, 'remindSum' remindSum, 'dateIdxFrom' dateIdxFrom, 'docDate' docDate, 'docNumber' docNumber, 
 	'contractorID' contractorID, 'contrAccountID' contrAccountID, 'personalAccount' personalAccount
 union all
+*/
 select
 	cast(u1.KpuUdr_Id as varchar) ID	
 	,cast(x1.kpu_tn as varchar) tabNum

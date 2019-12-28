@@ -1,8 +1,10 @@
 -- Графіки роботи (hr_workSchedule)
+/*
 select 'ID' ID, 'code' code, 'name' name, 'dateFrom' dateFrom, 'dateTo' dateTo, 'dictStandartTimeID' dictStandartTimeID, 'begins' begins,
 	'organizationID' organizationID, 'isPayDayOff' isPayDayOff, 'isPayHoliday' isPayHoliday, 'isCalendar' isCalendar, 'isHoliday' isHoliday,
 	'isLastHoliday' isLastHoliday, 'isChangeDay' isChangeDay
 union all	
+*/
 select 
 	cast(grf_cd as varchar) ID
 	,cast(grf_cd as varchar) code

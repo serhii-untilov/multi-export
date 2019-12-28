@@ -1,4 +1,5 @@
 -- Види доходу ПДФО (hr_dictTaxIndivid)
+/*
 select 
 	'ID' ID
 	,'code' code
@@ -7,6 +8,7 @@ select
 	,'dateTo' dateTo
 	,'taxBreaks' taxBreaks
 union all
+*/
 select 
 	cast(spr_cd as varchar) ID	
 	,cast(spr_cd as varchar) code	

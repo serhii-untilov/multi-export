@@ -34,8 +34,10 @@ with
 			and kpurl_datup >= @dateFrom
 		)
 	)
+/*
 select 'ID' ID,	'payFundID' payFundID, 'payElID' payElID
 union all
+*/
 select 
 	cast(min(t1.bookmark) as varchar) ID	
 	,cast(t1.paytv_cd as varchar) payFundID

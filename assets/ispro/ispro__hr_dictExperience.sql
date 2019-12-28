@@ -1,7 +1,9 @@
 -- Види стажу (hr_dictExperience)
 -- ID;code;name;methodExpID;dateFrom;dateTo
+/*
 select 'ID' ID, 'code' code, 'name' name, 'methodExpID' methodExpID, 'dateFrom' dateFrom, 'dateTo' dateTo
 union all
+*/
 select
 	'1' ID
 	,'1' code

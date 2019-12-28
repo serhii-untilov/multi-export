@@ -1,4 +1,5 @@
 -- Ï³ëüãè ÏÄÔÎ (hr_taxLimit)
+/*
 select 
 	'ID' ID
 	,'code' code
@@ -9,6 +10,7 @@ select
 	,'dateFrom' dateFrom
 	,'dateTo' dateTo
 union all
+*/
 select 
 	cast(spr_cd as varchar) ID	
 	,cast(spr_cd as varchar) code	

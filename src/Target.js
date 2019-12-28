@@ -13,6 +13,7 @@ class Target {
         this.fileName = null
         this.state = null
         this.err = null
+        this.recordsCount = 0
     }
 }
 

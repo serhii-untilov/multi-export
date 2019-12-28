@@ -1,7 +1,9 @@
 -- Фізичні особи (hr_people)
+/*
 select 'ID' ID, 'firstName' firstName, 'lastName' lastName, 'middleName' middleName, 'shortFIO' shortFIO, 'fullFIO' fullFIO, 'birthDate' birthDate, 
 	'description' description, 'employeeID' employeeID
 union all
+*/
 select ID, firstName, lastName, middleName, shortFIO, fullFIO, birthDate, 
 	description, 
 	cast(t2.kpu_rcd as varchar) employeeID

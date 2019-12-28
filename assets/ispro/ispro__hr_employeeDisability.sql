@@ -1,4 +1,5 @@
 -- Інвалідність (hr_employeeDisability)
+/*
 select
 	'ID' ID
 	,'employeeID' employeeID
@@ -18,6 +19,7 @@ select
 	,'employeeDocID' employeeDocID
 	,'description' description
 union all
+*/
 select 
 	cast(i1.bookmark as varchar) ID
 	,cast(c1.kpu_rcd as varchar) employeeID --cast(i1.kpu_rcd as varchar) employeeID

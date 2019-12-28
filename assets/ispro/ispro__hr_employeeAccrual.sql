@@ -1,5 +1,6 @@
 -- Постійні нарахування працівника (hr_employeeAccrual)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+/*
 select 
 	'ID' ID
 	,'employeeID' employeeID
@@ -14,6 +15,7 @@ select
 	,'orderDatefrom' orderDatefrom
 	,'taxCode' taxCode
 union all
+*/
 select 
 	ID
 	,cast(t4.kpu_rcd as varchar) employeeID	

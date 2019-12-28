@@ -42,7 +42,7 @@ function dbConfig(config) {
     return {
         user: config.login,
         password: config.password,
-        server: config.server, // You can use 'localhost\\instance' to connect to named instance
+        server: config.server,
         database: config.schema,
     }
 }

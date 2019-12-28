@@ -1,5 +1,6 @@
 -- Види оплати (hr_payEl)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+/*
 select 'ID' ID, 'code' code, 'name' name, 'methodID' methodID
 	,'description' description
 	,'dateFrom' dateFrom
@@ -17,6 +18,7 @@ select 'ID' ID, 'code' code, 'name' name, 'methodID' methodID
 	,'prepaymentDay' prepaymentDay
 	,'dictFundSourceID' dictFundSourceID
 union all
+*/
 select 
 	cast(Vo_Cd as varchar) ID,
 	Vo_cdchr code,

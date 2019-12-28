@@ -6,7 +6,7 @@ declare @currentPeriod date = (
 	where crtParm_cdBpr = 2
 	and crtParm_id = 'Period_DatOpen'
 )
-
+/*
 select 
 	'ID' ID
 	,'employeeNumberID' employeeNumberID
@@ -18,6 +18,7 @@ select
 	,'sumPay' sumPay
 	,'sumTo' sumTo
 union all
+*/
 select 
 	cast(s1.bookmark as varchar) ID	
 	,cast(x1.kpu_rcd as varchar) employeeNumberID	
