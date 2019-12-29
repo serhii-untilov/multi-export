@@ -63,6 +63,11 @@ const renderMenu = () => {
   setSelected(buttonSelectAfina, this.config.source == Config.AFINA)
   setSelected(buttonSelectParus, this.config.source == Config.PARUS)
   setSelected(buttonSelect1C, this.config.source == Config.C1)
+
+  // setVisible(buttonSelectISPro, this.config.source != Config.HOME)
+  // setVisible(buttonSelectAfina, this.config.source != Config.HOME)
+  // setVisible(buttonSelectParus, this.config.source != Config.HOME)
+  // setVisible(buttonSelect1C, this.config.source != Config.HOME)
 }
 
 const selectHome = () => {

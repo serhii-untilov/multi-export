@@ -39,3 +39,10 @@ body {
 .black-white {  
     filter: grayscale(50%);  
 }
+
+.brand {
+  font-size: 32px;
+}
+.menu-item {
+  margin-top: 8px;
+}
