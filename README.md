@@ -1,6 +1,6 @@
 MultiExport 
 ============
-The MultiExport application, which prepares files for import into the "A5 System" database.
+The MultiExport application, which prepares files for import into the "A5 Systems" database.
 
 Afrer clone from repository
 ---------------------------
