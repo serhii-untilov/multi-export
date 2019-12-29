@@ -93,6 +93,7 @@ const selectIspro = () => {
 const buttonSelectISPro = document.getElementById('selectISPro')
 buttonSelectISPro.addEventListener('click', selectIspro)
 document.getElementById('homeSelectISPro').addEventListener('click', selectIspro)
+document.getElementById('captionISPro').addEventListener('click', selectIspro)
 
 const selectAfina = () => {
   if (this.config.source == Config.AFINA)
@@ -106,6 +107,7 @@ const selectAfina = () => {
 const buttonSelectAfina = document.getElementById('selectAfina')
 buttonSelectAfina.addEventListener('click', selectAfina)
 document.getElementById('homeSelectAfina').addEventListener('click', selectAfina)
+document.getElementById('captionAfina').addEventListener('click', selectAfina)
 
 const selectParus = () => {
   if (this.config.source == Config.PARUS)
@@ -119,6 +121,7 @@ const selectParus = () => {
 const buttonSelectParus = document.getElementById('selectParus')
 buttonSelectParus.addEventListener('click', selectParus)
 document.getElementById('homeSelectParus').addEventListener('click', selectParus)
+document.getElementById('captionParus').addEventListener('click', selectParus)
 
 const select1C = () => {
   if (this.config.source == Config.C1)
@@ -132,6 +135,7 @@ const select1C = () => {
 const buttonSelect1C = document.getElementById('select1C')
 buttonSelect1C.addEventListener('click', select1C)
 document.getElementById('homeSelect1C').addEventListener('click', select1C)
+document.getElementById('caption1C').addEventListener('click', select1C)
 
 document.getElementById('homeSelectA5').addEventListener('click', () => {
   shell.openExternal('https://a5buh.com')

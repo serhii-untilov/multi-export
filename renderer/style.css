@@ -46,3 +46,8 @@ body {
 .menu-item {
   margin-top: 8px;
 }
+
+.system-caption {
+  border: 0px; 
+  padding-left: 0px;
+}
