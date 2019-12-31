@@ -5,7 +5,8 @@ const Target = require('../Target')
 
 async function makeFile(target) {
     try {
-        const queryText = await readQueryFromFile(target.queryFileName)
+        let queryText = await readQueryFromFile(target.queryFileName)
+        queryText = replace_SYS_SCHEMA(queryText, target.config.schemaSys)
         await doQuery(target, queryText)
         return target
     } catch (err) {
@@ -24,8 +25,19 @@ function readQueryFromFile(fileName) {
     })
 }
 
+function replace_SYS_SCHEMA(queryText, schemaSys) {
+    // find /*SYS_SCHEMA*/.sspr
+    // replace to ${schemaSys}.sspr
+    let re = /\/\*SYS_SCHEMA\*\/\w+\./gmi;
+    while (re.test(queryText))
+        queryText = queryText.replace(re, schemaSys + '.')
+    return queryText
+}
+
 async function doQuery(target, queryText) {
     try {
+        removeFile(target.fileName)
+
         const request = target.pool.request(); // or: new sql.Request(pool1)
         request.stream = true
         request.query(queryText)
@@ -36,7 +48,6 @@ async function doQuery(target, queryText) {
         // Emitted once for each recordset in a query
         request.on('recordset', columns => {
             buffer = ''
-            removeFile(target.fileName)
             writeHeader(columns)
         })
 
@@ -45,6 +56,7 @@ async function doQuery(target, queryText) {
             writeRow(row)
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE == 0) {
+                console.log('appendFile 1', target.fileName)
                 fs.appendFile(target.fileName, buffer, (err) => {
                     if (err) throw err;
                 })
@@ -60,7 +72,8 @@ async function doQuery(target, queryText) {
         // Always emitted as the last one
         request.on('done', result => {
             if (target.recordsCount) {
-                fs.appendFile(target.fileName, buffer, (err) => {
+                console.log('appendFile 2', target.fileName, buffer.length)
+                fs.writeFile(target.fileName, buffer, (err) => {
                     if (err) throw err;
                 })
                 target.state = Target.FILE_CREATED
@@ -68,16 +81,9 @@ async function doQuery(target, queryText) {
                 target.state = Target.FILE_EMPTY
             }
             buffer = ''
+            target.done(target)
         })
 
-        function removeFile(fileName) {
-            fs.exists(fileName, (exists) => {
-                if (exists) {
-                    fs.unlink(fileName, (err) => { })
-                }
-            })
-        }
-        
         function writeHeader(columns) {
             let columnNumber = 0
             for (let column in columns) {
@@ -89,7 +95,7 @@ async function doQuery(target, queryText) {
             }
             buffer += '\n'
         }
-
+        
         function writeRow(row) {
             let columnNumber = 0
             for (let column in row) {
@@ -105,6 +111,15 @@ async function doQuery(target, queryText) {
     } catch (err) {
         throw err
     }
+}
+
+function removeFile(fileName) {
+    fs.exists(fileName, (exists) => {
+        if (exists) {
+            console.log('removeFile', fileName)
+            fs.unlink(fileName, (err) => { })
+        }
+    })
 }
 
 module.exports = makeFile

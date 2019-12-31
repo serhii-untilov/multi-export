@@ -75,5 +75,5 @@ inner join (
 	) t1
 	group by kpu_cdnlp
 ) t1 on t1.kpu_rcd = c1.kpu_rcd
-left join i711_sys.dbo.sspr on sprspr_cd = 681037 and spr_cdlng = 2 and spr_cd = KpuInv_VIn
+left join /*SYS_SCHEMA*/i711_sys.dbo.sspr on sprspr_cd = 681037 and spr_cdlng = 2 and spr_cd = KpuInv_VIn
 where (c1.Kpu_Flg & 2) = 0	-- ”далЄн в зарплате

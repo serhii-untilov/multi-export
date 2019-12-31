@@ -13,17 +13,43 @@ class IsproSource extends Source {
         super()
     }
 
-    async read(config, sendFile) {
-            let pool = new sql.ConnectionPool(dbConfig(config))
-            pool.on('error', (err) => {
-                throw err
-            })
-            await pool.connect()
-            let fileList = await getFileList()
-            let taskList = makeTaskList(config, pool, fileList, sendFile)
-            await Promise.all(taskList)
-            pool.close()
+    async read(config, sendFile, sendDone) {
+        let pool = new sql.ConnectionPool(dbConfig(config))
+        pool.on('error', (err) => {
+            throw err
+        })
+        await pool.connect()
+        let fileList = await getFileList()
+        let targetsDone = 0
+        let targetList = makeTargetList(config, pool, fileList, (target) => {
+            sendFile(target)
+            targetsDone++
+            if (targetsDone == targetList.length) {
+                sendDone()
+                // pool.close()
+            }
+        })
+        await Promise.all(targetList)
     }
+}
+
+function makeTargetList(config, pool, fileList, sendFile) {
+    return fileList.map((fileName) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let target = new Target.Target()
+                target.fileName = Target.getTargetFileName(config, fileName)
+                target.queryFileName = SQL_FILES_DIR + fileName
+                target.config = config
+                target.pool = pool
+                target.done = sendFile
+                target = await makeFile(target)
+                resolve(true)
+            } catch (err) {
+                reject(err)
+            }
+        })
+    })
 }
 
 function getFileList() {
@@ -31,21 +57,6 @@ function getFileList() {
         fs.readdir(SQL_FILES_DIR, (err, fileList) => {
             if (err) reject(err);
             resolve(fileList)
-        })
-    })
-}
-
-function makeTaskList(config, pool, fileList, sendFile) {
-    return fileList.map((fileName) => {
-        return new Promise(async (resolve) => {
-            let target = new Target.Target()
-            target.fileName = Target.getTargetFileName(config, fileName)
-            target.queryFileName = SQL_FILES_DIR + fileName
-            target.config = config
-            target.pool = pool
-            target = await makeFile(target)
-            sendFile(target)
-            resolve(true)
         })
     })
 }

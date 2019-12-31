@@ -35,14 +35,16 @@ function main() {
     mainWindow.send('push-file', target)
   }
 
+  const sendDone = () => {
+    mainWindow.send('done')
+  }
+
   ipcMain.on('run-export', (event, config) => {
     try {
       let source = makeSource(config)
-      source.read(config, sendFile)
-      mainWindow.send('done')
+      source.read(config, sendFile, sendDone)
     }
     catch (err) {
-      // console.log(err)
       mainWindow.send('failed', err)
     }
   })

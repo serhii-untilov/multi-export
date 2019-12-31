@@ -264,19 +264,30 @@ const countErrors = (targetList) => {
   return count
 }
 
-const statusText = (errors) => {
-  if (errors) {
-    return `Експорт виконано з помилками (${errors}).`
-  } else {
-    return 'Експорт виконано успішно.'
+const countCreated = (targetList) => {
+  let count = 0
+  for (var i = 0; i < targetList.length; i++) {
+    if (targetList[i].state == Target.FILE_CREATED)
+      count++
+    console.log(targetList[i].fileName, targetList[i].state)
   }
+  return count
+}
+
+const stateText = (created, errors) => {
+  let text = ''
+  text = errors ? `Експорт виконано з помилками (${errors}).` : 'Експорт виконано успішно.';
+  if (created) {
+    text += ` Створено ${created} файлів.`
+  }
+  return text
 }
 
 ipcRenderer.on('done', (event) => {
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-success')
   resultToast.classList.add('toast-success')
-  resultToast.innerHTML = statusText(countErrors(targetList))
+  resultToast.innerHTML = stateText(countCreated(targetList), countErrors(targetList))
   setVisible(resultPanel, true)
 })
 

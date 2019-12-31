@@ -5,7 +5,7 @@ select 'ID', 'code', 'name'
 union all
 */
 select cast(spr_cd as varchar) ID, cast(spr_cd as varchar) code, replace(spr_nm, ';', ' ') name
-from i711_sys.dbo.sspr
+from /*SYS_SCHEMA*/i711_sys.dbo.sspr
 where sprspr_cd = 131842
 and spr_cdlng = 2
 and spr_cd in (
