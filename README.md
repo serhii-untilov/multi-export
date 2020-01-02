@@ -8,7 +8,7 @@ Preview
 
 Download
 --------
-<a href="./dist/multi-export 0.1.0.exe" download>multi-export 0.1.0.exe</a>
+<a href="./dist/" download>Windows</a>
 
 Afrer clone from repository
 ---------------------------
