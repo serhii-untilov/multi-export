@@ -116,7 +116,7 @@ async function doQuery(target, queryText) {
 function removeFile(fileName) {
     fs.exists(fileName, (exists) => {
         if (exists) {
-            console.log('removeFile', fileName)
+            // console.log('removeFile', fileName)
             fs.unlink(fileName, (err) => { })
         }
     })

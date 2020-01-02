@@ -25,7 +25,7 @@
     "appId": "multi-export",
     "win": {
       "target": "portable",
-      "icon": "build/multi-export.ico"
+      "icon": "build/multi-export.png"
     },
     "directories": {
       "buildResources": "build"

@@ -5,6 +5,7 @@ const Source = require('../Source')
 const Target = require('../Target')
 const makeFile = require('./IsproTarget')
 const sql = require('mssql')
+const ArchiveMaker = require('../ArchiveMaker')
 
 const SQL_FILES_DIR = './assets/ispro/'
 
@@ -20,20 +21,52 @@ class IsproSource extends Source {
         })
         await pool.connect()
         let fileList = await getFileList()
-        let targetsDone = 0
-        let targetList = makeTargetList(config, pool, fileList, (target) => {
+        let targetList = []
+        let targetPromiseList = makeTargetPromiseList(config, pool, fileList, async (target) => {
             sendFile(target)
-            targetsDone++
-            if (targetsDone == targetList.length) {
-                sendDone()
-                // pool.close()
+            targetList.push(target)
+            if (targetList.length == targetPromiseList.length) {
+                if (config.isArchive) {
+                    let archiveName = await this.getFirmName(pool)
+                    let arc = new ArchiveMaker(config, archiveName)
+                    arc.make(targetList, () => {
+                        removeFiles(targetList)
+                        sendDone()
+                    })
+                } else {
+                    sendDone()
+                }
             }
         })
-        await Promise.all(targetList)
+        await Promise.all(targetPromiseList)
+    }
+
+    async getFirmName(pool) {
+        try {
+            const request = pool.request();
+            const result = await request.query('select CrtFrm_Nm from CrtFrm1')
+            return result.recordset[0]['CrtFrm_Nm'];
+        } catch (err) {
+            console.log('getFirmName', err)
+            return null
+        }
     }
 }
 
-function makeTargetList(config, pool, fileList, sendFile) {
+function removeFiles(targetList) {
+    for (let i = 0; i < targetList.length; i++) {
+        if (targetList[i].state == Target.FILE_CREATED) {
+            let fileName = targetList[i].fileName
+            fs.exists(fileName, (exists) => {
+                if (exists) {
+                    fs.unlink(fileName, (err) => { })
+                }
+            })
+        }
+    }
+}
+
+function makeTargetPromiseList(config, pool, fileList, sendFile) {
     return fileList.map((fileName) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -46,6 +79,7 @@ function makeTargetList(config, pool, fileList, sendFile) {
                 target = await makeFile(target)
                 resolve(true)
             } catch (err) {
+                console.log('makeTargetPromiseList', err)
                 reject(err)
             }
         })

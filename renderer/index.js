@@ -149,10 +149,22 @@ document.getElementById('selectGitHub').addEventListener('click', () => {
   shell.openExternal('https://github.com/sergey-untilov/multi-export')
 })
 
-document.getElementById('run-export').addEventListener('click', () => {
+const buttonRunExport = document.getElementById('run-export')
+buttonRunExport.addEventListener('click', () => {
+
+  buttonRunExport.classList.remove('disabled')
+  buttonRunExport.classList.add('disabled')
+
   setVisible(bodyPanel, true)
   targetList.length = 0
   ipcRenderer.send('run-export', this.config)
+
+  resultToast.classList.remove('toast-error')
+  resultToast.classList.remove('toast-warning')
+  resultToast.classList.remove('toast-success')
+  resultToast.classList.add('toast-warning')
+  resultToast.innerHTML = 'Зачекайте, будь ласка. Виконується експорт.'
+  setVisible(resultPanel, true)
 })
 
 const serverName = document.getElementById('server-name')
@@ -284,7 +296,11 @@ const stateText = (created, errors) => {
 }
 
 ipcRenderer.on('done', (event) => {
+
+  buttonRunExport.classList.remove('disabled')
+  
   resultToast.classList.remove('toast-error')
+  resultToast.classList.remove('toast-warning')
   resultToast.classList.remove('toast-success')
   resultToast.classList.add('toast-success')
   resultToast.innerHTML = stateText(countCreated(targetList), countErrors(targetList))
@@ -293,8 +309,12 @@ ipcRenderer.on('done', (event) => {
 
 
 ipcRenderer.on('failed', (event, err) => {
+
+  buttonRunExport.classList.remove('disabled')
+  
   resultToast.classList.remove('toast-success')
   resultToast.classList.remove('toast-error')
+  resultToast.classList.remove('toast-warning')
   resultToast.classList.add('toast-error')
   resultToast.innerHTML = 'Експорт не виконано. ' + err
   resultTable.innerHTML = ''

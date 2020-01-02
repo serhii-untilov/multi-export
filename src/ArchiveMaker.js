@@ -3,25 +3,28 @@
 const fs = require('fs')
 const path = require('path')
 const archiver = require('archiver')
+const Target = require('./Target')
 
 const FILE_EXT = '.zip'
+
 class ArchiveMaker {
-    constructor(config) {
+    constructor(config, archiveName) {
         this.config = config
+        this.archiveName = archiveName || 'archive'
     }
     
     getArchiveFileName() {
-        let fileName = 'archive'
+        let fileName = this.archiveName
         let targetPath = this.config.targetPath[this.config.targetPath.length - 1] == path.sep 
             ? this.config.targetPath 
             : `${this.config.targetPath}${path.sep}`
         return `${targetPath}${fileName}${FILE_EXT}`
     }
 
-    make(targetList) {
+    make(targetList, done) {
         // create a file to stream archive data to.
-        let archiveFileName = this.getArchiveFileName()
-        var output = fs.createWriteStream(archiveFileName)
+        let arcFileName = this.getArchiveFileName()
+        var output = fs.createWriteStream(arcFileName)
         var archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
         })
@@ -31,6 +34,7 @@ class ArchiveMaker {
         output.on('close', function () {
             console.log(archive.pointer() + ' total bytes')
             console.log('archiver has been finalized and the output file descriptor has closed.')
+            done(arcFileName)
         })
 
         // This event is fired when the data source is drained no matter what was the data source.
@@ -58,13 +62,13 @@ class ArchiveMaker {
         // pipe archive data to the file
         archive.pipe(output)
 
-        console.log('makeArchive', targetList.length)
+        // console.log('makeArchive', targetList.length)
         for (let i = 0; i < targetList.length; i++) {
             // append a file
-            let fileName = path.basename(targetList[i].targetFile)
-            // archive.file(targetList[i].targetFile, { name: fileName })
-            archive.append(fs.createReadStream(targetList[i].targetFile), { name: fileName })
-            console.log('makeArchive', targetList[i].targetFile, fileName)
+            if (targetList[i].state == Target.FILE_CREATED) {
+                let fileName = path.basename(targetList[i].fileName)
+                archive.append(fs.createReadStream(targetList[i].fileName), { name: fileName })
+            }
         }
 
         // finalize the archive (ie we are done appending files but streams have to finish yet)
