@@ -6,6 +6,10 @@ Preview
 -------
 ![Preview](./assets/images/preview.png)
 
+Download
+--------
+[multi-export.exe](./dist/multi-export 0.1.0.exe)
+
 Afrer clone from repository
 ---------------------------
 ```
