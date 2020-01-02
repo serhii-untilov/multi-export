@@ -8,7 +8,7 @@ Preview
 
 Download
 --------
-[multi-export.exe](./dist/multi-export 0.1.0.exe)
+<a href="./dist/multi-export 0.1.0.exe" download>multi-export 0.1.0.exe</a>
 
 Afrer clone from repository
 ---------------------------
