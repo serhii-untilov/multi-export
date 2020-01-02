@@ -152,8 +152,8 @@ document.getElementById('selectGitHub').addEventListener('click', () => {
 const buttonRunExport = document.getElementById('run-export')
 buttonRunExport.addEventListener('click', () => {
 
-  buttonRunExport.classList.remove('disabled')
-  buttonRunExport.classList.add('disabled')
+  // buttonRunExport.classList.remove('disabled')
+  // buttonRunExport.classList.add('disabled')
 
   setVisible(bodyPanel, true)
   targetList.length = 0
@@ -297,7 +297,7 @@ const stateText = (created, errors) => {
 
 ipcRenderer.on('done', (event) => {
 
-  buttonRunExport.classList.remove('disabled')
+  // buttonRunExport.classList.remove('disabled')
   
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-warning')
@@ -310,7 +310,7 @@ ipcRenderer.on('done', (event) => {
 
 ipcRenderer.on('failed', (event, err) => {
 
-  buttonRunExport.classList.remove('disabled')
+  // buttonRunExport.classList.remove('disabled')
   
   resultToast.classList.remove('toast-success')
   resultToast.classList.remove('toast-error')
