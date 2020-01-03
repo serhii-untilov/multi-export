@@ -14,31 +14,39 @@ class IsproSource extends Source {
         super()
     }
 
-    async read(config, sendFile, sendDone) {
-        let pool = new sql.ConnectionPool(dbConfig(config))
-        pool.on('error', (err) => {
-            throw err
-        })
-        await pool.connect()
-        let fileList = await getFileList()
-        let targetList = []
-        let targetPromiseList = makeTargetPromiseList(config, pool, fileList, async (target) => {
-            sendFile(target)
-            targetList.push(target)
-            if (targetList.length == targetPromiseList.length) {
-                if (config.isArchive) {
-                    let archiveName = await this.getFirmName(pool)
-                    let arc = new ArchiveMaker(config, archiveName)
-                    arc.make(targetList, () => {
-                        removeFiles(targetList)
+    async read(config, sendFile, sendDone, sendFailed) {
+        try {
+            console.log('1')
+            let pool = new sql.ConnectionPool(dbConfig(config))
+
+            pool.on('error', (err) => {
+                throw err
+            })
+            console.log('2')
+            await pool.connect()
+            console.log('3')
+            let fileList = await getFileList()
+            let targetList = []
+            let targetPromiseList = makeTargetPromiseList(config, pool, fileList, async (target) => {
+                sendFile(target)
+                targetList.push(target)
+                if (targetList.length == targetPromiseList.length) {
+                    if (config.isArchive) {
+                        let archiveName = await this.getFirmName(pool)
+                        let arc = new ArchiveMaker(config, archiveName)
+                        arc.make(targetList, () => {
+                            removeFiles(targetList)
+                            sendDone()
+                        })
+                    } else {
                         sendDone()
-                    })
-                } else {
-                    sendDone()
+                    }
                 }
-            }
-        })
-        await Promise.all(targetPromiseList)
+            })
+            await Promise.all(targetPromiseList)
+        } catch (err) {
+            sendFailed(err.message)
+        }
     }
 
     async getFirmName(pool) {

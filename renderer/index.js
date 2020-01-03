@@ -5,6 +5,11 @@ const { shell } = require('electron')
 const Config = require('../src/Config')
 const Target = require('../src/Target')
 
+// For selectDirectory
+const electron = require('electron')
+const remote = electron.remote
+const mainProcess = remote.require('./main')
+
 const config = null
 
 const targetList = []
@@ -231,6 +236,9 @@ c1DbPath.addEventListener('change', (evt) => {
 })
 
 const targetPath = document.getElementById('target-path')
+targetPath.addEventListener('click', _ => {
+  targetPath.innerHTML = mainProcess.selectDirectory() || ''
+})
 targetPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.targetPath = evt.target.value
