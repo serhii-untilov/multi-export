@@ -5,3 +5,8 @@ dist/builder-effective-config.yaml
 package-lock.json
 yarn.lock
 .env
+
+dist/linux-unpacked
+dist/builder-effective-config.yaml
+dist/latest-linux.yml
+dist/multi-export_0.1.0_amd64.snap
