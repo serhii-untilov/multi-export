@@ -61,12 +61,15 @@ app.on('window-all-closed', function () {
   app.quit()
 })
 
-function selectDirectory() {
-  // dialog.showOpenDialog(mainWindow, {
-  dialog.showSaveDialog(mainWindow, {
-    properties: ['openDirectory', 'promptToCreate']
-  })
+async function selectDirectory() {
+  let options = {
+    title: "Виберіть каталог",
+    defaultPath: "./",
+    buttonLabel: "Вибрати",
+    properties: ['openFile', 'multiSelections']
+  }
+  return await dialog.showOpenDialog(mainWindow, options)
 }
 
 
-module.exports = {selectDirectory}
+module.exports = { selectDirectory }

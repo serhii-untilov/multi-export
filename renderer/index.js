@@ -236,8 +236,14 @@ c1DbPath.addEventListener('change', (evt) => {
 })
 
 const targetPath = document.getElementById('target-path')
-targetPath.addEventListener('click', _ => {
-  targetPath.innerHTML = mainProcess.selectDirectory() || ''
+targetPath.addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  console.log('dialogResult', dialogResult)
+  if (!dialogResult.canceled) {
+    targetPath.value = dialogResult.filePaths[0]
+    this.config.targetPath = targetPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
 })
 targetPath.addEventListener('change', (evt) => {
   evt.preventDefault()

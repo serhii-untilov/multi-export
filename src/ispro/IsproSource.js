@@ -16,15 +16,11 @@ class IsproSource extends Source {
 
     async read(config, sendFile, sendDone, sendFailed) {
         try {
-            console.log('1')
             let pool = new sql.ConnectionPool(dbConfig(config))
-
             pool.on('error', (err) => {
                 throw err
             })
-            console.log('2')
             await pool.connect()
-            console.log('3')
             let fileList = await getFileList()
             let targetList = []
             let targetPromiseList = makeTargetPromiseList(config, pool, fileList, async (target) => {
