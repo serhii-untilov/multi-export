@@ -215,6 +215,14 @@ codeSe.addEventListener('change', (evt) => {
 })
 
 const afinaDbPath = document.getElementById('afina-db-path')
+afinaDbPath.addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  if (!dialogResult.canceled) {
+    afinaDbPath.value = dialogResult.filePaths[0]
+    this.config.afinaDbPath = afinaDbPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
+})
 afinaDbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.afinaDbPath = evt.target.value
@@ -222,6 +230,14 @@ afinaDbPath.addEventListener('change', (evt) => {
 })
 
 const parusDbPath = document.getElementById('parus-db-path')
+parusDbPath.addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  if (!dialogResult.canceled) {
+    parusDbPath.value = dialogResult.filePaths[0]
+    this.config.parusDbPath = parusDbPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
+})
 parusDbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.parusDbPath = evt.target.value
@@ -229,6 +245,14 @@ parusDbPath.addEventListener('change', (evt) => {
 })
 
 const c1DbPath = document.getElementById('c1-db-path')
+c1DbPath.addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  if (!dialogResult.canceled) {
+    c1DbPath.value = dialogResult.filePaths[0]
+    this.config.c1DbPath = c1DbPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
+})
 c1DbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.c1DbPath = evt.target.value
@@ -238,7 +262,6 @@ c1DbPath.addEventListener('change', (evt) => {
 const targetPath = document.getElementById('target-path')
 targetPath.addEventListener('click', async () => {
   let dialogResult = await mainProcess.selectDirectory()
-  console.log('dialogResult', dialogResult)
   if (!dialogResult.canceled) {
     targetPath.value = dialogResult.filePaths[0]
     this.config.targetPath = targetPath.value
