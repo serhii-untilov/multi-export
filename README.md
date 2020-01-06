@@ -8,7 +8,7 @@ Preview
 
 Download
 --------
-<a href="./dist/" download>Windows</a>
+<a href="./dist/" download>Binaries for MS Windows</a>
 
 Afrer clone from repository
 ---------------------------
