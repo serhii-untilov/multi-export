@@ -66,7 +66,7 @@ async function selectDirectory() {
     title: "Виберіть каталог",
     defaultPath: "./",
     buttonLabel: "Вибрати",
-    properties: ['openFile', 'multiSelections']
+    properties: ['openDirectory', 'promptToCreate']
   }
   return await dialog.showOpenDialog(mainWindow, options)
 }
