@@ -1,7 +1,5 @@
 node_modules
-dist/.icon-ico
-dist/win-unpacked
-dist/builder-effective-config.yaml
+dist
 package-lock.json
 yarn.lock
 .env
