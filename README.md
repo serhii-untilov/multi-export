@@ -30,7 +30,7 @@ Environment variables
 ---------------------
 [The Medium article how to use environment variables](https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786)
 
-Create .env file, put into it next content and fill fields
+Create .env file, put into it the next content and fill fields
 ```
 NODE_ENV=development
 
