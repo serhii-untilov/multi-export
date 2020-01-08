@@ -1,7 +1,7 @@
 {
   "name": "multi-export",
   "version": "0.1.0",
-  "description": "Multi export for import into A5",
+  "description": "Multi export for import into A5 DB",
   "main": "main.js",
   "scripts": {
     "postinstall": "install-app-deps",
@@ -41,7 +41,7 @@
     "devtron": "^1.4.0",
     "dotenv": "^8.2.0",
     "electron": "^7.1.2",
-    "electron-builder": "^21.2.0",
+    "electron-builder": "^21.1.5",
     "jest": "^24.9.0",
     "standard": "^14.3.1"
   },
