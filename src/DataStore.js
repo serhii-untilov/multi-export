@@ -2,14 +2,14 @@
 
 const Store = require('electron-store')
 const Config = require('./Config')
-const dotenv = require('dotenv')
-dotenv.config()
+// const dotenv = require('dotenv')
+// dotenv.config()
 
 class DataStore extends Store {
   constructor(settings) {
-    console.log('1')
     super(settings)
-    this.config = this.get('config') || _makeDefaultConfig()
+    // this.config = this.get('config') || _makeDefaultConfig()
+    this.config = this.get('config') || new Config.Config()
     this.config.source = this.config.source || Config.HOME // default source
   }
 
@@ -29,23 +29,29 @@ class DataStore extends Store {
   }
 }
 
-function _makeDefaultConfig() {
-  let config = new Config.Config()
-  config.source = Config.HOME   // default source
-  config.isArchive = true
-  if (process.env.NODE_ENV == 'development') {
-    // ispro DB connect
-    config.server = process.env.SERVER
-    config.login = process.env.LOGIN
-    config.password = process.env.PASSWORD
-    config.schema = process.env.SCHEMA
-    config.schemaSys = process.env.SCHEMASYS
-    console.log('Default config for development.', config)
-  } else {
-    config.targetPath = __dirname
-    console.log('Default config for production.', config)
-  }
-  return config
-}
+// function _makeDefaultConfig() {
+//   let config = new Config.Config()
+//   config.source = Config.HOME   // default source
+//   config.isArchive = true
+//   let isDevelopment = false
+//   try {
+//     isDevelopment = process.env.NODE_ENV == 'development'
+//   } catch (err) {
+//     console.log(err)
+//   }
+//   if (isDevelopment) {
+//     // ispro DB connect
+//     config.server = process.env.SERVER
+//     config.login = process.env.LOGIN
+//     config.password = process.env.PASSWORD
+//     config.schema = process.env.SCHEMA
+//     config.schemaSys = process.env.SCHEMASYS
+//     console.log('Default config for development.', config)
+//   } else {
+//     config.targetPath = __dirname
+//     console.log('Default config for production.', config)
+//   }
+//   return config
+// }
 
 module.exports = DataStore
