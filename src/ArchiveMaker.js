@@ -32,8 +32,8 @@ class ArchiveMaker {
         // listen for all archive data to be written
         // 'close' event is fired only when a file descriptor is involved
         output.on('close', function () {
-            console.log(archive.pointer() + ' total bytes')
-            console.log('archiver has been finalized and the output file descriptor has closed.')
+            // console.log(archive.pointer() + ' total bytes')
+            // console.log('archiver has been finalized and the output file descriptor has closed.')
             done(arcFileName)
         })
 

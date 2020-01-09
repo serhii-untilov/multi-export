@@ -6,6 +6,7 @@ const Target = require('../Target')
 const makeFile = require('./IsproTarget')
 const sql = require('mssql')
 const ArchiveMaker = require('../ArchiveMaker')
+const path = require('path')
 
 const SQL_FILES_DIR = './assets/ispro/'
 
@@ -95,8 +96,11 @@ function makeTargetPromiseList(config, pool, fileList, sendFile) {
 
 function getFileList() {
     return new Promise((resolve, reject) => {
-        fs.readdir(SQL_FILES_DIR, (err, fileList) => {
+        fs.readdir(SQL_FILES_DIR, { withFileTypes: true }, (err, dirents) => {
             if (err) reject(err);
+            let fileList = dirents
+                .filter((el) => {return !el.isDirectory() && path.extname(el.name).toLowerCase() == '.sql'})
+                .map((el) => {return el.name})
             resolve(fileList)
         })
     })

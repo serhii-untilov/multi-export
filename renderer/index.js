@@ -2,6 +2,7 @@
 
 const { ipcRenderer } = require('electron')
 const { shell } = require('electron')
+const path = require('path')
 const Config = require('../src/Config')
 const Target = require('../src/Target')
 
@@ -327,7 +328,7 @@ const countCreated = (targetList) => {
   for (var i = 0; i < targetList.length; i++) {
     if (targetList[i].state == Target.FILE_CREATED)
       count++
-    console.log(targetList[i].fileName, targetList[i].state)
+    // console.log(targetList[i].fileName, targetList[i].state)
   }
   return count
 }
@@ -387,7 +388,7 @@ const getStateText = (target) => {
     case Target.FILE_CREATED:
       return `Файл створено.`
     case Target.FILE_EMPTY:
-      return 'Файл не створено. Відсутні дані для експорту.'
+      return 'Відсутні дані для експорту.'
     case Target.FILE_ERROR:
       console.log(target)
       return `Помилка. ${target.err.message}` 
@@ -401,7 +402,8 @@ ipcRenderer.on('push-file', (event, target) => {
   var html = ''
   for (var i = 0; i < targetList.length; i++) {
     let stateText = getStateText(targetList[i])
-    html += `<tr><td>${targetList[i].fileName}</td><td>${stateText}</td></tr>`
+    let fileName = path.basename(targetList[i].fileName)
+    html += `<tr><td>${fileName}</td><td>${stateText}</td></tr>`
   }
   resultTable.innerHTML = html
 })

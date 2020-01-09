@@ -74,12 +74,12 @@ async function doQuery(target, queryText) {
 
         // May be emitted multiple times
         request.on('error', err => {
-            console.log('error', err)
             throw(err)
         })
 
         // Always emitted as the last one
         request.on('done', result => {
+            
             if (target.recordsCount) {
                 // request.pause();
                 fs.appendFile(target.fileName, buffer, (err) => {
