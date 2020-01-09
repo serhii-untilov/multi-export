@@ -106,7 +106,7 @@ document.getElementById('captionISPro').addEventListener('click', selectIspro)
 const selectAfina = () => {
   if (this.config.source == Config.AFINA)
     return
-  targetList.length = 0    
+  targetList.length = 0
   this.config.source = Config.AFINA
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -120,7 +120,7 @@ document.getElementById('captionAfina').addEventListener('click', selectAfina)
 const selectParus = () => {
   if (this.config.source == Config.PARUS)
     return
-  targetList.length = 0    
+  targetList.length = 0
   this.config.source = Config.PARUS
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -134,7 +134,7 @@ document.getElementById('captionParus').addEventListener('click', selectParus)
 const select1C = () => {
   if (this.config.source == Config.C1)
     return
-  targetList.length = 0    
+  targetList.length = 0
   this.config.source = Config.C1
   ipcRenderer.send('set-config', this.config)
   renderMenu()
@@ -231,7 +231,7 @@ document.getElementById('select-afina-path').addEventListener('click', async () 
   if (!dialogResult.canceled) {
     afinaDbPath.value = dialogResult.filePaths[0]
     this.config.afinaDbPath = afinaDbPath.value
-    ipcRenderer.send('set-config', this.config)    
+    ipcRenderer.send('set-config', this.config)
   }
 })
 
@@ -247,7 +247,7 @@ document.getElementById('select-parus-path').addEventListener('click', async () 
   if (!dialogResult.canceled) {
     parusDbPath.value = dialogResult.filePaths[0]
     this.config.parusDbPath = parusDbPath.value
-    ipcRenderer.send('set-config', this.config)    
+    ipcRenderer.send('set-config', this.config)
   }
 })
 
@@ -263,7 +263,7 @@ document.getElementById('select-c1-path').addEventListener('click', async () => 
   if (!dialogResult.canceled) {
     c1DbPath.value = dialogResult.filePaths[0]
     this.config.c1DbPath = c1DbPath.value
-    ipcRenderer.send('set-config', this.config)    
+    ipcRenderer.send('set-config', this.config)
   }
 })
 
@@ -280,7 +280,7 @@ document.getElementById('select-target-path').addEventListener('click', async ()
   if (!dialogResult.canceled) {
     targetPath.value = dialogResult.filePaths[0]
     this.config.targetPath = targetPath.value
-    ipcRenderer.send('set-config', this.config)    
+    ipcRenderer.send('set-config', this.config)
   }
 })
 
@@ -339,11 +339,17 @@ const pad = (num, size) => {
   return s;
 }
 
-const stateText = (created, errors) => {
+const stateText = (created, errors, arcFileName) => {
   let text = ''
   text = errors ? `Експорт виконано з помилками (${errors}).` : 'Експорт виконано успішно.';
+
   if (created) {
     text += ` Створено ${created} файлів.`
+  }
+
+  if (arcFileName) {
+    let fileName = path.basename(arcFileName)
+    text += `<br />Запаковано у архівний файл "${fileName}".`
   }
 
   let timeFinish = new Date();
@@ -351,20 +357,20 @@ const stateText = (created, errors) => {
   let hours = pad(Math.round(diff / (1000 * 3600)), 2)
   let minutes = pad(Math.round(diff / (1000 * 60) % 60), 2)
   let seconds = pad(Math.round(diff / (1000) % 60), 2)
-  text += ` Час виконання: ${hours}:${minutes}:${seconds}.`
+  text += `<br />Час виконання: ${hours}:${minutes}:${seconds}.`
 
   return text
 }
 
-ipcRenderer.on('done', (event) => {
+ipcRenderer.on('done', (event, arcFileName) => {
 
   // buttonRunExport.classList.remove('disabled')
-  
+
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-warning')
   resultToast.classList.remove('toast-success')
   resultToast.classList.add('toast-success')
-  resultToast.innerHTML = stateText(countCreated(targetList), countErrors(targetList))
+  resultToast.innerHTML = stateText(countCreated(targetList), countErrors(targetList), arcFileName)
   setVisible(resultPanel, true)
 })
 
@@ -372,7 +378,7 @@ ipcRenderer.on('done', (event) => {
 ipcRenderer.on('failed', (event, err) => {
 
   // buttonRunExport.classList.remove('disabled')
-  
+
   resultToast.classList.remove('toast-success')
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-warning')
@@ -391,7 +397,7 @@ const getStateText = (target) => {
       return 'Відсутні дані для експорту.'
     case Target.FILE_ERROR:
       console.log(target)
-      return `Помилка. ${target.err.message}` 
+      return `Помилка. ${target.err.message}`
     default:
       return 'Невідома помилка.'
   }

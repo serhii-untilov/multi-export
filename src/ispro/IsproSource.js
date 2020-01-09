@@ -29,11 +29,11 @@ class IsproSource extends Source {
                 targetList.push(target)
                 if (targetList.length == targetPromiseList.length) {
                     if (config.isArchive) {
-                        let archiveName = await this.getFirmName(pool)
-                        let arc = new ArchiveMaker(config, archiveName)
-                        arc.make(targetList, () => {
+                        let firmName = await this.getFirmName(pool)
+                        let arc = new ArchiveMaker(config, firmName)
+                        arc.make(targetList, (arcFileName) => {
                             removeFiles(targetList)
-                            sendDone()
+                            sendDone(arcFileName)
                         })
                     } else {
                         sendDone()
@@ -115,7 +115,7 @@ function dbConfig(config) {
         connectionTimeout: 300000,
         requestTimeout: 600000,
         pool: {
-            max: 50,
+            max: 1,
             min: 0,
             idleTimeoutMillis: 300000
         }

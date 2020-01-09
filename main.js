@@ -36,8 +36,8 @@ function main() {
     mainWindow.send('push-file', target)
   }
 
-  const sendDone = () => {
-    mainWindow.send('done')
+  const sendDone = (archiveName) => {
+    mainWindow.send('done', archiveName)
   }
 
   const sendFailed = (err) => {
