@@ -14,6 +14,8 @@ const config = null
 
 const targetList = []
 
+let timeStart = null
+
 const homePanel = document.getElementById('home-panel')
 const isproPanel = document.getElementById('ispro-panel')
 const afinaPanel = document.getElementById('afina-panel')
@@ -156,6 +158,8 @@ document.getElementById('selectGitHub').addEventListener('click', () => {
 
 const buttonRunExport = document.getElementById('run-export')
 buttonRunExport.addEventListener('click', () => {
+
+  timeStart = new Date();
 
   // buttonRunExport.classList.remove('disabled')
   // buttonRunExport.classList.add('disabled')
@@ -328,12 +332,26 @@ const countCreated = (targetList) => {
   return count
 }
 
+const pad = (num, size) => {
+  var s = num + "";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+
 const stateText = (created, errors) => {
   let text = ''
   text = errors ? `Експорт виконано з помилками (${errors}).` : 'Експорт виконано успішно.';
   if (created) {
     text += ` Створено ${created} файлів.`
   }
+
+  let timeFinish = new Date();
+  let diff = timeFinish.getTime() - timeStart.getTime()
+  let hours = pad(Math.round(diff / (1000 * 3600)), 2)
+  let minutes = pad(Math.round(diff / (1000 * 60) % 60), 2)
+  let seconds = pad(Math.round(diff / (1000) % 60), 2)
+  text += ` Час виконання: ${hours}:${minutes}:${seconds}.`
+
   return text
 }
 

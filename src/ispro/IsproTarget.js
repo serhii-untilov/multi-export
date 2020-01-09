@@ -6,6 +6,7 @@ const Target = require('../Target')
 async function makeFile(target) {
     try {
         let queryText = await readQueryFromFile(target.queryFileName)
+        queryText = removeHeader(queryText)
         queryText = replace_SYS_SCHEMA(queryText, target.config.schemaSys)
         await doQuery(target, queryText)
         return target
@@ -25,6 +26,12 @@ function readQueryFromFile(fileName) {
     })
 }
 
+function removeHeader(queryText) {
+    let re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gmi;
+    queryText = queryText.replace(re, '')
+    return queryText
+}
+
 function replace_SYS_SCHEMA(queryText, schemaSys) {
     // find /*SYS_SCHEMA*/.sspr
     // replace to ${schemaSys}.sspr
@@ -42,7 +49,7 @@ async function doQuery(target, queryText) {
         request.stream = true
         request.query(queryText)
 
-        const BATCH_SIZE = 1000
+        const BATCH_SIZE = 10000
         let buffer = ''
 
         // Emitted once for each recordset in a query
@@ -56,32 +63,37 @@ async function doQuery(target, queryText) {
             writeRow(row)
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE == 0) {
-                console.log('appendFile 1', target.fileName)
+                request.pause();
                 fs.appendFile(target.fileName, buffer, (err) => {
                     if (err) throw err;
                 })
                 buffer = ''
+                request.resume();
             }
         })
 
         // May be emitted multiple times
         request.on('error', err => {
             console.log('error', err)
+            throw(err)
         })
 
         // Always emitted as the last one
         request.on('done', result => {
             if (target.recordsCount) {
-                console.log('appendFile 2', target.fileName, buffer.length)
-                fs.writeFile(target.fileName, buffer, (err) => {
+                // request.pause();
+                fs.appendFile(target.fileName, buffer, (err) => {
                     if (err) throw err;
                 })
+                buffer = ''
                 target.state = Target.FILE_CREATED
+                target.done(target)
+                // request.resume();
             } else {
                 target.state = Target.FILE_EMPTY
+                target.done(target)
             }
-            buffer = ''
-            target.done(target)
+            
         })
 
         function writeHeader(columns) {
@@ -116,7 +128,6 @@ async function doQuery(target, queryText) {
 function removeFile(fileName) {
     fs.exists(fileName, (exists) => {
         if (exists) {
-            // console.log('removeFile', fileName)
             fs.unlink(fileName, (err) => { })
         }
     })

@@ -49,7 +49,10 @@ class IsproSource extends Source {
         try {
             const request = pool.request();
             const result = await request.query('select CrtFrm_Nm from CrtFrm1')
-            return result.recordset[0]['CrtFrm_Nm'];
+            let firmName = result.recordset[0]['CrtFrm_Nm']
+            firmName = firmName.replace(/\"/g, '_').replace(/\'/g, '_').replace(/\./g, '_')
+                .replace(/\,/g, '_').replace(/ /g, '_').replace(/__/g, '_')
+            return firmName;
         } catch (err) {
             console.log('getFirmName', err)
             return null
@@ -105,6 +108,13 @@ function dbConfig(config) {
         password: config.password,
         server: config.server,
         database: config.schema,
+        connectionTimeout: 300000,
+        requestTimeout: 600000,
+        pool: {
+            max: 50,
+            min: 0,
+            idleTimeoutMillis: 300000
+        }
     }
 }
 
