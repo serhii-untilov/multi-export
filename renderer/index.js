@@ -6,9 +6,9 @@ const Config = require('../src/Config')
 const Target = require('../src/Target')
 
 // For selectDirectory
-// const electron = require('electron')
-// const remote = electron.remote
-// const mainProcess = remote.require('./main')
+const electron = require('electron')
+const remote = electron.remote
+const mainProcess = remote.require('./main')
 
 const config = null
 
@@ -215,63 +215,68 @@ codeSe.addEventListener('change', (evt) => {
 })
 
 const afinaDbPath = document.getElementById('afina-db-path')
-// afinaDbPath.addEventListener('click', async () => {
-//   let dialogResult = await mainProcess.selectDirectory()
-//   if (!dialogResult.canceled) {
-//     afinaDbPath.value = dialogResult.filePaths[0]
-//     this.config.afinaDbPath = afinaDbPath.value
-//     ipcRenderer.send('set-config', this.config)    
-//   }
-// })
 afinaDbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.afinaDbPath = evt.target.value
   ipcRenderer.send('set-config', this.config)
 })
 
+document.getElementById('select-afina-path').addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  if (!dialogResult.canceled) {
+    afinaDbPath.value = dialogResult.filePaths[0]
+    this.config.afinaDbPath = afinaDbPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
+})
+
 const parusDbPath = document.getElementById('parus-db-path')
-// parusDbPath.addEventListener('click', async () => {
-//   let dialogResult = await mainProcess.selectDirectory()
-//   if (!dialogResult.canceled) {
-//     parusDbPath.value = dialogResult.filePaths[0]
-//     this.config.parusDbPath = parusDbPath.value
-//     ipcRenderer.send('set-config', this.config)    
-//   }
-// })
 parusDbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.parusDbPath = evt.target.value
   ipcRenderer.send('set-config', this.config)
 })
 
+document.getElementById('select-parus-path').addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  if (!dialogResult.canceled) {
+    parusDbPath.value = dialogResult.filePaths[0]
+    this.config.parusDbPath = parusDbPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
+})
+
 const c1DbPath = document.getElementById('c1-db-path')
-// c1DbPath.addEventListener('click', async () => {
-//   let dialogResult = await mainProcess.selectDirectory()
-//   if (!dialogResult.canceled) {
-//     c1DbPath.value = dialogResult.filePaths[0]
-//     this.config.c1DbPath = c1DbPath.value
-//     ipcRenderer.send('set-config', this.config)    
-//   }
-// })
 c1DbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.c1DbPath = evt.target.value
   ipcRenderer.send('set-config', this.config)
 })
 
+document.getElementById('select-c1-path').addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  if (!dialogResult.canceled) {
+    c1DbPath.value = dialogResult.filePaths[0]
+    this.config.c1DbPath = c1DbPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
+})
+
+
 const targetPath = document.getElementById('target-path')
-// targetPath.addEventListener('click', async () => {
-//   let dialogResult = await mainProcess.selectDirectory()
-//   if (!dialogResult.canceled) {
-//     targetPath.value = dialogResult.filePaths[0]
-//     this.config.targetPath = targetPath.value
-//     ipcRenderer.send('set-config', this.config)    
-//   }
-// })
 targetPath.addEventListener('change', (evt) => {
   evt.preventDefault()
   this.config.targetPath = evt.target.value
   ipcRenderer.send('set-config', this.config)
+})
+
+document.getElementById('select-target-path').addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory()
+  if (!dialogResult.canceled) {
+    targetPath.value = dialogResult.filePaths[0]
+    this.config.targetPath = targetPath.value
+    ipcRenderer.send('set-config', this.config)    
+  }
 })
 
 const isArchive = document.getElementById('isArchive')
