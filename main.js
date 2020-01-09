@@ -72,4 +72,4 @@ async function selectDirectory() {
 }
 
 
-module.exports = { selectDirectory }
+module.exports = { selectDirectory, mainWindow }
