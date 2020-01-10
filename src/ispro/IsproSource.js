@@ -1,13 +1,12 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
+const sql = require('mssql')
 const Source = require('../Source')
 const Target = require('../Target')
 const makeFile = require('./IsproTarget')
-const sql = require('mssql')
 const ArchiveMaker = require('../ArchiveMaker')
-const path = require('path')
-// const { mainWindow } = require('../../main')
 
 const SQL_FILES_DIR = './assets/ispro/'
 
@@ -28,7 +27,6 @@ class IsproSource extends Source {
             let targetPromiseList = makeTargetPromiseList(config, pool, fileList, async (target) => {
                 sendFile(target)
                 targetList.push(target)
-                //mainWindow.setProgressBar(targetPromiseList.length / 100 * targetList.length)
                 if (targetList.length == targetPromiseList.length) {
                     if (config.isArchive) {
                         let firmName = await this.getFirmName(pool)

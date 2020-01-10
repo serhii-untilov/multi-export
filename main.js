@@ -4,12 +4,9 @@ const path = require('path')
 const { app, ipcMain, dialog } = require('electron')
 const Window = require('./src/Window')
 const DataStore = require('./src/DataStore')
-const makeSource = require('./src/SourceFactory')
-
+const makeSource = require('./src/sourceFactory')
 require('electron-reload')(__dirname)
-
 const dataStore = new DataStore({ name: 'multi-export-config' })
-
 let mainWindow
 
 function main() {
@@ -21,7 +18,7 @@ function main() {
     },
     set file(value) {
       this._file = value
-    },
+    }
   })
 
   mainWindow.once('show', () => {
@@ -71,5 +68,4 @@ async function selectDirectory() {
   return await dialog.showOpenDialog(mainWindow, options)
 }
 
-
-module.exports = { selectDirectory, mainWindow }
+module.exports = { selectDirectory }
