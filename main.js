@@ -7,11 +7,11 @@ const DataStore = require('./src/DataStore')
 const makeSource = require('./src/sourceFactory')
 require('electron-reload')(__dirname)
 const dataStore = new DataStore({ name: 'multi-export-config' })
-let mainWindow
+// let mainWindow
 
 function main() {
 
-  mainWindow = new Window({
+  let mainWindow = new Window({
     _file: path.join('renderer', 'index.html'),
     get file() {
       return this._file
