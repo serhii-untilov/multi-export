@@ -227,7 +227,7 @@ afinaDbPath.addEventListener('change', (evt) => {
 })
 
 document.getElementById('select-afina-path').addEventListener('click', async () => {
-  let dialogResult = await mainProcess.selectDirectory()
+  let dialogResult = await mainProcess.selectDirectory(this.config.afinaDbPath)
   if (!dialogResult.canceled) {
     afinaDbPath.value = dialogResult.filePaths[0]
     this.config.afinaDbPath = afinaDbPath.value
@@ -243,7 +243,7 @@ parusDbPath.addEventListener('change', (evt) => {
 })
 
 document.getElementById('select-parus-path').addEventListener('click', async () => {
-  let dialogResult = await mainProcess.selectDirectory()
+  let dialogResult = await mainProcess.selectDirectory(this.config.parusDbPath)
   if (!dialogResult.canceled) {
     parusDbPath.value = dialogResult.filePaths[0]
     this.config.parusDbPath = parusDbPath.value
@@ -259,7 +259,7 @@ c1DbPath.addEventListener('change', (evt) => {
 })
 
 document.getElementById('select-c1-path').addEventListener('click', async () => {
-  let dialogResult = await mainProcess.selectDirectory()
+  let dialogResult = await mainProcess.selectDirectory(this.config.c1DbPath)
   if (!dialogResult.canceled) {
     c1DbPath.value = dialogResult.filePaths[0]
     this.config.c1DbPath = c1DbPath.value
@@ -276,7 +276,7 @@ targetPath.addEventListener('change', (evt) => {
 })
 
 document.getElementById('select-target-path').addEventListener('click', async () => {
-  let dialogResult = await mainProcess.selectDirectory()
+  let dialogResult = await mainProcess.selectDirectory(this.config.targetPath)
   if (!dialogResult.canceled) {
     targetPath.value = dialogResult.filePaths[0]
     this.config.targetPath = targetPath.value

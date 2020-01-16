@@ -58,14 +58,15 @@ app.on('window-all-closed', function () {
   app.quit()
 })
 
-async function selectDirectory() {
+async function selectDirectory(defaultPath) {
   let options = {
     title: "Виберіть каталог",
-    defaultPath: "./",
+    defaultPath: defaultPath,
     buttonLabel: "Вибрати",
     properties: ['openDirectory', 'promptToCreate']
   }
-  return await dialog.showOpenDialog(mainWindow, options)
+  // return await dialog.showOpenDialog(mainWindow, options) !!! Doesn't select a directory, only file
+  return await dialog.showOpenDialog(options)
 }
 
 module.exports = { selectDirectory }
