@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const Target = require('../Target')
+const iconv = require('iconv-lite')
 
 async function makeFile(target) {
     try {
@@ -19,10 +20,15 @@ async function makeFile(target) {
 
 function readQueryFromFile(fileName) {
     return new Promise((resolve, reject) => {
-        fs.readFile(fileName, 'utf8', (err, queryText) => {
-            if (err) reject(err);
-            resolve(queryText)
-        })
+        try {
+            fs.readFile(fileName, { encoding : null }, (err, queryText) => {
+                if (err) reject(err);
+                let convertedQueryText = iconv.decode(queryText, 'cp1251');
+                resolve(convertedQueryText)
+            })
+        } catch (err) {
+            reject(err)
+        }
     })
 }
 
