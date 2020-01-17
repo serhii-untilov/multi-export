@@ -8,7 +8,7 @@ Preview
 
 Download
 --------
-<a href="./dist/" download>Binaries for MS Windows</a>
+<a href="https://drive.google.com/file/d/1NjTU55ww3htCXHx_HFBtVplZ2jMq4wYj/view?usp=sharing" download>Download multi-export 0.1.0.exe</a>
 
 Afrer clone from repository
 ---------------------------
