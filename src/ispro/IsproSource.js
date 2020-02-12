@@ -10,6 +10,11 @@ const ArchiveMaker = require('../ArchiveMaker')
 
 const SQL_FILES_DIR = './assets/ispro/'
 
+const CONNECTION_TIMEOUT = 5 * 1000
+const REQUEST_TIMEOUT = 5 * 60 * 1000
+const POOL_SIZE = 2
+const IDLE_TIMEOUT = 5 * 60 * 1000
+
 class IsproSource extends Source {
     constructor() {
         super()
@@ -112,12 +117,12 @@ function dbConfig(config) {
         password: config.password,
         server: config.server,
         database: config.schema,
-        connectionTimeout: 300000,
-        requestTimeout: 600000,
+        connectionTimeout: CONNECTION_TIMEOUT,
+        requestTimeout: REQUEST_TIMEOUT,
         pool: {
-            max: 1,
+            max: POOL_SIZE,
             min: 0,
-            idleTimeoutMillis: 300000
+            idleTimeoutMillis: IDLE_TIMEOUT
         }
     }
 }
