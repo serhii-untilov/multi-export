@@ -4,6 +4,8 @@ const fs = require('fs')
 const Target = require('../Target')
 const iconv = require('iconv-lite')
 
+const BATCH_SIZE = 10000
+
 async function makeFile(target) {
     try {
         let queryText = await readQueryFromFile(target.queryFileName)
@@ -55,7 +57,6 @@ async function doQuery(target, queryText) {
         request.stream = true
         request.query(queryText)
 
-        const BATCH_SIZE = 10000
         let buffer = ''
 
         // Emitted once for each recordset in a query
