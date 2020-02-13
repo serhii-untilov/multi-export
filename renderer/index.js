@@ -404,6 +404,7 @@ const getStateText = (target) => {
 }
 
 ipcRenderer.on('push-file', (event, target) => {
+  console.log('push-file', target.fileName)
   targetList.push(target)
   var html = ''
   for (var i = 0; i < targetList.length; i++) {

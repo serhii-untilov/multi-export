@@ -30,6 +30,7 @@ function main() {
   })
 
   const sendFile = (target) => {
+    console.log('push-file', target.fileName)
     mainWindow.send('push-file', target)
   }
 
