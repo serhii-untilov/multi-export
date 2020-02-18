@@ -39,7 +39,7 @@ class IsproSource extends Source {
                         let firmName = await this.getFirmName(pool)
                         let arc = new ArchiveMaker(config, firmName)
                         arc.make(targetList, (arcFileName) => {
-                            removeFiles(targetList)
+                            Target.removeFiles(targetList)
                             sendDone(arcFileName)
                         })
                     } else {
@@ -64,19 +64,6 @@ class IsproSource extends Source {
         } catch (err) {
             console.log('getFirmName', err)
             return null
-        }
-    }
-}
-
-function removeFiles(targetList) {
-    for (let i = 0; i < targetList.length; i++) {
-        if (targetList[i].state == Target.FILE_CREATED) {
-            let fileName = targetList[i].fileName
-            fs.exists(fileName, (exists) => {
-                if (exists) {
-                    fs.unlink(fileName, (err) => { })
-                }
-            })
         }
     }
 }

@@ -26,9 +26,23 @@ function getTargetFileName(config, sourceFileName) {
     return targetFileName
 }
 
+function removeFiles(targetList) {
+    for (let i = 0; i < targetList.length; i++) {
+        if (targetList[i].state == Target.FILE_CREATED) {
+            let fileName = targetList[i].fileName
+            fs.exists(fileName, (exists) => {
+                if (exists) {
+                    fs.unlink(fileName, (err) => { })
+                }
+            })
+        }
+    }
+}
+
 module.exports = {
     Target,
     getTargetFileName,
+    removeFiles,
 
     FILE_CREATED,
     FILE_ERROR,

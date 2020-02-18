@@ -4,7 +4,7 @@ const HOME  = 'home'
 const ISPRO = 'ispro'
 const AFINA = 'afina'
 const PARUS = 'parus'
-const C1 = '1C'
+const C7 = 'C7'
 
 class Config {
     constructor() {
@@ -34,5 +34,5 @@ module.exports = {
     ISPRO,
     AFINA,
     PARUS,
-    C1
+    C7
 }

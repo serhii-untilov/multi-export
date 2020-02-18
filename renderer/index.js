@@ -56,7 +56,7 @@ const renderPanels = () => {
   setVisible(isproPanel, this.config && this.config.source === Config.ISPRO)
   setVisible(afinaPanel, this.config && this.config.source === Config.AFINA)
   setVisible(parusPanel, this.config && this.config.source === Config.PARUS)
-  setVisible(c1Panel, this.config && this.config.source === Config.C1)
+  setVisible(c1Panel, this.config && this.config.source === Config.C7)
   setVisible(commonParamsPanel, this.config && this.config.source != Config.HOME)
   setVisible(controlPanel, this.config && this.config.source != Config.HOME)
   setVisible(bodyPanel, false)
@@ -70,7 +70,7 @@ const renderMenu = () => {
   setSelected(buttonSelectISPro, this.config.source == Config.ISPRO)
   setSelected(buttonSelectAfina, this.config.source == Config.AFINA)
   setSelected(buttonSelectParus, this.config.source == Config.PARUS)
-  setSelected(buttonSelect1C, this.config.source == Config.C1)
+  setSelected(buttonSelect1C, this.config.source == Config.C7)
 }
 
 const selectHome = () => {
@@ -127,10 +127,10 @@ document.getElementById('homeSelectParus').addEventListener('click', selectParus
 document.getElementById('captionParus').addEventListener('click', selectParus)
 
 const select1C = () => {
-  if (this.config.source == Config.C1)
+  if (this.config.source == Config.C7)
     return
   targetList.length = 0
-  this.config.source = Config.C1
+  this.config.source = Config.C7
   ipcRenderer.send('set-config', this.config)
   renderMenu()
   renderPanels()
