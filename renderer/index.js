@@ -13,7 +13,7 @@ const mainProcess = remote.require('./main')
 
 const config = null
 
-const targetList = []
+let targetList = []
 
 let timeStart = null
 
@@ -403,9 +403,7 @@ const getStateText = (target) => {
   }
 }
 
-ipcRenderer.on('push-file', (event, target) => {
-  console.log('push-file', target.fileName)
-  targetList.push(target)
+const renderGrid = () => {
   var html = ''
   for (var i = 0; i < targetList.length; i++) {
     let stateText = getStateText(targetList[i])
@@ -413,5 +411,13 @@ ipcRenderer.on('push-file', (event, target) => {
     html += `<tr><td>${fileName}</td><td>${stateText}</td></tr>`
   }
   resultTable.innerHTML = html
+}
+
+ipcRenderer.on('push-file', (event, _targetList) => {
+  // targetList.push(target)
+  targetList = _targetList.slice(0)
+//  console.log('push-file', target.fileName)  
+
+  renderGrid()
 })
 

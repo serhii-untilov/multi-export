@@ -29,9 +29,12 @@ function main() {
     dataStore.setConfig(config)
   })
 
+  const targetList = []
+
   const sendFile = (target) => {
-    console.log('push-file', target.fileName)
-    mainWindow.send('push-file', target)
+    targetList.push(target)
+    // console.log('push-file', target.fileName, targetList.length)
+    mainWindow.send('push-file', targetList)
   }
 
   const sendDone = (archiveName) => {
@@ -43,6 +46,7 @@ function main() {
   }
 
   ipcMain.on('run-export', (event, config) => {
+    targetList.length = 0
     try {
       let source = makeSource(config)
       source.read(config, sendFile, sendDone, sendFailed)
