@@ -71,11 +71,6 @@ const renderMenu = () => {
   setSelected(buttonSelectAfina, this.config.source == Config.AFINA)
   setSelected(buttonSelectParus, this.config.source == Config.PARUS)
   setSelected(buttonSelect1C, this.config.source == Config.C1)
-
-  // setVisible(buttonSelectISPro, this.config.source != Config.HOME)
-  // setVisible(buttonSelectAfina, this.config.source != Config.HOME)
-  // setVisible(buttonSelectParus, this.config.source != Config.HOME)
-  // setVisible(buttonSelect1C, this.config.source != Config.HOME)
 }
 
 const selectHome = () => {
@@ -162,8 +157,8 @@ buttonRunExport.addEventListener('click', () => {
 
   timeStart = new Date();
 
-  // buttonRunExport.classList.remove('disabled')
-  // buttonRunExport.classList.add('disabled')
+  buttonRunExport.classList.remove('loading')
+  buttonRunExport.classList.add('loading')
 
   setVisible(bodyPanel, true)
   targetList.length = 0
@@ -364,7 +359,7 @@ const stateText = (created, errors, arcFileName) => {
 
 ipcRenderer.on('done', (event, arcFileName) => {
 
-  // buttonRunExport.classList.remove('disabled')
+  buttonRunExport.classList.remove('loading')
 
   resultToast.classList.remove('toast-error')
   resultToast.classList.remove('toast-warning')
@@ -377,7 +372,7 @@ ipcRenderer.on('done', (event, arcFileName) => {
 
 ipcRenderer.on('failed', (event, err) => {
 
-  // buttonRunExport.classList.remove('disabled')
+  buttonRunExport.classList.remove('loading')
 
   resultToast.classList.remove('toast-success')
   resultToast.classList.remove('toast-error')
@@ -414,10 +409,7 @@ const renderGrid = () => {
 }
 
 ipcRenderer.on('push-file', (event, _targetList) => {
-  // targetList.push(target)
   targetList = _targetList.slice(0)
-//  console.log('push-file', target.fileName)  
-
   renderGrid()
 })
 
