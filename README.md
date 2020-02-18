@@ -8,7 +8,7 @@ Preview
 
 Download
 --------
-<a href="https://drive.google.com/file/d/1NjTU55ww3htCXHx_HFBtVplZ2jMq4wYj/view?usp=sharing" 
+<a href="https://drive.google.com/open?id=11c8HZv5hzv3u0xsF8NN3OAd92KyPLYqf" 
     download 
     target="_blank"
     >Download Multi-Export.exe
