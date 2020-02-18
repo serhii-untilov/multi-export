@@ -11,7 +11,7 @@ Download
 <a href="https://drive.google.com/file/d/1NjTU55ww3htCXHx_HFBtVplZ2jMq4wYj/view?usp=sharing" 
     download 
     target="_blank"
-    >Download multi-export 0.1.0.exe
+    >Download Multi-Export.exe
     </a>
 
 Afrer clone from repository
