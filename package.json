@@ -52,9 +52,9 @@
     "iconv": "^2.3.5",
     "iconv-lite": "^0.5.0",
     "mssql": "^6.0.1",
-    "node-dbf": "^0.4.0",
     "node-sass": "^4.13.0",
     "sass": "^1.24.0",
-    "spectre.css": "^0.5.8"
+    "spectre.css": "^0.5.8",
+    "yadbf": "^3.2.3"
   }
 }

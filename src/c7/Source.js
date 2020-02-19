@@ -14,23 +14,20 @@ class C7Source extends Source {
     async read(config, sendFile, sendDone, sendFailed) {
         try {
             let targetList = []
-            let targetPromiseList = makeTargetPromiseList(config,  async (target) => {
-                sendFile(target)
-                targetList.push(target)
-                if (targetList.length == targetPromiseList.length) {
-                    if (config.isArchive) {
-                        let firmName = await this.getFirmName()
-                        let arc = new ArchiveMaker(config, firmName)
-                        arc.make(targetList, (arcFileName) => {
-                            Target.removeFiles(targetList)
-                            sendDone(arcFileName)
-                        })
-                    } else {
-                        sendDone()
-                    }
-                }
-            })
-            await Promise.all(targetPromiseList)
+            let dictionary = new Dictionary(config)
+            let target = await hr_department(config, dictionary, sendFile)
+            sendFile(target)
+            targetList.push(target)
+            if (config.isArchive) {
+                let firmName = await this.getFirmName()
+                let arc = new ArchiveMaker(config, firmName)
+                arc.make(targetList, (arcFileName) => {
+                    Target.removeFiles(targetList)
+                    sendDone(arcFileName)
+                })
+            } else {
+                sendDone()
+            }
         } catch (err) {
             sendFailed(err.message)
         }
@@ -38,7 +35,7 @@ class C7Source extends Source {
 
     async getFirmName() {
         try {
-            let firmName = 'Підприємство (1Cv7)'
+            let firmName = 'export_data_1Cv7'
             return firmName;
         } catch (err) {
             console.log('getFirmName', err)
@@ -47,9 +44,13 @@ class C7Source extends Source {
     }
 }
 
-function makeTargetPromiseList(config, sendFile) {
-    dictionary = new Dictionary(config)
-    return [hr_department(config, dictionary, sendFile)]
-}
+// function makeTargetPromiseList(config, sendFile) {
+//     let dictionary = new Dictionary(config)
+//     console.log('Before promise')
+//     let promise = makePromise(config, dictionary, sendFile)
+//     con
+//     console.log('After promise')
+//     return []
+// }
 
 module.exports = C7Source
