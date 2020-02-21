@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
 const iconv = require('iconv-lite')
 
@@ -130,14 +131,6 @@ async function doQuery(target, queryText) {
     } catch (err) {
         throw err
     }
-}
-
-function removeFile(fileName) {
-    fs.exists(fileName, (exists) => {
-        if (exists) {
-            fs.unlink(fileName, (err) => { })
-        }
-    })
 }
 
 module.exports = makeFile

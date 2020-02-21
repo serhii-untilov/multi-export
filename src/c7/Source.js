@@ -1,7 +1,6 @@
 'use strict'
 
 const Source = require('../Source')
-const Target = require('../Target')
 const Dictionary = require('./Dictionary')
 const hr_department = require('./hr_department')
 const ArchiveMaker = require('../ArchiveMaker')
@@ -15,19 +14,24 @@ class C7Source extends Source {
         try {
             let targetList = []
             let dictionary = new Dictionary(config)
-            let target = await hr_department(config, dictionary, sendFile)
-            sendFile(target)
-            targetList.push(target)
-            if (config.isArchive) {
-                let firmName = await this.getFirmName()
-                let arc = new ArchiveMaker(config, firmName)
-                arc.make(targetList, (arcFileName) => {
-                    Target.removeFiles(targetList)
-                    sendDone(arcFileName)
+            hr_department(config, dictionary)
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
                 })
-            } else {
-                sendDone()
-            }
+                .then(() => sendDone())
+                .catch((err) => sendFailed(err))
+            
+            // if (config.isArchive) {
+            //     let firmName = await this.getFirmName()
+            //     let arc = new ArchiveMaker(config, firmName)
+            //     arc.make(targetList, (arcFileName) => {
+            //         Target.removeFiles(targetList)
+            //         sendDone(arcFileName)
+            //     })
+            // } else {
+            //     sendDone()
+            // }
         } catch (err) {
             sendFailed(err.message)
         }
