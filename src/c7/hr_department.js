@@ -6,49 +6,42 @@ const removeFile = require('../helper/removeFile')
 const fullFileName = require('../helper/fullFileName')
 const dateFormat = require('../helper/dateFormat')
 const Target = require('../Target')
+const Department = require('../entity/Department')
 
 const makeTarget = function(config, dictionary) {
     return new Promise(async (resolve, reject) => {
         let target = new Target.Target()
-        target.fileName = Target.getTargetFileName(config, 'Підрозділи (hr_department)')
+        target.fileName = fullFileName(config.targetPath, 'Підрозділи (hr_department).csv')
         try {
             let sourceFileName = fullFileName(config.c1DbPath, 'PDR.DBF')
-            let ID = 0
-    
+
             removeFile(target.fileName)
-            let buffer = 'ID;code;name;parentUnitID;state;fullName;description;nameGen;fullNameGen;nameDat;fullNameDat;nameOr;' +
-                'fullNameOr;dateFrom;dateTo\n'
-    
+
+            let buffer = new Department().getHeader()
+
             fs.createReadStream(sourceFileName)
             .pipe(new YADBF({encoding: 'cp1251'}))
             .on('data', record => {
                 if (!record.deleted) {
-                    ID += 1
-                    let code = record.ID
-                    let name = record.NM
-                    let parentUnitID = record.ID_PARENT ? dictionary.get_DepartmentID(record.ID_PARENT) : ''
-                    let state = 'ACTIVE'
-                    let fullName = record.NMF
-                    let description = name + ' (' + code + ')'
-                    let nameGen = ''
-                    let fullNameGen = ''
-                    let nameDat =''
-                    let fullNameDat = ''            
-                    let nameOr = ''
-                    let fullNameOr = ''
-                    let dateFrom = dateFormat(record.BEG)
-                    let dateTo = dateFormat(record.END)
-        
-                    buffer += `${ID};${code};${name};${parentUnitID};${state};${fullName};${description};`
-                    buffer += `${nameGen};${fullNameGen};${nameDat};${fullNameDat};${nameOr};${fullNameOr};`
-                    buffer += `${dateFrom};${dateTo}\n`
-        
                     target.recordsCount++
+
+                    let department = new Department()
+                    department.ID = target.recordsCount
+                    department.code = record.ID
+                    department.name = record.NM
+                    department.parentUnitID = record.ID_PARENT ? dictionary.get_DepartmentID(record.ID_PARENT) : ''
+                    department.fullName = record.NMF
+                    department.description = department.name + ' (' + department.code + ')'
+                    department.dateFrom = dateFormat(record.BEG)
+                    department.dateTo = dateFormat(record.END)
+        
+                    buffer += department.getRecord()
+                    
                     fs.appendFile(target.fileName, buffer, (err) => {
                             if (err) throw err;
                         })
                     buffer = ''
-                    dictionary.set_DepartmentID(code, ID)
+                    dictionary.set_DepartmentID(department.code, department.ID)
                 }
             })
             .on('end', () => {

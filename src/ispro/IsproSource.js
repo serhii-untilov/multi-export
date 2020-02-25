@@ -6,7 +6,7 @@ const sql = require('mssql')
 const Source = require('../Source')
 const Target = require('../Target')
 const makeFile = require('./IsproTarget')
-const ArchiveMaker = require('../ArchiveMaker')
+const ArchiveMaker = require('../helper/makeArchive')
 
 const SQL_FILES_DIR = './assets/ispro/'
 

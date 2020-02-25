@@ -2,7 +2,7 @@
 
 const Config = require('./Config')
 const IsproSource = require('./ispro/IsproSource')
-const C7Source = require('./c7/Source')
+const C7Source = require('./c7/C7Source')
 
 const makeSource = (config) => {
     if (config.source === Config.ISPRO)
