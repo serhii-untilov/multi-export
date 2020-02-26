@@ -7,18 +7,19 @@ const iconv = require('iconv-lite')
 
 const BATCH_SIZE = 10000
 
-async function makeFile(target) {
-    try {
-        let queryText = await readQueryFromFile(target.queryFileName)
-        queryText = removeHeader(queryText)
-        queryText = replace_SYS_SCHEMA(queryText, target.config.schemaSys)
-        await doQuery(target, queryText)
-        return target
-    } catch (err) {
-        target.state = Target.FILE_ERROR
-        target.err = err
-        return target
-    }
+const makeFile = function(target) {
+    return new Promise((resolve, reject) => {
+        readQueryFromFile(target.queryFileName)
+        .then((queryText) => removeHeader(queryText))
+        .then((queryText) => replace_SYS_SCHEMA(queryText, target.config.schemaSys))
+        .then((queryText) => doQuery(target, queryText))
+        .then(() => resolve(target))
+        .catch((err) => {
+            target.state = Target.FILE_ERROR
+            target.err = err
+            resolve(target)
+        })
+    })
 }
 
 function readQueryFromFile(fileName) {
@@ -51,7 +52,8 @@ function replace_SYS_SCHEMA(queryText, schemaSys) {
 }
 
 async function doQuery(target, queryText) {
-    try {
+    return new Promise((resolve, reject) => {
+
         removeFile(target.fileName)
 
         const request = target.pool.request(); // or: new sql.Request(pool1)
@@ -82,7 +84,7 @@ async function doQuery(target, queryText) {
 
         // May be emitted multiple times
         request.on('error', err => {
-            throw(err)
+            reject(err)
         })
 
         // Always emitted as the last one
@@ -91,17 +93,17 @@ async function doQuery(target, queryText) {
             if (target.recordsCount) {
                 // request.pause();
                 fs.appendFile(target.fileName, buffer, (err) => {
-                    if (err) throw err;
+                    if (err) {
+                        reject(err)
+                    };
                 })
                 buffer = ''
                 target.state = Target.FILE_CREATED
-                target.done(target)
                 // request.resume();
             } else {
                 target.state = Target.FILE_EMPTY
-                target.done(target)
             }
-            
+            resolve(target)
         })
 
         function writeHeader(columns) {
@@ -127,10 +129,7 @@ async function doQuery(target, queryText) {
             }
             buffer += '\n'
         }
-        
-    } catch (err) {
-        throw err
-    }
+    })
 }
 
 module.exports = makeFile

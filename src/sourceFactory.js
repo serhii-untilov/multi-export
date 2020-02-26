@@ -1,8 +1,8 @@
 'use strict'
 
 const Config = require('./Config')
-const IsproSource = require('./ispro/IsproSource')
-const C7Source = require('./c7/C7Source')
+const IsproSource = require('./ISpro/IsproSource')
+const C7Source = require('./1C7/C7Source')
 
 const makeSource = (config) => {
     if (config.source === Config.ISPRO)

@@ -76,6 +76,7 @@ const renderMenu = () => {
 const selectHome = () => {
   if (this.config.source == Config.HOME)
     return
+  buttonRunExport.classList.remove('loading')
   targetList.length = 0
   this.config.source = Config.HOME
   ipcRenderer.send('set-config', this.config)
@@ -87,6 +88,7 @@ document.getElementById('selectHome').addEventListener('click', selectHome)
 const selectIspro = () => {
   if (this.config.source == Config.ISPRO)
     return
+  buttonRunExport.classList.remove('loading')
   targetList.length = 0
   this.config.source = Config.ISPRO
   ipcRenderer.send('set-config', this.config)
@@ -101,6 +103,7 @@ document.getElementById('captionISPro').addEventListener('click', selectIspro)
 const selectAfina = () => {
   if (this.config.source == Config.AFINA)
     return
+  buttonRunExport.classList.remove('loading')
   targetList.length = 0
   this.config.source = Config.AFINA
   ipcRenderer.send('set-config', this.config)
@@ -115,6 +118,7 @@ document.getElementById('captionAfina').addEventListener('click', selectAfina)
 const selectParus = () => {
   if (this.config.source == Config.PARUS)
     return
+  buttonRunExport.classList.remove('loading')
   targetList.length = 0
   this.config.source = Config.PARUS
   ipcRenderer.send('set-config', this.config)
@@ -129,6 +133,7 @@ document.getElementById('captionParus').addEventListener('click', selectParus)
 const select1C = () => {
   if (this.config.source == Config.C7)
     return
+  buttonRunExport.classList.remove('loading')
   targetList.length = 0
   this.config.source = Config.C7
   ipcRenderer.send('set-config', this.config)
