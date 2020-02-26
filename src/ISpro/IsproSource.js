@@ -52,11 +52,15 @@ class IsproSource extends Source {
         })
         .then((targetList) => {
             if (config.isArchive) {
+                let arcFileName
                 getFirmName(pool)
                 .then((firmName) => fullFileName(config.targetPath, firmName + '.zip'))
-                .then((arcFileName) => makeArchive(arcFileName, targetList))
+                .then((fileName) => {
+                    arcFileName = fileName
+                    makeArchive(arcFileName, targetList)
+                })
                 .then(() => removeTargetFiles(targetList))
-                .then(() => sendDone(null))
+                .then(() => sendDone(arcFileName))
                 .catch((err) => sendFailed(err.message))
             } else {
                 sendDone(null)
