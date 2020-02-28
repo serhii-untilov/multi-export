@@ -8,7 +8,16 @@ class Dictionary {
         this.TaxCode = {}
         this.PayElID = {}
         this.DepartmentID = {}
+        this.WorkScheduleID = {}
         this.error_count = 0
+    }
+
+    set_WorkScheduleID(code, ID) {
+        this.WorkScheduleID[code] = ID
+    }
+
+    get_WorkScheduleID(code) {
+        return this.WorkScheduleID[code]
     }
 
     set_DepartmentID(code, ID) {

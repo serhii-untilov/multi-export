@@ -5,18 +5,18 @@ const YADBF = require('yadbf')
 const removeFile = require('../helper/removeFile')
 const fullFileName = require('../helper/fullFileName')
 const Target = require('../Target')
-const Position = require('../entity/Position')
+const WorkSchedule = require('../entity/WorkSchedule')
 
-const makeTarget = function(config) {
+const makeTarget = function(config, diction) {
     return new Promise(async (resolve, reject) => {
         let target = new Target.Target()
-        target.fileName = fullFileName(config.targetPath, 'Посади (штатні позиції) (hr_position).csv')
+        target.fileName = fullFileName(config.targetPath, 'Графіки роботи (hr_workSchedule).csv')
         try {
-            let sourceFileName = fullFileName(config.c1DbPath, 'PRK.DBF')
+            let sourceFileName = fullFileName(config.c1DbPath, 'GRF.DBF')
 
             removeFile(target.fileName)
 
-            let buffer = new Position().getHeader()
+            let buffer = new WorkSchedule().getHeader()
 
             fs.createReadStream(sourceFileName)
             .pipe(new YADBF({encoding: 'cp1251'}))
@@ -24,18 +24,18 @@ const makeTarget = function(config) {
                 if (!record.deleted) {
                     target.recordsCount++
 
-                    let position = new Position()
-                    // TODO: Need to fill all the fields and join the same positions using the Dictionary class.
-                    position.ID = 0
-                    position.code = record.DOL
-                    position.name = ''
+                    let workSchedule = new WorkSchedule()
+                    workSchedule.ID = target.recordsCount
+                    workSchedule.code = record.CD
+                    workSchedule.name = record.NM
         
-                    buffer += position.getRecord()
+                    buffer += workSchedule.getRecord()
                     
                     fs.appendFile(target.fileName, buffer, (err) => {
                             if (err) throw err;
                         })
                     buffer = ''
+                    diction.set_WorkScheduleID(workSchedule.code, workSchedule.ID)
                 }
             })
             .on('end', () => {

@@ -7,6 +7,8 @@ const hr_dictPosition = require('./hr_dictPosition')
 const fullFileName = require('../helper/fullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
+const hr_position = require('./hr_position')
+const hr_workSchedule = require('./hr_workSchedule')
 
 const ARC_FILE_NAME = '1Cv7.zip'
 
@@ -22,6 +24,8 @@ class C7Source extends Source {
             let arcFileName = null
             hr_dictPosition(config).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_department(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })                
+                .then(() => hr_position(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })                
                 .then(() => {
                     if (config.isArchive) {
                         arcFileName = fullFileName(config.targetPath, ARC_FILE_NAME)
