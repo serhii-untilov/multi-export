@@ -1,6 +1,6 @@
 'use strict'
 
-class WorkSchedule {
+class SimpleDictionary {
     constructor() {
         this.ID = 0
         this.code = ''
@@ -16,4 +16,4 @@ class WorkSchedule {
     }
 }
 
-module.exports = WorkSchedule
+module.exports = SimpleDictionary
