@@ -5,18 +5,18 @@ const YADBF = require('yadbf')
 const removeFile = require('../helper/removeFile')
 const fullFileName = require('../helper/fullFileName')
 const Target = require('../Target')
-const WorkSchedule = require('../entity/SimpleDictionary')
+const DictStaffCat = require('../entity/SimpleDictionary')
 
-const makeTarget = function(config, diction) {
+const makeTarget = function(config) {
     return new Promise(async (resolve, reject) => {
         let target = new Target.Target()
-        target.fileName = fullFileName(config.targetPath, 'Графіки роботи (hr_workSchedule).csv')
+        target.fileName = fullFileName(config.targetPath, 'Категорії персоналу (hr_dictStaffCat).csv')
         try {
-            let sourceFileName = fullFileName(config.c1DbPath, 'GRF.DBF')
+            let sourceFileName = fullFileName(config.c1DbPath, 'KAT.DBF')
 
             removeFile(target.fileName)
 
-            let buffer = new WorkSchedule().getHeader()
+            let buffer = new DictStaffCat().getHeader()
 
             fs.createReadStream(sourceFileName)
             .pipe(new YADBF({encoding: 'cp1251'}))
@@ -24,18 +24,17 @@ const makeTarget = function(config, diction) {
                 if (!record.deleted) {
                     target.recordsCount++
 
-                    let workSchedule = new WorkSchedule()
-                    workSchedule.ID = target.recordsCount
-                    workSchedule.code = record.CD
-                    workSchedule.name = record.NM
+                    let dictPosition = new DictStaffCat()
+                    dictPosition.ID = target.recordsCount
+                    dictPosition.code = record.CD
+                    dictPosition.name = record.NM
         
-                    buffer += workSchedule.getRecord()
+                    buffer += dictPosition.getRecord()
                     
                     fs.appendFile(target.fileName, buffer, (err) => {
                             if (err) throw err;
                         })
                     buffer = ''
-                    diction.set_WorkScheduleID(workSchedule.code, workSchedule.ID)
                 }
             })
             .on('end', () => {
