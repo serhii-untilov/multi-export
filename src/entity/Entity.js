@@ -16,14 +16,14 @@ class Entity {
     }
 
     getRecord() {
-        let header = ''
+        let record = ''
         let separator = ''
         for (const prop in this) {
-            header += `${separator}${this[prop]}`
+            record += `${separator}${this[prop]}`
             separator = ';'
         }
-        header += '\n'
-        return header
+        record += '\n'
+        return record
     }
 }
 
