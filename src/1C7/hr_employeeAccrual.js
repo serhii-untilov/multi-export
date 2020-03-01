@@ -9,16 +9,6 @@ const Entity = require('../entity/EmployeeAccrual')
 const SOURCE_FILE_NAME = 'NCH.DBF'
 const TARGET_FILE_NAME = 'Постійні нарахування працівника (hr_employeeAccrual).csv'
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
-    target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
-    target.dictionary = dictionary
-    target.entity = new Entity()
-    target.entity.setRecord = setRecord
-    return makeFile(target)
-}
-
 function setRecord(record, recordNumber) {
     this.ID = recordNumber
     this.employeeID = record['TN']
@@ -32,6 +22,16 @@ function setRecord(record, recordNumber) {
     this.accrualRate = record['PRC'] ? record['PRC'] : ''
     this.orderNumber = record['CDPR']
     this.orderDatefrom = ''
+}
+
+function makeTarget(config, dictionary) {
+    let target = new Target.Target()
+    target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
+    target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.dictionary = dictionary
+    target.entity = new Entity()
+    target.entity.setRecord = setRecord
+    return makeFile(target)
 }
 
 module.exports = makeTarget

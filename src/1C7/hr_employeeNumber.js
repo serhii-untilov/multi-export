@@ -9,16 +9,6 @@ const Entity = require('../entity/EmployeeNumber')
 const SOURCE_FILE_NAME = 'LS.DBF'
 const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
-    target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
-    target.dictionary = dictionary
-    target.entity = new Entity()
-    target.entity.setRecord = setRecord
-    return makeFile(target)
-}
-
 function setRecord(record, recordNumber) {
     this.ID = record['TN'] // record['ID']
     this.employeeID = record['TN']
@@ -29,6 +19,16 @@ function setRecord(record, recordNumber) {
     this.description = record['FIO'] + ' (' + str(record['TN']) + ')'
     this.payOutID = ''
     this.personalAccount = record['BANKRAH']
+}
+
+function makeTarget(config, dictionary) {
+    let target = new Target.Target()
+    target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
+    target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.dictionary = dictionary
+    target.entity = new Entity()
+    target.entity.setRecord = setRecord
+    return makeFile(target)
 }
 
 module.exports = makeTarget

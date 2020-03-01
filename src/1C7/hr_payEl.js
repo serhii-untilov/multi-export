@@ -9,16 +9,6 @@ const Entity = require('../entity/PayEl')
 const SOURCE_FILE_NAME = 'VO.DBF'
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
-    target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
-    target.dictionary = dictionary
-    target.entity = new Entity()
-    target.entity.setRecord = setRecord
-    return makeFile(target)
-}
-
 function setRecord(record, recordNumber) {
     this.ID = recordNumber
     this.code = record.CD
@@ -40,6 +30,16 @@ function setRecord(record, recordNumber) {
     this.prepaymentDay = ''
     this.dictFundSourceID = ''
     this.set_payElID(this.entity.code, this.entity.ID)
+}
+
+function makeTarget(config, dictionary) {
+    let target = new Target.Target()
+    target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
+    target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.dictionary = dictionary
+    target.entity = new Entity()
+    target.entity.setRecord = setRecord
+    return makeFile(target)
 }
 
 module.exports = makeTarget

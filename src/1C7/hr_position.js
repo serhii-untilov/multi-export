@@ -9,6 +9,14 @@ const Entity = require('../entity/Position')
 const SOURCE_FILE_NAME = 'PRK.DBF'
 const TARGET_FILE_NAME = 'Посади (штатні позиції) (hr_position).csv'
 
+function setRecord(record, recordNumber) {
+    // TODO: Need to fill all the fields and join the same positions using the Dictionary class.
+    this.ID = 0
+    this.code = record.DOL
+    this.name = ''
+    this.description = `${entity.name} (${entity.code})`
+}
+
 function makeTarget(config, dictionary) {
     let target = new Target.Target()
     target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
@@ -17,14 +25,6 @@ function makeTarget(config, dictionary) {
     target.entity = new Entity()
     target.entity.setRecord = setRecord
     return makeFile(target)
-}
-
-function setRecord(record, recordNumber) {
-    // TODO: Need to fill all the fields and join the same positions using the Dictionary class.
-    this.ID = 0
-    this.code = record.DOL
-    this.name = ''
-    this.description = `${entity.name} (${entity.code})`
 }
 
 module.exports = makeTarget

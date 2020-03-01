@@ -1,5 +1,5 @@
 const sql = require('mssql')
-const IsproTarget = require('../src/ispro/IsproTarget')
+const TargetISpro = require('../src/ispro/TargetISpro')
 const dotenv = require('dotenv')
 dotenv.config()
 
