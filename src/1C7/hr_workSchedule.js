@@ -14,7 +14,7 @@ function setRecord(record, recordNumber) {
     this.code = record.CD
     this.name = record.NM
     this.description = `${entity.name} (${entity.code})`
-    this.set_WorkScheduleID(this.entity.code, this.entity.ID)
+    this.setWorkScheduleID(this.entity.code, this.entity.ID)
 }
 
 function makeTarget(config, dictionary) {

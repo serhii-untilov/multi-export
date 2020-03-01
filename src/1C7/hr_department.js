@@ -13,12 +13,12 @@ function setRecord(record, recordNumber) {
     this.ID = recordNumber
     this.code = record.ID
     this.name = record.NM
-    this.parentUnitID = record.ID_PARENT ? this.dictionary.get_DepartmentID(record.ID_PARENT) : ''
+    this.parentUnitID = record.ID_PARENT ? this.dictionary.getDepartmentID(record.ID_PARENT) : ''
     this.fullName = record.NMF
     this.description = department.name + ' (' + department.code + ')'
     this.dateFrom = dateFormat(record.BEG)
     this.dateTo = dateFormat(record.END)
-    this.dictionary.set_payElID(this.entity.code, this.entity.ID)
+    this.dictionary.setDepartmentID(this.entity.code, this.entity.ID)
 }
 
 function makeTarget(config, dictionary) {

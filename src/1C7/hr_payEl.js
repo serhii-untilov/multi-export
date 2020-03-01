@@ -29,7 +29,7 @@ function setRecord(record, recordNumber) {
     this.typePrepayment = ''
     this.prepaymentDay = ''
     this.dictFundSourceID = ''
-    this.set_payElID(this.entity.code, this.entity.ID)
+    this.setPayElID(this.entity.code, this.entity.ID)
 }
 
 function makeTarget(config, dictionary) {

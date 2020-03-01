@@ -12,36 +12,36 @@ class Dictionary {
         this.error_count = 0
     }
 
-    set_WorkScheduleID(code, ID) {
+    setWorkScheduleID(code, ID) {
         this.WorkScheduleID[code] = ID
     }
 
-    get_WorkScheduleID(code) {
+    getWorkScheduleID(code) {
         return this.WorkScheduleID[code]
     }
 
-    set_DepartmentID(code, ID) {
+    setDepartmentID(code, ID) {
         this.DepartmentID[code] = ID
     }
 
-    get_DepartmentID(code) {
+    getDepartmentID(code) {
         return this.DepartmentID[code] || ''
     }
 
-    set_TaxCode(tabNum, taxCode) {
+    setTaxCode(tabNum, taxCode) {
         this.TaxCode[tabNum] = taxCode
     }
 
-    get_TaxCode(tabNum) {
+    getTaxCode(tabNum) {
         return this.TaxCode[tabNum] || ''
     }
         
 
-    set_PayElID(cd, payElID) {
+    setPayElID(cd, payElID) {
         this.PayElID[cd] = payElID
     }
 
-    get_PayElID(cd) {
+    getPayElID(cd) {
         try {
             return this.PayElID[cd] || 0
         } catch(err) {
@@ -51,7 +51,7 @@ class Dictionary {
                 this.error_count += 1
                 console.log('Error [' + str(this.error_count) + ']. Not found PayElCd: ' + cd + '.')
             } else {
-                this.set_PayElID(cd, ID)
+                this.setPayElID(cd, ID)
             }
             return ID
         }

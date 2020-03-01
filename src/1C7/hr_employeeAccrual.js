@@ -13,9 +13,9 @@ function setRecord(record, recordNumber) {
     this.ID = recordNumber
     this.employeeID = record['TN']
     this.tabNum = record['TN']
-    this.taxCode = this.dictionary.get_TaxCode(this.tabNum)
+    this.taxCode = this.dictionary.getTaxCode(this.tabNum)
     this.employeeNumberID = record['TN']
-    this.payElID = this.dictionary.get_PayElID(record['CD'])
+    this.payElID = this.dictionary.getPayElID(record['CD'])
     this.dateFrom = record['DATN'] ? dateFormat(record['DATN']) : ''
     this.dateTo = record['DATK'] ? dateFormat(record['DATK']) : '9999-12-31'
     this.accrualSum = record['SM'] ? record['SM'] : ''
