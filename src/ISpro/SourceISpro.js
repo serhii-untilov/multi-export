@@ -5,7 +5,7 @@ const path = require('path')
 const sql = require('mssql')
 const Source = require('../Source')
 const Target = require('../Target')
-const makeFile = require('./IsproTarget')
+const makeFile = require('./TargetISpro')
 const fullFileName = require('../helper/fullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
@@ -17,7 +17,7 @@ const CONNECTION_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 const REQUEST_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 const ACQUIRE_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 
-class IsproSource extends Source {
+class SourceISpro extends Source {
     constructor() {
         super()
     }
@@ -36,7 +36,7 @@ class IsproSource extends Source {
                     return new Promise(async (resolve, reject) => {
                         let target = new Target.Target()
                         let fileName = path.parse(queryFileName).name
-                        target.fileName = fullFileName(config.targetPath, fileName + '.csv')
+                        target.fullFileName = fullFileName(config.targetPath, fileName + '.csv')
                         target.queryFileName = fullFileName(SQL_FILES_DIR, queryFileName)
                         target.config = config
                         target.pool = pool
@@ -112,4 +112,4 @@ function dbConfig(config) {
     }
 }
 
-module.exports = IsproSource
+module.exports = SourceISpro

@@ -5,9 +5,9 @@ const Target = require('../Target')
 const makeFile = require('./Target1C7')
 
 // Be attentive to fill this section
-const Entity = require('../entity/SimpleEntity')
-const SOURCE_FILE_NAME = 'GRF.DBF'
-const TARGET_FILE_NAME = 'Графіки роботи (hr_workSchedule).csv'
+const Entity = require('../entity/PayEl')
+const SOURCE_FILE_NAME = 'VO.DBF'
+const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
 function makeTarget(config, dictionary) {
     let target = new Target.Target()
@@ -23,9 +23,23 @@ function setRecord(record, recordNumber) {
     this.ID = recordNumber
     this.code = record.CD
     this.name = record.NM
+    this.methodID = ''
     this.description = `${entity.name} (${entity.code})`
-    this.set_WorkScheduleID(this.entity.code, this.entity.ID)
+    this.dateFrom = ''
+    this.dateTo = ''
+    this.roundUpTo = '2'
+    this.isAutoCalc = '1'
+    this.isRecalculate = '1'
+    this.calcProportion = ''
+    this.calcSumType = ''
+    this.periodType = ''
+    this.dictExperienceID = ''
+    this.calcMounth = ''
+    this.averageMethod = ''
+    this.typePrepayment = ''
+    this.prepaymentDay = ''
+    this.dictFundSourceID = ''
+    this.set_payElID(this.entity.code, this.entity.ID)
 }
 
 module.exports = makeTarget
-

@@ -7,7 +7,6 @@ const DataStore = require('./src/DataStore')
 const makeSource = require('./src/sourceFactory')
 require('electron-reload')(__dirname)
 const dataStore = new DataStore({ name: 'multi-export-config' })
-// let mainWindow
 
 function main() {
 
@@ -33,7 +32,6 @@ function main() {
 
   const sendFile = (target) => {
     targetList.push(target)
-    // console.log('push-file', target.fileName, targetList.length)
     mainWindow.send('push-file', targetList)
   }
 

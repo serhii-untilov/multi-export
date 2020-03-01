@@ -8,7 +8,7 @@ const FILE_EMPTY = 'empty'
 
 class Target {
     constructor() {
-        this.fileName = null
+        this.fullFileName = null
         this.state = null
         this.err = null
         this.recordsCount = 0

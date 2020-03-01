@@ -2,7 +2,7 @@ const { Target } = require('../src/Target')
 
 test('The Target must contain filled fileName field', () => {
     let target = new Target()
-    expect(target.fileName).toBe(null)
+    expect(target.fullFileName).toBe(null)
 })
 
 test('The Target must contain state field which equal to null', () => {

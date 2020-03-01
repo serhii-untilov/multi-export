@@ -407,7 +407,7 @@ const renderGrid = () => {
   var html = ''
   for (var i = 0; i < targetList.length; i++) {
     let stateText = getStateText(targetList[i])
-    let fileName = path.basename(targetList[i].fileName)
+    let fileName = path.basename(targetList[i].fullFileName)
     html += `<tr><td>${fileName}</td><td>${stateText}</td></tr>`
   }
   resultTable.innerHTML = html

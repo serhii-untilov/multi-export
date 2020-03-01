@@ -1,7 +1,10 @@
 'use strict'
 
-class Position {
+const Entity = require('./Entity')
+
+class Position extends Entity {
     constructor() {
+        super()
         this.ID = 0
         this.code = ''
         this.name = ''
@@ -37,17 +40,6 @@ class Position {
         this.fullNameNom = ''	
         this.fullNameVoc = ''
         this.liquidate = '0' 
-    }
-
-    getHeader() {
-        return 'ID;code;name;fullName;parentUnitID;state;psCategory;positionType;dictProfessionID;dictWagePayID;'
-            + 'description;nameGen;nameDat;fullNameGen;fullNameDat;nameOr;fullNameOr;quantity;personalType;'
-            + 'positionCategory;dictStatePayID;accrualSum;payElID;dictStaffCatID;dictFundSourceID;nameAcc;'
-            + 'fullNameAcc;entryOrderID;nameLoc;fullNameLoc;nameNom;nameVoc;fullNameNom;fullNameVoc;liquidate\n'
-    }
-
-    getRecord() {
-        return `${this.ID};${this.code};${this.name}\n`
     }
 }
 

@@ -5,9 +5,9 @@ const Target = require('../Target')
 const makeFile = require('./Target1C7')
 
 // Be attentive to fill this section
-const Entity = require('../entity/Department') 
-const SOURCE_FILE_NAME = 'PDR.DBF'
-const TARGET_FILE_NAME = 'Підрозділи (hr_department).csv'
+const Entity = require('../entity/EmployeeNumber')
+const SOURCE_FILE_NAME = 'LS.DBF'
+const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
 
 function makeTarget(config, dictionary) {
     let target = new Target.Target()
@@ -20,15 +20,15 @@ function makeTarget(config, dictionary) {
 }
 
 function setRecord(record, recordNumber) {
-    this.ID = recordNumber
-    this.code = record.ID
-    this.name = record.NM
-    this.parentUnitID = record.ID_PARENT ? this.dictionary.get_DepartmentID(record.ID_PARENT) : ''
-    this.fullName = record.NMF
-    this.description = department.name + ' (' + department.code + ')'
-    this.dateFrom = dateFormat(record.BEG)
-    this.dateTo = dateFormat(record.END)
-    this.dictionary.set_payElID(this.entity.code, this.entity.ID)
+    this.ID = record['TN'] // record['ID']
+    this.employeeID = record['TN']
+    this.taxCode = record['NLP']
+    this.tabNum = record['TN']
+    this.dateFrom = record['BEG'] ? dateFormat(record['BEG']) : ''
+    this.dateTo = record['END'] ? dateFormat(record['END']) : ''
+    this.description = record['FIO'] + ' (' + str(record['TN']) + ')'
+    this.payOutID = ''
+    this.personalAccount = record['BANKRAH']
 }
 
 module.exports = makeTarget

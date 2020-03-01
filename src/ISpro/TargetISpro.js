@@ -54,7 +54,7 @@ function replace_SYS_SCHEMA(queryText, schemaSys) {
 async function doQuery(target, queryText) {
     return new Promise((resolve, reject) => {
 
-        removeFile(target.fileName)
+        removeFile(target.fullFileName)
 
         const request = target.pool.request(); // or: new sql.Request(pool1)
         request.stream = true
@@ -74,7 +74,7 @@ async function doQuery(target, queryText) {
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE == 0) {
                 request.pause();
-                fs.appendFile(target.fileName, buffer, (err) => {
+                fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) throw err;
                 })
                 buffer = ''
@@ -92,7 +92,7 @@ async function doQuery(target, queryText) {
             
             if (target.recordsCount) {
                 // request.pause();
-                fs.appendFile(target.fileName, buffer, (err) => {
+                fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) {
                         reject(err)
                     };

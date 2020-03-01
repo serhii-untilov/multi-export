@@ -1,6 +1,6 @@
 'use strict'
 const fs = require('fs')
-const PayEl = require('../entity/PayEl')
+const PayEl = require('./PayEl')
 
 class Dictionary {
     constructor(config) {

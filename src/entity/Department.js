@@ -1,7 +1,10 @@
 'use strict'
 
-class Department {
+const Entity = require('./Entity')
+
+class Department extends Entity {
     constructor() {
+        super()
         this.ID = 0
         this.code = ''
         this.name = ''
@@ -17,17 +20,6 @@ class Department {
         this.fullNameOr = ''
         this.dateFrom = ''
         this.dateTo = ''
-    }
-
-    getHeader() {
-        return 'ID;code;name;parentUnitID;state;fullName;description;nameGen;fullNameGen;nameDat;fullNameDat;nameOr;' +
-            'fullNameOr;dateFrom;dateTo\n'
-    }
-
-    getRecord() {
-        return `${this.ID};${this.code};${this.name};${this.parentUnitID};${this.state};${this.fullName};${this.description};`
-            + `${this.nameGen};${this.fullNameGen};${this.nameDat};${this.fullNameDat};${this.nameOr};${this.fullNameOr};`
-            + `${this.dateFrom};${this.dateTo}\n`
     }
 }
 
