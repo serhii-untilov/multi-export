@@ -3,6 +3,7 @@
 const fullFileName = require('../helper/fullFileName')
 const Target = require('../Target')
 const makeFile = require('./Target1C7')
+const dateFormat = require('../helper/dateFormat')
 
 // Be attentive to fill this section
 const Entity = require('../entity/Accrual') 
@@ -10,20 +11,20 @@ const SOURCE_FILE_NAME = 'RL.DBF'
 const TARGET_FILE_NAME = 'Розрахункові листи працівників (hr_accrual).csv'
 
 function setRecord(record, recordNumber) {
-    this.ID = recordNumber
-    this.periodCalc = dateFormat(record['UP'])
-    this.periodSalary = dateFormat(record['RP'])
-    this.tabNum = record['TN']
-    this.taxCode = dictionary.get_TaxCode(this.tabNum)
-    this.employeeNumberID = this.tabNum
-    this.payElID = dictionary.get_PayElID(record['CD'])
-    this.paySum = record['SM'] ? record['SM'] : ''
-    this.days = record['DAYS'] ? record['DAYS'] : ''
-    this.hours = record['HRS'] ? str(record['HRS']) : ''
-    this.calculateDate = ''	
-    this.flagsRec = 8 | (record['STOR'] > 0 ? 512 : 0) // 8 - import, 512 - storno
-    this.dateFrom = dateFormat(record['PR_BEG'])
-    this.dateTo = dateFormat(record['PR_END'])
+    this.entity.ID = recordNumber
+    this.entity.periodCalc = dateFormat(record['UP'])
+    this.entity.periodSalary = dateFormat(record['RP'])
+    this.entity.tabNum = record['TN']
+    this.entity.taxCode = this.dictionary.getTaxCode(this.tabNum)
+    this.entity.employeeNumberID = this.entity.tabNum
+    this.entity.payElID = this.dictionary.getPayElID(record['CD'])
+    this.entity.paySum = record['SM'] ? record['SM'] : ''
+    this.entity.days = record['DAYS'] ? record['DAYS'] : ''
+    this.entity.hours = record['HRS'] ? record['HRS'] : ''
+    this.entity.calculateDate = ''	
+    this.entity.flagsRec = 8 | (record['STOR'] > 0 ? 512 : 0) // 8 - import, 512 - storno
+    this.entity.dateFrom = dateFormat(record['PR_BEG'])
+    this.entity.dateTo = dateFormat(record['PR_END'])
 }
 
 function makeTarget(config, dictionary) {
@@ -32,7 +33,7 @@ function makeTarget(config, dictionary) {
     target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
-    target.entity.setRecord = setRecord
+    target.setRecord = setRecord
     return makeFile(target)
 }
 

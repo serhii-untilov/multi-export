@@ -11,10 +11,10 @@ const TARGET_FILE_NAME = 'Посади (штатні позиції) (hr_positio
 
 function setRecord(record, recordNumber) {
     // TODO: Need to fill all the fields and join the same positions using the Dictionary class.
-    this.ID = 0
-    this.code = record.DOL
-    this.name = ''
-    this.description = `${entity.name} (${entity.code})`
+    this.entity.ID = 0
+    this.entity.code = record.DOL
+    this.entity.name = ''
+    this.entity.description = `${this.entity.name} (${this.entity.code})`
 }
 
 function makeTarget(config, dictionary) {
@@ -23,7 +23,7 @@ function makeTarget(config, dictionary) {
     target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
-    target.entity.setRecord = setRecord
+    target.setRecord = setRecord
     return makeFile(target)
 }
 

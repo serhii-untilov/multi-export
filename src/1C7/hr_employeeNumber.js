@@ -3,6 +3,7 @@
 const fullFileName = require('../helper/fullFileName')
 const Target = require('../Target')
 const makeFile = require('./Target1C7')
+const dateFormat = require('../helper/dateFormat')
 
 // Be attentive to fill this section
 const Entity = require('../entity/EmployeeNumber')
@@ -10,15 +11,15 @@ const SOURCE_FILE_NAME = 'LS.DBF'
 const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
 
 function setRecord(record, recordNumber) {
-    this.ID = record['TN'] // record['ID']
-    this.employeeID = record['TN']
-    this.taxCode = record['NLP']
-    this.tabNum = record['TN']
-    this.dateFrom = record['BEG'] ? dateFormat(record['BEG']) : ''
-    this.dateTo = record['END'] ? dateFormat(record['END']) : ''
-    this.description = record['FIO'] + ' (' + str(record['TN']) + ')'
-    this.payOutID = ''
-    this.personalAccount = record['BANKRAH']
+    this.entity.ID = record['TN'] // record['ID']
+    this.entity.employeeID = record['TN']
+    this.entity.taxCode = record['NLP']
+    this.entity.tabNum = record['TN']
+    this.entity.dateFrom = record['BEG'] ? dateFormat(record['BEG']) : ''
+    this.entity.dateTo = record['END'] ? dateFormat(record['END']) : ''
+    this.entity.description = record['FIO'] + ' (' + record['TN'] + ')'
+    this.entity.payOutID = ''
+    this.entity.personalAccount = record['BANKRAH']
 }
 
 function makeTarget(config, dictionary) {
@@ -27,7 +28,7 @@ function makeTarget(config, dictionary) {
     target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
-    target.entity.setRecord = setRecord
+    target.setRecord = setRecord
     return makeFile(target)
 }
 

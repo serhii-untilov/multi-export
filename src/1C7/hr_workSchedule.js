@@ -10,11 +10,11 @@ const SOURCE_FILE_NAME = 'GRF.DBF'
 const TARGET_FILE_NAME = 'Графіки роботи (hr_workSchedule).csv'
 
 function setRecord(record, recordNumber) {
-    this.ID = recordNumber
-    this.code = record.CD
-    this.name = record.NM
-    this.description = `${entity.name} (${entity.code})`
-    this.setWorkScheduleID(this.entity.code, this.entity.ID)
+    this.entity.ID = recordNumber
+    this.entity.code = record.CD
+    this.entity.name = record.NM
+    this.entity.description = `${this.entity.name} (${this.entity.code})`
+    this.dictionary.setWorkScheduleID(this.entity.code, this.entity.ID)
 }
 
 function makeTarget(config, dictionary) {
@@ -23,7 +23,7 @@ function makeTarget(config, dictionary) {
     target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
-    target.entity.setRecord = setRecord
+    target.setRecord = setRecord
     return makeFile(target)
 }
 

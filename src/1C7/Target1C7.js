@@ -17,7 +17,7 @@ const makeFile = function (target) {
                         .on('data', record => {
                             if (!record.deleted) {
                                 target.recordsCount++
-                                target.entity.setRecord(record, target.recordsCount)
+                                target.setRecord(record, target.recordsCount)
                                 buffer += target.entity.getRecord()
                                 fs.appendFile(target.fullFileName, buffer, (err) => {
                                     if (err) throw err

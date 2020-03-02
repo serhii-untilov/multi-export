@@ -10,10 +10,10 @@ const SOURCE_FILE_NAME = 'KAT.DBF'
 const TARGET_FILE_NAME = 'Категорії персоналу (hr_dictStaffCat).csv'
 
 function setRecord(record, recordNumber) {
-    this.ID = record.CD
-    this.code = record.CD
-    this.name = record.NM
-    this.description = `${entity.name} (${entity.code})`
+    this.entity.ID = record.CD
+    this.entity.code = record.CD
+    this.entity.name = record.NM
+    this.entity.description = `${this.entity.name} (${this.entity.code})`
 }
 
 function makeTarget(config, dictionary) {
@@ -22,7 +22,7 @@ function makeTarget(config, dictionary) {
     target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
-    target.entity.setRecord = setRecord
+    target.setRecord = setRecord
     return makeFile(target)
 }
 

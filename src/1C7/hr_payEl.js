@@ -10,26 +10,26 @@ const SOURCE_FILE_NAME = 'VO.DBF'
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
 function setRecord(record, recordNumber) {
-    this.ID = recordNumber
-    this.code = record.CD
-    this.name = record.NM
-    this.methodID = ''
-    this.description = `${entity.name} (${entity.code})`
-    this.dateFrom = ''
-    this.dateTo = ''
-    this.roundUpTo = '2'
-    this.isAutoCalc = '1'
-    this.isRecalculate = '1'
-    this.calcProportion = ''
-    this.calcSumType = ''
-    this.periodType = ''
-    this.dictExperienceID = ''
-    this.calcMounth = ''
-    this.averageMethod = ''
-    this.typePrepayment = ''
-    this.prepaymentDay = ''
-    this.dictFundSourceID = ''
-    this.setPayElID(this.entity.code, this.entity.ID)
+    this.entity.ID = recordNumber
+    this.entity.code = record.ID
+    this.entity.name = record.NM
+    this.entity.methodID = ''
+    this.entity.description = `${this.entity.name} (${this.entity.code})`
+    this.entity.dateFrom = ''
+    this.entity.dateTo = ''
+    this.entity.roundUpTo = '2'
+    this.entity.isAutoCalc = '1'
+    this.entity.isRecalculate = '1'
+    this.entity.calcProportion = ''
+    this.entity.calcSumType = ''
+    this.entity.periodType = ''
+    this.entity.dictExperienceID = ''
+    this.entity.calcMounth = ''
+    this.entity.averageMethod = ''
+    this.entity.typePrepayment = ''
+    this.entity.prepaymentDay = ''
+    this.entity.dictFundSourceID = ''
+    this.dictionary.setPayElID(this.entity.code, this.entity.ID)
 }
 
 function makeTarget(config, dictionary) {
@@ -38,7 +38,7 @@ function makeTarget(config, dictionary) {
     target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
-    target.entity.setRecord = setRecord
+    target.setRecord = setRecord
     return makeFile(target)
 }
 

@@ -65,7 +65,7 @@ class Dictionary {
             payEl.code = code
             payEl.name = name
             payEl.description = payEl.name + '(' + payEl.code + ')'
-            let buffer = payEl.get_record()
+            let buffer = payEl.getRecord()
             fs.appendFileSync(fileName, buffer)
             console.log('Append', fileName, ID, code, name)
             return ID

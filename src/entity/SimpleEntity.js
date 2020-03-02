@@ -2,7 +2,7 @@
 
 const Entity = require('./Entity')
 
-class SimpleDictionary extends Entity{
+class SimpleEntity extends Entity{
     constructor() {
         super()
         this.ID = 0
@@ -12,4 +12,4 @@ class SimpleDictionary extends Entity{
     }
 }
 
-module.exports = SimpleDictionary
+module.exports = SimpleEntity
