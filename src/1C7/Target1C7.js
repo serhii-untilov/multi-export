@@ -17,12 +17,13 @@ const makeFile = function (target) {
                         .on('data', record => {
                             if (!record.deleted) {
                                 target.recordsCount++
-                                target.setRecord(record, target.recordsCount)
-                                buffer += target.entity.getRecord()
-                                fs.appendFile(target.fullFileName, buffer, (err) => {
-                                    if (err) throw err
-                                })
-                                buffer = ''
+                                if (target.setRecord(record, target.recordsCount)) {
+                                    buffer += target.entity.getRecord()
+                                    fs.appendFile(target.fullFileName, buffer, (err) => {
+                                        if (err) throw err
+                                    })
+                                    buffer = ''
+                                }
                             }
                         })
                         .on('end', () => {
@@ -32,7 +33,7 @@ const makeFile = function (target) {
                         .on('error', err => {
                             console.error(`an error was thrown: ${err}`);
                             target.state = Target.FILE_ERROR
-                            target.err = err
+                            target.err = err.message
                             resolve(target)
                         })
                 } else {

@@ -12,6 +12,7 @@ class EmployeePosition extends Entity {
         this.employeeNumberID = 0
         this.departmentID = 0
         this.positionID = 0
+        this.dictPositionID = 0
         this.dateFrom = ''
         this.dateTo = ''
         this.changeDateTo = ''

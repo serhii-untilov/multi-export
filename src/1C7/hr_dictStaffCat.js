@@ -14,6 +14,7 @@ function setRecord(record, recordNumber) {
     this.entity.code = record.CD
     this.entity.name = record.NM
     this.entity.description = `${this.entity.name} (${this.entity.code})`
+    return true
 }
 
 function makeTarget(config, dictionary) {

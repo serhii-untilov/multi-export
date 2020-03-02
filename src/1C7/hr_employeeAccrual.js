@@ -23,6 +23,7 @@ function setRecord(record, recordNumber) {
     this.entity.accrualRate = record['PRC'] ? record['PRC'] : ''
     this.entity.orderNumber = record['CDPR']
     this.entity.orderDatefrom = ''
+    return true
 }
 
 function makeTarget(config, dictionary) {

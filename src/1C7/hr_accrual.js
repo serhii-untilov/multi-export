@@ -25,6 +25,7 @@ function setRecord(record, recordNumber) {
     this.entity.flagsRec = 8 | (record['STOR'] > 0 ? 512 : 0) // 8 - import, 512 - storno
     this.entity.dateFrom = dateFormat(record['PR_BEG'])
     this.entity.dateTo = dateFormat(record['PR_END'])
+    return true
 }
 
 function makeTarget(config, dictionary) {

@@ -20,6 +20,7 @@ function setRecord(record, recordNumber) {
     this.entity.description = record['FIO'] + ' (' + record['TN'] + ')'
     this.entity.payOutID = ''
     this.entity.personalAccount = record['BANKRAH']
+    return true
 }
 
 function makeTarget(config, dictionary) {

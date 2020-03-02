@@ -15,6 +15,7 @@ function setRecord(record, recordNumber) {
     this.entity.name = record.NM
     this.entity.description = `${this.entity.name} (${this.entity.code})`
     this.dictionary.setWorkScheduleID(this.entity.code, this.entity.ID)
+    return true
 }
 
 function makeTarget(config, dictionary) {

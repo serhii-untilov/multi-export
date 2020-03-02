@@ -30,6 +30,8 @@ function setRecord(record, recordNumber) {
     this.entity.dayBirthDate = record['DTROJ'] ? record['DTROJ'].day : ''
     this.entity.monthBirthDate = record['DTROJ'] ? record['DTROJ'].month : ''
     this.entity.yearBirthDate = record['DTROJ'] ? record['DTROJ'].year : ''
+    this.dictionary.setEmployeeFullName(this.entity.ID, this.entity.fullFIO)
+    return true
 }
 
 function makeTarget(config, dictionary) {

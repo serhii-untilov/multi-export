@@ -20,6 +20,7 @@ function setRecord(record, recordNumber) {
     this.entity.dateFrom = dateFormat(record.BEG)
     this.entity.dateTo = dateFormat(record.END)
     this.dictionary.setDepartmentID(this.entity.code, this.entity.ID)
+    return true
 }
 
 function makeTarget(config, dictionary) {

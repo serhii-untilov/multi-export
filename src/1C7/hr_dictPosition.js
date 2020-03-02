@@ -14,6 +14,8 @@ function setRecord(record, recordNumber) {
     this.entity.code = record.CD
     this.entity.name = record.NM
     this.entity.description = `${this.entity.name} (${this.entity.code})`
+    this.dictionary.setDictPositionName(this.entity.ID, this.entity.name)
+    return true
 }
 
 function makeTarget(config, dictionary) {

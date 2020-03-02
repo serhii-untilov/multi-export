@@ -9,7 +9,34 @@ class Dictionary {
         this.PayElID = {}
         this.DepartmentID = {}
         this.WorkScheduleID = {}
+        this.PositionID = {}
+        this.DictPositionName = {}
+        this.EmployeeFullName = {}
         this.error_count = 0
+    }
+
+    setEmployeeFullName(ID, fullName) {
+        this.EmployeeFullName[ID] = fullName
+    }
+
+    getEmployeeFullName(ID) {
+        return this.EmployeeFullName[ID]
+    }
+
+    setDictPositionName(ID, name) {
+        this.DictPositionName[ID] = name
+    }
+
+    getDictPositionName(ID) {
+        return this.DictPositionName[ID]
+    }
+
+    setPositionID(ID) {
+        this.PositionID[ID] = ID    // for check presense
+    }
+
+    getPositionID(ID) {
+        return this.PositionID[ID] // to check presense
     }
 
     setWorkScheduleID(code, ID) {

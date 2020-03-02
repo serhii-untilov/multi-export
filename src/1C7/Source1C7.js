@@ -29,7 +29,7 @@ class Source1C7 extends Source {
             let targetList = []
             let dictionary = new Dictionary(config)
             let arcFileName = null
-            hr_dictPosition(config).then((target) => { targetList.push(target); sendFile(target) })
+            hr_dictPosition(config, dictionary).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_department(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
