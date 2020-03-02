@@ -7,7 +7,7 @@ const dateFormat = require('../helper/dateFormat')
 
 // Be attentive to fill this section
 const Entity = require('../entity/Accrual') 
-const SOURCE_FILE_NAME = 'RL.DBF'
+const SOURCE_FILE_NAME = 'RL_Lik_P.DBF'
 const TARGET_FILE_NAME = 'Розрахункові листи працівників (hr_accrual).csv'
 
 function setRecord(record, recordNumber) {
@@ -35,6 +35,7 @@ function makeTarget(config, dictionary) {
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord
+    target.append = true
     return makeFile(target)
 }
 

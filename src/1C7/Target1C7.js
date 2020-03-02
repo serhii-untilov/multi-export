@@ -8,10 +8,11 @@ const Target = require('../Target')
 const makeFile = function (target) {
     return new Promise(async (resolve, reject) => {
         try {
-            removeFile(target.fullFileName)
+            if (!target.append)
+                removeFile(target.fullFileName)
             fs.exists(target.sourceFullFileName, (exists) => {
                 if (exists) {
-                    let buffer = target.entity.getHeader()
+                    let buffer = target.append ? '' : target.entity.getHeader()
                     fs.createReadStream(target.sourceFullFileName)
                         .pipe(new YADBF({ encoding: 'cp1251' }))
                         .on('data', record => {

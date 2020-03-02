@@ -16,6 +16,9 @@ const hr_employeeNumber = require('./hr_employeeNumber')
 const hr_employeePosition = require('./hr_employeePosition')
 const hr_employeeAccrual = require('./hr_employeeAccrual')
 const hr_accrual = require('./hr_accrual')
+const hr_accrual2 = require('./hr_accrual2')
+const hr_accrual3 = require('./hr_accrual3')
+const hr_accrual4 = require('./hr_accrual4')
 
 const ARC_FILE_NAME = '1Cv7.zip'
 
@@ -40,6 +43,9 @@ class Source1C7 extends Source {
                 .then(() => hr_employeePosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_employeeAccrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_accrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_accrual2(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
+                .then(() => hr_accrual3(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
+                .then(() => hr_accrual4(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
                 .then(() => {
                     if (config.isArchive) {
                         arcFileName = fullFileName(config.targetPath, ARC_FILE_NAME)

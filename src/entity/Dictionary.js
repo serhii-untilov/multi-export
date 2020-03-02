@@ -12,7 +12,12 @@ class Dictionary {
         this.PositionID = {}
         this.DictPositionName = {}
         this.EmployeeFullName = {}
+        this.commonID = 0
         this.error_count = 0
+    }
+
+    getCommonID() {
+        return ++this.commonID
     }
 
     setEmployeeFullName(ID, fullName) {

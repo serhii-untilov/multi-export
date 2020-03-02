@@ -12,6 +12,7 @@ class Target {
         this.state = null
         this.err = null
         this.recordsCount = 0
+        this.append = false
     }
 }
 
