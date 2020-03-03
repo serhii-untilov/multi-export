@@ -37,10 +37,16 @@ function setRecord(record, recordNumber) {
     if (record['RAN'] || !inheritance)
         this.entity.dictRankID = record['RAN'] > 0 ? record['RAN'] : ''
     if (record['KAD'] || !inheritance)
-        this.entity.dictStaffCatID = record['KAD']
+        this.entity.dictStaffCatID = this.dictionary.getDictStaffCatID(record['KAD'])
     this.entity.payElID = ''
     if (record['OKL'] || !inheritance)
         this.entity.accrualSum = record['OKL']
+
+    let catID = this.dictionary.getDictStaffCatID(record.KAD)
+    let dictStaffCatID = this.dictionary.getDictStaffCatID_WorkScheduleID(catID)
+    if (dictStaffCatID || !inheritance)
+        this.entity.dictStaffCatID = dictStaffCatID
+    
     return true
 }
 

@@ -10,6 +10,7 @@ const makeArchive = (fullFileName, targetList) => {
 
         // create a file to stream archive data to.
         var output = fs.createWriteStream(fullFileName)
+
         var archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
         })
@@ -50,8 +51,8 @@ const makeArchive = (fullFileName, targetList) => {
         for (let i = 0; i < targetList.length; i++) {
             // append a file
             if (targetList[i].state == Target.FILE_CREATED) {
-                let fileName = path.basename(targetList[i].fileName)
-                archive.append(fs.createReadStream(targetList[i].fileName), { name: fileName })
+                let fileName = path.basename(targetList[i].fullFileName)
+                archive.append(fs.createReadStream(targetList[i].fullFileName), { name: fileName })
             }
         }
 

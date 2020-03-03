@@ -6,14 +6,18 @@ const makeFile = require('./Target1C7')
 
 // Be attentive to fill this section
 const Entity = require('../entity/SimpleEntity')
-const SOURCE_FILE_NAME = 'KAT.DBF'
+const SOURCE_FILE_NAME = 'KAD.DBF'
 const TARGET_FILE_NAME = 'Категорії персоналу (hr_dictStaffCat).csv'
 
 function setRecord(record, recordNumber) {
-    this.entity.ID = record.CD
+    this.entity.ID = recordNumber
     this.entity.code = record.CD
     this.entity.name = record.NM
     this.entity.description = `${this.entity.name} (${this.entity.code})`
+    this.dictionary.setDictStaffCatID(this.entity.code, this.entity.ID)
+    let catID = this.entity.ID
+    let schedID = this.dictionary.getWorkScheduleID(record.GRF)
+    this.dictionary.setDictStaffCatID_WorkScheduleID(catID, schedID)
     return true
 }
 

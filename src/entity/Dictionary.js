@@ -12,8 +12,26 @@ class Dictionary {
         this.PositionID = {}
         this.DictPositionName = {}
         this.EmployeeFullName = {}
+        this.DictStaffCatID = {}
+        this.catID_SchedID = {}
         this.commonID = 0
         this.error_count = 0
+    }
+
+    setDictStaffCatID_WorkScheduleID(catID, schedID) {
+        this.catID_SchedID[catID] = schedID
+    }
+
+    getDictStaffCatID_WorkScheduleID(catID) {
+        return this.catID_SchedID[catID]
+    }
+
+    setDictStaffCatID(code, ID) {
+        this.DictStaffCatID[code] = ID
+    }
+
+    getDictStaffCatID(code) {
+        return this.DictStaffCatID[code]
     }
 
     getCommonID() {
