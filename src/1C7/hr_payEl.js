@@ -1,6 +1,6 @@
 'use strict'
 
-const fullFileName = require('../helper/fullFileName')
+const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./Target1C7')
 
@@ -10,6 +10,8 @@ const SOURCE_FILE_NAME = 'VO.DBF'
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
 function setRecord(record, recordNumber) {
+    if (!this.dictionary.isPayElActuallyUsed(record.ID))
+        return false
     this.entity.ID = recordNumber
     this.entity.code = record.ID
     this.entity.name = record.NM
@@ -35,8 +37,8 @@ function setRecord(record, recordNumber) {
 
 function makeTarget(config, dictionary) {
     let target = new Target.Target()
-    target.fullFileName = fullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourceFullFileName = fullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
+    target.sourcegetFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord

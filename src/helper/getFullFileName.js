@@ -2,10 +2,10 @@
 
 const path = require('path')
 
-const fullFileName = (pathString, fileName) => {
+const getFullFileName = (pathString, fileName) => {
     if (pathString[pathString.length - 1] != path.sep)
         pathString += path.sep 
     return `${pathString}${fileName}`
 }
 
-module.exports = fullFileName
+module.exports = getFullFileName

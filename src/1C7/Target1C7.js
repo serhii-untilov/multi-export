@@ -10,15 +10,17 @@ const makeFile = function (target) {
         try {
             if (!target.append)
                 removeFile(target.fullFileName)
-            fs.exists(target.sourceFullFileName, (exists) => {
+            fs.exists(target.sourcegetFullFileName, (exists) => {
                 if (exists) {
                     let buffer = target.append ? '' : target.entity.getHeader()
-                    fs.createReadStream(target.sourceFullFileName)
+                    let id = 1
+                    fs.createReadStream(target.sourcegetFullFileName)
                         .pipe(new YADBF({ encoding: 'cp1251' }))
                         .on('data', record => {
                             if (!record.deleted) {
-                                target.recordsCount++
-                                if (target.setRecord(record, target.recordsCount)) {
+                                if (target.setRecord(record, id)) {
+                                    target.recordsCount++
+                                    id++
                                     buffer += target.entity.getRecord()
                                     fs.appendFile(target.fullFileName, buffer, (err) => {
                                         if (err) throw err

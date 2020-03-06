@@ -6,7 +6,7 @@ const sql = require('mssql')
 const Source = require('../Source')
 const Target = require('../Target')
 const makeFile = require('./TargetISpro')
-const fullFileName = require('../helper/fullFileName')
+const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
 
@@ -36,8 +36,8 @@ class SourceISpro extends Source {
                     return new Promise(async (resolve, reject) => {
                         let target = new Target.Target()
                         let fileName = path.parse(queryFileName).name
-                        target.fullFileName = fullFileName(config.targetPath, fileName + '.csv')
-                        target.queryFileName = fullFileName(SQL_FILES_DIR, queryFileName)
+                        target.fullFileName = getFullFileName(config.targetPath, fileName + '.csv')
+                        target.queryFileName = getFullFileName(SQL_FILES_DIR, queryFileName)
                         target.config = config
                         target.pool = pool
                         makeFile(target)
@@ -54,7 +54,7 @@ class SourceISpro extends Source {
             if (config.isArchive) {
                 let arcFileName
                 getFirmName(pool)
-                .then((firmName) => fullFileName(config.targetPath, firmName + '.zip'))
+                .then((firmName) => getFullFileName(config.targetPath, firmName + '.zip'))
                 .then((fileName) => {
                     arcFileName = fileName
                     makeArchive(arcFileName, targetList)

@@ -2,13 +2,14 @@
 
 const Source = require('../Source')
 const Dictionary = require('../entity/Dictionary')
-const fullFileName = require('../helper/fullFileName')
+const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
 const hr_dictPosition = require('./hr_dictPosition')
 const hr_department = require('./hr_department')
 const hr_workSchedule = require('./hr_workSchedule')
 const hr_dictStaffCat = require('./hr_dictStaffCat')
+const fillPayElActuallyUsed = require('./fillPayElActuallyUsed')
 const hr_payEl = require('./hr_payEl')
 const hr_position = require('./hr_position')
 const hr_employee = require('./hr_employee')
@@ -43,6 +44,7 @@ class Source1C7 extends Source {
                 .then(() => hr_department(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => fillPayElActuallyUsed(config, dictionary))
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_position(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_employee(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -55,7 +57,7 @@ class Source1C7 extends Source {
                 .then(() => hr_accrual4(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
                 .then(() => {
                     if (config.isArchive) {
-                        arcFileName = fullFileName(config.targetPath, ARC_FILE_NAME)
+                        arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
                         return makeArchive(arcFileName, targetList)
                     }
                 })

@@ -1,6 +1,7 @@
 'use strict'
 const fs = require('fs')
 const PayEl = require('./PayEl')
+const getFullFileName = require('../helper/getFullFileName')
 
 class Dictionary {
     constructor(config) {
@@ -14,8 +15,20 @@ class Dictionary {
         this.EmployeeFullName = {}
         this.DictStaffCatID = {}
         this.catID_SchedID = {}
+        this.payElActuallyUsed = new Set()
         this.commonID = 0
         this.error_count = 0
+    }
+
+    setPayElActuallyUsed(cd) {
+        let code = cd.substring(0, 32)
+        if (!this.payElActuallyUsed.has(code))
+            this.payElActuallyUsed.add(code)
+    }
+
+    isPayElActuallyUsed(cd) {
+        let code = cd.substring(0, 32)
+        return this.payElActuallyUsed.has(code)
     }
 
     setDictStaffCatID_WorkScheduleID(catID, schedID) {
@@ -88,29 +101,31 @@ class Dictionary {
         
 
     setPayElID(cd, payElID) {
-        this.PayElID[cd] = payElID
+        let code = cd.substring(0, 32)
+        this.PayElID[code] = payElID
     }
 
     getPayElID(cd) {
-        try {
-            return this.PayElID[cd] || 0
-        } catch(err) {
-            let ID = len(self.PayElID) + 1                    
-            ID = _append_hr_payEl(ID, cd, cd)
-            if (ID == 0) {
+        let code = cd.substring(0, 32)
+        if (this.PayElID[code]) {
+            return this.PayElID[code]
+        } else {
+            let ID = Object.keys(this.PayElID).length + 1                    
+            ID = this._append_hr_payEl(ID, code, code)
+            if (!ID) {
                 this.error_count += 1
-                console.log('Error [' + str(this.error_count) + ']. Not found PayElCd: ' + cd + '.')
+                console.log('Error [' + this.error_count + ']. Not found PayElCd: ' + code + '.')
             } else {
-                this.setPayElID(cd, ID)
+                this.setPayElID(code, ID)
             }
             return ID
         }
     }
 
-    async _append_hr_payEl(ID, code, name) {
-        fileName = this.config.targetPath + 'hr_payEl.csv'
+    _append_hr_payEl(ID, code, name) {
+        let fileName = getFullFileName(this.config.targetPath, 'Види оплати (hr_payEl).csv')
         try {
-            payEl = new PayEl()
+            let payEl = new PayEl()
             payEl.ID = ID
             payEl.code = code
             payEl.name = name
