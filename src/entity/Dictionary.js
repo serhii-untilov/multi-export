@@ -8,6 +8,7 @@ class Dictionary {
         this.config = config
         this.TaxCode = {}
         this.PayElID = {}
+        this.payElUsed = new Set()        
         this.DepartmentID = {}
         this.WorkScheduleID = {}
         this.PositionID = {}
@@ -16,10 +17,21 @@ class Dictionary {
         this.DictStaffCatID = {}
         this.catID_SchedID = {}
         this.TaxLimitID = {}
-        this.payElActuallyUsed = new Set()
+        this.TaxLimitUsed = new Set()        
+
+
         this.commonID = 0
         this.error_count = 0
     }
+
+    setTaxLimitUsed(code) {
+        if (!this.TaxLimitUsed.has(code))
+            this.TaxLimitUsed.add(code)
+    }
+
+    isTaxLimitUsed(code) {
+        return this.TaxLimitUsed.has(code)
+    }    
 
     setTaxLimitID(code, ID) {
         this.TaxLimitID[code] = ID
@@ -30,15 +42,15 @@ class Dictionary {
     }
 
 
-    setPayElActuallyUsed(cd) {
+    setPayElUsed(cd) {
         let code = cd.substring(0, 32)
-        if (!this.payElActuallyUsed.has(code))
-            this.payElActuallyUsed.add(code)
+        if (!this.payElUsed.has(code))
+            this.payElUsed.add(code)
     }
 
-    isPayElActuallyUsed(cd) {
+    isPayElUsed(cd) {
         let code = cd.substring(0, 32)
-        return this.payElActuallyUsed.has(code)
+        return this.payElUsed.has(code)
     }
 
     setDictStaffCatID_WorkScheduleID(catID, schedID) {

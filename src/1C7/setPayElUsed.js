@@ -4,7 +4,7 @@ const fs = require('fs')
 const YADBF = require('yadbf')
 const getFullFileName = require('../helper/getFullFileName')
 
-function fillPayElActuallyUsed(config, dictionary) {
+function setPayElUsed(config, dictionary) {
     let fileList = ['RL.DBF', 'RL_Dogl.DBF', 'RL_Lik_F.DBF', 'RL_Lik_P.DBF']
     return Promise.all(
         fileList.map((fileName) => {
@@ -16,7 +16,7 @@ function fillPayElActuallyUsed(config, dictionary) {
                             .pipe(new YADBF({ encoding: 'cp1251' }))
                             .on('data', record => {
                                 if (!record.deleted) {
-                                    dictionary.setPayElActuallyUsed(record['CD'])
+                                    dictionary.setPayElUsed(record.CD)
                                 }
                             })
                             .on('end', () => {
@@ -35,4 +35,4 @@ function fillPayElActuallyUsed(config, dictionary) {
     )
 }
 
-module.exports = fillPayElActuallyUsed
+module.exports = setPayElUsed

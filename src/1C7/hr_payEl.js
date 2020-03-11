@@ -10,7 +10,7 @@ const SOURCE_FILE_NAME = 'VO.DBF'
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
 function setRecord(record, recordNumber) {
-    if (!this.dictionary.isPayElActuallyUsed(record.ID))
+    if (!this.dictionary.isPayElUsed(record.ID))
         return false
     this.entity.ID = recordNumber
     this.entity.code = record.ID
