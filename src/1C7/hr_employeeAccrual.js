@@ -12,16 +12,16 @@ const TARGET_FILE_NAME = 'Постійні нарахування працівн
 
 function setRecord(record, recordNumber) {
     this.entity.ID = recordNumber
-    this.entity.employeeID = record['TN']
-    this.entity.tabNum = record['TN']
+    this.entity.employeeID = record.TN
+    this.entity.tabNum = record.TN
     this.entity.taxCode = this.dictionary.getTaxCode(this.tabNum)
-    this.entity.employeeNumberID = record['TN']
-    this.entity.payElID = this.dictionary.getPayElID(record['CD'])
-    this.entity.dateFrom = record['DATN'] ? dateFormat(record['DATN']) : ''
-    this.entity.dateTo = record['DATK'] ? dateFormat(record['DATK']) : '9999-12-31'
-    this.entity.accrualSum = record['SM'] ? record['SM'] : ''
-    this.entity.accrualRate = record['PRC'] ? record['PRC'] : ''
-    this.entity.orderNumber = record['CDPR']
+    this.entity.employeeNumberID = record.TN
+    this.entity.payElID = this.dictionary.getPayElID(record.CD)
+    this.entity.dateFrom = record.DATN ? dateFormat(record.DATN) : ''
+    this.entity.dateTo = record.DATK ? dateFormat(record.DATK) : '9999-12-31'
+    this.entity.accrualSum = record.SM ? record.SM : ''
+    this.entity.accrualRate = record.PRC ? record.PRC : ''
+    this.entity.orderNumber = record.CDPR
     this.entity.orderDatefrom = ''
     return true
 }

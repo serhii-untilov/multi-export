@@ -12,19 +12,19 @@ const TARGET_FILE_NAME = 'Розрахункові листи працівник
 
 function setRecord(record, recordNumber) {
     this.entity.ID = this.dictionary.getCommonID()
-    this.entity.periodCalc = dateFormat(record['UP'])
-    this.entity.periodSalary = dateFormat(record['RP'])
-    this.entity.tabNum = record['TN']
+    this.entity.periodCalc = dateFormat(record.UP)
+    this.entity.periodSalary = dateFormat(record.RP)
+    this.entity.tabNum = record.TN
     this.entity.taxCode = this.dictionary.getTaxCode(this.tabNum)
     this.entity.employeeNumberID = this.entity.tabNum
-    this.entity.payElID = this.dictionary.getPayElID(record['CD'])
-    this.entity.paySum = record['SM'] ? record['SM'] : ''
-    this.entity.days = record['DAYS'] ? record['DAYS'] : ''
-    this.entity.hours = record['HRS'] ? record['HRS'] : ''
+    this.entity.payElID = this.dictionary.getPayElID(record.CD)
+    this.entity.paySum = record.SM ? record.SM : ''
+    this.entity.days = record.DAYS ? record.DAYS : ''
+    this.entity.hours = record.HRS ? record.HRS : ''
     this.entity.calculateDate = ''	
-    this.entity.flagsRec = 8 | (record['STOR'] > 0 ? 512 : 0) // 8 - import, 512 - storno
-    this.entity.dateFrom = dateFormat(record['PR_BEG'])
-    this.entity.dateTo = dateFormat(record['PR_END'])
+    this.entity.flagsRec = 8 | (record.STOR > 0 ? 512 : 0) // 8 - import, 512 - storno
+    this.entity.dateFrom = dateFormat(record.PR_BEG)
+    this.entity.dateTo = dateFormat(record.PR_END)
     return true
 }
 

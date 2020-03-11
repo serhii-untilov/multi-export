@@ -6,21 +6,20 @@ const makeFile = require('./Target1C7')
 const dateFormat = require('../helper/dateFormat')
 
 // Be attentive to fill this section
-const Entity = require('../entity/EmployeeNumber')
-const SOURCE_FILE_NAME = 'LS.DBF'
-const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
+const Entity = require('../entity/EmployeeTaxLimit')
+const SOURCE_FILE_NAME = 'PLG.DBF'
+const TARGET_FILE_NAME = 'Пільги ПДФО працівників (hr_employeeTaxLimit).csv'
 
 function setRecord(record, recordNumber) {
-    this.entity.ID = record.TN // record.ID
-    this.entity.employeeID = record.TN
-    this.entity.taxCode = record.NLP
+    this.entity.ID = recordNumber
     this.entity.tabNum = record.TN
-    this.entity.dateFrom = record.BEG ? dateFormat(record.BEG) : ''
-    this.entity.dateTo = record.END ? dateFormat(record.END) : ''
-    this.entity.description = record.FIO + ' (' + record.TN + ')'
-    this.entity.payOutID = ''
-    this.entity.personalAccount = record.BANKRAH
-    this.dictionary.setTaxCode(record.TN, record.NLP)    
+    this.entity.employeeID = record.TN
+    this.entity.taxCode = this.dictionary.getTaxCode(this.entity.tabNum)
+    this.entity.employeeNumberID = record.TN
+    this.entity.dateFrom = dateFormat(record.DATN)
+    this.entity.dateTo = '9999-12-31'
+    let taxLimitID = this.dictionary.getTaxLimitID(record.CD)
+    this.entity.taxLimitID = taxLimitID ? taxLimitID : ''
     return true
 }
 

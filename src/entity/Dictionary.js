@@ -15,10 +15,20 @@ class Dictionary {
         this.EmployeeFullName = {}
         this.DictStaffCatID = {}
         this.catID_SchedID = {}
+        this.TaxLimitID = {}
         this.payElActuallyUsed = new Set()
         this.commonID = 0
         this.error_count = 0
     }
+
+    setTaxLimitID(code, ID) {
+        this.TaxLimitID[code] = ID
+    }
+
+    getTaxLimitID(code) {
+        return this.TaxLimitID[code]
+    }
+
 
     setPayElActuallyUsed(cd) {
         let code = cd.substring(0, 32)

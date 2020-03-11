@@ -20,10 +20,10 @@ const hr_accrual = require('./hr_accrual')
 const hr_accrual2 = require('./hr_accrual2')
 const hr_accrual3 = require('./hr_accrual3')
 const hr_accrual4 = require('./hr_accrual4')
-// TODO: PLG.DBF
+const hr_taxLimit = require('./hr_taxLimit')
+const hr_employeeTaxLimit = require('./hr_employeeTaxLimit')
 // TODO: PUVL.DBF
 // TODO: PUVL1.DBF
-// TODO: SPLG.DBF
 // TODO: SRNG.DBF
 // TODO: SSPS.DBF
 // TODO: StVISL.DBF
@@ -47,9 +47,11 @@ class Source1C7 extends Source {
                 .then(() => fillPayElActuallyUsed(config, dictionary))
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_position(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_employee(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_employeeNumber(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_employeePosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_employeeTaxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_employeeAccrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_accrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_accrual2(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
