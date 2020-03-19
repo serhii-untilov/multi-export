@@ -5,7 +5,7 @@ select 'ID' ID, 'employeeID' employeeID, 'dictExperienceID' dictExperienceID, 'c
 union all
 /*END-OF-HEAD*/
 select 
-	cast(ROW_NUMBER() OVER(ORDER BY employeeID, dictExperienceID ASC) as varchar) AS id
+	cast(ROW_NUMBER() OVER(ORDER BY employeeID, dictExperienceID ASC) as varchar) AS ID
 	,cast(employeeID as varchar) employeeID
 	,cast(dictExperienceID as varchar) dictExperienceID
 	,cast(cast(calcDate as date) as varchar) calcDate
