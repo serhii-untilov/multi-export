@@ -38,9 +38,11 @@ with
 select 'ID' ID, 'payElID' payElID, 'payElBaseID' payElBaseID, 'dateFrom' dateFrom, 'dateTo' dateTo, 'entryType'	entryType
 union all
 /*END-OF-HEAD*/
-select cast(ID as varchar) ID, cast(payElID as varchar) payElID, cast(payElBaseID as varchar) payElBaseID, 
-	cast(cast(dateFrom as date) as varchar), 
-	cast(cast(dateTo as date) as varchar), 
+select cast(ID as varchar) ID, 
+	cast(payElID as varchar) payElID, 
+	cast(payElBaseID as varchar) payElBaseID, 
+	cast(cast(dateFrom as date) as varchar) dateFrom, 
+	cast(cast(dateTo as date) as varchar) dateTo, 
 	entryType
 from
 (	
