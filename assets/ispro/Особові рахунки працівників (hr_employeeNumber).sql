@@ -46,7 +46,7 @@ from (
 			cast(x1.kpu_rcd as varchar) ID	
 			,cast(x1.kpu_tn as varchar) tabNum	 
 			,cast(cast(c1.kpu_dtpst as date) as varchar) dateFrom	
-			,cast(cast(case when c1.kpu_dtuvl = '1876-12-31' then '9999-12-31' else c1.kpu_dtuvl end as date) as varchar) dateTo	
+			,cast(cast(case when c1.kpu_dtuvl <= '1876-12-31' then '9999-12-31' else c1.kpu_dtuvl end as date) as varchar) dateTo	
 			,c1.kpu_fio +'[' + CAST(x1.kpu_tn as varchar(10)) + ']' description	
 			,null payOutID	
 			,null personalAccount

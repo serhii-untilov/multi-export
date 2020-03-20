@@ -47,7 +47,7 @@ select
 	,cast(CONVERT(DECIMAL(19, 0), r1.kpurl_Sm) / 100 as varchar) paySum	
 	,cast(r1.kpurl_days as varchar) days	
 	,cast(r1.kpurl_hrs as varchar) hours	
-	,cast(case when r1.KpuRlTS_Dat = '1876-12-31' then null else cast(r1.KpuRlTS_Dat as date) end as varchar) calculateDate	
+	,cast(case when r1.KpuRlTS_Dat <= '1876-12-31' then null else cast(r1.KpuRlTS_Dat as date) end as varchar) calculateDate	
 	,cast(r1.KpuRl_Msk as varchar) mask	
 	,cast(8 -- Импорт
 		| (case when (KpuRl_Prz & 8) <> 0 then 512 else 0 end)	-- Сторно
@@ -57,8 +57,8 @@ select
 	,cast(r1.kpurlPl_hrs as varchar) planHours	
 	,cast(r1.kpurlPl_days as varchar) planDays	
 	,cast(r1.kpurl_addmsk as varchar) maskAdd	
-	,cast(cast(case when r1.KpuRlPr_Dn = '1876-12-31' then null else r1.KpuRlPr_Dn end as date) as varchar) dateFrom	
-	,cast(cast(case when r1.KpuRlPr_Dk = '1876-12-31' then null else r1.KpuRlPr_Dk end as date) as varchar) dateTo	
+	,cast(cast(case when r1.KpuRlPr_Dn <= '1876-12-31' then null else r1.KpuRlPr_Dn end as date) as varchar) dateFrom	
+	,cast(cast(case when r1.KpuRlPr_Dk <= '1876-12-31' then null else r1.KpuRlPr_Dk end as date) as varchar) dateTo	
 	,cast(case 
 			when n2.pdnch_rcd is not null then 'hr_payPerm'	-- Постійні нарахування/утримання організації
 			when n1.kpunch_id is not null then 'hr_employeeAccrual'	-- Постійні нарахування за таб.номером
@@ -73,8 +73,8 @@ select
 			when u1.kpuudr_id is not null then u1.kpuudr_id	-- Постійні утримання за таб.номером
 			when p1.bookmark is not null then p1.bookmark -- Призначення працівника
 			else null end as varchar) sourceID
-	,cast(case when r1.KpuRlPrZr_Dn = '1876-12-31' then null else cast(r1.KpuRlPrZr_Dn as date) end as varchar) dateFromAvg	
-	,cast(case when r1.KpuRlPrZr_Dk = '1876-12-31' then null else cast(r1.KpuRlPrZr_Dk as date) end as varchar) dateToAvg	
+	,cast(case when r1.KpuRlPrZr_Dn <= '1876-12-31' then null else cast(r1.KpuRlPrZr_Dn as date) end as varchar) dateFromAvg	
+	,cast(case when r1.KpuRlPrZr_Dk <= '1876-12-31' then null else cast(r1.KpuRlPrZr_Dk as date) end as varchar) dateToAvg	
 	,cast(cast(KpuRlPl_SrZ as numeric(19, 2)) as varchar) sumAvg
 from kpurlo1 r1
 inner join KPUX x1 on x1.Kpu_Tn = r1.Kpu_Tn

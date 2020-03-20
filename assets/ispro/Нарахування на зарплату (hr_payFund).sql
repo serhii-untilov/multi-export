@@ -10,7 +10,7 @@ select
 	,payfnd_cd code
 	,pspr.spr_nm name
 	,cast(cast(payfnd_datn as date) as varchar) dateFrom
-	,cast(cast(case when payfnd_datk = '1876-12-31' then '9999-12-31' else payfnd_datk end as date) as varchar) dateTo
+	,cast(cast(case when payfnd_datk <= '1876-12-31' then '9999-12-31' else payfnd_datk end as date) as varchar) dateTo
 	,'SALARY' calcPeriod -- !!!
 	,cast(case when payfnd_stt = 16 then floor(payfnd_limit) else 0 end as varchar) sequence
 	,cast(case when payfnd_noclc = 0 then 1 else 0 end as varchar) isAutoCalc

@@ -73,6 +73,6 @@ select
 	,pspr.spr_nm name
 	,null methodExpID -- !!!
 	,cast(cast(paystg_datn as date) as varchar) dateFrom
-	,cast(cast(case when paystg_datk = '1876-12-31' then '9999-12-31' else paystg_datk end as date) as varchar) dateTo
+	,cast(cast(case when paystg_datk <= '1876-12-31' then '9999-12-31' else paystg_datk end as date) as varchar) dateTo
 from PAYSTG
 inner join PSPR on pspr.SprSpr_Cd = 680984 and pspr.Spr_Cd = paystg.paystg_cd

@@ -41,9 +41,9 @@ from (
 		,cast(p1.KpuPrkz_PdRcd as varchar) departmentID	
 		--,cast(p1.kpuprkz_dol as varchar) positionID	
 		,cast(case when sprdol.sprd_cd is null then null else p1.kpuprkz_pdrcd * 10000 + p1.kpuprkz_dol end as varchar) positionID
-		,cast(cast(case when p1.kpuprkz_dtv = '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) as varchar) dateFrom	
-		,cast(cast(case when p2.kpuprkz_dtv is null OR p2.kpuprkz_dtv = '1876-12-31' then '9999-12-31' else p2.kpuprkz_dtv - 1 end as date) as varchar) dateTo	
-		,cast(cast(case when p1.KpuPrkz_DtNzE = '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo	
+		,cast(cast(case when p1.kpuprkz_dtv <= '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) as varchar) dateFrom	
+		,cast(cast(case when p2.kpuprkz_dtv is null OR p2.kpuprkz_dtv <= '1876-12-31' then '9999-12-31' else p2.kpuprkz_dtv - 1 end as date) as varchar) dateTo	
+		,cast(cast(case when p1.KpuPrkz_DtNzE <= '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo	
 		,cast(p1.KpuPrkz_RejWr as varchar) workScheduleID
 		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- Тимчасово
 			  when ASCII(spst.SPR_NMSHORT) = 4 then 4 -- Контракт
@@ -57,12 +57,12 @@ from (
 		,cast(cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) as varchar) accrualSum
 		,cast(cast(
 				case 
-				WHEN p1.KpuPrkz_IdxBsd = '1876-12-31' and { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 2, 0 ) }, 2 ) } <> 0 and p1.kpuprkz_dtv >= @minDateRaiseSalary then p1.kpuprkz_dtv
+				WHEN p1.KpuPrkz_IdxBsd <= '1876-12-31' and { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 2, 0 ) }, 2 ) } <> 0 and p1.kpuprkz_dtv >= @minDateRaiseSalary then p1.kpuprkz_dtv
 				when dateRaiseSalary.kpuprkz_dtv is not null then p1.kpuprkz_dtv
-				when p1.KpuPrkz_IdxBsd = '1876-12-31' and lastIdxBase.kpuprkz_dtv is not null and lastIdxBase.kpuprkz_dtv >= @minDateRaiseSalary then lastIdxBase.kpuprkz_dtv
-				when p1.KpuPrkz_IdxBsd = '1876-12-31' and idxBase.kpuprkz_dtv is not null and idxBase.kpuprkz_dtv >= @minDateRaiseSalary then idxBase.kpuprkz_dtv			
+				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and lastIdxBase.kpuprkz_dtv is not null and lastIdxBase.kpuprkz_dtv >= @minDateRaiseSalary then lastIdxBase.kpuprkz_dtv
+				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and idxBase.kpuprkz_dtv is not null and idxBase.kpuprkz_dtv >= @minDateRaiseSalary then idxBase.kpuprkz_dtv			
 				when p1.KpuPrkz_IdxBsd < c1.kpu_dtpst and c1.kpu_dtpst >= @minDateRaiseSalary then c1.kpu_dtpst
-				when p1.KpuPrkz_IdxBsd = '1876-12-31' then null
+				when p1.KpuPrkz_IdxBsd <= '1876-12-31' then null
 				else p1.KpuPrkz_IdxBsd end
 			as date) as varchar) raiseSalary
 		,cast(CASE WHEN { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 1, 0 ) }, 2 ) } <> 0 then 1 else 0 end as varchar) isIndex

@@ -25,16 +25,16 @@ select
 	,cast(c1.kpu_rcd as varchar) employeeID --cast(i1.kpu_rcd as varchar) employeeID
 	,cast(KpuInv_VIn as varchar) disabilityID
 	,left(cast(KpuInv_Grp as varchar), 5) disabilityGroup
-	,cast(cast(case when KpuInv_DtN = '1876-12-31' then null else KpuInv_DtN end as date) as varchar) dateFrom
-	,cast(cast(case when KpuInv_DtK = '1876-12-31' then '9999-12-31' else KpuInv_DtK end as date) as varchar) dateTo
+	,cast(cast(case when KpuInv_DtN <= '1876-12-31' then null else KpuInv_DtN end as date) as varchar) dateFrom
+	,cast(cast(case when KpuInv_DtK <= '1876-12-31' then '9999-12-31' else KpuInv_DtK end as date) as varchar) dateTo
 	,left(REPLACE(REPLACE(KpuInv_Nmr, CHAR(13), ''), CHAR(10), ''), 20) docNumber
 	,left(REPLACE(REPLACE(KpuInv_Sn, CHAR(13), ''), CHAR(10), ''), 10) docSeries
 	,REPLACE(REPLACE(KpuInv_Who, CHAR(13), ''), CHAR(10), '') docIssuer
-	,cast(cast(case when KpuInv_DtS = '1876-12-31' then null else KpuInv_DtS end as date) as varchar) dateIssue
+	,cast(cast(case when KpuInv_DtS <= '1876-12-31' then null else KpuInv_DtS end as date) as varchar) dateIssue
 	,REPLACE(REPLACE(KpuInv_TR, CHAR(13), ''), CHAR(10), '') workReference
 	,REPLACE(REPLACE(KpuInv_IPR, CHAR(13), ''), CHAR(10), '') programDescription
 	,left(REPLACE(REPLACE(KpuInv_NmrIPR, CHAR(13), ''), CHAR(10), ''), 10) programNumber
-	,cast(cast(case when KpuInv_DtIPR = '1876-12-31' then null else KpuInv_DtIPR end as date) as varchar) programDate
+	,cast(cast(case when KpuInv_DtIPR <= '1876-12-31' then null else KpuInv_DtIPR end as date) as varchar) programDate
 	,REPLACE(REPLACE(KpuInv_WhoIPR, CHAR(13), ''), CHAR(10), '') programIssuer
 	,null employeeDocID	
 	,coalesce(spr_nm, '')

@@ -23,16 +23,16 @@ select
 	,d1.kpupsp_ser docSeries	
 	,d1.kpupsp_nmr docNumber	
 	,d1.kpupsp_who docIssued	
-	,cast(cast(case when d1.kpupsp_dat = '1876-12-31' then null else d1.kpupsp_dat end as date) as varchar) docIssuedDate	
-	,cast(cast(case when d1.kpupsp_term = '1876-12-31' then null else d1.kpupsp_term end as date) as varchar) docValidUntil	
+	,cast(cast(case when d1.kpupsp_dat <= '1876-12-31' then null else d1.kpupsp_dat end as date) as varchar) docIssuedDate	
+	,cast(cast(case when d1.kpupsp_term <= '1876-12-31' then null else d1.kpupsp_term end as date) as varchar) docValidUntil	
 	,cast(KpuPsp_Add + 1 as varchar) state	
 	,d1.kpupsp_com comment	
 	,s1.spr_nm 
 			+ case when len(s1.spr_nm) > 0 and len(d1.kpupsp_ser) > 0 then ', ' else '' end 
 			+ d1.kpupsp_ser 
 			+ case when len(d1.kpupsp_nmr) > 0 then ' ¹ ' else '' end + d1.kpupsp_nmr 
-			+ case when len(s1.spr_nm + d1.kpupsp_ser + d1.kpupsp_nmr) > 0 and d1.kpupsp_dat <> '1876-12-31' then ', ' else '' end 
-			+ case when d1.kpupsp_dat = '1876-12-31' then '' else convert(varchar, d1.kpupsp_dat, 104) end description	
+			+ case when len(s1.spr_nm + d1.kpupsp_ser + d1.kpupsp_nmr) > 0 and d1.kpupsp_dat > '1876-12-31' then ', ' else '' end 
+			+ case when d1.kpupsp_dat <= '1876-12-31' then '' else convert(varchar, d1.kpupsp_dat, 104) end description	
 	,null orderID	
 	,null paraID
 from KpuPsp1 d1

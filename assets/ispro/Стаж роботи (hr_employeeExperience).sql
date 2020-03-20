@@ -96,7 +96,7 @@ from (
 		s1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(c1.kpu_cdnlp) = 1 THEN CAST(c1.kpu_cdnlp AS numeric) ELSE s1.kpu_rcd END employeeID
 		,kpustg_cd + 10 dictExperienceID
 		,dateadd(day, -sum(datediff(day, cast(KpuAStg_DtN as date), 
-			case when kpuastg_dtk = '1876-12-31' then cast(@dateTo as date) else cast(KpuAStg_DtK as date) end)), cast(@dateTo as date)) 
+			case when kpuastg_dtk <= '1876-12-31' then cast(@dateTo as date) else cast(KpuAStg_DtK as date) end)), cast(@dateTo as date)) 
 			calcDate
 	from KpuAdStgDat1 s1
 	inner join KPUC1 c1 on c1.Kpu_Rcd = s1.kpu_rcd

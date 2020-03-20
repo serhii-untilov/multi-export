@@ -11,7 +11,7 @@ select
 	,cast(x1.kpu_tn as varchar) tabNum	 
 	,cast( l1.kpu_rcd as varchar) employeeNumberID
 	,cast(cast(kpupdxlg_dtn as date) as varchar) dateFrom
-	,cast(cast(case when kpupdxlg_dtk = '1876-12-31' then '9999-12-31' else kpupdxlg_dtk end as date) as varchar) dateTo
+	,cast(cast(case when kpupdxlg_dtk <= '1876-12-31' then '9999-12-31' else kpupdxlg_dtk end as date) as varchar) dateTo
 	,cast(kpupdxlg_cd as varchar) taxLimitID
 	,cast(case when kpupdxlg_cd = 2 then 3
 		when kpupdxlg_cd = 3 then 4

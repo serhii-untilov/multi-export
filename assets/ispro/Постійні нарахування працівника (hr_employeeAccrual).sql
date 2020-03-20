@@ -57,19 +57,19 @@ from (
 			,cast(x1.kpu_tn as varchar) tabNum
 			,cast(n1.kpu_rcd as varchar) employeeNumberID		
 			,cast(n1.kpunch_cd as varchar) payElID	
-			,cast(case when n1.kpuNch_datn = '1876-12-31' then null else CAST(n1.kpuNch_datn as DATE) end as varchar) dateFrom	
-			,cast(case when n1.kpuNch_datk = '1876-12-31' then '9999-12-31' else CAST(n1.kpuNch_datk as DATE) end as varchar) dateTo	
+			,cast(case when n1.kpuNch_datn <= '1876-12-31' then null else CAST(n1.kpuNch_datn as DATE) end as varchar) dateFrom	
+			,cast(case when n1.kpuNch_datk <= '1876-12-31' then '9999-12-31' else CAST(n1.kpuNch_datk as DATE) end as varchar) dateTo	
 			,cast(case when (KpuNch_Prz & 1) <> 0 then null else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } end as varchar) accrualSum	
 			,cast(case when (KpuNch_Prz & 1) = 0 then null else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } end as varchar) accrualRate	
 			,n1.KpuNch_CdPr orderNumber	
-			,cast(case when n1.KpuNch_DtPr = '1876-12-31' then null else cast(n1.KpuNch_DtPr as DATE) end as varchar) orderDatefrom 
+			,cast(case when n1.KpuNch_DtPr <= '1876-12-31' then null else cast(n1.KpuNch_DtPr as DATE) end as varchar) orderDatefrom 
 			,coalesce(x2.kpu_rcd, x1.kpu_rcd) kpu_rcdOsn
 		from kpunch1 n1
 		inner join kpuc1 c1 on c1.kpu_rcd = n1.kpu_rcd
 		inner join kpux x1 on x1.kpu_rcd = n1.kpu_rcd
 		left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
 		where (c1.Kpu_Flg & 2) = 0	-- ”далЄн в зарплате
-		and (kpunch_datk = '1876-12-31' or kpunch_datk >= @dateFrom)
+		and (kpunch_datk <= '1876-12-31' or kpunch_datk >= @dateFrom)
 	) t1	
 	inner join kpuc1 c2 on c2.kpu_rcd = t1.kpu_rcdOsn
 	left join kpupsp1 p2 on p2.kpu_rcd = t1.kpu_rcdOsn and KpuPsp_Add = 0
