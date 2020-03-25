@@ -6,7 +6,8 @@ select
 	'fullNameDat' fullNameDat, 'nameOr' nameOr, 'fullNameOr' fullNameOr, 'quantity' quantity, 'personalType' personalType, 'positionCategory' positionCategory,
 	'dictStatePayID' dictStatePayID, 'accrualSum' accrualSum, 'payElID' payElID, 'dictStaffCatID' dictStaffCatID, 'dictFundSourceID' dictFundSourceID, 'nameAcc' nameAcc,
 	'fullNameAcc' fullNameAcc, 'entryOrderID' entryOrderID, 'nameLoc' nameLoc, 'fullNameLoc' fullNameLoc, 'nameNom' nameNom, 'nameVoc' nameVoc, 'fullNameNom' fullNameNom,
-	'fullNameVoc' fullNameVoc, 'liquidate' liquidate
+	'fullNameVoc' fullNameVoc, 'liquidate' liquidate,
+	'dictPositionID' dictPositionID
 union all	
 /*END-OF-HEAD*/
 select 
@@ -46,7 +47,8 @@ select
 	sprD_NmIm nameVoc,	
 	sprD_NmIm fullNameNom,	
 	sprD_NmIm fullNameVoc,	
-	'0' liquidate
+	'0' liquidate,
+	cast(SprD_Cd as varchar) dictPositionID
 from SPRDOL
 inner join (
 	select distinct kpuprk1.kpuprkz_pdrcd * 10000 + kpuprk1.kpuprkz_dol positionID, kpuprk1.kpuprkz_pdrcd departmentID, kpuprk1.kpuprkz_dol dictPositionID

@@ -11,6 +11,7 @@ select 'ID' ID
 	,'dateTo' dateTo, 'changeDateTo' changeDateTo, 'workScheduleID' workScheduleID, 'workerType' workerType, 'mtCount' mtCount, 'description' description
 	,'dictRankID' dictRankID, 'dictStaffCatID' dictStaffCatID, 'payElID' payElID, 'accrualSum' accrualSum, 'raiseSalary' raiseSalary, 'isIndex' isIndex
 	,'isActive' isActive, 'workPlace' workPlace, 'dictFundSourceID' dictFundSourceID, 'dictCategoryECBID' dictCategoryECBID, 'accountID' accountID
+	,'dictPositionID' dictPositionID
 union all
 /*END-OF-HEAD*/
 select ID
@@ -22,6 +23,7 @@ select ID
 	,dateTo, changeDateTo, workScheduleID, workerType, mtCount, description
 	,dictRankID, dictStaffCatID, payElID, accrualSum, raiseSalary, isIndex
 	,isActive, workPlace, dictFundSourceID, dictCategoryECBID, accountID
+	,dictPositionID
 from (	
 	select
 		cast(p1.bookmark as varchar) ID	
@@ -76,6 +78,7 @@ from (
 		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- Для науковців
 			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID	
 		,cast(p1.KpuPrkz_Sch as varchar) accountID	
+		,cast(p1.kpuprkz_dol as varchar) dictPositionID
 	from kpuprk1 p1
 	inner join KPUX x1 on x1.Kpu_Rcd = p1.Kpu_Rcd
 	inner join KPUC1 c1 on c1.Kpu_Rcd = p1.kpu_rcd
