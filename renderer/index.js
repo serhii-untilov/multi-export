@@ -397,7 +397,7 @@ const getStateText = (target) => {
       return 'Відсутні дані для експорту.'
     case Target.FILE_ERROR:
       console.log(target)
-      return `Помилка. ${target.err.message}`
+      return `Помилка. ${target.err}`
     default:
       return 'Невідома помилка.'
   }

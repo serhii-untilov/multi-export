@@ -16,7 +16,7 @@ const makeFile = function(target) {
         .then(() => resolve(target))
         .catch((err) => {
             target.state = Target.FILE_ERROR
-            target.err = err
+            target.err = err.message
             resolve(target)
         })
     })
