@@ -33,6 +33,7 @@ select
 	,'dateFromAvg' dateFromAvg	
 	,'dateToAvg' dateToAvg	
 	,'sumAvg' sumAvg
+	,'employeeNumberPartID' employeeNumberPartID
 union all
 /*END-OF-HEAD*/
 select 
@@ -52,6 +53,7 @@ select
 	,cast(8 -- Импорт
 		| (case when (KpuRl_Prz & 8) <> 0 then 512 else 0 end)	-- Сторно
 		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- Доначисление
+		| (case when r1.KpuRlSvm_Tn <> 0 then 4096 else 0 end)  -- Запись внутреннего совместителя
 		as varchar) flagsRec
 	,cast(case when v1.Vo_Grp < 128 and (r1.KpuRl_Msk | r1.kpurl_addmsk) = 0 then 4294967295 else 0 end as varchar) flagsFix	
 	,cast(r1.kpurlPl_hrs as varchar) planHours	
@@ -60,6 +62,7 @@ select
 	,cast(cast(case when r1.KpuRlPr_Dn <= '1876-12-31' then null else r1.KpuRlPr_Dn end as date) as varchar) dateFrom	
 	,cast(cast(case when r1.KpuRlPr_Dk <= '1876-12-31' then null else r1.KpuRlPr_Dk end as date) as varchar) dateTo	
 	,cast(case 
+			when r1.KpuRlSvm_Tn <> 0 then null
 			when n2.pdnch_rcd is not null then 'hr_payPerm'	-- Постійні нарахування/утримання організації
 			when n1.kpunch_id is not null then 'hr_employeeAccrual'	-- Постійні нарахування за таб.номером
 			when u2.pdudr_rcd is not null then 'hr_payPerm'	-- Постійні нарахування/утримання організації
@@ -67,6 +70,7 @@ select
 			when p1.bookmark is not null then 'hr_employeePosition' -- Призначення працівника
 			else null end as varchar) source
 	,cast(case 
+			when r1.KpuRlSvm_Tn <> 0 then null
 			when n2.pdnch_rcd is not null then n2.pdnch_rcd	-- Постійні нарахування/утримання організації
 			when n1.kpunch_id is not null then n1.kpunch_id	-- Постійні нарахування за таб.номером
 			when u2.pdudr_rcd is not null then 65535 + u2.pdudr_rcd	-- Постійні нарахування/утримання організації
@@ -76,6 +80,7 @@ select
 	,cast(case when r1.KpuRlPrZr_Dn <= '1876-12-31' then null else cast(r1.KpuRlPrZr_Dn as date) end as varchar) dateFromAvg	
 	,cast(case when r1.KpuRlPrZr_Dk <= '1876-12-31' then null else cast(r1.KpuRlPrZr_Dk as date) end as varchar) dateToAvg	
 	,cast(cast(KpuRlPl_SrZ as numeric(19, 2)) as varchar) sumAvg
+	,case when r1.KpuRlSvm_Tn = 0 then '' else cast (svm.Kpu_Rcd as varchar) end employeeNumberPartID
 from kpurlo1 r1
 inner join KPUX x1 on x1.Kpu_Tn = r1.Kpu_Tn
 inner join KPUC1 c1 on c1.Kpu_Rcd = x1.kpu_rcd
@@ -97,7 +102,8 @@ left join kpuprk1 p1 on v1.vo_grp = 1 and r1.KpuRlPr_Dn >= r1.kpurl_datrp
 			)
 	)
 	and r1.kpurl_cdvo = p1.kpuprkz_sysop
+left join kpux svm on svm.kpu_tn = r1.KpuRlSvm_Tn
 where r1.KpuRl_CdVo <> 0
 and r1.KpuRl_DatUp >= @dateFrom
-and (KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
+--and (KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
 and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 1, 0)}, 2)} = 0)
