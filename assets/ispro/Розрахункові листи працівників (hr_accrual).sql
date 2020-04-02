@@ -54,6 +54,10 @@ select
 		| (case when (KpuRl_Prz & 8) <> 0 then 512 else 0 end)	-- Сторно
 		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- Доначисление
 		| (case when r1.KpuRlSvm_Tn <> 0 then 4096 else 0 end)  -- Запись внутреннего совместителя
+		| (case when r1.KpuRlSvm_Tn <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
+		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 4096 else 0 end)  -- Запись внутреннего совместителя
+		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
+		| (case when v1.Vo_NUR <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
 		as varchar) flagsRec
 	,cast(case when v1.Vo_Grp < 128 and (r1.KpuRl_Msk | r1.kpurl_addmsk) = 0 then 4294967295 else 0 end as varchar) flagsFix	
 	,cast(r1.kpurlPl_hrs as varchar) planHours	
