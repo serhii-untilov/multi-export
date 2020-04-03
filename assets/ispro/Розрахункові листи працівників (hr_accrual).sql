@@ -43,11 +43,11 @@ select
 	,cast(x1.kpu_tn as varchar) tabNum
 	,cast(x1.kpu_rcd as varchar) employeeNumberID	
 	,cast(r1.kpurl_cdvo as varchar) payElID	
-	,cast(cast(( { fn CONVERT( r1.kpurlPl_Sm, SQL_DOUBLE ) } / { fn POWER( 10, KpuRlPl_SmMT ) } ) as numeric(19,2)) as varchar) baseSum
+	,cast(cast(( { fn CONVERT( case when (r1.kpurl_prz & 8) = 0 then r1.kpurlPl_Sm else -r1.kpurlPl_Sm end, SQL_DOUBLE ) } / { fn POWER( 10, KpuRlPl_SmMT ) } ) as numeric(19,2)) as varchar) baseSum
 	,cast(cast(( { fn CONVERT( r1.kpurlPl_Prc, SQL_DOUBLE ) } / { fn POWER( 10, KpuRlPl_PrcMT ) } ) as numeric(19,2)) as varchar) rate
 	,cast(CONVERT(DECIMAL(19, 0), r1.kpurl_Sm) / 100 as varchar) paySum	
-	,cast(r1.kpurl_days as varchar) days	
-	,cast(r1.kpurl_hrs as varchar) hours	
+	,cast(case when (r1.kpurl_prz & 8) = 0 then r1.kpurl_days else -r1.kpurl_days end as varchar) days	
+	,cast(case when (r1.kpurl_prz & 8) = 0 then r1.kpurl_hrs else -r1.kpurl_hrs end as varchar) hours	
 	,cast(case when r1.KpuRlTS_Dat <= '1876-12-31' then null else cast(r1.KpuRlTS_Dat as date) end as varchar) calculateDate	
 	,cast(r1.KpuRl_Msk as varchar) mask	
 	,cast(8 -- Импорт

@@ -2,6 +2,7 @@
 declare @dateTo date = GETDATE()
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'employeeID' employeeID, 'dictExperienceID' dictExperienceID, 'calcDate' calcDate, 'startCalcDate' startCalcDate, 'comment' comment, 'impEmployeeID' impEmployeeID, 'importInfo' importInfo
+,'employeeNumberID' employeeNumberID
 union all
 /*END-OF-HEAD*/
 select 
@@ -9,16 +10,18 @@ select
 	,cast(employeeID as varchar) employeeID
 	,cast(dictExperienceID as varchar) dictExperienceID
 	,cast(cast(calcDate as date) as varchar) calcDate
-	,null startCalcDate
-	,null comment
-	,null impEmployeeID
-	,null importInfo
+	,'' startCalcDate
+	,'' comment
+	,'' impEmployeeID
+	,'' importInfo
+	,case when employeeNumberID is null then '' else cast(employeeNumberID as varchar) end employeeNumberID
 from (
 	-- 1 Загальний стаж
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,1 dictExperienceID
 		,Kpu_DtObSt calcDate --min(Kpu_DtObSt) calcDate
+		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtObSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
@@ -30,6 +33,7 @@ from (
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,2 dictExperienceID
 		,Kpu_DtNpSt calcDate -- min(Kpu_DtNpSt) calcDate
+		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtNpSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
@@ -41,6 +45,7 @@ from (
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,3 dictExperienceID
 		,Kpu_DtOrgSt calcDate --min(Kpu_DtOrgSt) calcDate
+		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtOrgSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
@@ -52,6 +57,7 @@ from (
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,4 dictExperienceID
 		,Kpu_DtSrSt calcDate --min(Kpu_DtSrSt) calcDate
+		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtSrSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
@@ -63,6 +69,7 @@ from (
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,5 dictExperienceID
 		,Kpu_DtOtrSt calcDate --min(Kpu_DtOtrSt) calcDate
+		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtOtrSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
@@ -74,6 +81,7 @@ from (
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,6 dictExperienceID
 		,Kpu_DtGS calcDate --min(Kpu_DtGS) calcDate
+		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtGS > '1876-12-31' and c1.Kpu_Rcd < 4000000000
@@ -85,6 +93,7 @@ from (
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,7 dictExperienceID
 		,Kpu_DtGSNp calcDate --min(Kpu_DtGSNp) calcDate
+		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtGSNp > '1876-12-31' and c1.Kpu_Rcd < 4000000000
@@ -93,18 +102,27 @@ from (
 	-- Додаткові стажі
 	union all
 	select 
-		s1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(c1.kpu_cdnlp) = 1 THEN CAST(c1.kpu_cdnlp AS numeric) ELSE s1.kpu_rcd END employeeID
+		case when x1.Kpu_TnOsn = 0 then x1.Kpu_Rcd else x2.kpu_Rcd end employeeID --CASE WHEN ISNUMERIC(c1.kpu_cdnlp) = 1 THEN CAST(c1.kpu_cdnlp AS numeric) ELSE s1.kpu_rcd END employeeID
 		,kpustg_cd + 10 dictExperienceID
 		,dateadd(day, -sum(datediff(day, cast(KpuAStg_DtN as date), 
 			case when kpuastg_dtk <= '1876-12-31' then cast(@dateTo as date) else cast(KpuAStg_DtK as date) end)), cast(@dateTo as date)) 
 			calcDate
+		,x1.kpu_rcd employeeNumberID
 	from KpuAdStgDat1 s1
 	inner join KPUC1 c1 on c1.Kpu_Rcd = s1.kpu_rcd
 	inner join KPUX x1 on x1.Kpu_Rcd = s1.kpu_rcd
-	where Kpu_TnOsn = 0 and c1.Kpu_Rcd < 4000000000
+	left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
+	where c1.Kpu_Rcd < 4000000000
 	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+--	and (x1.Kpu_TnOsn = 0 or not exists (
+--		select null
+--		from kpuadstgdat1 s2
+--		where s2.kpu_rcd = x2.kpu_rcd
+--		and s2.kpustg_cd = s1.kpustg_cd
+--	))
 	group by
-		s1.kpu_rcd --	CASE WHEN ISNUMERIC(c1.kpu_cdnlp) = 1 THEN CAST(c1.kpu_cdnlp AS numeric) ELSE s1.kpu_rcd END
+		case when x1.Kpu_TnOsn = 0 then x1.Kpu_Rcd else x2.kpu_Rcd end 
+		,x1.kpu_rcd
 		,kpustg_cd + 10
 ) t1		
 inner join (

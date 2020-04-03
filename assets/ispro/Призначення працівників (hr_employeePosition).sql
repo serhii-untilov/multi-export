@@ -12,6 +12,10 @@ select 'ID' ID
 	,'dictRankID' dictRankID, 'dictStaffCatID' dictStaffCatID, 'payElID' payElID, 'accrualSum' accrualSum, 'raiseSalary' raiseSalary, 'isIndex' isIndex
 	,'isActive' isActive, 'workPlace' workPlace, 'dictFundSourceID' dictFundSourceID, 'dictCategoryECBID' dictCategoryECBID, 'accountID' accountID
 	,'dictPositionID' dictPositionID
+	,'orderID' orderID
+	,'orderNumber' orderNumber
+	,'orderDate' orderDate
+	,'staffingTableID' staffingTableID
 union all
 /*END-OF-HEAD*/
 select ID
@@ -24,6 +28,10 @@ select ID
 	,dictRankID, dictStaffCatID, payElID, accrualSum, raiseSalary, isIndex
 	,isActive, workPlace, dictFundSourceID, dictCategoryECBID, accountID
 	,dictPositionID
+	,orderID
+	,orderNumber
+	,orderDate
+	,staffingTableID
 from (	
 	select
 		cast(p1.bookmark as varchar) ID	
@@ -79,6 +87,10 @@ from (
 			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID	
 		,cast(p1.KpuPrkz_Sch as varchar) accountID	
 		,cast(p1.kpuprkz_dol as varchar) dictPositionID
+		,cast(p1.kpuprkz_rcd as varchar) orderID
+		,p1.kpuprkz_cd orderNumber
+		,cast(cast(case when p1.kpuprkz_dt <= '1876-12-31' then '' else p1.kpuprkz_dt end as date) as varchar) orderDate
+		,cast(p1.KpuPrkz_RcS as varchar) staffingTableID
 	from kpuprk1 p1
 	inner join KPUX x1 on x1.Kpu_Rcd = p1.Kpu_Rcd
 	inner join KPUC1 c1 on c1.Kpu_Rcd = p1.kpu_rcd
