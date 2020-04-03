@@ -19,6 +19,7 @@ where sprpls_rcd in (
 	select distinct KpuPrkz_Sch
 	from kpuprk1
 	where KpuPrkz_Sch <> 0
+/*
 	union
 	select distinct kpurl_cdsch
 	from kpurlospz
@@ -27,4 +28,5 @@ where sprpls_rcd in (
 	select distinct KpuF_CdSch
 	from kpufa1
 	where kpuf_cdsch <> 0
+*/
 )	
