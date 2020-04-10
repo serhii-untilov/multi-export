@@ -2,6 +2,7 @@
 
 const Source = require('../Source')
 const Dictionary = require('../entity/Dictionary')
+const makeDir = require('../helper/makeDir')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
@@ -41,7 +42,9 @@ class Source1C7 extends Source {
             let targetList = []
             let dictionary = new Dictionary(config)
             let arcFileName = null
-            hr_dictPosition(config, dictionary).then((target) => { targetList.push(target); sendFile(target) })
+            
+            makeDir(config.targetPath)
+                .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_department(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })

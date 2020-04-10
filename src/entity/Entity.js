@@ -22,6 +22,7 @@ class Entity {
             record += `${separator}${this[prop]}`
             separator = ';'
         }
+        record = record.replace(/(\r\n|\n|\r)/gm, "")
         record += '\n'
         return record
     }

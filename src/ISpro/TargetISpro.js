@@ -71,7 +71,6 @@ async function doQuery(target, queryText) {
         // Emited for each row in a recordset
         request.on('row', row => {
             writeRow(row)
-            cut_rn()
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE == 0) {
                 request.pause();
@@ -128,13 +127,8 @@ async function doQuery(target, queryText) {
                     buffer += `${row[column]}`
                 }
             }
+            buffer = buffer.replace(/(\r\n|\n|\r)/gm, "")
             buffer += '\n'
-        }
-
-        function cut_rn() {
-            if (buffer.indexOf("\r") !== -1) {
-                buffer = buffer.replace("\r\n", "")
-            }
         }
     })
 }

@@ -5,6 +5,7 @@ const path = require('path')
 const sql = require('mssql')
 const Source = require('../Source')
 const Target = require('../Target')
+const makeDir = require('../helper/makeDir')
 const makeFile = require('./TargetISpro')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
@@ -28,7 +29,9 @@ class SourceISpro extends Source {
             console.log(err)
             sendFailed(err.message)
         })
+        
         pool.connect()
+        .then(() => makeDir(config.targetPath))
         .then(() => getFileList())
         .then((fileList) => {
             return Promise.all(
