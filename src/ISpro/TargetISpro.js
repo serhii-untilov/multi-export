@@ -132,7 +132,9 @@ async function doQuery(target, queryText) {
         }
 
         function cut_rn() {
-            buffer = buffer.replace("\r\n", "")
+            if (buffer.indexOf("\r") !== -1) {
+                buffer = buffer.replace("\r\n", "")
+            }
         }
     })
 }

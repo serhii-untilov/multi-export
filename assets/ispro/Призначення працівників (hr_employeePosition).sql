@@ -7,6 +7,7 @@ select 'ID' ID
 	,'taxCode' taxCode
 	,'tabNum' tabNum
 	,'employeeNumberID' employeeNumberID
+	,'employeeNumberDateFrom' employeeNumberDateFrom
 	,'departmentID' departmentID, 'positionID' positionID, 'dateFrom' dateFrom
 	,'dateTo' dateTo, 'changeDateTo' changeDateTo, 'workScheduleID' workScheduleID, 'workerType' workerType, 'mtCount' mtCount, 'description' description
 	,'dictRankID' dictRankID, 'dictStaffCatID' dictStaffCatID, 'payElID' payElID, 'accrualSum' accrualSum, 'raiseSalary' raiseSalary, 'isIndex' isIndex
@@ -23,6 +24,7 @@ select ID
 	,taxCode
 	,tabNum
 	,employeeNumberID
+	,employeeNumberDateFrom
 	,departmentID, positionID, dateFrom
 	,dateTo, changeDateTo, workScheduleID, workerType, mtCount, description
 	,dictRankID, dictStaffCatID, payElID, accrualSum, raiseSalary, isIndex
@@ -31,7 +33,7 @@ select ID
 	,orderID
 	,orderNumber
 	,orderDate
-	,staffingTableID
+	,staffingTableID	
 from (	
 	select
 		cast(p1.bookmark as varchar) ID	
@@ -48,6 +50,7 @@ from (
 			 end taxCode	
 		,cast(x1.kpu_tn as varchar) tabNum	 
 		,cast(p1.kpu_rcd as varchar) employeeNumberID	
+		,cast(cast(c1.kpu_dtpst as date) as varchar) employeeNumberDateFrom
 		,cast(p1.KpuPrkz_PdRcd as varchar) departmentID	
 		--,cast(p1.kpuprkz_dol as varchar) positionID	
 		,cast(case when sprdol.sprd_cd is null then null else p1.kpuprkz_pdrcd * 10000 + p1.kpuprkz_dol end as varchar) positionID
