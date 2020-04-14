@@ -61,6 +61,9 @@ inner join PSPR on SprSpr_Cd = 787202 and payvo1.Vo_Cd = pspr.spr_cd
 inner join /*SYS_SCHEMA*/i711_sys.dbo.sspr on sspr.sprspr_cd = 131842 and sspr.spr_cdlng = 2 and sspr.spr_cd = payvo1.vo_met
 where
 vo_cd in (
+	select distinct KpuPrkz_SysOp
+	from kpuprk1
+	union 
 	select distinct pdnch_cd
 	from pdnch
 	where pdnch_datk <= '1876-12-31' or pdnch_datk >= @dateFrom
