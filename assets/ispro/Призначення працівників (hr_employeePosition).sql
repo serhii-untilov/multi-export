@@ -64,7 +64,7 @@ from (
 			  end as varchar) workerType	
 		,cast(p1.KpuPrkz_QtStv as varchar) mtCount	
 		,cast(x1.kpu_tn as varchar) + ' ' + c1.kpu_fio + ' ' + coalesce(sprdol.sprd_nmim, '') description	
-		,'0' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- В Охматдет Ранг используется не по назначению. В организациях с рангами расскомментировать
+		,'' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- В Охматдет Ранг используется не по назначению. В организациях с рангами расскомментировать
 		,cast(p1.KpuPrkz_Kat as varchar) dictStaffCatID
 		,cast(p1.KpuPrkz_SysOp as varchar) payElID
 		,cast(cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) as varchar) accrualSum
@@ -85,15 +85,15 @@ from (
 			  when ASCII(spst.SPR_NMSHORT) = 3 then 4 -- Поза штатом
 			  else 1 -- Основне
 			  end as varchar) workPlace	
-		,cast(case when p1.KpuPrkz_SF = 0 then null else p1.KpuPrkz_SF end as varchar) dictFundSourceID	
+		,case when p1.KpuPrkz_SF = 0 then '' else cast(p1.KpuPrkz_SF as varchar) end dictFundSourceID	
 		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- Для науковців
 			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID	
 		,cast(p1.KpuPrkz_Sch as varchar) accountID	
-		,cast(p1.kpuprkz_dol as varchar) dictPositionID
-		,cast(p1.kpuprkz_rcd as varchar) orderID
+		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID
+		,case when p1.kpuprkz_rcd = 0 then '' else cast(p1.kpuprkz_rcd as varchar) end orderID
 		,p1.kpuprkz_cd orderNumber
 		,cast(cast(case when p1.kpuprkz_dt <= '1876-12-31' then '' else p1.kpuprkz_dt end as date) as varchar) orderDate
-		,cast(p1.KpuPrkz_RcS as varchar) staffingTableID
+		,case when p1.KpuPrkz_RcS = 0 then '' else cast(p1.KpuPrkz_RcS as varchar) end staffingTableID
 	from kpuprk1 p1
 	inner join KPUX x1 on x1.Kpu_Rcd = p1.Kpu_Rcd
 	inner join KPUC1 c1 on c1.Kpu_Rcd = p1.kpu_rcd
