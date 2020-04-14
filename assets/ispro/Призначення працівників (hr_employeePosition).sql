@@ -204,3 +204,4 @@ inner join (
 	) t1
 	group by kpu_cdnlp
 ) t2 on t2.kpu_cdnlp = t1.taxCode
+where dateTo >= @dateFrom
