@@ -19,10 +19,13 @@ class Entity {
         let record = ''
         let separator = ''
         for (const prop in this) {
-            record += `${separator}${this[prop]}`
+            let field = this[prop]
+            let index = field instanceof String ? field.indexOf("\r") : -1
+            if (index >= 0)
+                field[index] = 0
+            record += `${separator}${field}`
             separator = ';'
         }
-        record = record.replace(/(\r\n|\n|\r)/gm, "")
         record += '\n'
         return record
     }

@@ -119,15 +119,17 @@ async function doQuery(target, queryText) {
         }
         
         function writeRow(row) {
-            let columnNumber = 0
+            let separator = ''
             for (let column in row) {
                 if (row.hasOwnProperty(column)) {
-                    if (columnNumber > 0) buffer += ';'
-                    columnNumber++
-                    buffer += `${row[column]}`
+                    let field = row[column]
+                    let index = field instanceof String ? field.indexOf("\r") : -1
+                    if (index >= 0)
+                        field[index] = 0
+                    buffer += `${separator}${field}`
+                    separator = ';'
                 }
             }
-            buffer = buffer.replace(/(\r\n|\n|\r)/gm, "")
             buffer += '\n'
         }
     })
