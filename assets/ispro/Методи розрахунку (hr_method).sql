@@ -12,6 +12,9 @@ and spr_cd in (
 	select distinct vo_met
 	from payvo1
 	where vo_cd in  (
+		select distinct KpuPrkz_SysOp
+		from kpuprk1
+		union 
 		select distinct pdnch_cd
 		from pdnch
 		where pdnch_datk <= '1876-12-31' or pdnch_datk >= @dateFrom

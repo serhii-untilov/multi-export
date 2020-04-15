@@ -8,6 +8,7 @@ select 'ID' ID
 	,'tabNum' tabNum
 	,'employeeNumberID' employeeNumberID
 	,'employeeNumberDateFrom' employeeNumberDateFrom
+	,'employeeNumberDateTo' employeeNumberDateTo
 	,'departmentID' departmentID, 'positionID' positionID, 'dateFrom' dateFrom
 	,'dateTo' dateTo, 'changeDateTo' changeDateTo, 'workScheduleID' workScheduleID, 'workerType' workerType, 'mtCount' mtCount, 'description' description
 	,'dictRankID' dictRankID, 'dictStaffCatID' dictStaffCatID, 'payElID' payElID, 'accrualSum' accrualSum, 'raiseSalary' raiseSalary, 'isIndex' isIndex
@@ -20,13 +21,17 @@ select 'ID' ID
 union all
 /*END-OF-HEAD*/
 select ID
+--	,@dateFrom
 	,cast(t2.kpu_rcd as varchar) employeeID
 	,taxCode
 	,tabNum
 	,employeeNumberID
-	,employeeNumberDateFrom
-	,departmentID, positionID, dateFrom
-	,dateTo, changeDateTo, workScheduleID, workerType, mtCount, description
+	,cast(employeeNumberDateFrom as varchar) employeeNumberDateFrom
+	,cast(employeeNumberDateTo as varchar) employeeNumberDateTo
+	,departmentID, positionID
+	,cast(case when dateFrom < employeeNumberDateFrom then employeeNumberDateFrom else dateFrom end as varchar) dateFrom
+	,cast(case when dateTo > employeeNumberDateTo then employeeNumberDateTo else dateTo end as varchar) dateTo
+	,changeDateTo, workScheduleID, workerType, mtCount, description
 	,dictRankID, dictStaffCatID, payElID, accrualSum, raiseSalary, isIndex
 	,isActive, workPlace, dictFundSourceID, dictCategoryECBID, accountID
 	,dictPositionID
@@ -50,12 +55,13 @@ from (
 			 end taxCode	
 		,cast(x1.kpu_tn as varchar) tabNum	 
 		,cast(p1.kpu_rcd as varchar) employeeNumberID	
-		,cast(cast(c1.kpu_dtpst as date) as varchar) employeeNumberDateFrom
+		,cast(c1.kpu_dtpst as date) employeeNumberDateFrom
+		,cast(case when c1.kpu_dtuvl <= '1876-12-31' then '9999-12-31' else c1.kpu_dtuvl end as date) employeeNumberDateTo
 		,cast(p1.KpuPrkz_PdRcd as varchar) departmentID	
 		--,cast(p1.kpuprkz_dol as varchar) positionID	
 		,cast(case when sprdol.sprd_cd is null then null else p1.kpuprkz_pdrcd * 10000 + p1.kpuprkz_dol end as varchar) positionID
-		,cast(cast(case when p1.kpuprkz_dtv <= '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) as varchar) dateFrom	
-		,cast(cast(case when p2.kpuprkz_dtv is null OR p2.kpuprkz_dtv <= '1876-12-31' then '9999-12-31' else p2.kpuprkz_dtv - 1 end as date) as varchar) dateTo	
+		,cast(case when p1.kpuprkz_dtv <= '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) dateFrom	
+		,cast(case when p2.kpuprkz_dtv is null OR p2.kpuprkz_dtv <= '1876-12-31' then '9999-12-31' else p2.kpuprkz_dtv - 1 end as date) dateTo	
 		,cast(cast(case when p1.KpuPrkz_DtNzE <= '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo	
 		,cast(p1.KpuPrkz_RejWr as varchar) workScheduleID
 		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- ׂטלקאסמגמ
@@ -204,4 +210,7 @@ inner join (
 	) t1
 	group by kpu_cdnlp
 ) t2 on t2.kpu_cdnlp = t1.taxCode
-where dateTo >= @dateFrom
+where case when dateTo > employeeNumberDateTo then employeeNumberDateTo else dateTo end >= @dateFrom
+and case when dateTo > employeeNumberDateTo then employeeNumberDateTo else dateTo end >= t1.employeeNumberDateFrom
+and case when dateFrom < employeeNumberDateFrom then employeeNumberDateFrom else dateFrom end <= t1.employeeNumberDateTo
+and case when dateFrom < employeeNumberDateFrom then employeeNumberDateFrom else dateFrom end <= t1.dateTo
