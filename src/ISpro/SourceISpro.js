@@ -58,10 +58,8 @@ class SourceISpro extends Source {
                 let arcFileName
                 getFirmName(pool)
                 .then((firmName) => getFullFileName(config.targetPath, firmName + '.zip'))
-                .then((fileName) => {
-                    arcFileName = fileName
-                    makeArchive(arcFileName, targetList)
-                })
+                .then((fullFileName) => arcFileName = fullFileName)
+                .then(() => makeArchive(arcFileName, targetList))
                 .then(() => removeTargetFiles(targetList))
                 .then(() => sendDone(arcFileName))
                 .catch((err) => sendFailed(err.message))

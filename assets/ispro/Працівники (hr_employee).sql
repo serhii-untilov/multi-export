@@ -12,11 +12,11 @@ select
 	,dbo.fnKdrSegregateFio(c1.kpu_fio, 2) firstName
 	,dbo.fnKdrSegregateFio(c1.kpu_fio, 3) middleName
 	,dbo.fnKdrSegregateFio(c1.kpu_fio, 1) + ' ' + LEFT(dbo.fnKdrSegregateFio(c1.kpu_fio, 2), 1) + '. ' + LEFT(dbo.fnKdrSegregateFio(c1.kpu_fio, 3), 1) + '. ' shortFIO
-	,c1.kpu_fio fullFIO
-	,c1.kpu_fioR genName
-	,c1.kpu_fioD datName
-	,c1.kpu_fioV accusativeName	
-	,c1.kpu_fio insName
+	,REPLACE(REPLACE(c1.kpu_fio, CHAR(13), ''), CHAR(10), '') fullFIO
+	,REPLACE(REPLACE(c1.kpu_fioR, CHAR(13), ''), CHAR(10), '') genName
+	,REPLACE(REPLACE(c1.kpu_fioD, CHAR(13), ''), CHAR(10), '') datName
+	,REPLACE(REPLACE(c1.kpu_fioV, CHAR(13), ''), CHAR(10), '') accusativeName	
+	,REPLACE(REPLACE(c1.kpu_fio, CHAR(13), ''), CHAR(10), '') insName
 	,cast(x1.kpu_tn as varchar) tabNum	
 	,'NEW' state	
 	,case when c1.kpu_cdpol = 1 then 'W' when c1.kpu_cdpol = 2 then 'M' else null end sexType	

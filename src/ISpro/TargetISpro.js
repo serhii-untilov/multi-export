@@ -122,11 +122,7 @@ async function doQuery(target, queryText) {
             let separator = ''
             for (let column in row) {
                 if (row.hasOwnProperty(column)) {
-                    let field = row[column]
-                    let index = field instanceof String ? field.indexOf("\r") : -1
-                    if (index >= 0)
-                        field[index] = 0
-                    buffer += `${separator}${field}`
+                    buffer += `${separator}${row[column]}`
                     separator = ';'
                 }
             }
