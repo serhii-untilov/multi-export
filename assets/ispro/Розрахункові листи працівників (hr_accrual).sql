@@ -58,6 +58,11 @@ select
 		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 4096 else 0 end)  -- Запись внутреннего совместителя
 		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
 		| (case when v1.Vo_NUR <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
+		| (case when (KpuRl_Prz & 2) <> 0 then 4 else 0 end)	-- Создана вручную
+		| (case when (KpuRl_Prz & 1) <> 0 then 1 else 0 end)	-- Рассчитана автоматически
+		| (case when (KpuRl_Prz & 4) <> 0 then 2 else 0 end)	-- Загружена из документов
+		| (case when (KpuRl_Prz & 262144) <> 0 then 32 else 0 end)	-- СО рассчитана от часов
+		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- Доначисление/снятие
 		as varchar) flagsRec
 	,cast(case when v1.Vo_Grp < 128 and (r1.KpuRl_Msk | r1.kpurl_addmsk) = 0 then 4294967295 else 0 end as varchar) flagsFix	
 	,cast(r1.kpurlPl_hrs as varchar) planHours	
