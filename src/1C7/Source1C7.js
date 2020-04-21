@@ -41,7 +41,6 @@ class Source1C7 extends Source {
         try {
             let targetList = []
             let dictionary = new Dictionary(config)
-            let arcFileName = null
             
             makeDir(config.targetPath)
                 .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -64,17 +63,16 @@ class Source1C7 extends Source {
                 .then(() => hr_accrual4(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
                 .then(() => {
                     if (config.isArchive) {
-                        arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
-                        return makeArchive(arcFileName, targetList)
+                        let arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
+                        makeArchive(arcFileName, targetList)
+                        .then(() => removeTargetFiles(targetList))
+                        .then(() => sendDone(arcFileName))
+                        .catch((err) => sendFailed(err.message))
+                    } else {
+                        sendDone(null)
                     }
                 })
-                .then(() => {
-                    if (config.isArchive) {
-                        removeTargetFiles(targetList)
-                    }
-                })
-                .then(() => sendDone(arcFileName))
-                .catch((err) => sendFailed(err))
+                .catch((err) => sendFailed(err.message))
         } catch (err) {
             sendFailed(err.message)
         }

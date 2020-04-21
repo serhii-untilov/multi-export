@@ -12,6 +12,9 @@ with
 		select vo_cd 
 		from payvo1
 		where vo_cd in (
+			select distinct KpuPrkz_SysOp
+			from kpuprk1
+			union 
 			select distinct pdnch_cd
 			from pdnch
 			where pdnch_datk <= '1876-12-31' or pdnch_datk >= @dateFrom
@@ -63,10 +66,12 @@ where t1.paytv_part = 2
 		select vo_cd 
 		from payVoList
 	)
-and (f1.PayFnd_Del = 0 or exists (
-	select null
-	from KPUFA1 k1
-	where k1.KpuF_CdFnd = f1.payfnd_rcd
-	and kpuf_datup >= @dateFrom
-))
+and (f1.PayFnd_Del = 0 
+--	or exists (
+--		select null
+--		from KPUFA1 k1
+--		where k1.KpuF_CdFnd = f1.payfnd_rcd
+--		and kpuf_datup >= @dateFrom
+--	)
+)
 group by t1.paytv_cd, t1.paytv_cdv

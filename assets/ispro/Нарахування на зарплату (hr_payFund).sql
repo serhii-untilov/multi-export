@@ -21,9 +21,10 @@ select
 	,null entryOperationID
 from PayFnd f1
 inner join PSPR on pspr.SprSpr_Cd = 133644 and pspr.Spr_Cd = f1.payfnd_rcd
-where PayFnd_Del = 0 or exists (
-	select null
-	from KPUFA1 k1
-	where k1.KpuF_CdFnd = f1.payfnd_rcd
-	and kpuf_datup >= @dateFrom
-)
+where PayFnd_Del = 0 
+--	or exists (
+--		select null
+--		from KPUFA1 k1
+--		where k1.KpuF_CdFnd = f1.payfnd_rcd
+--		and kpuf_datup >= @dateFrom
+--	)
