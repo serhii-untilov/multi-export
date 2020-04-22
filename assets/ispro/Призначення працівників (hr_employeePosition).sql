@@ -77,7 +77,7 @@ from (
 		,cast(cast(
 				case 
 				WHEN p1.KpuPrkz_IdxBsd <= '1876-12-31' and { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 2, 0 ) }, 2 ) } <> 0 and p1.kpuprkz_dtv >= @minDateRaiseSalary then p1.kpuprkz_dtv
-				when dateRaiseSalary.kpuprkz_dtv is not null then p1.kpuprkz_dtv
+				--when dateRaiseSalary.kpuprkz_dtv is not null then p1.kpuprkz_dtv
 				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and lastIdxBase.kpuprkz_dtv is not null and lastIdxBase.kpuprkz_dtv >= @minDateRaiseSalary then lastIdxBase.kpuprkz_dtv
 				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and idxBase.kpuprkz_dtv is not null and idxBase.kpuprkz_dtv >= @minDateRaiseSalary then idxBase.kpuprkz_dtv			
 				when p1.KpuPrkz_IdxBsd < c1.kpu_dtpst and c1.kpu_dtpst >= @minDateRaiseSalary then c1.kpu_dtpst
@@ -152,21 +152,21 @@ from (
 			and p4.KpuPrkz_DtV < p1.kpuprkz_dtv
 		)
 	)
-	left join KPUPRK1 dateRaiseSalary on dateRaiseSalary.Kpu_Rcd = p1.Kpu_Rcd and dateRaiseSalary.bookmark =
-	(
-		SELECT max(p3.bookmark)
-		from KPUPRK1 p3 
-		where p3.Kpu_Rcd = p1.kpu_rcd
-		and p3.kpuprkz_dtv =
-		(
-			SELECT Max(p4.kpuprkz_dtv)
-			from KPUPRK1 p4
-			where p4.Kpu_Rcd = p1.Kpu_Rcd
-			and p4.KpuPrkz_DtV < p1.kpuprkz_dtv
-			and cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) >
-				cast(( { fn CONVERT( p4.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p4.KpuPrkz_KfcMT ) } ) as numeric(19,2))
-		)
-	)
+	--left join KPUPRK1 dateRaiseSalary on dateRaiseSalary.Kpu_Rcd = p1.Kpu_Rcd and dateRaiseSalary.bookmark =
+	--(
+	--	SELECT max(p3.bookmark)
+	--	from KPUPRK1 p3 
+	--	where p3.Kpu_Rcd = p1.kpu_rcd
+	--	and p3.kpuprkz_dtv =
+	--	(
+	--		SELECT Max(p4.kpuprkz_dtv)
+	--		from KPUPRK1 p4
+	--		where p4.Kpu_Rcd = p1.Kpu_Rcd
+	--		and p4.KpuPrkz_DtV < p1.kpuprkz_dtv
+	--		and cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) >
+	--			cast(( { fn CONVERT( p4.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p4.KpuPrkz_KfcMT ) } ) as numeric(19,2))
+	--	)
+	--)
 	left join kpupsp1 psp on psp.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 	where 
 	(	p1.KpuPrkz_DtV >= c1.kpu_dtpst or not exists

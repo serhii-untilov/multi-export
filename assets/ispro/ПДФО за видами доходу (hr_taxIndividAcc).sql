@@ -17,6 +17,9 @@ select
 	,'taxLimitID1' taxLimitID1
 	,'taxLimitID2' taxLimitID2
 	,'taxLimitID3' taxLimitID3
+	,'tabNum' tabNum
+	,'periodCalc' periodCalc
+	,'periodSalary' periodSalary
 --
 union all
 --
@@ -33,6 +36,9 @@ select
 	,null taxLimitID1
 	,null taxLimitID2
 	,null taxLimitID3
+	,cast(r1.kpu_tn as varchar) tabNum
+	,cast(cast(r1.kpurl_datup as date) as varchar) periodCalc
+	,cast(cast(r1.kpurl_datrp as date) as varchar) periodSalary
 from KpuRlOPdxMon p1
 inner join kpurlo1 r1 on r1.kpu_tn = p1.kpu_tn 
 	and r1.kpurl_datrp = p1.kpurl_datrp 
@@ -85,6 +91,7 @@ left join (
 	and vdx.kpurlpdx_vdx = p1.kpurlpdx_vdx
 where	
 	r1.KpuRl_CdVo <> 0
-	and r1.KpuRl_DatRp >= @dateFrom
+	and r1.KpuRl_DatUp >= @dateFrom
 	and (r1.KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
 	and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(r1.KpuRl_Prz / 1, 0)}, 2)} = 0)
+	and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
