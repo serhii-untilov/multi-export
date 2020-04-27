@@ -93,5 +93,6 @@ where
 	r1.KpuRl_CdVo <> 0
 	and r1.KpuRl_DatUp >= @dateFrom
 	and (r1.KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
-	and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(r1.KpuRl_Prz / 1, 0)}, 2)} = 0)
-	and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
+	--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(r1.KpuRl_Prz / 1, 0)}, 2)} = 0)
+	--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
+	and r1.KpuRl_DatUp < @currentPeriod

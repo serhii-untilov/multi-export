@@ -120,6 +120,7 @@ left join kpurloclc kmPl -- Признак "Командировка от планового заработка
 where r1.KpuRl_CdVo <> 0
 and r1.KpuRl_DatUp >= @dateFrom
 --and (KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
-and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 1, 0)}, 2)} = 0) 
-and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
-and (r1.KpuRl_DatUp < @currentPeriod or (KpuRl_Prz & 65536) = 0)
+--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 1, 0)}, 2)} = 0) 
+--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
+--and (r1.KpuRl_DatUp < @currentPeriod or (KpuRl_Prz & 65536) = 0)
+and r1.KpuRl_DatUp < @currentPeriod
