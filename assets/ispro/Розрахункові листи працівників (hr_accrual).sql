@@ -63,6 +63,7 @@ select
 		| (case when (KpuRl_Prz & 4) <> 0 then 2 else 0 end)	-- Загружена из документов
 		| (case when (KpuRl_Prz & 262144) <> 0 then 32 else 0 end)	-- СО рассчитана от часов
 		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- Доначисление/снятие
+		| (case when v1.vo_met = 117 and kmPl.kpurlclc_sm is not null and (kmPl.kpurlclc_sm & 0x40) <> 0 then 256 else 0 end) -- Командировка рассчитана от планового заработка
 		as varchar) flagsRec
 	,cast(case when v1.Vo_Grp < 128 and (r1.KpuRl_Msk | r1.kpurl_addmsk) = 0 then 4294967295 else 0 end as varchar) flagsFix	
 	,cast(r1.kpurlPl_hrs as varchar) planHours	
@@ -112,6 +113,10 @@ left join kpuprk1 p1 on v1.vo_grp = 1 and r1.KpuRlPr_Dn >= r1.kpurl_datrp
 	)
 	and r1.kpurl_cdvo = p1.kpuprkz_sysop
 left join kpux svm on svm.kpu_tn = r1.KpuRlSvm_Tn
+left join kpurloclc kmPl -- Признак "Командировка от планового заработка
+	on kmPl.kpu_tn = r1.kpu_tn and kmPl.KpuRl_DatRp = r1.KpuRl_DatRp and kmPl.KpuRl_Rcd = r1.KpuRl_Rcd
+	and v1.vo_met = 117
+	and kmPl.kpurlclc_pk = 14 -- and (kmPl.kpurlclc_sm & 0x40) <> 0
 where r1.KpuRl_CdVo <> 0
 and r1.KpuRl_DatUp >= @dateFrom
 --and (KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем

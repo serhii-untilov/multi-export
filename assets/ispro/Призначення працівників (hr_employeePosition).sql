@@ -76,11 +76,12 @@ from (
 		,cast(cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) as varchar) accrualSum
 		,cast(cast(
 				case 
+				when p1.KpuPrkz_IdxBsd > '1876-12-31' then p1.KpuPrkz_IdxBsd
+				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and lastIdxBase.kpuprkz_dtv is not null and lastIdxBase.kpuprkz_dtv >= @minDateRaiseSalary then lastIdxBase.kpuprkz_dtv
 				WHEN p1.KpuPrkz_IdxBsd <= '1876-12-31' and { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 2, 0 ) }, 2 ) } <> 0 and p1.kpuprkz_dtv >= @minDateRaiseSalary then p1.kpuprkz_dtv
 				--when dateRaiseSalary.kpuprkz_dtv is not null then p1.kpuprkz_dtv
-				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and lastIdxBase.kpuprkz_dtv is not null and lastIdxBase.kpuprkz_dtv >= @minDateRaiseSalary then lastIdxBase.kpuprkz_dtv
 				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and idxBase.kpuprkz_dtv is not null and idxBase.kpuprkz_dtv >= @minDateRaiseSalary then idxBase.kpuprkz_dtv			
-				when p1.KpuPrkz_IdxBsd < c1.kpu_dtpst and c1.kpu_dtpst >= @minDateRaiseSalary then c1.kpu_dtpst
+				--when p1.KpuPrkz_IdxBsd < c1.kpu_dtpst and c1.kpu_dtpst >= @minDateRaiseSalary then c1.kpu_dtpst
 				when p1.KpuPrkz_IdxBsd <= '1876-12-31' then null
 				else p1.KpuPrkz_IdxBsd end
 			as date) as varchar) raiseSalary
@@ -135,7 +136,7 @@ from (
 			from KPUPRK1 p4
 			where p4.Kpu_Rcd = p1.Kpu_Rcd
 			and { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 2, 0 ) }, 2 ) } <> 0
-			and p4.KpuPrkz_DtV < p1.kpuprkz_dtv
+			and p4.KpuPrkz_DtV <= p1.kpuprkz_dtv
 		)
 	)
 	left join KPUPRK1 lastIdxBase on lastIdxBase.Kpu_Rcd = p1.Kpu_Rcd and lastIdxBase.bookmark =
@@ -143,13 +144,14 @@ from (
 		SELECT MAX(p3.bookmark)
 		from KPUPRK1 p3 
 		where p3.Kpu_Rcd = p1.kpu_rcd
+		and KpuPrkz_IdxBsd > '1876-12-31'
 		and p3.kpuprkz_dtv =
 		(
 			SELECT MAX(p4.kpuprkz_dtv)
 			from KPUPRK1 p4
 			where p4.Kpu_Rcd = p1.Kpu_Rcd
 			and KpuPrkz_IdxBsd > '1876-12-31'
-			and p4.KpuPrkz_DtV < p1.kpuprkz_dtv
+			and p4.KpuPrkz_DtV <= p1.kpuprkz_dtv
 		)
 	)
 	--left join KPUPRK1 dateRaiseSalary on dateRaiseSalary.Kpu_Rcd = p1.Kpu_Rcd and dateRaiseSalary.bookmark =
