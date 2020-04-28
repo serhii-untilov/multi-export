@@ -1,0 +1,90 @@
+declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+declare @dateTo date = getdate()
+select 	
+	cast(cast(p2.kpuprkz_dtv as date) as varchar) appointmentDate
+		,case when p2.kpuprkz_dt <= '1876-12-31' then '' else cast(cast(p2.kpuprkz_dt as date) as varchar) end appointmentOrderDate
+		,p2.kpuprkz_cd appointmentOrderNumber
+		,cast(p1.bookmark as varchar) ID	
+		,cast(p1.kpu_rcd as varchar) employeeID	
+		,case when len(c1.kpu_cdnlp) <> 0 then c1.kpu_cdnlp
+			when len(psp.KpuPsp_Ser) <> 0 or len(psp.KpuPsp_Nmr) <> 0 then psp.KpuPsp_Ser + ' ' + psp.KpuPsp_Nmr
+			else	'*' +
+					left(dbo.fnKdrSegregateFio(c1.kpu_fio, 1), 1) +
+					left(dbo.fnKdrSegregateFio(c1.kpu_fio, 2), 1) +
+					left(dbo.fnKdrSegregateFio(c1.kpu_fio, 3), 1) +
+					cast(day(c1.kpu_dtroj) as varchar) +
+					cast(month(c1.kpu_dtroj) as varchar) +
+					cast((year(c1.kpu_dtroj) % 100) as varchar)
+			 end taxCode	
+		,cast(x1.kpu_tn as varchar) tabNum	 
+		,cast(p1.kpu_rcd as varchar) employeeNumberID	
+		,cast(cast(c1.kpu_dtpst as date) as varchar) employeeNumberDateFrom
+		,cast(cast(case when c1.kpu_dtuvl <= '1876-12-31' then '9999-12-31' else c1.kpu_dtuvl end as date) as varchar) employeeNumberDateTo
+		,cast(p1.KpuPrkz_PdRcd as varchar) departmentID	
+		--,cast(p1.kpuprkz_dol as varchar) positionID	
+		,cast(case when sprdol.sprd_cd is null then null else p1.kpuprkz_pdrcd * 10000 + p1.kpuprkz_dol end as varchar) positionID
+		,cast(cast(case when p1.kpuprkz_dtv <= '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) as varchar) dateFrom	
+		,cast(cast(case when p1.KpuPrkz_DtNzE <= '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo	
+		,cast(p1.KpuPrkz_RejWr as varchar) workScheduleID
+		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- Тимчасово
+			  when ASCII(spst.SPR_NMSHORT) = 4 then 4 -- Контракт
+			  else 1 -- Постійно
+			  end as varchar) workerType	
+		,cast(p1.KpuPrkz_QtStv as varchar) mtCount	
+		,cast(x1.kpu_tn as varchar) + ' ' + c1.kpu_fio + ' ' + coalesce(sprdol.sprd_nmim, '') description	
+		,'' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- В Охматдет Ранг используется не по назначению. В организациях с рангами расскомментировать
+		,cast(p1.KpuPrkz_Kat as varchar) dictStaffCatID
+		,cast(p1.KpuPrkz_SysOp as varchar) payElID
+		,cast(cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) as varchar) accrualSum
+		,'1' isActive	
+		,cast(case when x1.kpu_tnosn <> 0 then 2 -- Сумісництво внутрішнє
+			  when ASCII(spst.SPR_NMSHORT) in (2, 6) then 3 -- Сумісництво зовнішнє
+			  when ASCII(spst.SPR_NMSHORT) = 3 then 4 -- Поза штатом
+			  else 1 -- Основне
+			  end as varchar) workPlace	
+		,case when p1.KpuPrkz_SF = 0 then '' else cast(p1.KpuPrkz_SF as varchar) end dictFundSourceID	
+		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- Для науковців
+			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID	
+		,cast(p1.KpuPrkz_Sch as varchar) accountID	
+		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID
+		,case when p1.kpuprkz_rcd = 0 then '' else cast(p1.kpuprkz_rcd as varchar) end orderID
+		,p1.kpuprkz_cd orderNumber
+		,cast(cast(case when p1.kpuprkz_dt <= '1876-12-31' then '' else p1.kpuprkz_dt end as date) as varchar) orderDate
+		,case when p1.KpuPrkz_RcS = 0 then '' else cast(p1.KpuPrkz_RcS as varchar) end staffingTableID
+		,sprdol.SprD_Cd dictPositionCode
+		,sprdol.SprD_NmIm dictPositionName
+		,sprpdr.sprpdr_pd departmentCode
+		,sprpdr.sprpdr_nm departmentName
+from kpuc1 c1
+inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd
+inner join kpuprk1 p1 on p1.kpu_rcd = c1.kpu_rcd -- current position
+	and p1.bookmark = (
+		select max(p2.bookmark)
+		from kpuprk1 p2
+		where p2.kpu_rcd = c1.kpu_rcd
+		and p2.kpuprkz_dtv = (
+			select max(p3.kpuprkz_dtv)
+			from kpuprk1 p3
+			where p3.kpu_rcd = c1.kpu_rcd
+			and p3.kpuprkz_dtv <= @dateTo
+		)
+	)
+inner join kpuprk1 p2 on p1.kpu_rcd = c1.kpu_rcd -- appointment date, appointment order date and number
+	and p2.bookmark = (
+		select max(p3.bookmark)
+		from kpuprk1 p3
+		where p3.kpu_rcd = c1.kpu_rcd
+		and p3.kpuprkz_dtv = (
+			select max(p4.kpuprkz_dtv)
+			from kpuprk1 p4
+			where p4.kpu_rcd = c1.kpu_rcd
+			and p4.kpuprkz_dtv <= @dateTo
+			and (cast(p4.KpuPrkz_Rk as bigint) & 4) <> 0
+		)
+	)	
+left join pspr spst on spst.sprspr_cd = 547 and spst.spr_cd = p1.kpuprkz_spst -- ASCII( SPR_NMSHORT ) 	
+left join sprpdr on sprpdr.SprPdr_Rcd = p1.kpuprkz_pdrcd
+left join sprdol on sprd_cd = p1.kpuprkz_dol
+left join kpupsp1 psp on psp.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0			
+where (c1.kpu_dtuvl <= '1876-12-31' or kpu_dtuvl >= @dateFrom)
+and p2.kpuprkz_dtv > '1876-12-31'
