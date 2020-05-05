@@ -17,7 +17,11 @@ select
 	,cast(case when u1.kpuUdr_datk <= '1876-12-31' then '9999-12-31' else CAST(u1.kpuUdr_datk as DATE) end as varchar) dateTo	
 	,cast(u1.kpuudr_cd as varchar) payElID	
 	,cast(case when (KpuUdr_Prz & 1) <> 0 then null else cast(cast(u1.kpuUdr_Sm as numeric(19,2)) / power(10, kpuudr_mt) as numeric(19, 2)) end as varchar) baseSum	
-	,cast(case when (KpuUdr_Prz & 1) = 0 then null else cast(cast(u1.kpuUdr_Sm as numeric(19, 2)) / power(10, kpuudr_mt) as numeric(19, 2)) end as varchar) rate
+	,cast(	case 
+				when (KpuUdr_Prz & 1) = 0 then null 
+				 -- Аванс от заработка за 1-ю половину месяца И 100% - обнуляем процент (UBHR-7785)
+				when v1.vo_met = 61 and (v1.vo_prz & 16) <> 0 and cast(cast(u1.kpuUdr_Sm as numeric(19, 2)) / power(10, kpuudr_mt) as numeric(19, 2)) = 100 then null
+				else cast(cast(u1.kpuUdr_Sm as numeric(19, 2)) / power(10, kpuudr_mt) as numeric(19, 2)) end as varchar) rate
 	,cast( case when KpuUdrPlc_Typ = 1 then 2 -- Каса
 		when KpuUdrPlc_Typ = 3 then 1 -- Банк
 		when KpuUdrPlc_Typ = 4 then 1 -- Сбербанк - Банк
