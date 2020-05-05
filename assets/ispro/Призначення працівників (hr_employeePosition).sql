@@ -99,7 +99,7 @@ from (
 		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID
 		,case when p1.kpuprkz_rcd = 0 then '' else cast(p1.kpuprkz_rcd as varchar) end orderID
 		,p1.kpuprkz_cd orderNumber
-		,cast(cast(case when p1.kpuprkz_dt <= '1876-12-31' then '' else p1.kpuprkz_dt end as date) as varchar) orderDate
+                ,case when p1.kpuprkz_dt <= '1876-12-31' then '' else cast(cast(p1.kpuprkz_dt as date) as varchar) end orderDate
 		,case when p1.KpuPrkz_RcS = 0 then '' else cast(p1.KpuPrkz_RcS as varchar) end staffingTableID
 	from kpuprk1 p1
 	inner join KPUX x1 on x1.Kpu_Rcd = p1.Kpu_Rcd
