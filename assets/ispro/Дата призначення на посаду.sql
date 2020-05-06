@@ -49,7 +49,7 @@ select
 		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID
 		,case when p1.kpuprkz_rcd = 0 then '' else cast(p1.kpuprkz_rcd as varchar) end orderID
 		,p1.kpuprkz_cd orderNumber
-		,cast(cast(case when p1.kpuprkz_dt <= '1876-12-31' then '' else p1.kpuprkz_dt end as date) as varchar) orderDate
+		,case when p1.kpuprkz_dt <= '1876-12-31' then '' else cast(cast(p1.kpuprkz_dt as date) as varchar) end orderDate
 		,case when p1.KpuPrkz_RcS = 0 then '' else cast(p1.KpuPrkz_RcS as varchar) end staffingTableID
 		,sprdol.SprD_Cd dictPositionCode
 		,sprdol.SprD_NmIm dictPositionName
