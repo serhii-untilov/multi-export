@@ -1,4 +1,9 @@
 -- Особові рахунки працівників (hr_employeeNumber)
+
+-- for appointmentDate (дата призначення на поточну посаду)
+--declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+declare @dateTo date = getdate()
+
 /*BEGIN-OF-HEAD*/
 select 
 	'ID' ID
@@ -10,6 +15,9 @@ select
 	,'description' description
 	,'payOutID' payOutID
 	,'personalAccount' personalAccount
+	,'appointmentDate' appointmentDate -- дата призначення на поточну посаду
+	,'appointmentOrderDate' appointmentOrderDate
+	,'appointmentOrderNumber' appointmentOrderNumber
 union all
 /*END-OF-HEAD*/
 select 
@@ -20,8 +28,11 @@ select
 	,dateFrom
 	,dateTo
 	,description
-	,payOutID
-	,personalAccount
+	,case when payOutID is null then '' else payOutID end
+	,case when personalAccount is null then '' else personalAccount end
+	,case when appointment.employeeNumberID is null then '' else appointment.appointmentDate end -- дата призначення на поточну посаду
+	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderDate end
+	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderNumber end
 from (
 	select 
 		ID
@@ -89,3 +100,41 @@ inner join (
 	) t3
 	group by kpu_cdnlp
 ) t4 on t4.kpu_cdnlp = t2.taxCode
+---
+left join ( -- appointmentDate (дата призначення на поточну посаду)
+	select 	
+		cast(cast(p2.kpuprkz_dtv as date) as varchar) appointmentDate
+			,case when p2.kpuprkz_dt <= '1876-12-31' then '' else cast(cast(p2.kpuprkz_dt as date) as varchar) end appointmentOrderDate
+			,p2.kpuprkz_cd appointmentOrderNumber
+			,p1.kpu_rcd employeeNumberID	
+	from kpuc1 c1
+	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd
+	inner join kpuprk1 p1 on p1.kpu_rcd = c1.kpu_rcd -- current position
+		and p1.bookmark = (
+			select max(p2.bookmark)
+			from kpuprk1 p2
+			where p2.kpu_rcd = c1.kpu_rcd
+			and p2.kpuprkz_dtv = (
+				select max(p3.kpuprkz_dtv)
+				from kpuprk1 p3
+				where p3.kpu_rcd = c1.kpu_rcd
+				and p3.kpuprkz_dtv <= @dateTo
+			)
+		)
+	inner join kpuprk1 p2 on p1.kpu_rcd = c1.kpu_rcd -- appointment date, appointment order date and number
+		and p2.bookmark = (
+			select max(p3.bookmark)
+			from kpuprk1 p3
+			where p3.kpu_rcd = c1.kpu_rcd
+			and p3.kpuprkz_dtv = (
+				select max(p4.kpuprkz_dtv)
+				from kpuprk1 p4
+				where p4.kpu_rcd = c1.kpu_rcd
+				and p4.kpuprkz_dtv <= @dateTo
+				and (cast(p4.KpuPrkz_Rk as bigint) & 4) <> 0
+			)
+		)	
+	where 1=1
+--	and (c1.kpu_dtuvl <= '1876-12-31' or kpu_dtuvl >= @dateFrom)
+	and p2.kpuprkz_dtv > '1876-12-31'
+) appointment on appointment.employeeNumberID = t2.ID

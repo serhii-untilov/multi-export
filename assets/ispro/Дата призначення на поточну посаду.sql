@@ -1,3 +1,4 @@
+-- Дата призначення на поточну посаду
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @dateTo date = getdate()
 select 	
