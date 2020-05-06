@@ -1,4 +1,5 @@
 -- Дата призначення на поточну посаду
+-- 06/05/2020 Перенесено у hr_employeeNumber.appointmentDate
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @dateTo date = getdate()
 select 	
