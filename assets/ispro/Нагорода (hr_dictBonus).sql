@@ -12,7 +12,7 @@ select
 	,'0' isEnc
 from (
 	select 
-		cast(row_number() over(partition BY kdrrew_vid ORDER BY kdrrew_vid, kdrrew_type) as varchar) code	
+		cast(row_number() over(partition BY kdrrew_vid, kdrrew_type ORDER BY kdrrew_vid, kdrrew_type) as varchar) code	
 		,kdrrew_vid bonusKindID	
 		,kdrrew_type bonusTypeID	
 	from KdrRew
