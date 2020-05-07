@@ -28,11 +28,11 @@ select
 	,dateFrom
 	,dateTo
 	,description
-	,case when payOutID is null then '' else payOutID end
-	,case when personalAccount is null then '' else personalAccount end
-	,case when appointment.employeeNumberID is null then '' else appointment.appointmentDate end -- дата призначення на поточну посаду
-	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderDate end
-	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderNumber end
+	,case when payOutID is null then '' else payOutID end payOutID
+	,case when personalAccount is null then '' else personalAccount end personalAccount
+	,case when appointment.employeeNumberID is null then '' else appointment.appointmentDate end appointmentDate -- дата призначення на поточну посаду
+	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderDate end appointmentOrderDate
+	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderNumber end appointmentOrderNumber
 from (
 	select 
 		ID
