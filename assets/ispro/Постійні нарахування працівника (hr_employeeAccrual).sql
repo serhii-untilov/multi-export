@@ -59,12 +59,21 @@ from (
 			,cast(n1.kpunch_cd as varchar) payElID	
 			,cast(case when n1.kpuNch_datn <= '1876-12-31' then null else CAST(n1.kpuNch_datn as DATE) end as varchar) dateFrom	
 			,cast(case when n1.kpuNch_datk <= '1876-12-31' then '9999-12-31' else CAST(n1.kpuNch_datk as DATE) end as varchar) dateTo	
-			,cast(case when (KpuNch_Prz & 1) <> 0 then null else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } end as varchar) accrualSum	
-			,cast(case when (KpuNch_Prz & 1) = 0 then null else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } end as varchar) accrualRate	
+			,cast(case 
+					when vo_grp = 1 then { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) }
+					when (KpuNch_Prz & 1) <> 0 then null 
+					else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } 
+					end as varchar) accrualSum	
+			,cast(case 
+					when vo_grp = 1 then null
+					when (KpuNch_Prz & 1) = 0 then null 
+					else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } 
+					end as varchar) accrualRate	
 			,n1.KpuNch_CdPr orderNumber	
 			,cast(case when n1.KpuNch_DtPr <= '1876-12-31' then null else cast(n1.KpuNch_DtPr as DATE) end as varchar) orderDatefrom 
 			,coalesce(x2.kpu_rcd, x1.kpu_rcd) kpu_rcdOsn
 		from kpunch1 n1
+		inner join payvo1 v1 on v1.vo_cd = n1.kpunch_cd
 		inner join kpuc1 c1 on c1.kpu_rcd = n1.kpu_rcd
 		inner join kpux x1 on x1.kpu_rcd = n1.kpu_rcd
 		left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
