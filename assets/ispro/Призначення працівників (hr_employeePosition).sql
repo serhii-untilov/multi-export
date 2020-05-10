@@ -23,7 +23,7 @@ union all
 select ID
 --	,@dateFrom
 	,cast(t2.kpu_rcd as varchar) employeeID
-	,taxCode
+	,t1.taxCode
 	,tabNum
 	,employeeNumberID
 	,cast(employeeNumberDateFrom as varchar) employeeNumberDateFrom
@@ -44,7 +44,9 @@ from (
 		cast(p1.bookmark as varchar) ID	
 		,cast(p1.kpu_rcd as varchar) employeeID	
 		,case when len(c1.kpu_cdnlp) <> 0 then c1.kpu_cdnlp
+			when len(c2.kpu_cdnlp) <> 0 then c2.kpu_cdnlp
 			when len(psp.KpuPsp_Ser) <> 0 or len(psp.KpuPsp_Nmr) <> 0 then psp.KpuPsp_Ser + ' ' + psp.KpuPsp_Nmr
+			when len(psp2.KpuPsp_Ser) <> 0 or len(psp2.KpuPsp_Nmr) <> 0 then psp2.KpuPsp_Ser + ' ' + psp2.KpuPsp_Nmr
 			else	'*' +
 					left(dbo.fnKdrSegregateFio(c1.kpu_fio, 1), 1) +
 					left(dbo.fnKdrSegregateFio(c1.kpu_fio, 2), 1) +
@@ -169,7 +171,10 @@ from (
 	--			cast(( { fn CONVERT( p4.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p4.KpuPrkz_KfcMT ) } ) as numeric(19,2))
 	--	)
 	--)
-	left join kpupsp1 psp on psp.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
+	left join kpupsp1 psp on psp.kpu_rcd = x1.kpu_rcd and psp.KpuPsp_Add = 0
+	left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
+	left join kpupsp1 psp2 on psp2.kpu_rcd = x2.kpu_rcd and psp2.KpuPsp_Add = 0
+	left join kpuc1 c2 on c2.kpu_rcd = x2.kpu_rcd
 	where 
 	(	p1.KpuPrkz_DtV >= c1.kpu_dtpst or not exists
 		(
@@ -187,7 +192,7 @@ from (
 ) t1
 inner join (
 	-- Обеспечение уникальности по ИНН
-	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
+	select max(kpu_rcd) kpu_rcd, taxCode
 	from (
 		select 
 			x1.kpu_rcd
@@ -200,7 +205,7 @@ inner join (
 						cast(day(c1.kpu_dtroj) as varchar) +
 						cast(month(c1.kpu_dtroj) as varchar) +
 						cast((year(c1.kpu_dtroj) % 100) as varchar)
-				 end kpu_cdnlp
+				 end taxCode
 		from kpux x1
 		inner join KPUC1 c1 on c1.Kpu_Rcd = x1.kpu_rcd
 		inner join KPUK1 k1 on k1.Kpu_Rcd = x1.kpu_rcd
@@ -210,8 +215,8 @@ inner join (
 			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
 			and x1.kpu_tnosn = 0
 	) t1
-	group by kpu_cdnlp
-) t2 on t2.kpu_cdnlp = t1.taxCode
+	group by taxCode
+) t2 on t2.taxCode = t1.taxCode
 where case when dateTo > employeeNumberDateTo then employeeNumberDateTo else dateTo end >= @dateFrom
 and case when dateTo > employeeNumberDateTo then employeeNumberDateTo else dateTo end >= t1.employeeNumberDateFrom
 and case when dateFrom < employeeNumberDateFrom then employeeNumberDateFrom else dateFrom end <= t1.employeeNumberDateTo
