@@ -9,7 +9,7 @@ select
 	cast(pdnch_rcd as varchar) ID
 	,'PAYMENT' payType
 	,cast(pdnch_cd as varchar) payElID
-	,cast(cast(pdnch_datn as date) as varchar) dateFrom
+	,case when pdnch_datn <= '1876-12-31' then 'NULL' else cast(cast(pdnch_datn as date) as varchar) end dateFrom
 	,cast(cast( case when pdnch_datk <= '1876-12-31' then '9999-12-31' else pdnch_datk end as date) as varchar) dateTo
 	,cast(case when (pdnch_prz & 2) = 0 then pdnch_sm / power(10, pdnch_mt) else 0 end as varchar) paySum 
 	,cast(case when (pdnch_prz & 2) <> 0 then pdnch_sm / power(10, pdnch_mt) else 0 end as varchar) rate
