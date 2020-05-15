@@ -30,9 +30,38 @@ select
 	,cast(Vo_Rnd + 1 as varchar) roundUpTo	
 	,cast(case when Vo_NoClc = 1 then 0 else 1 end as varchar) isAutoCalc	
 	,cast(case when Vo_NoReClc = 1 then 0 else 1 end as varchar) isRecalculate	
-	,cast(case when So_Tim = 0 then null else 'HOUR' end as varchar) calcProportion	
-	,cast(case when Vo_PlZr = 0 then null else 'PLAN' end as varchar) calcSumType	
-	,cast(case when Vo_RpUp = 0 then 'CALC' else null end as varchar) periodType	
+	,cast(case 
+		when vo_grp = 1 and So_Tim = 0 then 'DAY' 
+		when vo_grp = 1 and So_Tim <> 0 then 'HOUR' 
+		else null 
+		end as varchar) calcProportion	
+	,cast(case 
+		when vo_grp = 1 then 'PLAN' -- СО
+		when vo_met = 8 then 'PLAN' -- доплата за замещение
+		when vo_met = 9 then 'PLAN' -- доплата за вечерние
+		when vo_met = 10 then 'PLAN' -- доплата за ночные
+		when vo_met = 11 then 'PLAN' -- доплата за работу сверхурочно
+		when vo_met = 12 then 'PLAN' -- доплата за работу в праздничные
+		when vo_met = 13 then 'PLAN' -- доплата за работу в выходной
+		when vo_met = 14 then 'PLAN' -- льготные подросткам
+		when vo_met = 37 then 'PLAN' -- надбавка за ранг
+		when vo_met = 109 then 'FACT' -- ндбавка от среднего заработка
+		when vo_met = 110 then 'FACT' -- доплата до среднего заработка
+		when vo_met = 216 then 'PLAN' -- доплата за совмещение
+		when vo_met = 266 then 'FACT' -- доплата до МЗ
+		when vo_grp = 2 and (vo_prz & 512) <> 0 then 'FACT' -- надбавки от факт заработка
+		when vo_grp = 2 and (vo_prz & 512) = 0 then 'PLAN' -- надбавки от план заработка
+		when Vo_PlZr = 0 then 'FACT' 
+		else 'PLAN' 
+		end as varchar) calcSumType	
+	,cast(case 
+		when Vo_Grp = 1 then null
+		when Vo_Grp = 2 then 'SALARY'
+		when Vo_Grp = 4 and Vo_PlZr <> 0 then 'SALARY'
+		when Vo_Grp = 4 and Vo_PlZr = 0 then 'SALARY'
+		when Vo_RpUp = 0 then 'SALARY'
+		else 'CALC' 
+		end as varchar) periodType	
 	,cast(Vo_Stj as varchar) dictExperienceID	
 	,cast(case when vo_grp = 5 then case when Ot_QtMon > 0 then Ot_QtMon else 12 end
 		when vo_grp = 6 then case when Bo_QtMon > 0 then Bo_QtMon else 12 end
