@@ -19,7 +19,7 @@
     "export",
     "A5"
   ],
-  "author": "UncleZeppelin",
+  "author": "Uncle Zeppelin",
   "license": "MIT",
   "build": {
     "appId": "multi-export",
