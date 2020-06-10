@@ -18,7 +18,7 @@ select 'ID' ID
 	,'orderNumber' orderNumber
 	,'orderDate' orderDate
 	,'staffingTableID' staffingTableID
-	,'rating' rating
+	,'dictTarifCoeffID' dictTarifCoeffID
 union all
 /*END-OF-HEAD*/
 select ID
@@ -40,7 +40,7 @@ select ID
 	,orderNumber
 	,orderDate
 	,staffingTableID
-	,rating	
+	,dictTarifCoeffID	
 from (	
 	select
 		cast(p1.bookmark as varchar) ID	
@@ -105,7 +105,7 @@ from (
 		,p1.kpuprkz_cd orderNumber
                 ,case when p1.kpuprkz_dt <= '1876-12-31' then '' else cast(cast(p1.kpuprkz_dt as date) as varchar) end orderDate
 		,case when p1.KpuPrkz_RcS = 0 then '' else cast(p1.KpuPrkz_RcS as varchar) end staffingTableID
-		,case when p1.KpuPrkz_Raz = 0 then '' else cast(p1.KpuPrkz_Raz as varchar) end rating
+		,case when p1.KpuPrkz_Raz = 0 then '' else cast(p1.KpuPrkz_Raz as varchar) end dictTarifCoeffID
 	from kpuprk1 p1
 	inner join KPUX x1 on x1.Kpu_Rcd = p1.Kpu_Rcd
 	inner join KPUC1 c1 on c1.Kpu_Rcd = p1.kpu_rcd
