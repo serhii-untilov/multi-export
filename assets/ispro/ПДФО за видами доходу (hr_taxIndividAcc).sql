@@ -1,9 +1,11 @@
 -- ПДФО за видами доходу (hr_taxIndividAcc)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @currentPeriod date = (
 	select CASE WHEN LEN (RTRIM(CrtParm_Val)) = 8 THEN CONVERT(DATE, CrtParm_Val, 3) ELSE	CONVERT(DATE, CrtParm_Val, 103) END
 	from vwCrtParm 
 	where crtParm_cdBpr = 2
 	and crtParm_id = 'Period_DatOpen'
+	and (@sysste_rcd is null or CrtFrm_Rcd = @sysste_rcd)
 )
 declare @dateFrom date = dateadd(month, -6, @currentPeriod)
 /*BEGIN-OF-HEAD*/

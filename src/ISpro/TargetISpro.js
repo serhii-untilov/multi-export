@@ -12,6 +12,7 @@ const makeFile = function(target) {
         readQueryFromFile(target.queryFileName)
         .then((queryText) => removeHeader(queryText))
         .then((queryText) => replace_SYS_SCHEMA(queryText, target.config.schemaSys))
+        .then((queryText) => replace_SYSSTE_CD(queryText, target.config.codeSe))
         .then((queryText) => doQuery(target, queryText))
         .then(() => resolve(target))
         .catch((err) => {
@@ -48,6 +49,15 @@ function replace_SYS_SCHEMA(queryText, schemaSys) {
     let re = /\/\*SYS_SCHEMA\*\/\w+\./gmi;
     while (re.test(queryText))
         queryText = queryText.replace(re, schemaSys + '.')
+    return queryText
+}
+
+function replace_SYSSTE_CD(queryText, sysste_cd) {
+    // find /*SYS_SCHEMA*/.sspr
+    // replace to ${schemaSys}.sspr
+    let re = /\/\*SYSSTE_CD\*\/\w+\./gmi;
+    while (re.test(queryText))
+        queryText = queryText.replace(re, '\'' + sysste_cd + '\'')
     return queryText
 }
 
