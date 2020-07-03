@@ -55,9 +55,10 @@ function replace_SYS_SCHEMA(queryText, schemaSys) {
 function replace_SYSSTE_CD(queryText, sysste_cd) {
     // find /*SYS_SCHEMA*/.sspr
     // replace to ${schemaSys}.sspr
-    let re = /\/\*SYSSTE_CD\*\/\w+\./gmi;
+    let re = /\/\*SYSSTE_CD\*\//gmi;
     while (re.test(queryText))
         queryText = queryText.replace(re, '\'' + sysste_cd + '\'')
+    console.log(sysste_cd, queryText)
     return queryText
 }
 
