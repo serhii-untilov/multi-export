@@ -1,4 +1,5 @@
--- Документи (hr_employeeDocs)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeeDocs)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select
 	'ID' ID
@@ -30,7 +31,7 @@ select
 	,s1.spr_nm 
 			+ case when len(s1.spr_nm) > 0 and len(d1.kpupsp_ser) > 0 then ', ' else '' end 
 			+ d1.kpupsp_ser 
-			+ case when len(d1.kpupsp_nmr) > 0 then ' № ' else '' end + d1.kpupsp_nmr 
+			+ case when len(d1.kpupsp_nmr) > 0 then ' пїЅ ' else '' end + d1.kpupsp_nmr 
 			+ case when len(s1.spr_nm + d1.kpupsp_ser + d1.kpupsp_nmr) > 0 and d1.kpupsp_dat > '1876-12-31' then ', ' else '' end 
 			+ case when d1.kpupsp_dat <= '1876-12-31' then '' else convert(varchar, d1.kpupsp_dat, 104) end description	
 	,null orderID	
@@ -39,7 +40,7 @@ from KpuPsp1 d1
 inner join kpuc1 c1 on c1.kpu_rcd = d1.kpu_rcd
 inner join pspr s1 on s1.sprspr_cd = 513 and s1.spr_cd = d1.kpupsp_typDoc 
 inner join (
-	-- Обеспечение уникальности по ИНН
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
 		select 
@@ -60,10 +61,11 @@ inner join (
 		left join kpupsp1 p1 on p1.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
-			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
+			and (Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			and x1.kpu_tnosn = 0
 	) t1
 	group by kpu_cdnlp
 ) t1 on t1.kpu_rcd = c1.kpu_rcd
 where (c1.kpu_flg & 2) = 0
 	and (len(d1.kpupsp_ser) > 0 or len(d1.kpupsp_nmr) > 0)
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

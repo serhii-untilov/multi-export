@@ -1,4 +1,5 @@
--- Пільги ПДФО працівників (hr_employeeTaxLimit)
+-- ПіпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeeTaxLimit)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID
 	,'tabNum' tabNum
@@ -25,3 +26,4 @@ from KpuPdxOLg01 l1
 inner join kpuc1 c1 on c1.kpu_rcd = l1.kpu_rcd
 inner join kpux x1 on x1.kpu_rcd = l1.kpu_rcd
 where (c1.kpu_flg & 2) = 0
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

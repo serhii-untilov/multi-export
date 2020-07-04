@@ -1,4 +1,4 @@
--- Розрахункові періоди (hr_dictPeriod)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (hr_dictPeriod)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @currentPeriod date = (
@@ -27,6 +27,7 @@ from PerBas
 where perBas_cdBpr = 2
 and perBas_period < @currentPeriod
 and perBas_period >= @dateFrom
+and (@sysste_rcd is null or PerBas_CdSte = @sysste_rcd)
 union all
 select 
 	cast(max(bookmark) + 1 as varchar) ID	
@@ -35,3 +36,4 @@ select
 	,'0' isClosed
 	,'1' isCurrent	
 	from PerBas
+	where (@sysste_rcd is null or PerBas_CdSte = @sysste_rcd)

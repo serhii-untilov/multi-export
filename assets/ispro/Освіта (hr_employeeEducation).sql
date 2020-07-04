@@ -1,4 +1,5 @@
--- Îñâ³òà (hr_employeeEducation)
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ (hr_employeeEducation)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 
 	'ID' ID	
@@ -76,4 +77,4 @@ from kpuobr1 o1
 inner join kpuc1 c1 on c1.kpu_rcd = o1.kpu_rcd
 left join /*SYS_SCHEMA*/i711_sys.dbo.sspr s1 on s1.sprspr_cd = 681008 and s1.spr_cdlng = 2 and s1.spr_cd = o1.KpuObr_Form
 left join PtnRk k1 on k1.Ptn_Rcd = o1.KpuObr_ZavRcd
-
+where (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

@@ -1,4 +1,5 @@
--- Працівники (hr_employee)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employee)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'lastName' lastName, 'firstName' firstName, 'middleName' middleName, 'shortFIO' shortFIO, 'fullFIO' fullFIO, 'genName' genName, 'datName' datName,
 	'accusativeName' accusativeName, 'insName' insName, 'tabNum' tabNum, 'state' state, 'sexType' sexType, 'birthDate' birthDate, 'taxCode' taxCode, 
@@ -35,7 +36,7 @@ from kpux x1
 inner join KPUC1 c1 on c1.Kpu_Rcd = x1.kpu_rcd
 inner join KPUK1 k1 on k1.Kpu_Rcd = x1.kpu_rcd
 inner join (
-	-- Обеспечение уникальности по ИНН
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
 		select 
@@ -56,8 +57,9 @@ inner join (
 		left join kpupsp1 p1 on p1.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
-			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
+			and (Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			and x1.kpu_tnosn = 0
 	) t1
 	group by kpu_cdnlp
 ) t1 on t1.kpu_rcd = c1.kpu_rcd
+where (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

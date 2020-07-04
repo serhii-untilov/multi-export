@@ -1,4 +1,5 @@
--- Науковий ступінь (hr_empRangeScience)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (hr_empRangeScience)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 select
 	KpuNau_Rcd ID
 	,cast(n1.kpu_rcd as varchar) employeeID
@@ -25,6 +26,7 @@ inner join kpux x1 on x1.kpu_rcd = n1.kpu_rcd
 left join pspr s1 on s1.sprspr_cd = 680964 and s1.Spr_Cd = n1.KpuNau_CdNS
 left join pspr s2 on s2.sprspr_cd = 681003 and s2.spr_cd = KpuNau_CdSp
 where n1.KpuNau_CdNS > 0
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 union all
 select
 	KpuNau_Rcd ID
@@ -53,3 +55,4 @@ inner join kpux x1 on x1.kpu_rcd = n1.kpu_rcd
 left join pspr s2 on s2.sprspr_cd = 681003 and s2.spr_cd = KpuNau_CdSp
 LEFT JOIN pspr s3 on s3.sprspr_cd = 680981 and s3.spr_cd = n1.KpuNau_CdUZ
 where n1.KpuNau_CdUZ > 0
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

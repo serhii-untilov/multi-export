@@ -1,4 +1,5 @@
--- Скорочення робочого дня-тижня - розклад роботи (hr_timeSheetChangeDay)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (hr_timeSheetChangeDay)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @shiftID bigint = 100000
 /*BEGIN-OF-HEAD*/
@@ -43,4 +44,6 @@ select
 		end payElID
 from KpuIgrPerB p1
 inner join KpuIgrB i1 on i1.kpu_rcd = p1.kpu_rcd and i1.KpuIgr_Nmr = p1.KpuIgr_Nmr
+inner join kpuc1 c1 on c1.kpu_rcd = p1.kpu_rcd
 where i1.kpuigr_datEnd <= '1876-12-31' or i1.kpuigr_datEnd >= @dateFrom
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

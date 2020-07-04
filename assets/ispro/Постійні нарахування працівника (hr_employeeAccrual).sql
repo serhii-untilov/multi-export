@@ -1,5 +1,6 @@
--- Постійні нарахування працівника (hr_employeeAccrual)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeeAccrual)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 
 	'ID' ID
@@ -77,14 +78,15 @@ from (
 		inner join kpuc1 c1 on c1.kpu_rcd = n1.kpu_rcd
 		inner join kpux x1 on x1.kpu_rcd = n1.kpu_rcd
 		left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
-		where (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате
-		and (kpunch_datk <= '1876-12-31' or kpunch_datk >= @dateFrom)
+		where (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			and (kpunch_datk <= '1876-12-31' or kpunch_datk >= @dateFrom)
+			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	) t1	
 	inner join kpuc1 c2 on c2.kpu_rcd = t1.kpu_rcdOsn
 	left join kpupsp1 p2 on p2.kpu_rcd = t1.kpu_rcdOsn and KpuPsp_Add = 0
 ) t2 	
 inner join (
-	-- Обеспечение уникальности по ИНН
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
 		select 
@@ -105,8 +107,9 @@ inner join (
 		left join kpupsp1 p1 on p1.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
-			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
+			and (Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			and x1.kpu_tnosn = 0
+			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	) t3
 	group by kpu_cdnlp
 ) t4 on t4.kpu_cdnlp = t2.taxCode

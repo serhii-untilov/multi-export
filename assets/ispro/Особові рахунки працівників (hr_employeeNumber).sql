@@ -1,8 +1,9 @@
--- Особові рахунки працівників (hr_employeeNumber)
+-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeeNumber)
 
--- for appointmentDate (дата призначення на поточну посаду)
+-- for appointmentDate (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)
 --declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @dateTo date = getdate()
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 
 /*BEGIN-OF-HEAD*/
 select 
@@ -15,7 +16,7 @@ select
 	,'description' description
 	,'payOutID' payOutID
 	,'personalAccount' personalAccount
-	,'appointmentDate' appointmentDate -- дата призначення на поточну посаду
+	,'appointmentDate' appointmentDate -- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	,'appointmentOrderDate' appointmentOrderDate
 	,'appointmentOrderNumber' appointmentOrderNumber
 union all
@@ -30,7 +31,7 @@ select
 	,description
 	,case when payOutID is null then '' else payOutID end payOutID
 	,case when personalAccount is null then '' else personalAccount end personalAccount
-	,case when appointment.employeeNumberID is null then '' else appointment.appointmentDate end appointmentDate -- дата призначення на поточну посаду
+	,case when appointment.employeeNumberID is null then '' else appointment.appointmentDate end appointmentDate -- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderDate end appointmentOrderDate
 	,case when appointment.employeeNumberID is null then '' else appointment.appointmentOrderNumber end appointmentOrderNumber
 from (
@@ -69,12 +70,13 @@ from (
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
 			and (c1.kpu_flg & 2) = 0
+			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	) t1
 	inner join kpuc1 c2 on c2.kpu_rcd = t1.kpu_rcdOsn
 	left join kpupsp1 p2 on p2.kpu_rcd = t1.kpu_rcdOsn and KpuPsp_Add = 0
 ) t2	
 inner join (
-	-- Обеспечение уникальности по ИНН
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
 		select 
@@ -95,13 +97,14 @@ inner join (
 		left join kpupsp1 p1 on p1.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
-			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
+			and (Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			and x1.kpu_tnosn = 0
+			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	) t3
 	group by kpu_cdnlp
 ) t4 on t4.kpu_cdnlp = t2.taxCode
 ---
-left join ( -- appointmentDate (дата призначення на поточну посаду)
+left join ( -- appointmentDate (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)
 	select 	
 		cast(cast(p2.kpuprkz_dtv as date) as varchar) appointmentDate
 			,case when p2.kpuprkz_dt <= '1876-12-31' then '' else cast(cast(p2.kpuprkz_dt as date) as varchar) end appointmentOrderDate
@@ -137,4 +140,5 @@ left join ( -- appointmentDate (дата призначення на поточну посаду)
 	where 1=1
 --	and (c1.kpu_dtuvl <= '1876-12-31' or kpu_dtuvl >= @dateFrom)
 	and p2.kpuprkz_dtv > '1876-12-31'
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 ) appointment on appointment.employeeNumberID = t2.ID

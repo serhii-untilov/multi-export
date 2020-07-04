@@ -1,5 +1,6 @@
--- Постійні утримання працівника (hr_payRetention)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_payRetention)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID
 	,'tabNum' tabNum
@@ -19,14 +20,14 @@ select
 	,cast(case when (KpuUdr_Prz & 1) <> 0 then null else cast(cast(u1.kpuUdr_Sm as numeric(19,2)) / power(10, kpuudr_mt) as numeric(19, 2)) end as varchar) baseSum	
 	,cast(	case 
 				when (KpuUdr_Prz & 1) = 0 then null 
-				 -- Аванс от заработка за 1-ю половину месяца И 100% - обнуляем процент (UBHR-7785)
+				 -- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 1-пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 100% - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (UBHR-7785)
 				when v1.vo_met = 61 and (v1.vo_prz & 16) <> 0 and cast(cast(u1.kpuUdr_Sm as numeric(19, 2)) / power(10, kpuudr_mt) as numeric(19, 2)) = 100 then null
 				else cast(cast(u1.kpuUdr_Sm as numeric(19, 2)) / power(10, kpuudr_mt) as numeric(19, 2)) end as varchar) rate
-	,cast( case when KpuUdrPlc_Typ = 1 then 2 -- Каса
-		when KpuUdrPlc_Typ = 3 then 1 -- Банк
-		when KpuUdrPlc_Typ = 4 then 1 -- Сбербанк - Банк
-		when KpuUdrPlc_Typ = 2 then 3 -- Пошта
-		else 1 end as varchar) paymentMethod -- Банк
+	,cast( case when KpuUdrPlc_Typ = 1 then 2 -- пїЅпїЅпїЅпїЅ
+		when KpuUdrPlc_Typ = 3 then 1 -- пїЅпїЅпїЅпїЅ
+		when KpuUdrPlc_Typ = 4 then 1 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅ
+		when KpuUdrPlc_Typ = 2 then 3 -- пїЅпїЅпїЅпїЅпїЅ
+		else 1 end as varchar) paymentMethod -- пїЅпїЅпїЅпїЅ
 	,cast(s1.ptnsch_bcd as varchar) bankID	
 	,case when v1.vo_met = 19 and len(KpuUdr_DatRRFio) > 0 then cast(u1.kpuudr_ID as varchar) else null end employeeFamilyID	
 	,cast(cast(cast(u1.KpuUdr_Dolg as numeric(19, 2)) / 100 as numeric(19, 2)) as varchar) debtSum	
@@ -44,4 +45,5 @@ inner join payvo1 v1 on v1.vo_cd = u1.kpuudr_cd
 left join PtnSchk s1 on s1.ptn_rcd = u1.kpuudr_cdplc and s1.ptnsch_rcd = u1.kpuudr_cdbank
 left join PtnRk k1 on k1.Ptn_Rcd = u1.kpuudr_cdplc
 where (c1.kpu_flg & 2) = 0
-and (kpuudr_datk <= '1876-12-31' or kpuudr_datk >= @dateFrom)
+	and (kpuudr_datk <= '1876-12-31' or kpuudr_datk >= @dateFrom)
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

@@ -1,4 +1,4 @@
--- Сальдо по місяцям (hr_accrualBalance)
+-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (hr_accrualBalance)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @currentPeriod date = (
@@ -33,18 +33,22 @@ select
 	,cast(CONVERT(DECIMAL(19, 0), s1.kpurl_sout) / 100 as varchar) sumTo
 from kpurlonus s1
 inner join kpux x1 on x1.kpu_tn = s1.kpu_tn
+inner join kpuc1 c1 on c1.kpu_rcd = x1.kpu_rcd
 inner join (
 	select r1.kpu_tn
 		,r1.kpurl_datup
 		,0 kpurl_sf
 		,sum(r1.kpurl_sm) kpurl_sm
 	from kpurlo1 r1
+	inner join kpux x2 on x2.kpu_tn = r1.kpu_tn
+	inner join kpuc1 c2 on c2.kpu_rcd = x2.kpu_rcd
 	inner join payvo1 v1 on v1.vo_cd = r1.kpurl_cdvo
 	where r1.KpuRl_CdVo <> 0
 		and r1.KpuRl_DatUp >= @dateFrom
-		and (r1.KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
+		and (r1.KpuRl_Prz & 65536) = 0 -- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 1, 0)}, 2)} = 0)
-		and v1.vo_grp = 130 -- Виплати
+		and v1.vo_grp = 130 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		and (@sysste_rcd is null or c2.kpuc_se = @sysste_rcd)
 	group by r1.kpu_tn, r1.kpurl_datup
 	union all
 	select r1.kpu_tn
@@ -52,13 +56,17 @@ inner join (
 		,r1.kpurl_sf
 		,sum(r1.kpurl_sm) kpurl_sm
 	from kpurlo1 r1
+	inner join kpux x2 on x2.kpu_tn = r1.kpu_tn
+	inner join kpuc1 c2 on c2.kpu_rcd = x2.kpu_rcd
 	inner join payvo1 v1 on v1.vo_cd = r1.kpurl_cdvo
 	where r1.KpuRl_CdVo <> 0
 		and r1.kpurl_sf <> 0
 		and r1.KpuRl_DatUp >= @dateFrom
-		and (r1.KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
+		and (r1.KpuRl_Prz & 65536) = 0 -- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 1, 0)}, 2)} = 0)
-		and v1.vo_grp = 130 -- Виплати
+		and v1.vo_grp = 130 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		and (@sysste_rcd is null or c2.kpuc_se = @sysste_rcd)
 	group by r1.kpu_tn, r1.kpurl_datup, r1.kpurl_sf
 ) t1 on t1.kpu_tn = s1.kpu_tn and t1.kpurl_datup = s1.kpurl_datup and t1.kpurl_sf = s1.kpurl_sf
 where s1.kpurl_datup between @dateFrom and dateAdd(day, -1, @currentPeriod)
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

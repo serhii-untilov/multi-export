@@ -1,4 +1,4 @@
--- Дати початку перерахунку зарплати (hr_payCalcDateFrom)
+-- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_payCalcDateFrom)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @currentPeriod date = (
@@ -18,14 +18,16 @@ select
 union all	
 /*END-OF-HEAD*/
 select 
-	cast(kpu_rcd as varchar) ID	
-	,cast(kpu_rcd as varchar) employeeNumberID	
-	,cast(kpu_tn as varchar) tabNum
+	cast(x1.kpu_rcd as varchar) ID	
+	,cast(x1.kpu_rcd as varchar) employeeNumberID	
+	,cast(x1.kpu_tn as varchar) tabNum
 	,cast(cast(@currentPeriod as date) as varchar) periodCalc	
-	,cast(cast(kpu_datreclc as date) as varchar) periodSalary	
-from kpux
-where kpu_datreclc > '1876-12-31'	
-and kpu_datreclc < @currentPeriod
+	,cast(cast(x1.kpu_datreclc as date) as varchar) periodSalary	
+from kpux x1
+inner join kpuc1 c1 on c1.kpu_rcd = x1.kpu_rcd
+where x1.kpu_datreclc > '1876-12-31'	
+and x1.kpu_datreclc < @currentPeriod
+and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 --union all
 --select 
 --	cast(x1.kpu_rcd as varchar) ID	

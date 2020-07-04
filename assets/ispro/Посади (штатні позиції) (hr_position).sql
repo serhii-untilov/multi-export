@@ -1,4 +1,5 @@
--- Довідник посад (штатних позицій) (hr_position)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ) (hr_position)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 
 	'ID' ID, 'code' code, 'name' name, 'fullName' fullName, 'parentUnitID' parentUnitID, 'state' state, 'psCategory' psCategory, 'positionType' positionType, 
@@ -53,9 +54,13 @@ from SPRDOL
 inner join (
 	select distinct kpuprk1.kpuprkz_pdrcd * 10000 + kpuprk1.kpuprkz_dol positionID, kpuprk1.kpuprkz_pdrcd departmentID, kpuprk1.kpuprkz_dol dictPositionID
 	from kpuprk1
+	inner join kpuc1 c1 on c1.kpu_rcd = kpuprk1.kpu_rcd
+	where (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 ) t1 on t1.dictPositionID = SprD_Cd
 where sprd_prz = 0 or exists (
 	select null
 	from kpuprk1
+	inner join kpuc1 c1 on c1.kpu_rcd = kpuprk1.kpu_rcd
 	where kpuprkz_dol = SprD_Cd
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 )

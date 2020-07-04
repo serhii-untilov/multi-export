@@ -1,4 +1,4 @@
--- ПДФО за видами доходу (hr_taxIndividAcc)
+-- пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (hr_taxIndividAcc)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @currentPeriod date = (
 	select CASE WHEN LEN (RTRIM(CrtParm_Val)) = 8 THEN CONVERT(DATE, CrtParm_Val, 3) ELSE	CONVERT(DATE, CrtParm_Val, 103) END
@@ -45,6 +45,8 @@ from KpuRlOPdxMon p1
 inner join kpurlo1 r1 on r1.kpu_tn = p1.kpu_tn 
 	and r1.kpurl_datrp = p1.kpurl_datrp 
 	and r1.kpurl_rcd = p1.kpurl_rcd
+inner join kpux x1 on x1.kpu_tn = r1.kpu_tn
+inner join kpuc1 c1 on c1.kpu_rcd = x1.kpu_rcd
 inner join payvo1 v1 on v1.vo_cd = r1.kpurl_cdvo and v1.vo_met = 207	
 left join (
 	select r2.kpu_tn, r2.kpurl_datrp, r2.kpurl_datup, tv.kpurlpdx_vdx, sum(r2.kpurl_sm) kpurl_sm
@@ -84,7 +86,7 @@ left join (
 	where	
 		r2.KpuRl_CdVo <> 0
 		and r2.KpuRl_DatRp >= @dateFrom
-		and (r2.KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
+		and (r2.KpuRl_Prz & 65536) = 0 -- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		and (r2.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(r2.KpuRl_Prz / 1, 0)}, 2)} = 0)	
 	group by r2.kpu_tn, r2.kpurl_datrp, r2.kpurl_datup, tv.kpurlpdx_vdx
 ) vdx on vdx.kpu_tn = p1.kpu_tn 
@@ -94,7 +96,8 @@ left join (
 where	
 	r1.KpuRl_CdVo <> 0
 	and r1.KpuRl_DatUp >= @dateFrom
-	and (r1.KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
+	and (r1.KpuRl_Prz & 65536) = 0 -- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(r1.KpuRl_Prz / 1, 0)}, 2)} = 0)
 	--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
 	and r1.KpuRl_DatUp < @currentPeriod
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

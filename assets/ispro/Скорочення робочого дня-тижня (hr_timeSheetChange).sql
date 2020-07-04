@@ -1,4 +1,5 @@
--- Скорочення робочого дня-тижня (hr_timeSheetChange)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ (hr_timeSheetChange)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @shiftID bigint = 100000
 /*BEGIN-OF-HEAD*/
@@ -29,7 +30,7 @@ select
 	,'POSTED' orderState	
 	,'TIMESHEETCHANGE' empOrderType	
 	,'1' typeSheetChange	
-	,case when PayIgp_prkDat > '1876-12-31' and len(PayIgp_prkCd) > 0 then PayIgp_prkCd + ' від ' + cast(cast(PayIgp_prkDat as date) as varchar) else '' end description	
+	,case when PayIgp_prkDat > '1876-12-31' and len(PayIgp_prkCd) > 0 then PayIgp_prkCd + ' пїЅпїЅ ' + cast(cast(PayIgp_prkDat as date) as varchar) else '' end description	
 	,cast(cast(PayIgp_datN as date) as varchar) dateFrom	
 	,case when PayIgp_datK <= '1876-12-31' then '9999-12-31' else cast(cast(PayIgp_datK as date) as varchar) end dateTo	
 	,'' comment	
@@ -50,7 +51,7 @@ select
 	,'POSTED' orderState	
 	,'TIMESHEETCHANGE' empOrderType	
 	,'1' typeSheetChange	
-	,case when kpuigr_prkDat > '1876-12-31' and len(kpuigr_prkCd) > 0 then kpuigr_prkCd + ' від ' + cast(cast(kpuigr_prkDat as date) as varchar) else '' end description	
+	,case when kpuigr_prkDat > '1876-12-31' and len(kpuigr_prkCd) > 0 then kpuigr_prkCd + ' пїЅпїЅ ' + cast(cast(kpuigr_prkDat as date) as varchar) else '' end description	
 	,cast(cast(kpuigr_datBeg as date) as varchar) dateFrom	
 	,case when kpuigr_datEnd <= '1876-12-31' then '9999-12-31' else cast(cast(kpuigr_datEnd as date) as varchar) end dateTo	
 	,'' comment	
@@ -62,4 +63,6 @@ select
 	,case when KpuIgr_CdVo = 0 then '' else cast(KpuIgr_CdVo as varchar) end workPayElID
 	,case when KpuIgr_CdVoV = 0 then '' else cast(KpuIgr_CdVoV as varchar) end freePayElID
 from KpuIgrB i1
+inner join kpuc1 c1 on c1.kpu_rcd = i1.kpu_rcd
 where kpuigr_datEnd <= '1876-12-31' or kpuigr_datEnd >= @dateFrom
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

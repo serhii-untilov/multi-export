@@ -1,4 +1,5 @@
--- Підрозділи (hr_department)
+-- ПіпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_department)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'code' code, 'name' name, 'parentUnitID' parentUnitID, 'state' state, 'fullName' fullName, 'description' 
 	description, 'nameGen' nameGen, 
@@ -21,11 +22,12 @@ select
 	REPLACE(REPLACE(sprpdr_datPd, CHAR(13), ''), CHAR(10), '') fullNameDat
 from sprpdr
 where SprPdr_Rcd <> 0
-and 
-(	sprpdr_flg = 0 
-	or exists (
-		select null
-		from kpuprk1
-		where kpuprkz_pdrcd = sprpdr_rcd
+	and 
+	(	sprpdr_flg = 0 
+		or exists (
+			select null
+			from kpuprk1
+			where kpuprkz_pdrcd = sprpdr_rcd
+		)
 	)
-)
+	and (@sysste_rcd is null or SprPdr_SteRcd = @sysste_rcd)

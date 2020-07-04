@@ -1,4 +1,5 @@
--- Стягнення (hr_employeePenalty)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeePenalty)
+declare @dateTo date = GETDATE()
 select
 	cast(d1.KpuDOt_Rcd as varchar) ID	
 	,cast(d1.kpu_rcd as varchar) employeeID	
@@ -35,3 +36,4 @@ left join kpupsp1 psp on psp.kpu_rcd = x1.kpu_rcd and psp.KpuPsp_Add = 0
 left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
 left join KPUC1 c2 ON c2.Kpu_Rcd = x2.Kpu_Rcd
 left join kpupsp1 psp2 on psp2.kpu_rcd = x2.kpu_rcd and psp2.KpuPsp_Add = 0
+where (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

@@ -1,4 +1,4 @@
--- Нагорода (hr_dictBonus)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_dictBonus)
 select 
 	code ID
 	,code

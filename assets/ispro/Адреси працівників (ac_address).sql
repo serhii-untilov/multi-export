@@ -1,4 +1,6 @@
--- Адреси працівників (ac_address)
+-- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (ac_address)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+
 select 
 	cast(a1.bookmark as varchar) ID	
 	,cast(a1.kpu_rcd as varchar) employeeID
@@ -8,7 +10,7 @@ select
 	,c1.kpu_fio fullFIO
 	,case when c1.kpu_dtroj <= '1876-12-31' then '' else cast(cast(c1.kpu_dtroj as date) as varchar) end birthDate 
 	,case when kpuadr_add = 0 then cast(a1.kpuadr_cd as varchar) 
-		else 'NULL' end addressType -- (1-Пропис.,2-Прожив.,3-Рожд.)
+		else 'NULL' end addressType -- (1-пїЅпїЅпїЅпїЅпїЅпїЅ.,2-пїЅпїЅпїЅпїЅпїЅпїЅ.,3-пїЅпїЅпїЅпїЅ.)
 	,a1.KpuAdr_Index postIndex	
 	,cast(a1.KpuAdr_Cnt as varchar) countryID
 	,SprAdrCnt.SAdrCnt_Cd countryCode
@@ -36,15 +38,15 @@ select
 		case when KpuAdr_CntNm is not null then KpuAdr_CntNm + ',' else '' end +
 		case when KpuAdr_RegNm is not null then KpuAdr_RegNm + ',' else '' end +
 		case when KpuAdr_ZoneN is not null then KpuAdr_ZoneN + ' ,' else '' end +
-		case when KpuAdr_TownN is not null then 'м.' + KpuAdr_TownN + ',' else '' end +
+		case when KpuAdr_TownN is not null then 'пїЅ.' + KpuAdr_TownN + ',' else '' end +
 		case when KpuAdr_PlacN is not null then KpuAdr_PlacN + ',' else '' end +
 		case when KpuAdr_StrN is not null then KpuAdr_StrN + ',' else '' end +
 		case when KpuAdr_House is not null then KpuAdr_House + ',' else '' end +
 		case when KpuAdr_Korp is not null then KpuAdr_Korp + ',' else '' end +
 		case when KpuAdr_Flat is not null then  KpuAdr_Flat end
 	) end as "address"
-	,KpuAdr_Add sourceType --Дополнительные признаки (0-стандартный,1-дополнительный,2-адреса постоянных удержаний)
-	,u1.kpuudr_id payRetentionID --ID постоянного удержания
+	,KpuAdr_Add sourceType --пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (0-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ,1-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ,2-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+	,u1.kpuudr_id payRetentionID --ID пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 from KpuAdr1 a1
 inner join kpuc1 c1 on c1.kpu_rcd = a1.kpu_rcd
 inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
@@ -55,7 +57,8 @@ LEFT JOIN /*FIRM_SCHEMA*/vwSAdrTow SprAdrTow ON SprAdrTow.SAdrTow_Rcd = KpuAdr_T
 LEFT JOIN /*FIRM_SCHEMA*/vwSAdrNas SprAdrNas ON SprAdrNas.SAdrNas_Rcd = KpuAdr_Plac
 LEFT JOIN /*FIRM_SCHEMA*/vwSAdrStr SprAdrStr ON SprAdrStr.SAdrStr_Rcd = KpuAdr_Str
 left join kpuudr1 u1 on a1.kpuadr_add = 2 and u1.kpu_rcd = c1.kpu_rcd and a1.kpuadr_cd = u1.kpuudr_cd and u1.kpuudr_rcd = a1.kpuadr_addRcd
-where (kpuadr_add = 0 -- Дополнительные признаки (0-стандартный,1-дополнительный,2-адреса постоянных удержаний)
+where (kpuadr_add = 0 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (0-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ,1-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ,2-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 		--or kpuadr_add = 1
 		or kpuadr_add = 2 and u1.kpuudr_id is not null
-);
+)
+and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

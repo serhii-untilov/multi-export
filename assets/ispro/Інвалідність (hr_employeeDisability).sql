@@ -1,4 +1,5 @@
--- Інвалідність (hr_employeeDisability)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeeDisability)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select
 	'ID' ID
@@ -38,18 +39,18 @@ select
 	,REPLACE(REPLACE(KpuInv_WhoIPR, CHAR(13), ''), CHAR(10), '') programIssuer
 	,null employeeDocID	
 	,coalesce(spr_nm, '')
-		+ case when spr_nm is not null and len(spr_nm) > 0 then ', ' else '' end + case when KpuInv_Grp > 0 then cast(KpuInv_Grp as varchar) else '' end + case when KpuInv_Grp > 0 then ' група' else '' end
+		+ case when spr_nm is not null and len(spr_nm) > 0 then ', ' else '' end + case when KpuInv_Grp > 0 then cast(KpuInv_Grp as varchar) else '' end + case when KpuInv_Grp > 0 then ' пїЅпїЅпїЅпїЅпїЅ' else '' end
 		+ case when KpuInv_DtN > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0) then ', ' else '' end 
-			+ case when (spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 then ' з ' else '' end 
+			+ case when (spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 then ' пїЅ ' else '' end 
 				+ case when KpuInv_DtN > '1876-12-31' then convert(varchar, KpuInv_DtN, 104) else '' end
 		--+ case when KpuInv_DtK > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 or KpuInv_DtN > '1876-12-31') then ', ' else '' end 
-			+ case when KpuInv_DtK > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 or KpuInv_DtN > '1876-12-31') then ' по ' else '' end 
+			+ case when KpuInv_DtK > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 or KpuInv_DtN > '1876-12-31') then ' пїЅпїЅ ' else '' end 
 				+ case when KpuInv_DtK > '1876-12-31' then convert(varchar, KpuInv_DtK, 104) else '' end
 		description
 from kpuinv i1
 inner join kpuc1 c1 on c1.kpu_rcd = i1.kpu_rcd
 inner join (
-	-- Обеспечение уникальности по ИНН
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
 		select 
@@ -70,10 +71,11 @@ inner join (
 		left join kpupsp1 p1 on p1.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
-			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
+			and (Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			and x1.kpu_tnosn = 0
 	) t1
 	group by kpu_cdnlp
 ) t1 on t1.kpu_rcd = c1.kpu_rcd
 left join /*SYS_SCHEMA*/i711_sys.dbo.sspr on sprspr_cd = 681037 and spr_cdlng = 2 and spr_cd = KpuInv_VIn
-where (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате
+where (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

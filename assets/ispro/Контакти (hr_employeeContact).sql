@@ -1,4 +1,5 @@
--- Контакти (hr_employeeContact)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeeContact)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID
 	,'employeeID' employeeID
@@ -31,9 +32,10 @@ from (
 	from kpuc1 c1
 	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
 	where len(c1.kpu_email) > 0
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	union
-	-- адрес
-	select -- kpuadr_cd: 1 - прописка, 2 - проживание, 3 - рождение
+	-- пїЅпїЅпїЅпїЅпїЅ
+	select -- kpuadr_cd: 1 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 2 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 3 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		cast(c1.kpu_rcd	as varchar) employeeID
 		,c1.kpu_cdnlp taxCode
 		,c1.kpu_fio fullFIO
@@ -44,8 +46,8 @@ from (
 			case when KpuAdr_Index is not null then KpuAdr_Index + ',' else '' end +
 			case when KpuAdr_CntNm is not null then KpuAdr_CntNm + ',' else '' end +
 			case when KpuAdr_RegNm is not null then KpuAdr_RegNm + ',' else '' end +
-			case when KpuAdr_ZoneN is not null then KpuAdr_ZoneN + ' р-н,' else '' end +
-			case when KpuAdr_TownN is not null then 'м.' + KpuAdr_TownN + ',' else '' end +
+			case when KpuAdr_ZoneN is not null then KpuAdr_ZoneN + ' пїЅ-пїЅ,' else '' end +
+			case when KpuAdr_TownN is not null then 'пїЅ.' + KpuAdr_TownN + ',' else '' end +
 			case when KpuAdr_PlacN is not null then KpuAdr_PlacN + ',' else '' end +
 			case when KpuAdr_StrN is not null then KpuAdr_StrN + ',' else '' end +
 			case when KpuAdr_House is not null then KpuAdr_House + ',' else '' end +
@@ -56,6 +58,7 @@ from (
 	inner join kpuc1 c1 on c1.kpu_rcd = a1.kpu_rcd
 	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
 	where kpuadr_cd in (1,2)
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	union
 	select -- phone
 		cast(c1.kpu_rcd	as varchar) employeeID
@@ -68,6 +71,7 @@ from (
 	from kpuc1 c1
 	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
 	where len(c1.kpu_email) > 0
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	union
 	select -- mobPhone
 		cast(c1.kpu_rcd	as varchar) employeeID
@@ -80,4 +84,5 @@ from (
 	from kpuc1 c1
 	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
 	where len(c1.kpu_email) > 0
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 ) t1

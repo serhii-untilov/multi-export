@@ -1,6 +1,7 @@
--- Призначення працівників (hr_employeePosition)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeePosition)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
-declare @minDateRaiseSalary date = '2016-01-01'; -- Лист Мінсоцполітики від 14.06.2016 р. № 263/10/136-16
+declare @minDateRaiseSalary date = '2016-01-01'; -- пїЅпїЅпїЅпїЅ МіпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 14.06.2016 пїЅ. пїЅ 263/10/136-16
 /*BEGIN-OF-HEAD*/
 select 'ID' ID
 	,'employeeID' employeeID
@@ -68,13 +69,13 @@ from (
 		,cast(case when p2.kpuprkz_dtv is null OR p2.kpuprkz_dtv <= '1876-12-31' then '9999-12-31' else p2.kpuprkz_dtv - 1 end as date) dateTo	
 		,cast(cast(case when p1.KpuPrkz_DtNzE <= '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo	
 		,cast(p1.KpuPrkz_RejWr as varchar) workScheduleID
-		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- Тимчасово
-			  when ASCII(spst.SPR_NMSHORT) = 4 then 4 -- Контракт
-			  else 1 -- Постійно
+		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			  when ASCII(spst.SPR_NMSHORT) = 4 then 4 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			  else 1 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			  end as varchar) workerType	
 		,cast(p1.KpuPrkz_QtStv as varchar) mtCount	
 		,cast(x1.kpu_tn as varchar) + ' ' + c1.kpu_fio + ' ' + coalesce(sprdol.sprd_nmim, '') description	
-		,'' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- В Охматдет Ранг используется не по назначению. В организациях с рангами расскомментировать
+		,'' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		,cast(p1.KpuPrkz_Kat as varchar) dictStaffCatID
 		,cast(p1.KpuPrkz_SysOp as varchar) payElID
 		,cast(cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) as varchar) accrualSum
@@ -91,13 +92,13 @@ from (
 			as date) as varchar) raiseSalary
 		,cast(CASE WHEN { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 1, 0 ) }, 2 ) } <> 0 then 1 else 0 end as varchar) isIndex
 		,'1' isActive	
-		,cast(case when x1.kpu_tnosn <> 0 then 2 -- Сумісництво внутрішнє
-			  when ASCII(spst.SPR_NMSHORT) in (2, 6) then 3 -- Сумісництво зовнішнє
-			  when ASCII(spst.SPR_NMSHORT) = 3 then 4 -- Поза штатом
-			  else 1 -- Основне
+		,cast(case when x1.kpu_tnosn <> 0 then 2 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			  when ASCII(spst.SPR_NMSHORT) in (2, 6) then 3 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			  when ASCII(spst.SPR_NMSHORT) = 3 then 4 -- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+			  else 1 -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			  end as varchar) workPlace	
 		,case when p1.KpuPrkz_SF = 0 then '' else cast(p1.KpuPrkz_SF as varchar) end dictFundSourceID	
-		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- Для науковців
+		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID	
 		,cast(p1.KpuPrkz_Sch as varchar) accountID	
 		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID
@@ -192,9 +193,10 @@ from (
 			or p1.kpuprkz_dtv <= c1.kpu_dtpst
 			or (minDatePrk.kpuprkz_dtv is not null 
 				and p1.kpuprkz_dtv = minDatePrk.kpuprkz_dtv))
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 ) t1
 inner join (
-	-- Обеспечение уникальности по ИНН
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	select max(kpu_rcd) kpu_rcd, taxCode
 	from (
 		select 
@@ -215,8 +217,9 @@ inner join (
 		left join kpupsp1 p1 on p1.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
-			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
+			and (Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			and x1.kpu_tnosn = 0
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	) t1
 	group by taxCode
 ) t2 on t2.taxCode = t1.taxCode

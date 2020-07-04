@@ -1,5 +1,6 @@
--- Стаж роботи (hr_employeeExperience)
+-- пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (hr_employeeExperience)
 declare @dateTo date = GETDATE()
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'employeeID' employeeID, 'dictExperienceID' dictExperienceID, 'calcDate' calcDate, 'startCalcDate' startCalcDate, 'comment' comment, 'impEmployeeID' impEmployeeID, 'importInfo' importInfo
 ,'employeeNumberID' employeeNumberID
@@ -16,7 +17,7 @@ select
 	,'' importInfo
 	,case when employeeNumberID is null then '' else cast(employeeNumberID as varchar) end employeeNumberID
 from (
-	-- 1 Загальний стаж
+	-- 1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,1 dictExperienceID
@@ -25,9 +26,10 @@ from (
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtObSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ	
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	--group by CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END
-	-- 2 Безперервний стаж
+	-- 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	union all
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
@@ -37,9 +39,10 @@ from (
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtNpSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ	
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	--group by CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END
-	-- 3 Стаж на підприємстві
+	-- 3 пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	union all
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
@@ -49,9 +52,10 @@ from (
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtOrgSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	--group by CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END
-	-- 4 Страховий стаж
+	-- 4 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	union all
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
@@ -61,9 +65,10 @@ from (
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtSrSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ	
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	--group by CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END
-	-- 5 Галузевий стаж
+	-- 5 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	union all
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
@@ -73,9 +78,10 @@ from (
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtOtrSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ	
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	--group by CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END
-	-- 6 Стаж держслужбовця
+	-- 6 пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	union all
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
@@ -85,9 +91,10 @@ from (
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtGS > '1876-12-31' and c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ	
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	--group by CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END
-	-- 7 Безперервний стаж держслужбовця
+	-- 7 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	union all
 	select
 		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
@@ -97,9 +104,10 @@ from (
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
 	where x1.kpu_tnosn = 0 and Kpu_DtGSNp > '1876-12-31' and c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ	
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	--group by CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END
-	-- Додаткові стажі
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	union all
 	select 
 		case when x1.Kpu_TnOsn = 0 then x1.Kpu_Rcd else x2.kpu_Rcd end employeeID --CASE WHEN ISNUMERIC(c1.kpu_cdnlp) = 1 THEN CAST(c1.kpu_cdnlp AS numeric) ELSE s1.kpu_rcd END employeeID
@@ -113,7 +121,8 @@ from (
 	inner join KPUX x1 on x1.Kpu_Rcd = s1.kpu_rcd
 	left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
 	where c1.Kpu_Rcd < 4000000000
-	and (c1.Kpu_Flg & 2) = 0	-- Удалён в зарплате	
+		and (c1.Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ	
+		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 --	and (x1.Kpu_TnOsn = 0 or not exists (
 --		select null
 --		from kpuadstgdat1 s2
@@ -126,7 +135,7 @@ from (
 		,kpustg_cd + 10
 ) t1		
 inner join (
-	-- Обеспечение уникальности по ИНН
+	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
 		select 
@@ -147,8 +156,9 @@ inner join (
 		left join kpupsp1 p1 on p1.kpu_rcd = x1.kpu_rcd and KpuPsp_Add = 0
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
-			and (Kpu_Flg & 2) = 0	-- Удалён в зарплате
+			and (Kpu_Flg & 2) = 0	-- пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			and x1.kpu_tnosn = 0
+			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	) t1
 	group by kpu_cdnlp
 ) t2 on t2.kpu_rcd = t1.employeeID

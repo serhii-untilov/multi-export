@@ -1,4 +1,4 @@
--- Розрахункові листи працівників (hr_accrual)
+-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_accrual)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @currentPeriod date = (
@@ -52,20 +52,20 @@ select
 	,cast(case when (r1.kpurl_prz & 8) = 0 then r1.kpurl_hrs else -r1.kpurl_hrs end as varchar) hours	
 	,cast(case when r1.KpuRlTS_Dat <= '1876-12-31' then null else cast(r1.KpuRlTS_Dat as date) end as varchar) calculateDate	
 	,cast(r1.KpuRl_Msk as varchar) mask	
-	,cast(8 -- Импорт
-		| (case when (KpuRl_Prz & 8) <> 0 then 512 else 0 end)	-- Сторно
-		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- Доначисление
-		| (case when r1.KpuRlSvm_Tn <> 0 then 4096 else 0 end)  -- Запись внутреннего совместителя
-		| (case when r1.KpuRlSvm_Tn <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
-		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 4096 else 0 end)  -- Запись внутреннего совместителя
-		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
-		| (case when v1.Vo_NUR <> 0 then 8192 else 0 end)  -- Не входит в сумму Начислено и Удержано
-		| (case when (KpuRl_Prz & 2) <> 0 then 4 else 0 end)	-- Создана вручную
-		| (case when (KpuRl_Prz & 1) <> 0 then 1 else 0 end)	-- Рассчитана автоматически
-		| (case when (KpuRl_Prz & 4) <> 0 then 2 else 0 end)	-- Загружена из документов
-		| (case when (KpuRl_Prz & 262144) <> 0 then 32 else 0 end)	-- СО рассчитана от часов
-		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- Доначисление/снятие
-		| (case when v1.vo_met = 117 and kmPl.kpurlclc_sm is not null and (kmPl.kpurlclc_sm & 0x40) <> 0 then 256 else 0 end) -- Командировка рассчитана от планового заработка
+	,cast(8 -- пїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (KpuRl_Prz & 8) <> 0 then 512 else 0 end)	-- пїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when r1.KpuRlSvm_Tn <> 0 then 4096 else 0 end)  -- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when r1.KpuRlSvm_Tn <> 0 then 8192 else 0 end)  -- пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 4096 else 0 end)  -- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (r1.KpuRl_Prz & 65536) <> 0 then 8192 else 0 end)  -- пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when v1.Vo_NUR <> 0 then 8192 else 0 end)  -- пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (KpuRl_Prz & 2) <> 0 then 4 else 0 end)	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (KpuRl_Prz & 1) <> 0 then 1 else 0 end)	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (KpuRl_Prz & 4) <> 0 then 2 else 0 end)	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when (KpuRl_Prz & 262144) <> 0 then 32 else 0 end)	-- пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅ
+		| (case when v1.vo_met = 117 and kmPl.kpurlclc_sm is not null and (kmPl.kpurlclc_sm & 0x40) <> 0 then 256 else 0 end) -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		as varchar) flagsRec
 	,cast(case when v1.Vo_Grp < 128 and (r1.KpuRl_Msk | r1.kpurl_addmsk) = 0 then 4294967295 else 0 end as varchar) flagsFix	
 	,cast(r1.kpurlPl_hrs as varchar) planHours	
@@ -75,19 +75,19 @@ select
 	,cast(cast(case when r1.KpuRlPr_Dk <= '1876-12-31' then null else r1.KpuRlPr_Dk end as date) as varchar) dateTo	
 	,cast(case 
 			when r1.KpuRlSvm_Tn <> 0 then null
-			when n2.pdnch_rcd is not null then 'hr_payPerm'	-- Постійні нарахування/утримання організації
-			when n1.kpunch_id is not null then 'hr_employeeAccrual'	-- Постійні нарахування за таб.номером
-			when u2.pdudr_rcd is not null then 'hr_payPerm'	-- Постійні нарахування/утримання організації
-			when u1.kpuudr_id is not null then 'hr_payRetention'	-- Постійні утримання за таб.номером
-			when p1.bookmark is not null then 'hr_employeePosition' -- Призначення працівника
+			when n2.pdnch_rcd is not null then 'hr_payPerm'	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when n1.kpunch_id is not null then 'hr_employeeAccrual'	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when u2.pdudr_rcd is not null then 'hr_payPerm'	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when u1.kpuudr_id is not null then 'hr_payRetention'	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when p1.bookmark is not null then 'hr_employeePosition' -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			else null end as varchar) source
 	,cast(case 
 			when r1.KpuRlSvm_Tn <> 0 then null
-			when n2.pdnch_rcd is not null then n2.pdnch_rcd	-- Постійні нарахування/утримання організації
-			when n1.kpunch_id is not null then n1.kpunch_id	-- Постійні нарахування за таб.номером
-			when u2.pdudr_rcd is not null then 65535 + u2.pdudr_rcd	-- Постійні нарахування/утримання організації
-			when u1.kpuudr_id is not null then u1.kpuudr_id	-- Постійні утримання за таб.номером
-			when p1.bookmark is not null then p1.bookmark -- Призначення працівника
+			when n2.pdnch_rcd is not null then n2.pdnch_rcd	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when n1.kpunch_id is not null then n1.kpunch_id	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when u2.pdudr_rcd is not null then 65535 + u2.pdudr_rcd	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when u1.kpuudr_id is not null then u1.kpuudr_id	-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			when p1.bookmark is not null then p1.bookmark -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			else null end as varchar) sourceID
 	,cast(case when r1.KpuRlPrZr_Dn <= '1876-12-31' then null else cast(r1.KpuRlPrZr_Dn as date) end as varchar) dateFromAvg	
 	,cast(case when r1.KpuRlPrZr_Dk <= '1876-12-31' then null else cast(r1.KpuRlPrZr_Dk as date) end as varchar) dateToAvg	
@@ -115,14 +115,15 @@ left join kpuprk1 p1 on v1.vo_grp = 1 and r1.KpuRlPr_Dn >= r1.kpurl_datrp
 	)
 	and r1.kpurl_cdvo = p1.kpuprkz_sysop
 left join kpux svm on svm.kpu_tn = r1.KpuRlSvm_Tn
-left join kpurloclc kmPl -- Признак "Командировка от планового заработка
+left join kpurloclc kmPl -- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	on kmPl.kpu_tn = r1.kpu_tn and kmPl.KpuRl_DatRp = r1.KpuRl_DatRp and kmPl.KpuRl_Rcd = r1.KpuRl_Rcd
 	and v1.vo_met = 117
 	and kmPl.kpurlclc_pk = 14 -- and (kmPl.kpurlclc_sm & 0x40) <> 0
 where r1.KpuRl_CdVo <> 0
-and r1.KpuRl_DatUp >= @dateFrom
---and (KpuRl_Prz & 65536) = 0 -- Записи внутреннего совместителя - пропускаем
---and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 1, 0)}, 2)} = 0) 
---and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
---and (r1.KpuRl_DatUp < @currentPeriod or (KpuRl_Prz & 65536) = 0)
-and r1.KpuRl_DatUp < @currentPeriod
+	and r1.KpuRl_DatUp >= @dateFrom
+	--and (KpuRl_Prz & 65536) = 0 -- пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 1, 0)}, 2)} = 0) 
+	--and (r1.KpuRl_DatUp < @currentPeriod or {fn MOD({fn TRUNCATE(KpuRl_Prz / 2048, 0)}, 2)} = 0)
+	--and (r1.KpuRl_DatUp < @currentPeriod or (KpuRl_Prz & 65536) = 0)
+	and r1.KpuRl_DatUp < @currentPeriod
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

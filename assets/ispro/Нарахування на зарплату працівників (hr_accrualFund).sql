@@ -1,4 +1,4 @@
--- Архів розрахунку нарахувань на зарплату (hr_accrualFund)
+-- пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (hr_accrualFund)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @currentPeriod date = (
@@ -37,6 +37,8 @@ select
 	,cast(sum(case when (kpuf_prz & 128) <> 0 then kpuf_smclc else 0 end) as varchar) addMinSum
 from kpufa1
 inner join kpux x1 on x1.kpu_tn = kpufa1.kpuf_tn
+inner join kpuc1 c1 on c1.kpu_rcd = x1.kpu_rcd
 where kpuf_cdfnd <> 0
-and kpuf_datup between @dateFrom and (dateAdd(day, -1, @currentPeriod))
+	and kpuf_datup between @dateFrom and (dateAdd(day, -1, @currentPeriod))
+	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 group by kpuf_datup, kpuf_datrp, kpuf_tn, x1.kpu_rcd, kpuf_cdfnd, kpuf_prc
