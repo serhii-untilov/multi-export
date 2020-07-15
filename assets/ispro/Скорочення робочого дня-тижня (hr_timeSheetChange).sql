@@ -45,7 +45,7 @@ from PayIgp
 where PayIgp_DatK <= '1876-12-31' or PayIgp_DatK >= @dateFrom
 union all
 select
-	cast(bookmark + @shiftID as varchar) ID	
+	cast(i1.bookmark + @shiftID as varchar) ID	
 	,kpuigr_prkCd orderNumber	
 	,case when kpuigr_prkDat <= '1876-12-31' then '' else cast(cast(kpuigr_prkDat as date) as varchar) end orderDate	
 	,'POSTED' orderState	

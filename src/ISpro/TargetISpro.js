@@ -58,7 +58,6 @@ function replace_SYSSTE_CD(queryText, sysste_cd) {
     let re = /\/\*SYSSTE_CD\*\//gmi;
     while (re.test(queryText))
         queryText = queryText.replace(re, '\'' + sysste_cd + '\'')
-    console.log(sysste_cd, queryText)
     return queryText
 }
 

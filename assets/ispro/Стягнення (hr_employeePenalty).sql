@@ -1,4 +1,5 @@
 -- ��������� (hr_employeePenalty)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @dateTo date = GETDATE()
 select
 	cast(d1.KpuDOt_Rcd as varchar) ID	
