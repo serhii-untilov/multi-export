@@ -33,6 +33,8 @@ select
 	,cast(case 
 		when vo_grp = 1 and So_Tim = 0 then 'DAY' 
 		when vo_grp = 1 and So_Tim <> 0 then 'HOUR' 
+		when vo_grp in (6, 9) and Bo_Zar = 0 then 'DAY' 
+		when vo_grp in (6, 9) and Bo_Zar <> 0 then 'HOUR' 
 		else null 
 		end as varchar) calcProportion	
 	,cast(case 

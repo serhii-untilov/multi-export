@@ -67,7 +67,7 @@ select
 		| (case when (KpuRl_Prz & 16) <> 0 then 1024 else 0 end)	-- ������������/������
 		| (case when v1.vo_met = 117 and kmPl.kpurlclc_sm is not null and (kmPl.kpurlclc_sm & 0x40) <> 0 then 256 else 0 end) -- ������������ ���������� �� ��������� ���������
 		as varchar) flagsRec
-	,cast(case when v1.Vo_Grp < 128 and (r1.KpuRl_Msk | r1.kpurl_addmsk) = 0 then 4294967295 else 0 end as varchar) flagsFix	
+	,cast(case when v1.Vo_Grp < 128 and (r1.KpuRl_Msk | r1.kpurl_addmsk) = 0 then 2147483647 else 0 end as varchar) flagsFix	
 	,cast(r1.kpurlPl_hrs as varchar) planHours	
 	,cast(r1.kpurlPl_days as varchar) planDays	
 	,cast(r1.kpurl_addmsk as varchar) maskAdd	
