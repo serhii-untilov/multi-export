@@ -1,5 +1,5 @@
 -- Довідник Тарифних розрядів (hr_dictTarifCoeff)
-select cast(raz as varchar) id
+select cast(raz as varchar) ID
 	,cast(raz as varchar)code
 	,cast(raz as varchar) name
 from (
