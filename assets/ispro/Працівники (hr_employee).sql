@@ -59,6 +59,7 @@ inner join (
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
 			and (Kpu_Flg & 2) = 0	-- ����� � ��������
 			and x1.kpu_tnosn = 0
+			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	) t1
 	group by kpu_cdnlp
 ) t1 on t1.kpu_rcd = c1.kpu_rcd
