@@ -9,6 +9,8 @@ select
 	,'dateFrom' dateFrom 
 	,'dateTo' dateTo 
 	,'dictProfessionID' dictProfessionID
+	,'dictProfessionCode' dictProfessionCode
+	,'dictProfessionZKPPTR' dictProfessionZKPPTR
 	,'nameGen' nameGen 
 	,'nameDat' nameDat 
 	,'nameAcc' nameAcc 
@@ -41,7 +43,10 @@ select
 	,'' idxNum	
 	,'' dateFrom	
 	,'' dateTo	
+--	,case when c1.sdolcl_rcd is null then 'NULL' else cast(c1.sdolcl_rcd as varchar) end dictProfessionID	
 	,'' dictProfessionID	
+	,sprd_klcd dictProfessionCode
+	,sprd_zkpptr dictProfessionZKPPTR
 	,sprD_NmIm nameGen
 	,sprD_NmD nameDat
 	,sprD_NmD nameAcc	
@@ -64,7 +69,12 @@ select
 	,sprD_NmIm  nameNom	
 	,'' psCategory	
 	,'1' isActive
-from SPRDOL
+from SPRDOL d1
+-- left join /*SYS_SCHEMA*/i711_sys.dbo.SDolCL c1 on 
+-- 	c1.sdolcl_zkpptr = d1.sprd_zkpptr
+-- 	and c1.sdolcl_cd = d1.sprd_klcd
+-- 	and len(d1.sprD_klCd) <> 0
+-- 	and len(d1.sprd_zkpptr) <> 0
 where sprd_prz = 0 or exists (
 	select null
 	from kpuprk1
