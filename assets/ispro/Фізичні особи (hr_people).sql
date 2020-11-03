@@ -1,4 +1,5 @@
 -- Фізичні особи (hr_people)
+declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'firstName' firstName, 'lastName' lastName, 'middleName' middleName, 'shortFIO' shortFIO, 'fullFIO' fullFIO, 'birthDate' birthDate, 
 	'description' description, 'employeeID' employeeID
