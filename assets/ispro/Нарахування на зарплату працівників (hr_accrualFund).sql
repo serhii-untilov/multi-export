@@ -31,7 +31,8 @@ select
 	,cast(x1.kpu_rcd as varchar) employeeNumberID	
 	,cast(kpuf_cdfnd as varchar) payFundID	
 	,cast(sum(kpuf_smsrc) as varchar) sourceSum	
-	,cast(sum(case when (kpuf_prz & 128) = 0 then kpuf_smclc else 0 end) as varchar) baseSum	
+	-- 04-11-2020,cast(sum(case when (kpuf_prz & 128) = 0 then kpuf_smclc else 0 end) as varchar) baseSum
+	,cast(sum(kpuf_smclc) as varchar) baseSum -- 04-11-2020
 	,cast(kpuf_prc as varchar) rate	
 	,cast(sum(kpuf_sm) as varchar) paySum	
 	,cast(sum(case when (kpuf_prz & 128) <> 0 then kpuf_smclc else 0 end) as varchar) addMinSum
