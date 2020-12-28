@@ -61,12 +61,22 @@ from (
 			,cast(cast(case when c1.kpu_dtuvl <= '1876-12-31' then '9999-12-31' else c1.kpu_dtuvl end as date) as varchar) dateTo	
 			,c1.kpu_fio +'[' + CAST(x1.kpu_tn as varchar(10)) + ']' description	
 			,null payOutID	
-			,null personalAccount
+			,kpuudr_ls personalAccount
 			,coalesce(x2.kpu_rcd, x1.kpu_rcd) kpu_rcdOsn
 		from kpux x1
 		inner join KPUC1 c1 on c1.Kpu_Rcd = x1.kpu_rcd
 		inner join KPUK1 k1 on k1.Kpu_Rcd = x1.kpu_rcd
 		left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
+		-- for personalAccount {
+		left join (
+			select kpu_rcd, MAX(kpuudr_id) kpuudr_id
+			from kpuudr1
+			where len(kpuudr_ls) > 0
+			and kpuudr_cd in (select vo_cd from payvo1 where vo_met in (60, 61,35))
+			group by kpu_rcd
+		) t3 on t3.kpu_rcd = x1.kpu_rcd
+		left join kpuudr1 t4 on t4.kpuudr_id = t3.kpuudr_id
+		-- for personalAccount }
 		where x1.kpu_tn < 4000000000
 			and { fn MOD( { fn TRUNCATE( Kpu_Flg / 64, 0 ) }, 2 ) } = 0
 			and (c1.kpu_flg & 2) = 0
