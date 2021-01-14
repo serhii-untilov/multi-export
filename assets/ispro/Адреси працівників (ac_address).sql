@@ -1,5 +1,6 @@
 -- ������ ���������� (ac_address)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 
 select 
 	cast(a1.bookmark as varchar) ID	
@@ -50,6 +51,17 @@ select
 from KpuAdr1 a1
 inner join kpuc1 c1 on c1.kpu_rcd = a1.kpu_rcd
 inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
+
+inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+	select max(pdr2.bookmark)
+	from kpuprk1 pdr2 
+	where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+		select max(pdr3.kpuprkz_dtv)
+		from kpuprk1 pdr3
+		where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+	)
+) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 LEFT JOIN /*FIRM_SCHEMA*/vwSAdrCnt SprAdrCnt ON SprAdrCnt.SAdrCnt_Rcd = KpuAdr_Cnt
 LEFT JOIN /*FIRM_SCHEMA*/vwSAdrReg SprAdrReg ON SprAdrReg.SAdrReg_Rcd = KpuAdr_Reg
 LEFT JOIN /*FIRM_SCHEMA*/vwSAdrRai SprAdrRai ON SprAdrRai.SAdrRai_Rcd = KpuAdr_Zone

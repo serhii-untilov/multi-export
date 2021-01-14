@@ -1,5 +1,6 @@
 -- �������� (hr_employeeContact)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 /*BEGIN-OF-HEAD*/
 select 'ID' ID
 	,'employeeID' employeeID
@@ -31,6 +32,17 @@ from (
 		,c1.kpu_email value	
 	from kpuc1 c1
 	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where len(c1.kpu_email) > 0
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	union
@@ -57,6 +69,17 @@ from (
 	from KpuAdr1 a1
 	inner join kpuc1 c1 on c1.kpu_rcd = a1.kpu_rcd
 	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where kpuadr_cd in (1,2)
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	union
@@ -70,6 +93,17 @@ from (
 		,c1.Kpu_Tel value	
 	from kpuc1 c1
 	inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where len(c1.kpu_email) > 0
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
 	union

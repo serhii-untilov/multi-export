@@ -1,5 +1,6 @@
 -- ����������� ���������� (hr_employeePosition)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @minDateRaiseSalary date = '2016-01-01'; -- ���� ̳����������� �� 14.06.2016 �. � 263/10/136-16
 /*BEGIN-OF-HEAD*/
@@ -110,6 +111,17 @@ from (
 	from kpuprk1 p1
 	inner join KPUX x1 on x1.Kpu_Rcd = p1.Kpu_Rcd
 	inner join KPUC1 c1 on c1.Kpu_Rcd = p1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	left join (
 		select kpu_rcd, max(kpuprkz_dtv) kpuprkz_dtv
 		from kpuprk1

@@ -1,5 +1,6 @@
 -- ����������� (hr_employeeDisability)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 /*BEGIN-OF-HEAD*/
 select
 	'ID' ID
@@ -49,6 +50,17 @@ select
 		description
 from kpuinv i1
 inner join kpuc1 c1 on c1.kpu_rcd = i1.kpu_rcd
+
+inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+	select max(pdr2.bookmark)
+	from kpuprk1 pdr2 
+	where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+		select max(pdr3.kpuprkz_dtv)
+		from kpuprk1 pdr3
+		where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+	)
+) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 inner join (
 	-- ����������� ������������ �� ���
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp

@@ -1,5 +1,6 @@
 -- ��������� (hr_employeePenalty)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateTo date = GETDATE()
 select
 	cast(d1.KpuDOt_Rcd as varchar) ID	
@@ -33,6 +34,17 @@ select
 from KpuDOt1 d1
 inner join KPUC1 c1 ON c1.Kpu_Rcd = d1.Kpu_Rcd
 inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd
+
+inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+	select max(pdr2.bookmark)
+	from kpuprk1 pdr2 
+	where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+		select max(pdr3.kpuprkz_dtv)
+		from kpuprk1 pdr3
+		where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+	)
+) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 left join kpupsp1 psp on psp.kpu_rcd = x1.kpu_rcd and psp.KpuPsp_Add = 0
 left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
 left join KPUC1 c2 ON c2.Kpu_Rcd = x2.Kpu_Rcd

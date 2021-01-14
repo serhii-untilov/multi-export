@@ -1,6 +1,7 @@
 -- ���� ������ (hr_employeeExperience)
 declare @dateTo date = GETDATE()
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'employeeID' employeeID, 'dictExperienceID' dictExperienceID, 'calcDate' calcDate, 'startCalcDate' startCalcDate, 'comment' comment, 'impEmployeeID' impEmployeeID, 'importInfo' importInfo
 ,'employeeNumberID' employeeNumberID
@@ -25,6 +26,17 @@ from (
 		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where x1.kpu_tnosn = 0 and Kpu_DtObSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������	
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
@@ -38,6 +50,17 @@ from (
 		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where x1.kpu_tnosn = 0 and Kpu_DtNpSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������	
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
@@ -51,6 +74,17 @@ from (
 		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where x1.kpu_tnosn = 0 and Kpu_DtOrgSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
@@ -64,6 +98,17 @@ from (
 		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where x1.kpu_tnosn = 0 and Kpu_DtSrSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������	
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
@@ -77,6 +122,17 @@ from (
 		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where x1.kpu_tnosn = 0 and Kpu_DtOtrSt > '1876-12-31' and c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������	
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
@@ -90,6 +146,17 @@ from (
 		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where x1.kpu_tnosn = 0 and Kpu_DtGS > '1876-12-31' and c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������	
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
@@ -103,6 +170,17 @@ from (
 		,null employeeNumberID
 	from kpuc1 c1
 	inner join KPUX x1 on x1.Kpu_Rcd = c1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	where x1.kpu_tnosn = 0 and Kpu_DtGSNp > '1876-12-31' and c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������	
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
@@ -119,6 +197,17 @@ from (
 	from KpuAdStgDat1 s1
 	inner join KPUC1 c1 on c1.Kpu_Rcd = s1.kpu_rcd
 	inner join KPUX x1 on x1.Kpu_Rcd = s1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
 	where c1.Kpu_Rcd < 4000000000
 		and (c1.Kpu_Flg & 2) = 0	-- ����� � ��������	

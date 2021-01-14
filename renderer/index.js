@@ -219,6 +219,13 @@ codeSe.addEventListener('change', (evt) => {
   ipcRenderer.send('set-config', this.config)
 })
 
+const codeDep = document.getElementById('code-dep')
+codeDep.addEventListener('change', (evt) => {
+  evt.preventDefault()
+  this.config.codeDep = evt.target.value
+  ipcRenderer.send('set-config', this.config)
+})
+
 const afinaDbPath = document.getElementById('afina-db-path')
 afinaDbPath.addEventListener('change', (evt) => {
   evt.preventDefault()
@@ -300,6 +307,7 @@ ipcRenderer.on('config', (event, config) => {
   schema.value = config.schema
   schemaSys.value = config.schemaSys
   codeSe.value = config.codeSe
+  codeDep.value = config.codeDep
   targetPath.value = config.targetPath
   afinaDbPath.value = config.afinaDbPath
   parusDbPath.value = config.parusDbPath

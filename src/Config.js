@@ -20,6 +20,7 @@ class Config {
         this.schema = ''
         this.schemaSys = ''
         this.codeSe = ''
+        this.codeDep = ''
 
         // Source DB path
         this.afinaDbPath = ''

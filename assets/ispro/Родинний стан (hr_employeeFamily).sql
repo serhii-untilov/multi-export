@@ -1,5 +1,6 @@
 -- �������� ���� (hr_employeeFamily)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
+declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'employeeID' employeeID, 'peopleID' peopleID, 'description' description
 union all
@@ -28,6 +29,17 @@ from (
 		,cast(cast(KpuSem_Dt as date) as varchar) + coalesce(pspr.spr_nm, ' ') + KpuSem_Fio description	
 	from kpusem1 s1
 	inner join kpuc1 c1 on c1.kpu_rcd = s1.kpu_rcd
+
+	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
+		select max(pdr2.bookmark)
+		from kpuprk1 pdr2 
+		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
+			select max(pdr3.kpuprkz_dtv)
+			from kpuprk1 pdr3
+			where pdr3.kpu_rcd = c1.kpu_rcd and pdr3.kpuprkz_dtv <= getdate()
+		)
+	) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
+
 	left join pspr on pspr.sprspr_cd = 680980 and spr_cd = KpuSem_Cd
 	where (c1.kpu_flg & 2) = 0
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)

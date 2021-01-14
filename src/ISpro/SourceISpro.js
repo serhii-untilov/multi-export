@@ -57,7 +57,7 @@ class SourceISpro extends Source {
             if (config.isArchive) {
                 let arcFileName
                 getFirmName(pool)
-                .then((firmName) => getFullFileName(config.targetPath, firmName + '.zip'))
+                .then((firmName) => getFullFileName(config.targetPath, firmName + config.codeSe + config.codeDep + '.zip'))
                 .then((fullFileName) => arcFileName = fullFileName)
                 .then(() => makeArchive(arcFileName, targetList))
                 .then(() => removeTargetFiles(targetList))

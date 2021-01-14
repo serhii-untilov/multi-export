@@ -13,6 +13,7 @@ const makeFile = function(target) {
         .then((queryText) => removeHeader(queryText))
         .then((queryText) => replace_SYS_SCHEMA(queryText, target.config.schemaSys))
         .then((queryText) => replace_SYSSTE_CD(queryText, target.config.codeSe))
+        .then((queryText) => replace_SPRPDR_CD(queryText, target.config.codeDep))
         .then((queryText) => doQuery(target, queryText))
         .then(() => resolve(target))
         .catch((err) => {
@@ -53,13 +54,23 @@ function replace_SYS_SCHEMA(queryText, schemaSys) {
 }
 
 function replace_SYSSTE_CD(queryText, sysste_cd) {
-    // find /*SYS_SCHEMA*/.sspr
-    // replace to ${schemaSys}.sspr
+    // find /*SYSSTE_CD*/.sspr
+    // replace to sysste_cd
     let re = /\/\*SYSSTE_CD\*\//gmi;
     while (re.test(queryText))
         queryText = queryText.replace(re, '\'' + sysste_cd + '\'')
     return queryText
 }
+
+function replace_SPRPDR_CD(queryText, sprpdr_cd) {
+    // find /*SPRPDR_CD*/.sspr
+    // replace to sprpdr_cd
+    let re = /\/\*SPRPDR_CD\*\//gmi;
+    while (re.test(queryText))
+        queryText = queryText.replace(re, '\'' + sprpdr_cd + '\'')
+    return queryText
+}
+
 
 async function doQuery(target, queryText) {
     return new Promise((resolve, reject) => {
