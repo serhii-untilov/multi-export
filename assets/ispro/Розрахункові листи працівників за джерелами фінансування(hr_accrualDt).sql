@@ -1,4 +1,4 @@
---  (hr_accrual)
+--  (hr_accrualDt)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
@@ -10,7 +10,7 @@ declare @currentPeriod date = (
 	and (@sysste_rcd is null or CrtFrm_Rcd = @sysste_rcd)
 )
 select 
-	cast(z1.bookmark as varchar) ID	
+	cast(r1.bookmark * 1000 + coalesce(z1.bookmark, 0) % 999 as varchar) ID
 	,cast(r1.bookmark as varchar) accrualID	
 	,cast(CONVERT(DECIMAL(19, 0), coalesce(z1.KpuRlSPZ_Sm, r1.kpurl_Sm)) / 100 as varchar) paySum	
 	,cast(r1.kpurl_SF as varchar) dictFundSourceID	
