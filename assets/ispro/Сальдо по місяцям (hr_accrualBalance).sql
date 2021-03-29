@@ -29,8 +29,8 @@ select
 	,cast(case when s1.kpurl_sf = 0 then null else s1.kpurl_sf end as varchar) dictFundSourceID	
 	,cast(CONVERT(DECIMAL(19, 0), s1.kpurl_sin) / 100 as varchar) sumFrom	
 	,cast(CONVERT(DECIMAL(19, 0), s1.kpurl_nch) / 100 as varchar) sumPlus	
-	,cast(CONVERT(DECIMAL(19, 0), s1.kpurl_udr - t1.kpurl_sm) / 100 as varchar) sumMinus
-	,cast(CONVERT(DECIMAL(19, 0), t1.kpurl_sm) / 100 as varchar) sumPay	
+	,cast(CONVERT(DECIMAL(19, 0), s1.kpurl_udr - coalesce(t1.kpurl_sm, 0)) / 100 as varchar) sumMinus
+	,cast(CONVERT(DECIMAL(19, 0), coalesce(t1.kpurl_sm, 0)) / 100 as varchar) sumPay	
 	,cast(CONVERT(DECIMAL(19, 0), s1.kpurl_sout) / 100 as varchar) sumTo
 from kpurlonus s1
 inner join kpux x1 on x1.kpu_tn = s1.kpu_tn
@@ -46,7 +46,7 @@ inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
 	)
 ) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
 
-inner join (
+left join (
 	select r1.kpu_tn
 		,r1.kpurl_datup
 		,0 kpurl_sf
