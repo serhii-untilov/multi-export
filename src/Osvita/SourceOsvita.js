@@ -25,17 +25,27 @@ class SourceOsvita extends Source {
             makeDir(config.targetPath)
                 .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
                 .then((fileList) => {
-                    console.log(fileList)
-                    fileList.forEach((sourceFile, index) => {
-                        hr_employee(config, dictionary, sourceFile, index)
-                            .then((target) => {
-                                targetList.push(target); sendFile(target)
+                    return Promise.all(
+                        fileList.map((sourceFile, index) => {
+                            return new Promise(async (resolve, reject) => {
+                                hr_employee(config, dictionary, sourceFile, index)
+                                    .then((target) => {
+                                        if (!target.append) {
+                                            targetList.push(target)
+                                        }
+                                        sendFile(target)
+                                        resolve(target)
+                                        console.log('1', index, target.sourcegetFullFileName)
+                                    })
+                                    .catch((err) => reject(err))
                             })
-                    })
+                        })
+                    )
                 })
                 .then(() => {
                     if (config.isArchive) {
                         let arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
+                        console.log('2', arcFileName)
                         makeArchive(arcFileName, targetList)
                             .then(() => removeTargetFiles(targetList))
                             .then(() => sendDone(arcFileName))

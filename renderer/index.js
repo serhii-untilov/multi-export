@@ -434,7 +434,11 @@ ipcRenderer.on('failed', (event, err) => {
 const getStateText = (target) => {
   switch (target.state) {
     case Target.FILE_CREATED:
-      return `Файл створено.`
+      const source = target.sourcegetFullFileName ? path.basename(target.sourcegetFullFileName) : ''
+      if (source) {
+        return target.append ? `Доповнено із ${source}.` : `Створено із ${source}.`
+      }
+      return target.append ? 'Файл доповнено.' : 'Файл створено.'
     case Target.FILE_EMPTY:
       return 'Відсутні дані для експорту.'
     case Target.FILE_ERROR:
