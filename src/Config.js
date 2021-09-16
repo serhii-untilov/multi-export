@@ -5,6 +5,7 @@ const ISPRO = 'ispro'
 const AFINA = 'afina'
 const PARUS = 'parus'
 const C7 = 'C7'
+const OSVITA = 'osvita'
 
 class Config {
     constructor() {
@@ -26,6 +27,7 @@ class Config {
         this.afinaDbPath = ''
         this.parusDbPath = ''
         this.c1DbPath = ''
+        this.osvitaDbPath = ''
     }
 }
 
@@ -35,5 +37,6 @@ module.exports = {
     ISPRO,
     AFINA,
     PARUS,
-    C7
+    C7,
+    OSVITA
 }

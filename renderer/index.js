@@ -22,6 +22,7 @@ const isproPanel = document.getElementById('ispro-panel')
 const afinaPanel = document.getElementById('afina-panel')
 const parusPanel = document.getElementById('parus-panel')
 const c1Panel = document.getElementById('c1-panel')
+const osvitaPanel = document.getElementById('osvita-panel')
 const commonParamsPanel = document.getElementById('common-params-panel')
 const controlPanel = document.getElementById('control-panel')
 const resultPanel = document.getElementById('result-panel')
@@ -57,6 +58,7 @@ const renderPanels = () => {
   setVisible(afinaPanel, this.config && this.config.source === Config.AFINA)
   setVisible(parusPanel, this.config && this.config.source === Config.PARUS)
   setVisible(c1Panel, this.config && this.config.source === Config.C7)
+  setVisible(osvitaPanel, this.config && this.config.source === Config.OSVITA)
   setVisible(commonParamsPanel, this.config && this.config.source != Config.HOME)
   setVisible(controlPanel, this.config && this.config.source != Config.HOME)
   setVisible(bodyPanel, false)
@@ -71,6 +73,7 @@ const renderMenu = () => {
   setSelected(buttonSelectAfina, this.config.source == Config.AFINA)
   setSelected(buttonSelectParus, this.config.source == Config.PARUS)
   setSelected(buttonSelect1C, this.config.source == Config.C7)
+  setSelected(buttonSelectOsvita, this.config.source == Config.OSVITA)
 }
 
 const selectHome = () => {
@@ -144,6 +147,21 @@ const buttonSelect1C = document.getElementById('select1C')
 buttonSelect1C.addEventListener('click', select1C)
 document.getElementById('homeSelect1C').addEventListener('click', select1C)
 document.getElementById('caption1C').addEventListener('click', select1C)
+
+const selectOsvita = () => {
+  if (this.config.source == Config.OSVITA)
+    return
+  buttonRunExport.classList.remove('loading')
+  targetList.length = 0
+  this.config.source = Config.OSVITA
+  ipcRenderer.send('set-config', this.config)
+  renderMenu()
+  renderPanels()
+}
+const buttonSelectOsvita = document.getElementById('selectOsvita')
+buttonSelectOsvita.addEventListener('click', selectOsvita)
+document.getElementById('homeSelectOsvita').addEventListener('click', selectOsvita)
+document.getElementById('captionOsvita').addEventListener('click', selectOsvita)
 
 document.getElementById('homeSelectA5').addEventListener('click', () => {
   shell.openExternal('https://a5buh.com')
@@ -274,6 +292,21 @@ document.getElementById('select-c1-path').addEventListener('click', async () => 
   }
 })
 
+const osvitaDbPath = document.getElementById('osvita-db-path')
+osvitaDbPath.addEventListener('change', (evt) => {
+  evt.preventDefault()
+  this.config.osvitaDbPath = evt.target.value
+  ipcRenderer.send('set-config', this.config)
+})
+
+document.getElementById('select-osvita-path').addEventListener('click', async () => {
+  let dialogResult = await mainProcess.selectDirectory(this.config.osvitaDbPath)
+  if (!dialogResult.canceled) {
+    osvitaDbPath.value = dialogResult.filePaths[0]
+    this.config.osvitaDbPath = osvitaDbPath.value
+    ipcRenderer.send('set-config', this.config)
+  }
+})
 
 const targetPath = document.getElementById('target-path')
 targetPath.addEventListener('change', (evt) => {
@@ -299,19 +332,20 @@ isArchive.addEventListener('change', (evt) => {
 })
 
 ipcRenderer.on('config', (event, config) => {
-  this.config = config
+  this.config = config || {}
 
-  serverName.value = config.server
-  login.value = config.login
-  password.value = config.password
-  schema.value = config.schema
-  schemaSys.value = config.schemaSys
-  codeSe.value = config.codeSe
-  codeDep.value = config.codeDep
-  targetPath.value = config.targetPath
-  afinaDbPath.value = config.afinaDbPath
-  parusDbPath.value = config.parusDbPath
-  c1DbPath.value = config.c1DbPath
+  serverName.value = config.server || ''
+  login.value = config.login || ''
+  password.value = config.password || ''
+  schema.value = config.schema || ''
+  schemaSys.value = config.schemaSys || ''
+  codeSe.value = config.codeSe || ''
+  codeDep.value = config.codeDep || ''
+  targetPath.value = config.targetPath || ''
+  afinaDbPath.value = config.afinaDbPath || ''
+  parusDbPath.value = config.parusDbPath || ''
+  c1DbPath.value = config.c1DbPath || ''
+  osvitaDbPath.value = config.osvitaDbPath || ''
 
   isArchive.checked = config.isArchive
 
