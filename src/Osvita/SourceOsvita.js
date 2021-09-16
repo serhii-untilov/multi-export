@@ -35,7 +35,7 @@ class SourceOsvita extends Source {
                                         }
                                         sendFile(target)
                                         resolve(target)
-                                        console.log('1', index, target.sourcegetFullFileName)
+                                        // console.log('1', index, target.sourcegetFullFileName)
                                     })
                                     .catch((err) => reject(err))
                             })
@@ -45,7 +45,7 @@ class SourceOsvita extends Source {
                 .then(() => {
                     if (config.isArchive) {
                         let arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
-                        console.log('2', arcFileName)
+                        // console.log('2', arcFileName)
                         makeArchive(arcFileName, targetList)
                             .then(() => removeTargetFiles(targetList))
                             .then(() => sendDone(arcFileName))
