@@ -21,7 +21,7 @@ function setRecord(record, recordNumber) {
 function makeTarget(config, dictionary) {
     let target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourcegetFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord

@@ -23,7 +23,7 @@ function setRecord(record, recordNumber) {
 function makeTarget(config, dictionary) {
     let target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourcegetFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord
@@ -35,11 +35,11 @@ const makeFile = function (target) {
         try {
             if (!target.append)
                 removeFile(target.fullFileName)
-            fs.exists(target.sourcegetFullFileName, (exists) => {
+            fs.exists(target.sourceFullFileName, (exists) => {
                 if (exists) {
                     let buffer = target.append ? '' : target.entity.getHeader()
                     let id = 1
-                    fs.createReadStream(target.sourcegetFullFileName)
+                    fs.createReadStream(target.sourceFullFileName)
                         .pipe(new YADBF({ 
                             // encoding: 'cp1251'
                             encoding: 'cp866'

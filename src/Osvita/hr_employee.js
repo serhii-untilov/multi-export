@@ -34,7 +34,7 @@ function setRecord(record, recordNumber) {
 function makeTarget(config, dictionary, sourceFile, index) {
     let target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourcegetFullFileName = sourceFile
+    target.sourceFullFileName = sourceFile
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord

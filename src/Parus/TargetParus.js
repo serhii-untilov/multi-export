@@ -10,13 +10,13 @@ const makeFile = function (target) {
         try {
             if (!target.append)
                 removeFile(target.fullFileName)
-            console.log('target.sourcegetFullFileName', target.sourcegetFullFileName)
-            fs.exists(target.sourcegetFullFileName, async (exists) => {
+            console.log('target.sourceFullFileName', target.sourceFullFileName)
+            fs.exists(target.sourceFullFileName, async (exists) => {
                 if (exists) {
                     let buffer = target.append ? '' : target.entity.getHeader()
                     let id = 1
 
-                    let dbf = await DBFFile.open(target.sourcegetFullFileName)
+                    let dbf = await DBFFile.open(target.sourceFullFileName)
                     console.log(`DBF file contains ${dbf.recordCount} records.`)
                     console.log(`Field names: ${dbf.fields.map(f => f.name).join(', ')}`)
                     let records = await dbf.readRecords(100)

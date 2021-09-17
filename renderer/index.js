@@ -357,22 +357,11 @@ renderMenu()
 renderPanels()
 
 const countErrors = (targetList) => {
-  let count = 0
-  for (var i = 0; i < targetList.length; i++) {
-    if (targetList[i].err)
-      count++
-  }
-  return count
+  return targetList.reduce((a, b) => a + (b.err ? 1 : 0), 0)
 }
 
 const countCreated = (targetList) => {
-  let count = 0
-  for (var i = 0; i < targetList.length; i++) {
-    if (targetList[i].state == Target.FILE_CREATED)
-      count++
-    // console.log(targetList[i].fileName, targetList[i].state)
-  }
-  return count
+  return targetList.reduce((a, b) => a + (b.state === Target.FILE_CREATED && !b.append ? 1 : 0), 0)
 }
 
 const pad = (num, size) => {
@@ -434,7 +423,7 @@ ipcRenderer.on('failed', (event, err) => {
 const getStateText = (target) => {
   switch (target.state) {
     case Target.FILE_CREATED:
-      const source = target.sourcegetFullFileName ? path.basename(target.sourcegetFullFileName) : ''
+      const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
       if (source) {
         return target.append ? `Доповнено із ${source}.` : `Створено із ${source}.`
       }

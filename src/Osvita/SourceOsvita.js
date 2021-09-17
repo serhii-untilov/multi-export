@@ -35,7 +35,7 @@ class SourceOsvita extends Source {
                                         }
                                         sendFile(target)
                                         resolve(target)
-                                        // console.log('1', index, target.sourcegetFullFileName)
+                                        // console.log('1', index, target.sourceFullFileName)
                                     })
                                     .catch((err) => reject(err))
                             })
