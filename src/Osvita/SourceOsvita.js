@@ -37,10 +37,10 @@ class SourceOsvita extends Source {
             let dictionary = new Dictionary(config)
             let employeeFileList = []
             makeDir(config.targetPath)
-                .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(1) })
-                .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(2) })
-                .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(3) })
-                .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(4) })
+                .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
                 .then((fileList) => { employeeFileList = fileList })
                 // Make ac_fundSource

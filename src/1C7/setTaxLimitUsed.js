@@ -5,7 +5,7 @@ const YADBF = require('yadbf')
 const getFullFileName = require('../helper/getFullFileName')
 
 function setTaxLimitUsed(config, dictionary) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let fullFileName = getFullFileName(config.c1DbPath, 'PLG.DBF')
         fs.exists(fullFileName, (exists) => {
             if (exists) {

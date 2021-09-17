@@ -6,7 +6,7 @@ const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
 
 const makeFile = function (target) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         try {
             if (!target.append)
                 removeFile(target.fullFileName)

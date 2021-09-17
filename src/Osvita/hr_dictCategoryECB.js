@@ -34,10 +34,10 @@ function makeTarget(config, dictionary) {
 }
 
 const makeFile = function (target) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         try {
             if (!target.append)
-                await removeFile(target.fullFileName)
+                removeFile(target.fullFileName)
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
                 {id: ECB1 , code: '1', name: 'Наймані працівники на загальних підставах'},

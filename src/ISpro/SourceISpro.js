@@ -36,7 +36,7 @@ class SourceISpro extends Source {
         .then((fileList) => {
             return Promise.all(
                 fileList.map((queryFileName) => {
-                    return new Promise(async (resolve, reject) => {
+                    return new Promise((resolve, reject) => {
                         let target = new Target.Target()
                         let fileName = path.parse(queryFileName).name
                         target.fullFileName = getFullFileName(config.targetPath, fileName + '.csv')
