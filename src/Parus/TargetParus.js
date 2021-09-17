@@ -9,7 +9,7 @@ const makeFile = function (target) {
     return new Promise(async (resolve, reject) => {
         try {
             if (!target.append)
-                removeFile(target.fullFileName)
+                await removeFile(target.fullFileName)
             console.log('target.sourceFullFileName', target.sourceFullFileName)
             fs.exists(target.sourceFullFileName, async (exists) => {
                 if (exists) {

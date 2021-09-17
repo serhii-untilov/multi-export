@@ -37,7 +37,7 @@ const makeFile = function (target) {
     return new Promise(async (resolve, reject) => {
         try {
             if (!target.append)
-                removeFile(target.fullFileName)
+                await removeFile(target.fullFileName)
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
                 {id: ECB1 , code: '1', name: 'Наймані працівники на загальних підставах'},

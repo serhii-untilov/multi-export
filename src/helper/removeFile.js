@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 
-function removeFile(fileName) {
+async function removeFile(fileName) {
     fs.exists(fileName, (exists) => {
         if (exists) {
             fs.unlink(fileName, (err) => { 

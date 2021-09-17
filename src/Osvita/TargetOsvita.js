@@ -9,7 +9,7 @@ const makeFile = function (target) {
     return new Promise(async (resolve, reject) => {
         try {
             if (!target.append)
-                removeFile(target.fullFileName)
+                await removeFile(target.fullFileName)
             fs.exists(target.sourceFullFileName, (exists) => {
                 if (exists) {
                     let buffer = target.append ? '' : target.entity.getHeader()

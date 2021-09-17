@@ -37,166 +37,94 @@ class SourceOsvita extends Source {
             let dictionary = new Dictionary(config)
             let employeeFileList = []
             makeDir(config.targetPath)
-                .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(1) })
+                .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(2) })
+                .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(3) })
+                .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target); console.log(4) })
                 .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
                 .then((fileList) => { employeeFileList = fileList })
                 // Make ac_fundSource
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                ac_fundSource(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => { 
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await ac_fundSource(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_payOut
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_payOut(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_payOut(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_organization
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_organization(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_organization(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_department
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_department(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_department(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_employee
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_employee(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_employee(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_employeeNumber
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_employeeNumber(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_employeeNumber(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_employeePosition
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_employeePosition(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_employeePosition(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_employeeTaxLimit
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_employeeTaxLimit(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_employeeTaxLimit(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Make hr_payRetention
-                .then(() => {
-                    return Promise.all(
-                        employeeFileList.map((sourceFile, index) => {
-                            return new Promise(async (resolve, reject) => {
-                                hr_payRetention(config, dictionary, sourceFile, index)
-                                    .then((target) => {
-                                        if (!target.append) { targetList.push(target) }
-                                        sendFile(target)
-                                        resolve(target)
-                                    })
-                                    .catch((err) => reject(err))
-                            })
-                        })
-                    )
+                .then( async () => {
+                    for(let i = 0; i < employeeFileList.length; i++) {
+                        const target = await hr_payRetention(config, dictionary, employeeFileList[i], i)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
                 })
                 // Done
-                .then(() => {
+                .then( async () => {
                     if (config.isArchive) {
                         let arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
-                        makeArchive(arcFileName, targetList)
+                        await makeArchive(arcFileName, targetList)
                             .then(() => removeTargetFiles(targetList))
                             .then(() => sendDone(arcFileName))
                             .catch((err) => sendFailed(err.message))
                     } else {
-                        sendDone(null)
+                        await sendDone(null)
                     }
                 })
                 .catch((err) => sendFailed(err.message))
