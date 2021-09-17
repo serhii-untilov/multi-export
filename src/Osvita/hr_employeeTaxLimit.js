@@ -6,24 +6,21 @@ const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
 
 // Be attentive to fill this section
-const Entity = require('../entity/Employee')
-const TARGET_FILE_NAME = 'Працівники (hr_employee).csv'
+const Entity = require('../entity/EmployeeTaxLimit')
+const TARGET_FILE_NAME = 'Пільги ПДФО працівників (hr_employeeTaxLimit).csv'
 
 function setRecord(record, recordNumber) {
+    if (!record.KOD_PIL || !Number(record.KOD_PIL)) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000
     this.entity.ID = ID
-    this.entity.organizationID = record.BOL
-    this.entity.lastName = record.FAM
-    this.entity.firstName = record.IM
-    this.entity.middleName = record.OT
-    this.entity.shortFIO = record.FAM + ' ' + record.IM[0] + '.' + record.OT[0] + '.'
-    this.entity.fullFIO = record.FAM + ' ' + record.IM + ' ' + record.OT
     this.entity.tabNum = record.TAB
-    this.entity.sexType = record.KAT == 2 ? 'M' : record.SEX == 1 ? 'W' : ''
+    this.entity.employeeID = ID
     this.entity.taxCode = record.IKOD
-    this.entity.description = this.entity.fullFIO + ' (' + record.TAB + ')'
-    this.entity.locName = this.entity.fullFIO
-    this.dictionary.setEmployeeFullName(this.entity.ID, this.entity.fullFIO)
+    this.entity.employeeNumberID = ID
+    this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
+    this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
+    let taxLimitID = this.dictionary.getTaxLimitID(record.KOD_PIL)
+    this.entity.taxLimitID = taxLimitID ? taxLimitID : ''
     return true
 }
 

@@ -19,7 +19,6 @@ class SourceParus extends Source {
         try {
             let targetList = []
             let dictionary = new Dictionary(config)
-            
             makeDir(config.targetPath)
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => {

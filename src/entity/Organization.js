@@ -2,7 +2,7 @@
 
 const Entity = require('./Entity')
 
-class Department extends Entity {
+class Organization extends Entity {
     constructor() {
         super()
         this.ID = 0
@@ -20,8 +20,7 @@ class Department extends Entity {
         this.fullNameOr = ''
         this.dateFrom = ''
         this.dateTo = ''
-        this.orgID = ''
     }
 }
 
-module.exports = Department
+module.exports = Organization

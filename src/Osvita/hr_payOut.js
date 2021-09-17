@@ -5,18 +5,17 @@ const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 
 // Be attentive to fill this section
-const Entity = require('../entity/Department') 
-const TARGET_FILE_NAME = 'Підрозділи (hr_department).csv'
+const Entity = require('../entity/PayOut') 
+const TARGET_FILE_NAME = 'Шаблони виплати (hr_payOut).csv'
 
 function setRecord(record, recordNumber) {
-    this.entity.ID = record.BOL
-    this.entity.code = record.BOL
-    if (this.dictionary.getDepartmentID(this.entity.code)) { return false }
-    this.entity.orgID = record.BOL
-    this.entity.name = record.BOL
-    this.entity.fullName = record.BOL
+    if (!record.STEPEN1) { return false }
+    this.entity.ID = record.STEPEN1
+    this.entity.code = record.STEPEN1
+    if (this.dictionary.getPayOutID(this.entity.code)) { return false }
+    this.entity.name = record.STEPEN1
     this.entity.description = this.entity.name + ' (' + this.entity.code + ')'
-    this.dictionary.setDepartmentID(this.entity.code, this.entity.ID)
+    this.dictionary.setPayOutID(this.entity.code, this.entity.ID)
     return true
 }
 

@@ -18,8 +18,7 @@ function setRecord(record, recordNumber) {
     let positionID = makePositionID(departmentID, record.DOL)
     if (this.dictionary.getPositionID(positionID))
         return false // already present
-    
-    this.entity.ID = positionID    
+    this.entity.ID = positionID
     this.entity.code = record.DOL
     this.entity.name = this.dictionary.getDictPositionName(record.DOL)
     this.entity.description = `${this.entity.name} (${this.entity.code})`

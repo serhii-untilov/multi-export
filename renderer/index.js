@@ -375,7 +375,7 @@ const stateText = (created, errors, arcFileName) => {
   text = errors ? `Експорт виконано з помилками (${errors}).` : 'Експорт виконано успішно.';
 
   if (created) {
-    text += ` Створено ${created} файлів.`
+    text += ` Створено файлів: ${created}.`
   }
 
   if (arcFileName) {
@@ -425,16 +425,16 @@ const getStateText = (target) => {
     case Target.FILE_CREATED:
       const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
       if (source) {
-        return target.append ? `Доповнено із ${source}.` : `Створено із ${source}.`
+        return target.append ? `Доповнено із ${source}` : `Створено із ${source}`
       }
-      return target.append ? 'Файл доповнено.' : 'Файл створено.'
+      return target.append ? 'Файл доповнено' : 'Файл створено'
     case Target.FILE_EMPTY:
-      return 'Відсутні дані для експорту.'
+      return 'Відсутні дані для експорту'
     case Target.FILE_ERROR:
       console.log(target)
       return `Помилка. ${target.err}`
     default:
-      return 'Невідома помилка.'
+      return 'Невідома помилка'
   }
 }
 

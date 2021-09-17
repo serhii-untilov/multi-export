@@ -31,6 +31,7 @@ class EmployeePosition extends Entity {
         this.dictFundSourceID = 0
         this.dictCategoryECBID = 0
         this.accountID = 0
+        this.organizationID = ''
     }
 }
 

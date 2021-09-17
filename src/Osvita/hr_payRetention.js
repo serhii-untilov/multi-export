@@ -4,26 +4,27 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
+const { PAYEL301 } = require('./hr_payEl')
 
 // Be attentive to fill this section
-const Entity = require('../entity/Employee')
-const TARGET_FILE_NAME = 'Працівники (hr_employee).csv'
+const Entity = require('../entity/PayRetention')
+const TARGET_FILE_NAME = 'Постійні утримання працівників (hr_payRetention).csv'
 
 function setRecord(record, recordNumber) {
+    if (record.PROF !== 1) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000
+
     this.entity.ID = ID
-    this.entity.organizationID = record.BOL
-    this.entity.lastName = record.FAM
-    this.entity.firstName = record.IM
-    this.entity.middleName = record.OT
-    this.entity.shortFIO = record.FAM + ' ' + record.IM[0] + '.' + record.OT[0] + '.'
-    this.entity.fullFIO = record.FAM + ' ' + record.IM + ' ' + record.OT
     this.entity.tabNum = record.TAB
-    this.entity.sexType = record.KAT == 2 ? 'M' : record.SEX == 1 ? 'W' : ''
-    this.entity.taxCode = record.IKOD
-    this.entity.description = this.entity.fullFIO + ' (' + record.TAB + ')'
-    this.entity.locName = this.entity.fullFIO
-    this.dictionary.setEmployeeFullName(this.entity.ID, this.entity.fullFIO)
+    this.entity.employeeID = ID
+    this.entity.taxCode = record.IKOD ? record.IKOD : ''
+    this.entity.employeeNumberID = ID
+
+    this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
+    this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
+    
+    this.entity.payElID = PAYEL301
+    this.entity.rate = 1
     return true
 }
 

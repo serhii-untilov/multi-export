@@ -17,8 +17,11 @@ class Dictionary {
         this.DictStaffCatID = {}
         this.catID_SchedID = {}
         this.TaxLimitID = {}
-        this.TaxLimitUsed = new Set()        
-
+        this.TaxLimitUsed = new Set()
+        this.OrganizationID = {}
+        this.FundSourceID = {}
+        this.PayOutID = {}
+        this.DictCategoryECBID = {}
 
         this.commonID = 0
         this.error_count = 0
@@ -111,6 +114,38 @@ class Dictionary {
 
     getDepartmentID(code) {
         return this.DepartmentID[code] || ''
+    }
+
+    setOrganizationID(code, ID) {
+        this.OrganizationID[code] = ID
+    }
+
+    getOrganizationID(code) {
+        return this.OrganizationID[code] || ''
+    }
+
+    setFundSourceID(code, ID) {
+        this.FundSourceID[code] = ID
+    }
+
+    getFundSourceID(code) {
+        return this.FundSourceID[code] || ''
+    }
+
+    setPayOutID(code, ID) {
+        this.PayOutID[code] = ID
+    }
+
+    getPayOutID(code) {
+        return this.PayOutID[code] || ''
+    }
+
+    setDictCategoryECBID(code, ID) {
+        this.DictCategoryECBID[code] = ID
+    }
+
+    getDictCategoryECBID(code) {
+        return this.DictCategoryECBID[code] || ''
     }
 
     setTaxCode(tabNum, taxCode) {
