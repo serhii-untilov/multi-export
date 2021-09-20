@@ -10,8 +10,8 @@ const makeFile = function (target) {
         try {
             if (!target.append) { removeFile(target.fullFileName) }
             console.log('target.sourceFullFileName', target.sourceFullFileName)
-            fs.exists(target.sourceFullFileName, async (exists) => {
-                if (exists) {
+            fs.access(target.sourceFullFileName, fs.OK, async (err) => {
+                if (!err) {
                     let buffer = target.append ? '' : target.entity.getHeader()
                     let id = 1
 

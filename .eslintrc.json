@@ -16,5 +16,15 @@
         "quotes": ["error", "single"],
         "indent": ["error", 4],
         "camelcase": ["off"]
-    }
+    },
+    "overrides": [
+        {
+          "files": [
+            "**/*.test.js"
+          ],
+          "env": {
+            "jest": true
+          }
+        }
+      ]
 }

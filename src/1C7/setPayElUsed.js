@@ -10,8 +10,8 @@ function setPayElUsed (config, dictionary) {
         fileList.map((fileName) => {
             return new Promise((resolve, reject) => {
                 const fullFileName = getFullFileName(config.c1DbPath, fileName)
-                fs.exists(fullFileName, (exists) => {
-                    if (exists) {
+                fs.access(fullFileName, fs.OK, (err) => {
+                    if (!err) {
                         fs.createReadStream(fullFileName)
                             .pipe(new YADBF({ encoding: 'cp1251' }))
                             .on('data', record => {

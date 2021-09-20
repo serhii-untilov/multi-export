@@ -44,7 +44,7 @@ function removeHeader (queryText) {
     return queryText
 }
 
-function replace_SYS_SCHEMA(queryText, schemaSys) {
+function replace_SYS_SCHEMA (queryText, schemaSys) {
     // find /*SYS_SCHEMA*/.sspr
     // replace to ${schemaSys}.sspr
     const re = /\/\*SYS_SCHEMA\*\/\w+\./gmi
@@ -130,6 +130,7 @@ async function doQuery (target, queryText) {
         function writeHeader (columns) {
             let columnNumber = 0
             for (const column in columns) {
+                // eslint-disable-next-line no-prototype-builtins
                 if (columns.hasOwnProperty(column)) {
                     if (columnNumber > 0) buffer += ';'
                     columnNumber++
@@ -142,6 +143,7 @@ async function doQuery (target, queryText) {
         function writeRow (row) {
             let separator = ''
             for (const column in row) {
+                // eslint-disable-next-line no-prototype-builtins
                 if (row.hasOwnProperty(column)) {
                     buffer += `${separator}${row[column]}`
                     separator = ';'

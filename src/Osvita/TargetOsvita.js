@@ -9,8 +9,8 @@ const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
             if (!target.append) { removeFile(target.fullFileName) }
-            fs.exists(target.sourceFullFileName, (exists) => {
-                if (exists) {
+            fs.access(target.sourceFullFileName, fs.OK, (err) => {
+                if (!err) {
                     let buffer = target.append ? '' : target.entity.getHeader()
                     let id = 1
                     fs.createReadStream(target.sourceFullFileName)
