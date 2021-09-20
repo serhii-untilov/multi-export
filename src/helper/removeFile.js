@@ -6,7 +6,9 @@ async function removeFile (fileName) {
     fs.access(fileName, fs.F_OK, (err) => {
         if (err) { return }
         fs.unlink(fileName, (err) => {
-            console.log(err)
+            if (err) {
+                console.log(err)
+            }
         })
     })
 }

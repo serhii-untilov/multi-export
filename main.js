@@ -30,14 +30,8 @@ function main () {
     const targetList = []
 
     const sendFile = (target) => {
-        targetList.push({
-            fullFileName: target.fullFileName,
-            state: target.state,
-            err: target.err,
-            recordsCount: target.recordsCount,
-            append: target.append,
-            sourceFullFileName: target.sourceFullFileName
-        })
+        const { fullFileName, state, err, recordsCount, append, sourceFullFileName } = target
+        targetList.push({ fullFileName, state, err, recordsCount, append, sourceFullFileName })
         mainWindow.send('push-file', targetList)
     }
 
