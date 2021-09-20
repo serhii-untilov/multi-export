@@ -32,7 +32,7 @@ class SourceOsvita extends Source {
             const dictionary = new Dictionary(config)
             let employeeFileList = []
             makeDir(config.targetPath)
-                // Sources
+                // Simple sources
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -40,6 +40,7 @@ class SourceOsvita extends Source {
                 .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
                 .then((fileList) => { employeeFileList = fileList })
                 .then(async () => {
+                    // Multi file sources
                     const sourceList = [
                         ac_fundSource,
                         hr_payOut,
