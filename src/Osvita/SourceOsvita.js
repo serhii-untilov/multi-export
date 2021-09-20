@@ -32,82 +32,31 @@ class SourceOsvita extends Source {
             const dictionary = new Dictionary(config)
             let employeeFileList = []
             makeDir(config.targetPath)
+                // Sources
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
                 .then((fileList) => { employeeFileList = fileList })
-                // Make ac_fundSource
                 .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await ac_fundSource(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_payOut
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_payOut(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_organization
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_organization(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_department
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_department(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_employee
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_employee(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_employeeNumber
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_employeeNumber(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_employeePosition
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_employeePosition(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_employeeTaxLimit
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_employeeTaxLimit(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
-                    }
-                })
-                // Make hr_payRetention
-                .then(async () => {
-                    for (let i = 0; i < employeeFileList.length; i++) {
-                        const target = await hr_payRetention(config, dictionary, employeeFileList[i], i)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
+                    const sourceList = [
+                        ac_fundSource,
+                        hr_payOut,
+                        hr_organization,
+                        hr_department,
+                        hr_employee,
+                        hr_employeeNumber,
+                        hr_employeePosition,
+                        hr_employeeTaxLimit,
+                        hr_payRetention
+                    ]
+                    for (let i = 0; i < sourceList.length; i++) {
+                        for (let j = 0; j < employeeFileList.length; j++) {
+                            const target = await sourceList[i](config, dictionary, employeeFileList[j], j)
+                            if (!target.append) { targetList.push(target) }
+                            await sendFile(target)
+                        }
                     }
                 })
                 // Done
