@@ -33,15 +33,11 @@ const hr_employeeTaxLimit = require('./hr_employeeTaxLimit')
 const ARC_FILE_NAME = '1Cv7.zip'
 
 class Source1C7 extends Source {
-    constructor() {
-        super()
-    }
-
-    async read(config, sendFile, sendDone, sendFailed) {
+    async read (config, sendFile, sendDone, sendFailed) {
         try {
-            let targetList = []
-            let dictionary = new Dictionary(config)
-            
+            const targetList = []
+            const dictionary = new Dictionary(config)
+
             makeDir(config.targetPath)
                 .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_department(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -58,16 +54,16 @@ class Source1C7 extends Source {
                 .then(() => hr_employeeTaxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_employeeAccrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_accrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_accrual2(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
-                .then(() => hr_accrual3(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
-                .then(() => hr_accrual4(config, dictionary)) //.then((target) => { targetList.push(target); sendFile(target) }) - append mode
+                .then(() => hr_accrual2(config, dictionary)) // .then((target) => { targetList.push(target); sendFile(target) }) - append mode
+                .then(() => hr_accrual3(config, dictionary)) // .then((target) => { targetList.push(target); sendFile(target) }) - append mode
+                .then(() => hr_accrual4(config, dictionary)) // .then((target) => { targetList.push(target); sendFile(target) }) - append mode
                 .then(() => {
                     if (config.isArchive) {
-                        let arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
+                        const arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
                         makeArchive(arcFileName, targetList)
-                        .then(() => removeTargetFiles(targetList))
-                        .then(() => sendDone(arcFileName))
-                        .catch((err) => sendFailed(err.message))
+                            .then(() => removeTargetFiles(targetList))
+                            .then(() => sendDone(arcFileName))
+                            .catch((err) => sendFailed(err.message))
                     } else {
                         sendDone(null)
                     }

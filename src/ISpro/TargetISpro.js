@@ -7,29 +7,29 @@ const iconv = require('iconv-lite')
 
 const BATCH_SIZE = 10000
 
-const makeFile = function(target) {
+const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         readQueryFromFile(target.queryFileName)
-        .then((queryText) => removeHeader(queryText))
-        .then((queryText) => replace_SYS_SCHEMA(queryText, target.config.schemaSys))
-        .then((queryText) => replace_SYSSTE_CD(queryText, target.config.codeSe))
-        .then((queryText) => replace_SPRPDR_CD(queryText, target.config.codeDep))
-        .then((queryText) => doQuery(target, queryText))
-        .then(() => resolve(target))
-        .catch((err) => {
-            target.state = Target.FILE_ERROR
-            target.err = err.message
-            resolve(target)
-        })
+            .then((queryText) => removeHeader(queryText))
+            .then((queryText) => replace_SYS_SCHEMA(queryText, target.config.schemaSys))
+            .then((queryText) => replace_SYSSTE_CD(queryText, target.config.codeSe))
+            .then((queryText) => replace_SPRPDR_CD(queryText, target.config.codeDep))
+            .then((queryText) => doQuery(target, queryText))
+            .then(() => resolve(target))
+            .catch((err) => {
+                target.state = Target.FILE_ERROR
+                target.err = err.message
+                resolve(target)
+            })
     })
 }
 
-function readQueryFromFile(fileName) {
+function readQueryFromFile (fileName) {
     return new Promise((resolve, reject) => {
         try {
-            fs.readFile(fileName, { encoding : null }, (err, queryText) => {
-                if (err) reject(err);
-                let convertedQueryText = iconv.decode(queryText, 'cp1251');
+            fs.readFile(fileName, { encoding: null }, (err, queryText) => {
+                if (err) reject(err)
+                const convertedQueryText = iconv.decode(queryText, 'cp1251')
                 resolve(convertedQueryText)
             })
         } catch (err) {
@@ -38,8 +38,8 @@ function readQueryFromFile(fileName) {
     })
 }
 
-function removeHeader(queryText) {
-    let re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gmi;
+function removeHeader (queryText) {
+    const re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gmi
     queryText = queryText.replace(re, '')
     return queryText
 }
@@ -47,37 +47,38 @@ function removeHeader(queryText) {
 function replace_SYS_SCHEMA(queryText, schemaSys) {
     // find /*SYS_SCHEMA*/.sspr
     // replace to ${schemaSys}.sspr
-    let re = /\/\*SYS_SCHEMA\*\/\w+\./gmi;
-    while (re.test(queryText))
+    const re = /\/\*SYS_SCHEMA\*\/\w+\./gmi
+    while (re.test(queryText)) {
         queryText = queryText.replace(re, schemaSys + '.')
+    }
     return queryText
 }
 
-function replace_SYSSTE_CD(queryText, sysste_cd) {
+function replace_SYSSTE_CD (queryText, sysste_cd) {
     // find /*SYSSTE_CD*/.sspr
     // replace to sysste_cd
-    let re = /\/\*SYSSTE_CD\*\//gmi;
-    while (re.test(queryText))
+    const re = /\/\*SYSSTE_CD\*\//gmi
+    while (re.test(queryText)) {
         queryText = queryText.replace(re, '\'' + sysste_cd + '\'')
+    }
     return queryText
 }
 
-function replace_SPRPDR_CD(queryText, sprpdr_cd) {
+function replace_SPRPDR_CD (queryText, sprpdr_cd) {
     // find /*SPRPDR_CD*/.sspr
     // replace to sprpdr_cd
-    let re = /\/\*SPRPDR_CD\*\//gmi;
-    while (re.test(queryText))
+    const re = /\/\*SPRPDR_CD\*\//gmi
+    while (re.test(queryText)) {
         queryText = queryText.replace(re, '\'' + sprpdr_cd + '\'')
+    }
     return queryText
 }
 
-
-async function doQuery(target, queryText) {
+async function doQuery (target, queryText) {
     return new Promise((resolve, reject) => {
-
         removeFile(target.fullFileName)
 
-        const request = target.pool.request(); // or: new sql.Request(pool1)
+        const request = target.pool.request() // or: new sql.Request(pool1)
         request.stream = true
         request.query(queryText)
 
@@ -93,13 +94,13 @@ async function doQuery(target, queryText) {
         request.on('row', row => {
             writeRow(row)
             target.recordsCount++
-            if (target.recordsCount % BATCH_SIZE == 0) {
-                request.pause();
+            if (target.recordsCount % BATCH_SIZE === 0) {
+                request.pause()
                 fs.appendFile(target.fullFileName, buffer, (err) => {
-                    if (err) throw err;
+                    if (err) throw err
                 })
                 buffer = ''
-                request.resume();
+                request.resume()
             }
         })
 
@@ -110,7 +111,6 @@ async function doQuery(target, queryText) {
 
         // Always emitted as the last one
         request.on('done', result => {
-            
             if (target.recordsCount) {
                 // request.pause();
                 fs.appendFile(target.fullFileName, buffer, (err) => {
@@ -127,9 +127,9 @@ async function doQuery(target, queryText) {
             resolve(target)
         })
 
-        function writeHeader(columns) {
+        function writeHeader (columns) {
             let columnNumber = 0
-            for (let column in columns) {
+            for (const column in columns) {
                 if (columns.hasOwnProperty(column)) {
                     if (columnNumber > 0) buffer += ';'
                     columnNumber++
@@ -138,10 +138,10 @@ async function doQuery(target, queryText) {
             }
             buffer += '\n'
         }
-        
-        function writeRow(row) {
+
+        function writeRow (row) {
             let separator = ''
-            for (let column in row) {
+            for (const column in row) {
                 if (row.hasOwnProperty(column)) {
                     buffer += `${separator}${row[column]}`
                     separator = ';'

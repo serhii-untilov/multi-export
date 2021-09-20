@@ -1,11 +1,8 @@
 'use strict'
 
 class Source {
-    constructor () {
-    }
-
     read (config, sendFile, sendDone) {
-        throw 'Not implemented method'
+        throw new Error('Abstract method. Your need implement it on an inherited class.')
     }
 }
 

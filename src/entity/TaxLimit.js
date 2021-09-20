@@ -3,9 +3,9 @@
 const Entity = require('./Entity')
 
 class TaxLimit extends Entity {
-    constructor() {
+    constructor () {
         super()
-        this.ID	= 0
+        this.ID = 0
         this.code = ''
         this.name = ''
         this.taxLimitType = ''
@@ -13,7 +13,7 @@ class TaxLimit extends Entity {
         this.codeForReport = ''
         this.dateFrom = ''
         this.dateTo = ''
-        }
+    }
 }
 
 module.exports = TaxLimit

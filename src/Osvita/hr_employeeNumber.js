@@ -5,11 +5,10 @@ const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
 
-// Be attentive to fill this section
 const Entity = require('../entity/EmployeeNumber')
 const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     const ID = Number(record.TAB) + Number(record.BOL) * 10000
     this.entity.ID = ID
     this.entity.employeeID = ID
@@ -25,8 +24,8 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary, sourceFile, index) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary, sourceFile, index) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile
     target.dictionary = dictionary

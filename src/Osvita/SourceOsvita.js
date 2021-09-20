@@ -7,8 +7,8 @@ const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
 const getFileList = require('../helper/getFileList')
-const { makeTarget:hr_payEl } = require('./hr_payEl')
-const { makeTarget:hr_dictCategoryECB } = require('./hr_dictCategoryECB')
+const { makeTarget: hr_payEl } = require('./hr_payEl')
+const { makeTarget: hr_dictCategoryECB } = require('./hr_dictCategoryECB')
 const hr_taxLimit = require('./hr_taxLimit')
 const hr_organization = require('./hr_organization')
 const hr_department = require('./hr_department')
@@ -21,20 +21,15 @@ const hr_employeePosition = require('./hr_employeePosition')
 const hr_employeeTaxLimit = require('./hr_employeeTaxLimit')
 const hr_payRetention = require('./hr_payRetention')
 
-
 const ARC_FILE_NAME = 'Osvita.zip'
 
 const employeeFileMask = /^B[0-9]+\.DBF/i
 
 class SourceOsvita extends Source {
-    constructor() {
-        super()
-    }
-
-    async read(config, sendFile, sendDone, sendFailed) {
+    async read (config, sendFile, sendDone, sendFailed) {
         try {
-            let targetList = []
-            let dictionary = new Dictionary(config)
+            const targetList = []
+            const dictionary = new Dictionary(config)
             let employeeFileList = []
             makeDir(config.targetPath)
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -44,81 +39,81 @@ class SourceOsvita extends Source {
                 .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
                 .then((fileList) => { employeeFileList = fileList })
                 // Make ac_fundSource
-                .then( async () => { 
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await ac_fundSource(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_payOut
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_payOut(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_organization
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_organization(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_department
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_department(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_employee
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_employee(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_employeeNumber
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_employeeNumber(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_employeePosition
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_employeePosition(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_employeeTaxLimit
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_employeeTaxLimit(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Make hr_payRetention
-                .then( async () => {
-                    for(let i = 0; i < employeeFileList.length; i++) {
+                .then(async () => {
+                    for (let i = 0; i < employeeFileList.length; i++) {
                         const target = await hr_payRetention(config, dictionary, employeeFileList[i], i)
                         if (!target.append) { targetList.push(target) }
                         await sendFile(target)
                     }
                 })
                 // Done
-                .then( async () => {
+                .then(async () => {
                     if (config.isArchive) {
-                        let arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
+                        const arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)
                         await makeArchive(arcFileName, targetList)
                             .then(() => removeTargetFiles(targetList))
                             .then(() => sendDone(arcFileName))

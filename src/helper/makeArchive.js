@@ -7,11 +7,10 @@ const Target = require('../Target')
 
 const makeArchive = (fullFileName, targetList) => {
     return new Promise((resolve, reject) => {
-
         // create a file to stream archive data to.
-        var output = fs.createWriteStream(fullFileName)
+        const output = fs.createWriteStream(fullFileName)
 
-        var archive = archiver('zip', {
+        const archive = archiver('zip', {
             zlib: { level: 9 } // Sets the compression level.
         })
 
@@ -24,8 +23,8 @@ const makeArchive = (fullFileName, targetList) => {
         // // This event is fired when the data source is drained no matter what was the data source.
         // // It is not part of this library but rather from the NodeJS Stream API.
         // // @see: https://nodejs.org/api/stream.html#stream_event_end
-        // output.on('end', () => { 
-        //     console.log('Data has been drained') 
+        // output.on('end', () => {
+        //     console.log('Data has been drained')
         // })
 
         // good practice to catch warnings (ie stat failures and other non-blocking errors)
@@ -50,8 +49,8 @@ const makeArchive = (fullFileName, targetList) => {
         // console.log('makeArchive', targetList.length)
         for (let i = 0; i < targetList.length; i++) {
             // append a file
-            if (targetList[i].state == Target.FILE_CREATED) {
-                let fileName = path.basename(targetList[i].fullFileName)
+            if (targetList[i].state === Target.FILE_CREATED) {
+                const fileName = path.basename(targetList[i].fullFileName)
                 archive.append(fs.createReadStream(targetList[i].fullFileName), { name: fileName })
             }
         }

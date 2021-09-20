@@ -9,20 +9,20 @@ const Entity = require('../entity/SimpleEntity')
 const SOURCE_FILE_NAME = 'KAD.DBF'
 const TARGET_FILE_NAME = 'Категорії персоналу (hr_dictStaffCat).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     this.entity.ID = recordNumber
     this.entity.code = record.CD
     this.entity.name = record.NM
     this.entity.description = `${this.entity.name} (${this.entity.code})`
     this.dictionary.setDictStaffCatID(this.entity.code, this.entity.ID)
-    let catID = this.entity.ID
-    let schedID = this.dictionary.getWorkScheduleID(record.GRF)
+    const catID = this.entity.ID
+    const schedID = this.dictionary.getWorkScheduleID(record.GRF)
     this.dictionary.setDictStaffCatID_WorkScheduleID(catID, schedID)
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary

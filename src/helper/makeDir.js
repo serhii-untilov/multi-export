@@ -10,7 +10,7 @@ const makeDir = (dirPath) => {
             } else {
                 fs.mkdir(dirPath, { recursive: true }, (err) => {
                     if (err) {
-                        reject(err);
+                        reject(err)
                     } else {
                         resolve(dirPath)
                     }

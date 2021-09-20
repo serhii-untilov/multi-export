@@ -1,6 +1,6 @@
 'use strict'
 
-const HOME  = 'home'
+const HOME = 'home'
 const ISPRO = 'ispro'
 const AFINA = 'afina'
 const PARUS = 'parus'
@@ -8,9 +8,9 @@ const C7 = 'C7'
 const OSVITA = 'osvita'
 
 class Config {
-    constructor() {
+    constructor () {
         // Params for targeted files
-        this.source = this.HOME   // default source
+        this.source = this.HOME // default source
         this.targetPath = ''
         this.isArchive = true
 

@@ -4,11 +4,10 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 
-// Be attentive to fill this section
-const Entity = require('../entity/FundSource') 
+const Entity = require('../entity/FundSource')
 const TARGET_FILE_NAME = 'Джерело фінансування (ac_fundSource).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     if (!record.FOND) { return false }
     this.entity.ID = record.FOND
     this.entity.code = record.FOND
@@ -19,8 +18,8 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary, sourceFile, index) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary, sourceFile, index) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile
     target.dictionary = dictionary

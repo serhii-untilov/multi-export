@@ -3,7 +3,7 @@
 const Entity = require('./Entity')
 
 class Position extends Entity {
-    constructor() {
+    constructor () {
         super()
         this.ID = 0
         this.code = ''
@@ -11,35 +11,35 @@ class Position extends Entity {
         this.fullName = ''
         this.parentUnitID = 0
         this.state = 'ACTIVE'
-        this.psCategory = ''	
+        this.psCategory = ''
         this.positionType = ''
-        this.dictProfessionID = ''	
-        this.dictWagePayID = 0	
-        this.description = ''	
-        this.nameGen = ''	
-        this.nameDat = ''	
-        this.fullNameGen = ''	
-        this.fullNameDat = ''	
+        this.dictProfessionID = ''
+        this.dictWagePayID = 0
+        this.description = ''
+        this.nameGen = ''
+        this.nameDat = ''
+        this.fullNameGen = ''
+        this.fullNameDat = ''
         this.nameOr = ''
-        this.fullNameOr = ''	
+        this.fullNameOr = ''
         this.quantity = 0
-        this.personalType = ''	
-        this.positionCategory = ''	
-        this.dictStatePayID = ''	
-        this.accrualSum = ''	
-        this.payElID = ''	
-        this.dictStaffCatID = ''	
+        this.personalType = ''
+        this.positionCategory = ''
+        this.dictStatePayID = ''
+        this.accrualSum = ''
+        this.payElID = ''
+        this.dictStaffCatID = ''
         this.dictFundSourceID = ''
-        this.nameAcc = ''	
-        this.fullNameAcc = ''	
+        this.nameAcc = ''
+        this.fullNameAcc = ''
         this.entryOrderID = ''
         this.nameLoc = ''
-        this.fullNameLoc = ''	
+        this.fullNameLoc = ''
         this.nameNom = ''
         this.nameVoc = ''
-        this.fullNameNom = ''	
+        this.fullNameNom = ''
         this.fullNameVoc = ''
-        this.liquidate = '0' 
+        this.liquidate = '0'
     }
 }
 

@@ -4,11 +4,10 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 
-// Be attentive to fill this section
-const Entity = require('../entity/PayOut') 
+const Entity = require('../entity/PayOut')
 const TARGET_FILE_NAME = 'Шаблони виплати (hr_payOut).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     if (!record.STEPEN1) { return false }
     this.entity.ID = record.STEPEN1
     this.entity.code = record.STEPEN1
@@ -19,8 +18,8 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary, sourceFile, index) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary, sourceFile, index) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile
     target.dictionary = dictionary

@@ -4,12 +4,11 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 
-// Be attentive to fill this section
 const Entity = require('../entity/SimpleEntity')
 const SOURCE_FILE_NAME = 'SPRA_DOL.DBF'
 const TARGET_FILE_NAME = 'Довідник посад (не штатних позицій) (hr_dictPosition).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     this.entity.ID = record.KOD
     this.entity.code = record.KOD
     this.entity.name = record.POCA || record.DOL
@@ -18,8 +17,8 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.osvitaDbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary

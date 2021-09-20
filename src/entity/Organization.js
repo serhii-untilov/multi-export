@@ -3,7 +3,7 @@
 const Entity = require('./Entity')
 
 class Organization extends Entity {
-    constructor() {
+    constructor () {
         super()
         this.ID = 0
         this.code = ''
@@ -14,7 +14,7 @@ class Organization extends Entity {
         this.description = ''
         this.nameGen = ''
         this.fullNameGen = ''
-        this.nameDat =''
+        this.nameDat = ''
         this.fullNameDat = ''
         this.nameOr = ''
         this.fullNameOr = ''

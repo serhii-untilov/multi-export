@@ -5,17 +5,16 @@ const removeFile = require('../helper/removeFile')
 const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 
-const ECB1  = 1     // Наймані працівники на загальних підставах
-const ECB2  = 2     // Працюючі інваліди
-const ECB3  = 3     // особи, які працюють за угодами ЦПХ
-const ECB25 = 25    // Держслужбовець
-const ECB32 = 32    // Держслужбовець - інвалід
+const ECB1 = 1 // Наймані працівники на загальних підставах
+const ECB2 = 2 // Працюючі інваліди
+const ECB3 = 3 // особи, які працюють за угодами ЦПХ
+const ECB25 = 25 // Держслужбовець
+const ECB32 = 32 // Держслужбовець - інвалід
 
-// Be attentive to fill this section
 const Entity = require('../entity/DictCategoryECB')
 const TARGET_FILE_NAME = 'Категорії застрахованих осіб ЄСВ (hr_dictCategoryECB).csv'
 
-function setRecord(record) {
+function setRecord (record) {
     this.entity.ID = record.id
     this.entity.code = record.code
     this.entity.name = record.name
@@ -24,8 +23,8 @@ function setRecord(record) {
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
@@ -36,15 +35,14 @@ function makeTarget(config, dictionary) {
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append)
-                removeFile(target.fullFileName)
+            if (!target.append) { removeFile(target.fullFileName) }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
-                {id: ECB1 , code: '1', name: 'Наймані працівники на загальних підставах'},
-                {id: ECB2 , code: '2', name: 'Працюючі інваліди'},
-                {id: ECB3 , code: '3', name: 'особи, які працюють за угодами ЦПХ'},
-                {id: ECB25, code: '25', name: 'Держслужбовець'},
-                {id: ECB32, code: '32', name: 'Держслужбовець - інвалід'}
+                { id: ECB1, code: '1', name: 'Наймані працівники на загальних підставах' },
+                { id: ECB2, code: '2', name: 'Працюючі інваліди' },
+                { id: ECB3, code: '3', name: 'особи, які працюють за угодами ЦПХ' },
+                { id: ECB25, code: '25', name: 'Держслужбовець' },
+                { id: ECB32, code: '32', name: 'Держслужбовець - інвалід' }
             ]
             source.forEach((record) => {
                 if (target.setRecord(record)) {

@@ -4,14 +4,12 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./Target1C7')
 
-// Be attentive to fill this section
 const Entity = require('../entity/PayEl')
 const SOURCE_FILE_NAME = 'VO.DBF'
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
-function setRecord(record, recordNumber) {
-    if (!this.dictionary.isPayElUsed(record.ID))
-        return false
+function setRecord (record, recordNumber) {
+    if (!this.dictionary.isPayElUsed(record.ID)) { return false }
     this.entity.ID = recordNumber
     this.entity.code = record.ID
     this.entity.name = record.NM
@@ -35,8 +33,8 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary

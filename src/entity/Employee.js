@@ -2,8 +2,8 @@
 
 const Entity = require('./Entity')
 
-class Employee extends Entity{
-    constructor() {
+class Employee extends Entity {
+    constructor () {
         super()
         this.ID = 0
         this.name = ''

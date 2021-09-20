@@ -8,8 +8,9 @@ const Target = require('../Target')
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append)
+            if (!target.append) {
                 removeFile(target.fullFileName)
+            }
             fs.exists(target.sourceFullFileName, (exists) => {
                 if (exists) {
                     let buffer = target.append ? '' : target.entity.getHeader()
@@ -34,7 +35,7 @@ const makeFile = function (target) {
                             resolve(target)
                         })
                         .on('error', err => {
-                            console.error(`an error was thrown: ${err}`);
+                            console.error(`an error was thrown: ${err}`)
                             target.state = Target.FILE_ERROR
                             target.err = err.message
                             resolve(target)

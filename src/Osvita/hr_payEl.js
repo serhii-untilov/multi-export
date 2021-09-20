@@ -12,11 +12,10 @@ const PAYEL247 = 247 // ИНША ЗАРПЛ
 const PAYEL248 = 248 // ЗАРПЛ СПЕЦИАЛИСТА
 const PAYEL301 = 301 // Профсоюзний внесок
 
-// Be attentive to fill this section
 const Entity = require('../entity/PayEl')
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
-function setRecord(record) {
+function setRecord (record) {
     this.entity.ID = record.id
     this.entity.code = record.code
     this.entity.name = record.name
@@ -28,8 +27,8 @@ function setRecord(record) {
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
@@ -40,16 +39,15 @@ function makeTarget(config, dictionary) {
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append)
-                removeFile(target.fullFileName)
+            if (!target.append) { removeFile(target.fullFileName) }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
-                {id: PAYEL146, code: '146', name: 'Педагогічна зарплата'},
-                {id: PAYEL147, code: '147', name: 'Адміністративна зарплата'},
-                {id: PAYEL246, code: '246', name: 'Зарплата вихователя'},
-                {id: PAYEL247, code: '247', name: 'Інша зарплата'},
-                {id: PAYEL248, code: '248', name: 'Зарплата спеціаліста'},
-                {id: PAYEL301, code: '301', name: 'Профсоюзний внесок'}
+                { id: PAYEL146, code: '146', name: 'Педагогічна зарплата' },
+                { id: PAYEL147, code: '147', name: 'Адміністративна зарплата' },
+                { id: PAYEL246, code: '246', name: 'Зарплата вихователя' },
+                { id: PAYEL247, code: '247', name: 'Інша зарплата' },
+                { id: PAYEL248, code: '248', name: 'Зарплата спеціаліста' },
+                { id: PAYEL301, code: '301', name: 'Профсоюзний внесок' }
             ]
             source.forEach((record) => {
                 if (target.setRecord(record)) {

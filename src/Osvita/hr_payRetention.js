@@ -6,11 +6,10 @@ const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
 const { PAYEL301 } = require('./hr_payEl')
 
-// Be attentive to fill this section
 const Entity = require('../entity/PayRetention')
 const TARGET_FILE_NAME = 'Постійні утримання працівників (hr_payRetention).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     if (record.PROF !== 1) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000
 
@@ -22,14 +21,14 @@ function setRecord(record, recordNumber) {
 
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
-    
+
     this.entity.payElID = PAYEL301
     this.entity.rate = 1
     return true
 }
 
-function makeTarget(config, dictionary, sourceFile, index) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary, sourceFile, index) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile
     target.dictionary = dictionary

@@ -3,7 +3,7 @@
 const Entity = require('./Entity')
 
 class EmployeeNumber extends Entity {
-    constructor() {
+    constructor () {
         super()
         this.ID = 0
         this.employeeID = 0
