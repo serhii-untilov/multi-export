@@ -109,9 +109,21 @@ inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
 ) and (@sprpdr_cd = '' or @sprpdr_cd = left(pdr1.kpuprkz_pd, len(@sprpdr_cd)))
 
 inner join PAYVO1 v1 on v1.Vo_Cd = r1.kpurl_cdvo
-left join kpunch1 n1 on v1.vo_grp < 128 and n1.kpu_rcd = x1.kpu_rcd and n1.kpunch_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = n1.kpunch_rcd and (kpurl_prz & 16384) = 0 
+-- left join kpunch1 n1 on v1.vo_grp < 128 and n1.kpu_rcd = x1.kpu_rcd and n1.kpunch_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = n1.kpunch_rcd and (kpurl_prz & 16384) = 0 
+left join 
+(
+	select kpu_rcd, kpunch_cd, kpunch_rcd, min(kpunch_id) kpunch_id
+	from kpunch1
+	group by kpu_rcd, kpunch_cd, kpunch_rcd
+) n1 on v1.vo_grp < 128 and n1.kpu_rcd = x1.kpu_rcd and n1.kpunch_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = n1.kpunch_rcd and (kpurl_prz & 16384) = 0 
 left join pdnch n2 on v1.vo_grp < 128 and n2.pdnch_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = n2.pdnch_rcd and (kpurl_prz & 16384) <> 0
-left join kpuudr1 u1 on v1.vo_grp > 127 and u1.kpu_rcd = x1.kpu_rcd and u1.kpuudr_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = u1.kpuudr_rcd and (kpurl_prz & 16384) = 0 
+--left join kpuudr1 u1 on v1.vo_grp > 127 and u1.kpu_rcd = x1.kpu_rcd and u1.kpuudr_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = u1.kpuudr_rcd and (kpurl_prz & 16384) = 0 
+left join 
+(
+	select kpu_rcd, kpuudr_cd, kpuudr_rcd, min(kpuudr_id) kpuudr_id
+	from kpuudr1
+	group by kpu_rcd, kpuudr_cd, kpuudr_rcd
+) u1 on v1.vo_grp > 127 and u1.kpu_rcd = x1.kpu_rcd and u1.kpuudr_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = u1.kpuudr_rcd and (kpurl_prz & 16384) = 0 
 left join pdudr u2 on v1.vo_grp > 127 and u2.pdudr_cd = r1.kpurl_cdvo and r1.kpurllnk_ls = u2.pdudr_rcd and (kpurl_prz & 16384) <> 0
 left join kpuprk1 p1 on v1.vo_grp = 1 and r1.KpuRlPr_Dn >= r1.kpurl_datrp 
 	and p1.kpu_rcd = x1.kpu_rcd and p1.bookmark =
