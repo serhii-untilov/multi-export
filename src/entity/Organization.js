@@ -6,8 +6,11 @@ class Organization extends Entity {
     constructor () {
         super()
         this.ID = 0
+        this.EDRPOUCode = ''
         this.code = ''
         this.name = ''
+        this.taxCode = ''
+        this.idxNum = ''
         this.parentUnitID = 0
         this.state = 'ACTIVE'
         this.fullName = ''
