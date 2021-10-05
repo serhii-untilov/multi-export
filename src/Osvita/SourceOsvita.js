@@ -20,6 +20,7 @@ const hr_employeeNumber = require('./hr_employeeNumber')
 const hr_employeePosition = require('./hr_employeePosition')
 const hr_employeeTaxLimit = require('./hr_employeeTaxLimit')
 const hr_payRetention = require('./hr_payRetention')
+const hr_dictStaffCat = require('./hr_dictStaffCat')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -37,6 +38,7 @@ class SourceOsvita extends Source {
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
                 .then((fileList) => { employeeFileList = fileList })
                 .then(async () => {
