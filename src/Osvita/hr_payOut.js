@@ -9,12 +9,13 @@ const TARGET_FILE_NAME = 'Шаблони виплати (hr_payOut).csv'
 
 function setRecord (record, recordNumber) {
     if (!record.STEPEN1) { return false }
-    this.entity.ID = record.STEPEN1
+    this.entity.ID = Number(record.STEPEN1) + Number(record.BOL) * 10000
     this.entity.code = record.STEPEN1
-    if (this.dictionary.getPayOutID(this.entity.code)) { return false }
+    if (this.dictionary.getPayOutID(this.entity.ID)) { return false }
     this.entity.name = record.STEPEN1
     this.entity.description = this.entity.name + ' (' + this.entity.code + ')'
-    this.dictionary.setPayOutID(this.entity.code, this.entity.ID)
+    this.dictionary.setPayOutID(this.entity.ID, this.entity.ID)
+    this.entity.orgID = record.BOL
     return true
 }
 
