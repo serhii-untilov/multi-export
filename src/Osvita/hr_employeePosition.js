@@ -23,7 +23,7 @@ function setRecord (record, recordNumber) {
     this.entity.organizationID = record.BOL
     this.entity.departmentID = this.dictionary.getDepartmentID(record.BOL)
     this.entity.dictPositionID = record.B_DOL ? record.B_DOL : ''
-    this.entity.positionID = makePositionID(this.entity.departmentID, this.entity.dictPositionID)
+    // this.entity.positionID = makePositionID(this.entity.departmentID, this.entity.dictPositionID)
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
     this.entity.mtCount = 1 // record.VKLSTAV
