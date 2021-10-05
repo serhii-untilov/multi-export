@@ -5,16 +5,16 @@ const Entity = require('./Entity')
 class Position extends Entity {
     constructor () {
         super()
-        this.ID = 0
+        this.ID = ''
         this.code = ''
         this.name = ''
         this.fullName = ''
-        this.parentUnitID = 0
+        this.parentUnitID = ''
         this.state = 'ACTIVE'
         this.psCategory = ''
         this.positionType = ''
         this.dictProfessionID = ''
-        this.dictWagePayID = 0
+        this.dictWagePayID = ''
         this.description = ''
         this.nameGen = ''
         this.nameDat = ''
@@ -22,7 +22,7 @@ class Position extends Entity {
         this.fullNameDat = ''
         this.nameOr = ''
         this.fullNameOr = ''
-        this.quantity = 0
+        this.quantity = ''
         this.personalType = ''
         this.positionCategory = ''
         this.dictStatePayID = ''

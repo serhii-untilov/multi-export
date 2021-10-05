@@ -5,12 +5,12 @@ const Entity = require('./Entity')
 class Accrual extends Entity {
     constructor () {
         super()
-        this.ID = 0
+        this.ID = ''
         this.periodCalc = ''
         this.periodSalary = ''
-        this.tabNum = 0
-        this.employeeNumberID = 0
-        this.payElID = 0
+        this.tabNum = ''
+        this.employeeNumberID = ''
+        this.payElID = ''
         this.baseSum = ''
         this.rate = ''
         this.paySum = ''
@@ -26,7 +26,7 @@ class Accrual extends Entity {
         this.dateFrom = ''
         this.dateTo = ''
         this.source = ''
-        this.sourceID = 0
+        this.sourceID = ''
         this.dateFromAvg = ''
         this.dateToAvg = ''
         this.sumAvg = ''

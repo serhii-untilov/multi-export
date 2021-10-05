@@ -5,13 +5,13 @@ const Entity = require('./Entity')
 class Organization extends Entity {
     constructor () {
         super()
-        this.ID = 0
+        this.ID = ''
         this.EDRPOUCode = ''
         this.code = ''
         this.name = ''
         this.taxCode = ''
         this.idxNum = ''
-        this.parentUnitID = 0
+        this.parentUnitID = ''
         this.state = 'ACTIVE'
         this.fullName = ''
         this.description = ''

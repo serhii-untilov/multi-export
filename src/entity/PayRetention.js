@@ -5,14 +5,14 @@ const Entity = require('./Entity')
 class PayRetention extends Entity {
     constructor () {
         super()
-        this.ID = 0
-        this.employeeID = 0
+        this.ID = ''
+        this.employeeID = ''
         this.taxCode = ''
-        this.tabNum = 0
-        this.employeeNumberID = 0
+        this.tabNum = ''
+        this.employeeNumberID = ''
         this.dateFrom = ''
         this.dateTo = ''
-        this.payElID = 0
+        this.payElID = ''
         this.rate = ''
         this.baseSum = ''
     }

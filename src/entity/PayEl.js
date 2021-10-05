@@ -5,7 +5,7 @@ const Entity = require('./Entity')
 class PayEl extends Entity {
     constructor () {
         super()
-        this.ID = 0
+        this.ID = ''
         this.code = ''
         this.name = ''
         this.methodID = ''

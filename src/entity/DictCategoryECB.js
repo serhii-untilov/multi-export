@@ -5,7 +5,7 @@ const Entity = require('./Entity')
 class DictCategoryECB extends Entity {
     constructor () {
         super()
-        this.ID = 0
+        this.ID = ''
         this.code = ''
         this.name = ''
     }
