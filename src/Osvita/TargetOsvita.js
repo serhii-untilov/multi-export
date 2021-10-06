@@ -21,13 +21,25 @@ const makeFile = function (target) {
                         .on('data', record => {
                             if (!record.deleted) {
                                 if (target.setRecord(record, id)) {
-                                    target.recordsCount++
-                                    id++
-                                    buffer += target.entity.getRecord()
-                                    fs.appendFile(target.fullFileName, buffer, (err) => {
-                                        if (err) throw err
-                                    })
-                                    buffer = ''
+                                    if (Array.isArray(target.entity)) {
+                                        for (let i = 0; i < target.entity.length; i++) {
+                                            target.recordsCount++
+                                            id++
+                                            buffer += target.entity[i].getRecord()
+                                            fs.appendFile(target.fullFileName, buffer, (err) => {
+                                                if (err) throw err
+                                            })
+                                            buffer = ''
+                                        }
+                                    } else {
+                                        target.recordsCount++
+                                        id++
+                                        buffer += target.entity.getRecord()
+                                        fs.appendFile(target.fullFileName, buffer, (err) => {
+                                            if (err) throw err
+                                        })
+                                        buffer = ''
+                                    }
                                 }
                             }
                         })

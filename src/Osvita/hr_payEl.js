@@ -11,6 +11,9 @@ const PAYEL246 = 246 // ЗАРПЛ ВИХОВАТЕЛЯ
 const PAYEL247 = 247 // ИНША ЗАРПЛ
 const PAYEL248 = 248 // ЗАРПЛ СПЕЦИАЛИСТА
 const PAYEL301 = 301 // Профсоюзний внесок
+const PAYEL401 = 401 // Заробіток для розрахунку лікарняного
+const PAYEL402 = 402 // Заробіток для розрахунку відпустки
+const PAYEL403 = 403 // Заробіток для розрахунку середнього заробітку
 
 const Entity = require('../entity/PayEl')
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
@@ -47,7 +50,10 @@ const makeFile = function (target) {
                 { id: PAYEL246, code: '246', name: 'Зарплата вихователя' },
                 { id: PAYEL247, code: '247', name: 'Інша зарплата' },
                 { id: PAYEL248, code: '248', name: 'Зарплата спеціаліста' },
-                { id: PAYEL301, code: '301', name: 'Профсоюзний внесок' }
+                { id: PAYEL301, code: '301', name: 'Профсоюзний внесок' },
+                { id: PAYEL401, code: '401', name: 'Заробіток для розрахунку лікарняного' },
+                { id: PAYEL402, code: '402', name: 'Заробіток для розрахунку відпустки' },
+                { id: PAYEL403, code: '403', name: 'Заробіток для розрахунку середнього заробітку' }
             ]
             source.forEach((record) => {
                 if (target.setRecord(record)) {
@@ -75,5 +81,8 @@ module.exports = {
     PAYEL247,
     PAYEL248,
     PAYEL301,
+    PAYEL401,
+    PAYEL402,
+    PAYEL403,
     makeTarget
 }

@@ -21,17 +21,18 @@ const hr_employeePosition = require('./hr_employeePosition')
 const hr_employeeTaxLimit = require('./hr_employeeTaxLimit')
 const hr_payRetention = require('./hr_payRetention')
 const hr_dictStaffCat = require('./hr_dictStaffCat')
+const hr_accrual = require('./hr_accrual')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
-const employeeFileMask = /^B[0-9]+\.DBF/i
+const EMPLOYEE_FILE_MASK = /^B[0-9]+\.DBF/i
+const ACCRUAL_FILE_MASK = /^D[0-9]+\.DBF/i
 
 class SourceOsvita extends Source {
     async read (config, sendFile, sendDone, sendFailed) {
         try {
             const targetList = []
             const dictionary = new Dictionary(config)
-            let employeeFileList = []
             makeDir(config.targetPath)
                 // Simple sources
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -39,9 +40,8 @@ class SourceOsvita extends Source {
                 .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => getFileList(config.osvitaDbPath, employeeFileMask))
-                .then((fileList) => { employeeFileList = fileList })
-                .then(async () => {
+                .then(() => getFileList(config.osvitaDbPath, EMPLOYEE_FILE_MASK))
+                .then(async (fileList) => {
                     // Multi file sources
                     const sourceList = [
                         ac_fundSource,
@@ -55,8 +55,22 @@ class SourceOsvita extends Source {
                         hr_payRetention
                     ]
                     for (let i = 0; i < sourceList.length; i++) {
-                        for (let j = 0; j < employeeFileList.length; j++) {
-                            const target = await sourceList[i](config, dictionary, employeeFileList[j], j)
+                        for (let j = 0; j < fileList.length; j++) {
+                            const target = await sourceList[i](config, dictionary, fileList[j], j)
+                            if (!target.append) { targetList.push(target) }
+                            await sendFile(target)
+                        }
+                    }
+                })
+                .then(() => getFileList(config.osvitaDbPath, ACCRUAL_FILE_MASK))
+                .then(async (fileList) => {
+                    // Multi file sources
+                    const sourceList = [
+                        hr_accrual
+                    ]
+                    for (let i = 0; i < sourceList.length; i++) {
+                        for (let j = 0; j < fileList.length; j++) {
+                            const target = await sourceList[i](config, dictionary, fileList[j], j)
                             if (!target.append) { targetList.push(target) }
                             await sendFile(target)
                         }
