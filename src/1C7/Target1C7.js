@@ -6,15 +6,16 @@ const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
 
 const makeFile = function (target) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         try {
-            if (!target.append)
+            if (!target.append) {
                 removeFile(target.fullFileName)
-            fs.exists(target.sourcegetFullFileName, (exists) => {
-                if (exists) {
+            }
+            fs.access(target.sourceFullFileName, fs.OK, (err) => {
+                if (!err) {
                     let buffer = target.append ? '' : target.entity.getHeader()
                     let id = 1
-                    fs.createReadStream(target.sourcegetFullFileName)
+                    fs.createReadStream(target.sourceFullFileName)
                         .pipe(new YADBF({ encoding: 'cp1251' }))
                         .on('data', record => {
                             if (!record.deleted) {
@@ -34,7 +35,7 @@ const makeFile = function (target) {
                             resolve(target)
                         })
                         .on('error', err => {
-                            console.error(`an error was thrown: ${err}`);
+                            console.error(`an error was thrown: ${err}`)
                             target.state = Target.FILE_ERROR
                             target.err = err.message
                             resolve(target)

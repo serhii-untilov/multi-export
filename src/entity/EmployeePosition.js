@@ -3,34 +3,35 @@
 const Entity = require('./Entity')
 
 class EmployeePosition extends Entity {
-    constructor() {
+    constructor () {
         super()
-        this.ID = 0
-        this.employeeID = 0
+        this.ID = ''
+        this.employeeID = ''
         this.taxCode = ''
-        this.tabNum = 0
-        this.employeeNumberID = 0
-        this.departmentID = 0
-        this.positionID = 0
-        this.dictPositionID = 0
+        this.tabNum = ''
+        this.employeeNumberID = ''
+        this.departmentID = ''
+        this.positionID = ''
+        this.dictPositionID = ''
         this.dateFrom = ''
         this.dateTo = ''
         this.changeDateTo = ''
-        this.workScheduleID = 0
+        this.workScheduleID = ''
         this.workerType = ''
-        this.mtCount = 0
+        this.mtCount = ''
         this.description = ''
-        this.dictRankID = 0
-        this.dictStaffCatID = 0
-        this.payElID = 0
+        this.dictRankID = ''
+        this.dictStaffCatID = ''
+        this.payElID = ''
         this.accrualSum = ''
         this.raiseSalary = ''
         this.isIndex = ''
         this.isActive = ''
         this.workPlace = ''
-        this.dictFundSourceID = 0
-        this.dictCategoryECBID = 0
-        this.accountID = 0
+        this.dictFundSourceID = ''
+        this.dictCategoryECBID = ''
+        this.accountID = ''
+        this.organizationID = ''
     }
 }
 

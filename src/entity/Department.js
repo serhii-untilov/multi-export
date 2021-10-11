@@ -3,23 +3,24 @@
 const Entity = require('./Entity')
 
 class Department extends Entity {
-    constructor() {
+    constructor () {
         super()
-        this.ID = 0
+        this.ID = ''
         this.code = ''
         this.name = ''
-        this.parentUnitID = 0
+        this.parentUnitID = ''
         this.state = 'ACTIVE'
         this.fullName = ''
         this.description = ''
         this.nameGen = ''
         this.fullNameGen = ''
-        this.nameDat =''
-        this.fullNameDat = ''            
+        this.nameDat = ''
+        this.fullNameDat = ''
         this.nameOr = ''
         this.fullNameOr = ''
         this.dateFrom = ''
         this.dateTo = ''
+        this.orgID = ''
     }
 }
 

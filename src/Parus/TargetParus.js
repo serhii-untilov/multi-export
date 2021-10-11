@@ -1,26 +1,25 @@
 'use strict'
 
 const fs = require('fs')
-const {DBFFile} = require('dbffile')
+const { DBFFile } = require('dbffile')
 const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
 
 const makeFile = function (target) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         try {
-            if (!target.append)
-                removeFile(target.fullFileName)
-            console.log('target.sourcegetFullFileName', target.sourcegetFullFileName)
-            fs.exists(target.sourcegetFullFileName, async (exists) => {
-                if (exists) {
+            if (!target.append) { removeFile(target.fullFileName) }
+            console.log('target.sourceFullFileName', target.sourceFullFileName)
+            fs.access(target.sourceFullFileName, fs.OK, async (err) => {
+                if (!err) {
                     let buffer = target.append ? '' : target.entity.getHeader()
                     let id = 1
 
-                    let dbf = await DBFFile.open(target.sourcegetFullFileName)
+                    const dbf = await DBFFile.open(target.sourceFullFileName)
                     console.log(`DBF file contains ${dbf.recordCount} records.`)
                     console.log(`Field names: ${dbf.fields.map(f => f.name).join(', ')}`)
-                    let records = await dbf.readRecords(100)
-                    for (let record of records) {
+                    const records = await dbf.readRecords(100)
+                    for (const record of records) {
                         console.log(record)
                         if (target.setRecord(record, id)) {
                             target.recordsCount++

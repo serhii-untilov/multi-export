@@ -2,10 +2,10 @@
 
 const Entity = require('./Entity')
 
-class Employee extends Entity{
-    constructor() {
+class Employee extends Entity {
+    constructor () {
         super()
-        this.ID = 0
+        this.ID = ''
         this.name = ''
         this.lastName = ''
         this.firstName = ''
@@ -14,7 +14,7 @@ class Employee extends Entity{
         this.fullFIO = ''
         this.genName = ''
         this.datName = ''
-        this.tabNum = 0
+        this.tabNum = ''
         this.sexType = ''
         this.birthDate = ''
         this.taxCode = ''
@@ -24,6 +24,7 @@ class Employee extends Entity{
         this.dayBirthDate = ''
         this.monthBirthDate = ''
         this.yearBirthDate = ''
+        this.organizationID = ''
     }
 }
 

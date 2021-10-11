@@ -3,14 +3,14 @@
 const Entity = require('./Entity')
 
 class EmployeeAccrual extends Entity {
-    constructor() {
+    constructor () {
         super()
-        this.ID = 0
-        this.employeeID = 0
-        this.tabNum = 0
+        this.ID = ''
+        this.employeeID = ''
+        this.tabNum = ''
         this.taxCode = ''
-        this.employeeNumberID = 0
-        this.payElID = 0
+        this.employeeNumberID = ''
+        this.payElID = ''
         this.dateFrom = ''
         this.dateTo = '9999-12-31'
         this.accrualSum = ''

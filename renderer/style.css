@@ -34,6 +34,10 @@ body {
    color: #ED1C24;
  }
 
+ .osvita {
+  color: green;
+ }
+
   /* make image black and white */ 
   /* -webkit-filter: grayscale(60%);*/
 .black-white {  

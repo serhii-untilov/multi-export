@@ -5,12 +5,11 @@ const Target = require('../Target')
 const makeFile = require('./Target1C7')
 const dateFormat = require('../helper/dateFormat')
 
-// Be attentive to fill this section
-const Entity = require('../entity/Department') 
+const Entity = require('../entity/Department')
 const SOURCE_FILE_NAME = 'PDR.DBF'
 const TARGET_FILE_NAME = 'Підрозділи (hr_department).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     this.entity.ID = recordNumber
     this.entity.code = record.ID
     this.entity.name = record.NM
@@ -23,10 +22,10 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourcegetFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord

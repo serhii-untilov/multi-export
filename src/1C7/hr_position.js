@@ -5,21 +5,19 @@ const Target = require('../Target')
 const makeFile = require('./Target1C7')
 const makePositionID = require('../helper/makePositionID')
 
-// Be attentive to fill this section
-const Entity = require('../entity/Position') 
+const Entity = require('../entity/Position')
 const SOURCE_FILE_NAME = 'PRK.DBF'
 const TARGET_FILE_NAME = 'Посади (штатні позиції) (hr_position).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     // Join the same positions using the Dictionary class.
-    let departmentID = this.dictionary.getDepartmentID(record.PDR)
-    if (!departmentID || !record.DOL)
-        return false
-    let positionID = makePositionID(departmentID, record.DOL)
-    if (this.dictionary.getPositionID(positionID))
+    const departmentID = this.dictionary.getDepartmentID(record.PDR)
+    if (!departmentID || !record.DOL) { return false }
+    const positionID = makePositionID(departmentID, record.DOL)
+    if (this.dictionary.getPositionID(positionID)) {
         return false // already present
-    
-    this.entity.ID = positionID    
+    }
+    this.entity.ID = positionID
     this.entity.code = record.DOL
     this.entity.name = this.dictionary.getDictPositionName(record.DOL)
     this.entity.description = `${this.entity.name} (${this.entity.code})`
@@ -30,10 +28,10 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourcegetFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord

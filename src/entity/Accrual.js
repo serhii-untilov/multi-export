@@ -3,34 +3,34 @@
 const Entity = require('./Entity')
 
 class Accrual extends Entity {
-    constructor() {
+    constructor () {
         super()
-        this.ID	= 0
-        this.periodCalc	= ''
+        this.ID = ''
+        this.periodCalc = ''
         this.periodSalary = ''
-        this.tabNum = 0
-        this.employeeNumberID = 0
-        this.payElID = 0
+        this.tabNum = ''
+        this.employeeNumberID = ''
+        this.payElID = ''
         this.baseSum = ''
         this.rate = ''
-        this.paySum	= ''
-        this.days = ''	
+        this.paySum = ''
+        this.days = ''
         this.hours = ''
         this.calculateDate = ''
         this.mask = ''
         this.flagsRec = ''
         this.flagsFix = ''
-        this.planHours = ''	
-        this.planDays = ''	
-        this.maskAdd = ''	
+        this.planHours = ''
+        this.planDays = ''
+        this.maskAdd = ''
         this.dateFrom = ''
         this.dateTo = ''
-        this.source	= ''
-        this.sourceID = 0
-        this.dateFromAvg = ''	
+        this.source = ''
+        this.sourceID = ''
+        this.dateFromAvg = ''
         this.dateToAvg = ''
         this.sumAvg = ''
-        }
+    }
 }
 
 module.exports = Accrual

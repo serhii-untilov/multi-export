@@ -4,135 +4,203 @@ const PayEl = require('./PayEl')
 const getFullFileName = require('../helper/getFullFileName')
 
 class Dictionary {
-    constructor(config) {
+    constructor (config) {
         this.config = config
         this.TaxCode = {}
         this.PayElID = {}
-        this.payElUsed = new Set()        
+        this.payElUsed = new Set()
         this.DepartmentID = {}
         this.WorkScheduleID = {}
         this.PositionID = {}
         this.DictPositionName = {}
+        this.DictPositionID = []
         this.EmployeeFullName = {}
         this.DictStaffCatID = {}
         this.catID_SchedID = {}
         this.TaxLimitID = {}
-        this.TaxLimitUsed = new Set()        
-
+        this.TaxLimitUsed = new Set()
+        this.OrganizationID = {}
+        this.FundSourceID = {}
+        this.PayOutID = {}
+        this.DictCategoryECBID = {}
+        this.DictStaffCatIDbyPath = []
 
         this.commonID = 0
         this.error_count = 0
     }
 
-    setTaxLimitUsed(code) {
-        if (!this.TaxLimitUsed.has(code))
+    setTaxLimitUsed (code) {
+        if (!this.TaxLimitUsed.has(code)) {
             this.TaxLimitUsed.add(code)
+        }
     }
 
-    isTaxLimitUsed(code) {
+    isTaxLimitUsed (code) {
         return this.TaxLimitUsed.has(code)
-    }    
+    }
 
-    setTaxLimitID(code, ID) {
+    setTaxLimitID (code, ID) {
         this.TaxLimitID[code] = ID
     }
 
-    getTaxLimitID(code) {
+    getTaxLimitID (code) {
         return this.TaxLimitID[code]
     }
 
-
-    setPayElUsed(cd) {
-        let code = cd.substring(0, 32)
-        if (!this.payElUsed.has(code))
+    setPayElUsed (cd) {
+        const code = cd.substring(0, 32)
+        if (!this.payElUsed.has(code)) {
             this.payElUsed.add(code)
+        }
     }
 
-    isPayElUsed(cd) {
-        let code = cd.substring(0, 32)
+    isPayElUsed (cd) {
+        const code = cd.substring(0, 32)
         return this.payElUsed.has(code)
     }
 
-    setDictStaffCatID_WorkScheduleID(catID, schedID) {
+    setDictStaffCatID_WorkScheduleID (catID, schedID) {
         this.catID_SchedID[catID] = schedID
     }
 
-    getDictStaffCatID_WorkScheduleID(catID) {
+    getDictStaffCatID_WorkScheduleID (catID) {
         return this.catID_SchedID[catID]
     }
 
-    setDictStaffCatID(code, ID) {
+    setDictStaffCatID (code, ID) {
         this.DictStaffCatID[code] = ID
     }
 
-    getDictStaffCatID(code) {
+    getDictStaffCatID (code) {
         return this.DictStaffCatID[code]
     }
 
-    getCommonID() {
+    getDictStaffCatIDbyPath (code, path) {
+        const found = this.DictStaffCatIDbyPath.find(o => o.code == code && o.path === path)
+        return found ? found.ID : null
+    }
+
+    setDictStaffCatIDbyPath (ID, code, name, path) {
+        const found = this.DictStaffCatIDbyPath.find(o => o.name === name)
+        if (found) {
+            ID = found.ID
+        }
+        this.DictStaffCatIDbyPath.push({ ID, code, name, path })
+    }
+
+    getCommonID () {
         return ++this.commonID
     }
 
-    setEmployeeFullName(ID, fullName) {
+    setEmployeeFullName (ID, fullName) {
         this.EmployeeFullName[ID] = fullName
     }
 
-    getEmployeeFullName(ID) {
+    getEmployeeFullName (ID) {
         return this.EmployeeFullName[ID]
     }
 
-    setDictPositionName(ID, name) {
+    setDictPositionName (ID, name) {
         this.DictPositionName[ID] = name
     }
 
-    getDictPositionName(ID) {
+    getDictPositionName (ID) {
         return this.DictPositionName[ID]
     }
 
-    setPositionID(ID) {
-        this.PositionID[ID] = ID    // for check presense
+    getDictPositionIDbyPath (code, path) {
+        const found = this.DictPositionID.find(o => o.code == code && o.path === path)
+        return found ? found.ID : null
     }
 
-    getPositionID(ID) {
+    getDictPositionNamebyPath (code, path) {
+        const found = this.DictPositionID.find(o => o.code == code && o.path === path)
+        return found ? found.name : null
+    }
+
+    setDictPositionIDbyPath (ID, code, name, path) {
+        const found = this.DictPositionID.find(o => o.name === name)
+        if (found) {
+            ID = found.ID
+        }
+        this.DictPositionID.push({ ID, code, name, path })
+    }
+
+    setPositionID (ID) {
+        this.PositionID[ID] = ID // for check presense
+    }
+
+    getPositionID (ID) {
         return this.PositionID[ID] // to check presense
     }
 
-    setWorkScheduleID(code, ID) {
+    setWorkScheduleID (code, ID) {
         this.WorkScheduleID[code] = ID
     }
 
-    getWorkScheduleID(code) {
+    getWorkScheduleID (code) {
         return this.WorkScheduleID[code]
     }
 
-    setDepartmentID(code, ID) {
+    setDepartmentID (code, ID) {
         this.DepartmentID[code] = ID
     }
 
-    getDepartmentID(code) {
+    getDepartmentID (code) {
         return this.DepartmentID[code] || ''
     }
 
-    setTaxCode(tabNum, taxCode) {
+    setOrganizationID (code, ID) {
+        this.OrganizationID[code] = ID
+    }
+
+    getOrganizationID (code) {
+        return this.OrganizationID[code] || ''
+    }
+
+    setFundSourceID (code, ID) {
+        this.FundSourceID[code] = ID
+    }
+
+    getFundSourceID (code) {
+        return this.FundSourceID[code] || ''
+    }
+
+    setPayOutID (code, ID) {
+        this.PayOutID[code] = ID
+    }
+
+    getPayOutID (code) {
+        return this.PayOutID[code] || ''
+    }
+
+    setDictCategoryECBID (code, ID) {
+        this.DictCategoryECBID[code] = ID
+    }
+
+    getDictCategoryECBID (code) {
+        return this.DictCategoryECBID[code] || ''
+    }
+
+    setTaxCode (tabNum, taxCode) {
         this.TaxCode[tabNum] = taxCode
     }
 
-    getTaxCode(tabNum) {
+    getTaxCode (tabNum) {
         return this.TaxCode[tabNum] || ''
     }
-        
 
-    setPayElID(cd, payElID) {
-        let code = cd.substring(0, 32)
+    setPayElID (cd, payElID) {
+        const code = cd.substring(0, 32)
         this.PayElID[code] = payElID
     }
 
-    getPayElID(cd) {
-        let code = cd.substring(0, 32)
+    getPayElID (cd) {
+        const code = cd.substring(0, 32)
         if (this.PayElID[code]) {
             return this.PayElID[code]
         } else {
-            let ID = Object.keys(this.PayElID).length + 1                    
+            let ID = Object.keys(this.PayElID).length + 1
             ID = this._append_hr_payEl(ID, code, code)
             if (!ID) {
                 this.error_count += 1
@@ -144,19 +212,19 @@ class Dictionary {
         }
     }
 
-    _append_hr_payEl(ID, code, name) {
-        let fileName = getFullFileName(this.config.targetPath, 'Види оплати (hr_payEl).csv')
+    _append_hr_payEl (ID, code, name) {
+        const fileName = getFullFileName(this.config.targetPath, 'Види оплати (hr_payEl).csv')
         try {
-            let payEl = new PayEl()
+            const payEl = new PayEl()
             payEl.ID = ID
             payEl.code = code
             payEl.name = name
             payEl.description = payEl.name + '(' + payEl.code + ')'
-            let buffer = payEl.getRecord()
+            const buffer = payEl.getRecord()
             fs.appendFileSync(fileName, buffer)
             console.log('Append', fileName, ID, code, name)
             return ID
-        } catch(err) {
+        } catch (err) {
             console.log('Not added', fileName, err.message)
             return 0
         }

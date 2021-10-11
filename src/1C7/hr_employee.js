@@ -10,18 +10,18 @@ const Entity = require('../entity/Employee')
 const SOURCE_FILE_NAME = 'LS.DBF'
 const TARGET_FILE_NAME = 'Працівники (hr_employee).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
     this.entity.ID = record.TN // record.ID
-    let name = record.FIO.split(' ')
+    const name = record.FIO.split(' ')
     this.entity.lastName = name[0]
     this.entity.firstName = name[1]
     this.entity.middleName = name[2]
-    this.entity.shortFIO = name[0] + ' ' + name[1][0] + '.' + name[2][0] + '.' 
+    this.entity.shortFIO = name[0] + ' ' + name[1][0] + '.' + name[2][0] + '.'
     this.entity.fullFIO = record.FIO
     this.entity.genName = record.FIOR
     this.entity.datName = record.FIOD
     this.entity.tabNum = record.TN
-    this.entity.sexType = record.SEX == 1 ? 'M' : record.SEX == 2 ? 'W' : ''
+    this.entity.sexType = record.SEX === 1 ? 'M' : record.SEX === 2 ? 'W' : ''
     this.entity.birthDate = dateFormat(record.DTROJ)
     this.entity.taxCode = record.NLP
     this.entity.email = record.EMAIL
@@ -34,10 +34,10 @@ function setRecord(record, recordNumber) {
     return true
 }
 
-function makeTarget(config, dictionary) {
-    let target = new Target.Target()
+function makeTarget (config, dictionary) {
+    const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
-    target.sourcegetFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
+    target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
     target.setRecord = setRecord
