@@ -32,6 +32,7 @@ class EmployeePosition extends Entity {
         this.dictCategoryECBID = ''
         this.accountID = ''
         this.organizationID = ''
+        this.appointmentDate = ''
     }
 }
 

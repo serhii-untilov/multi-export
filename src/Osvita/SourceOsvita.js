@@ -23,6 +23,7 @@ const hr_payRetention = require('./hr_payRetention')
 const hr_dictStaffCat = require('./hr_dictStaffCat')
 const hr_accrual = require('./hr_accrual')
 const hr_workSchedule = require('./hr_workSchedule')
+const S_BAN = require('./S_BAN')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -34,8 +35,15 @@ class SourceOsvita extends Source {
             makeDir(config.targetPath)
                 // Simple sources
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => ac_fundSource(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => getAllFiles(config.osvitaDbPath, /^S_BAN.DBF/i))
+                .then(async (fileList) => {
+                    for (let j = 0; j < fileList.length; j++) {
+                        await S_BAN(config, dictionary, fileList[j], j)
+                    }
+                })
                 .then(() => getAllFiles(config.osvitaDbPath, /^SOCPIL.DBF/i))
                 // .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(async (fileList) => {
@@ -66,7 +74,6 @@ class SourceOsvita extends Source {
                 .then(() => getAllFiles(config.osvitaDbPath, /^B[0-9]+\.DBF/i))
                 .then(async (fileList) => {
                     const sourceList = [
-                        ac_fundSource,
                         hr_payOut,
                         hr_organization,
                         hr_department,

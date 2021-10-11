@@ -22,6 +22,7 @@ class Dictionary {
         this.OrganizationID = {}
         this.FundSourceID = {}
         this.PayOutID = {}
+        this.PayOut = []
         this.DictCategoryECBID = {}
         this.DictStaffCatIDbyPath = []
 
@@ -80,12 +81,11 @@ class Dictionary {
         return found ? found.ID : null
     }
 
-    setDictStaffCatIDbyPath (ID, code, name, path) {
+    setDictStaffCatIDbyPath (code, name, path) {
         const found = this.DictStaffCatIDbyPath.find(o => o.name === name)
-        if (found) {
-            ID = found.ID
-        }
+        const ID = found ? found.ID : this.getCommonID()
         this.DictStaffCatIDbyPath.push({ ID, code, name, path })
+        return !!found // already exists
     }
 
     getCommonID () {
@@ -118,12 +118,11 @@ class Dictionary {
         return found ? found.name : null
     }
 
-    setDictPositionIDbyPath (ID, code, name, path) {
+    setDictPositionIDbyPath (code, name, path) {
         const found = this.DictPositionID.find(o => o.name === name)
-        if (found) {
-            ID = found.ID
-        }
+        const ID = found ? found.ID : this.getCommonID()
         this.DictPositionID.push({ ID, code, name, path })
+        return !!found
     }
 
     setPositionID (ID) {
@@ -172,6 +171,14 @@ class Dictionary {
 
     getPayOutID (code) {
         return this.PayOutID[code] || ''
+    }
+
+    getPayOut (code, path) {
+        return this.PayOut.find(o => o.code === code && o.path === path)
+    }
+
+    setPayOut (ID, code, name, path) {
+        this.PayOut.push({ ID, code, name, path })
     }
 
     setDictCategoryECBID (code, ID) {
