@@ -4,9 +4,10 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
-const makePositionID = require('../helper/makePositionID')
+// const makePositionID = require('../helper/makePositionID')
 const { PAYEL146, PAYEL147, PAYEL246, PAYEL247, PAYEL248 } = require('./hr_payEl')
 const { ECB1, ECB2 } = require('./hr_dictCategoryECB')
+const path = require('path')
 
 const Entity = require('../entity/EmployeePosition')
 const TARGET_FILE_NAME = 'Призначення працівників (hr_employeePosition).csv'
@@ -22,17 +23,19 @@ function setRecord (record, recordNumber) {
 
     this.entity.organizationID = record.BOL
     this.entity.departmentID = this.dictionary.getDepartmentID(record.BOL)
-    this.entity.dictPositionID = record.B_DOL ? record.B_DOL : ''
-    // this.entity.positionID = makePositionID(this.entity.departmentID, this.entity.dictPositionID)
+    this.entity.dictPositionID = this.dictionary.getDictPositionIDbyPath(record.B_DOL, path.dirname(this.sourceFullFileName)) || ''
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
     this.entity.mtCount = 1 // record.VKLSTAV
 
-    const fullName = this.dictionary.getEmployeeFullName(this.entity.employeeID)
-    const positionName = this.dictionary.getDictPositionName(this.entity.dictPositionID)
-    this.entity.description = `${this.entity.tabNum} ${fullName} ${positionName}`
+    this.entity.workPlace = Number(this.entity.tabNum) > 8000 ? '2' : '1'
+    this.entity.workerType = '1'
+    this.entity.workScheduleID = record.REGIM || ''
 
-    this.entity.dictStaffCatID = record.KAT ? record.KAT : ''
+    const fullName = this.dictionary.getEmployeeFullName(this.entity.employeeID)
+    const positionName = this.dictionary.getDictPositionNamebyPath(record.B_DOL, path.dirname(this.sourceFullFileName)) || ''
+    this.entity.description = `${this.entity.tabNum} ${fullName} ${positionName}`
+    this.entity.dictStaffCatID = this.dictionary.getDictStaffCatIDbyPath(record.KAT, path.dirname(this.sourceFullFileName)) || ''
     this.entity.dictFundSourceID = record.FOND ? record.FOND : ''
     this.entity.dictCategoryECBID = record.INVALID ? ECB2 : ECB1
 

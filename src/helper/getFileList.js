@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
 const getFullFileName = require('../helper/getFullFileName')
 
 function getFileList (sourcePath, fileMask) {
@@ -15,4 +16,22 @@ function getFileList (sourcePath, fileMask) {
     })
 }
 
-module.exports = getFileList
+function getAllFiles (dirPath, fileMask, arrayOfFiles = []) {
+    const files = fs.readdirSync(dirPath)
+    files.forEach((file) => {
+        const fullFileName = getFullFileName(dirPath, file)
+        if (fs.statSync(fullFileName).isDirectory()) {
+            arrayOfFiles = getAllFiles(fullFileName, fileMask, arrayOfFiles)
+        } else {
+            if (fileMask.test(file)) {
+                arrayOfFiles.push(fullFileName)
+            }
+        }
+    })
+    return arrayOfFiles
+}
+
+module.exports = {
+    getFileList,
+    getAllFiles
+}

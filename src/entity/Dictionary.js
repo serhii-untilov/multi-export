@@ -13,6 +13,7 @@ class Dictionary {
         this.WorkScheduleID = {}
         this.PositionID = {}
         this.DictPositionName = {}
+        this.DictPositionID = []
         this.EmployeeFullName = {}
         this.DictStaffCatID = {}
         this.catID_SchedID = {}
@@ -22,6 +23,7 @@ class Dictionary {
         this.FundSourceID = {}
         this.PayOutID = {}
         this.DictCategoryECBID = {}
+        this.DictStaffCatIDbyPath = []
 
         this.commonID = 0
         this.error_count = 0
@@ -73,6 +75,19 @@ class Dictionary {
         return this.DictStaffCatID[code]
     }
 
+    getDictStaffCatIDbyPath (code, path) {
+        const found = this.DictStaffCatIDbyPath.find(o => o.code == code && o.path === path)
+        return found ? found.ID : null
+    }
+
+    setDictStaffCatIDbyPath (ID, code, name, path) {
+        const found = this.DictStaffCatIDbyPath.find(o => o.name === name)
+        if (found) {
+            ID = found.ID
+        }
+        this.DictStaffCatIDbyPath.push({ ID, code, name, path })
+    }
+
     getCommonID () {
         return ++this.commonID
     }
@@ -91,6 +106,24 @@ class Dictionary {
 
     getDictPositionName (ID) {
         return this.DictPositionName[ID]
+    }
+
+    getDictPositionIDbyPath (code, path) {
+        const found = this.DictPositionID.find(o => o.code == code && o.path === path)
+        return found ? found.ID : null
+    }
+
+    getDictPositionNamebyPath (code, path) {
+        const found = this.DictPositionID.find(o => o.code == code && o.path === path)
+        return found ? found.name : null
+    }
+
+    setDictPositionIDbyPath (ID, code, name, path) {
+        const found = this.DictPositionID.find(o => o.name === name)
+        if (found) {
+            ID = found.ID
+        }
+        this.DictPositionID.push({ ID, code, name, path })
     }
 
     setPositionID (ID) {

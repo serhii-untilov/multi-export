@@ -6,7 +6,7 @@ const makeDir = require('../helper/makeDir')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
-const getFileList = require('../helper/getFileList')
+const { getAllFiles } = require('../helper/getFileList')
 const { makeTarget: hr_payEl } = require('./hr_payEl')
 const { makeTarget: hr_dictCategoryECB } = require('./hr_dictCategoryECB')
 const hr_taxLimit = require('./hr_taxLimit')
@@ -22,11 +22,9 @@ const hr_employeeTaxLimit = require('./hr_employeeTaxLimit')
 const hr_payRetention = require('./hr_payRetention')
 const hr_dictStaffCat = require('./hr_dictStaffCat')
 const hr_accrual = require('./hr_accrual')
+const hr_workSchedule = require('./hr_workSchedule')
 
 const ARC_FILE_NAME = 'Osvita.zip'
-
-const EMPLOYEE_FILE_MASK = /^B[0-9]+\.DBF/i
-const ACCRUAL_FILE_MASK = /^D[0-9]+\.DBF/i
 
 class SourceOsvita extends Source {
     async read (config, sendFile, sendDone, sendFailed) {
@@ -37,12 +35,36 @@ class SourceOsvita extends Source {
                 // Simple sources
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => getFileList(config.osvitaDbPath, EMPLOYEE_FILE_MASK))
+                .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => getAllFiles(config.osvitaDbPath, /^SOCPIL.DBF/i))
+                // .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(async (fileList) => {
-                    // Multi file sources
+                    for (let j = 0; j < fileList.length; j++) {
+                        const target = await hr_taxLimit(config, dictionary, fileList[j], j)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
+                })
+                // .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => getAllFiles(config.osvitaDbPath, /^SPRA_DOL.DBF/i))
+                .then(async (fileList) => {
+                    for (let j = 0; j < fileList.length; j++) {
+                        const target = await hr_dictPosition(config, dictionary, fileList[j], j)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
+                })
+                // .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => getAllFiles(config.osvitaDbPath, /^KATEGOR.DBF/i))
+                .then(async (fileList) => {
+                    for (let j = 0; j < fileList.length; j++) {
+                        const target = await hr_dictStaffCat(config, dictionary, fileList[j], j)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
+                })
+                .then(() => getAllFiles(config.osvitaDbPath, /^B[0-9]+\.DBF/i))
+                .then(async (fileList) => {
                     const sourceList = [
                         ac_fundSource,
                         hr_payOut,
@@ -62,9 +84,8 @@ class SourceOsvita extends Source {
                         }
                     }
                 })
-                .then(() => getFileList(config.osvitaDbPath, ACCRUAL_FILE_MASK))
+                .then(() => getAllFiles(config.osvitaDbPath, /^D[0-9]+\.DBF/i))
                 .then(async (fileList) => {
-                    // Multi file sources
                     const sourceList = [
                         hr_accrual
                     ]
