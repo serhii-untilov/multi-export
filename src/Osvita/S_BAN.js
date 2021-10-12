@@ -6,18 +6,14 @@ const makeFile = require('./TargetOsvita')
 const path = require('path')
 
 const Entity = require('../entity/SimpleEntity')
-const TARGET_FILE_NAME = 'Категорії персоналу (hr_dictStaffCat).csv'
+const TARGET_FILE_NAME = null
 
 function setRecord (record, recordNumber) {
-    this.entity.code = record.KOD
-    this.entity.ID = this.dictionary.getDictStaffCatIDbyPath(this.entity.code, path.dirname(this.sourceFullFileName))
-    if (this.entity.ID) { return false }
-    this.entity.name = record.KATEGOR
-    this.entity.description = `${this.entity.name} (${this.entity.code})`
-    const exists = this.dictionary.setDictStaffCatIDbyPath(this.entity.code, this.entity.name, path.dirname(this.sourceFullFileName))
-    if (exists) { return false }
-    this.entity.ID = this.dictionary.getDictStaffCatIDbyPath(this.entity.code, path.dirname(this.sourceFullFileName))
-    return true
+    this.entity.code = record.K_B
+    this.entity.name = record.NA
+    if (this.dictionary.getPayOut(this.entity.code, path.dirname(this.sourceFullFileName))) { return false }
+    this.dictionary.setPayOut(this.dictionary.getCommonID(), this.entity.code, this.entity.name, path.dirname(this.sourceFullFileName))
+    return false
 }
 
 function makeTarget (config, dictionary, sourceFullFileName, index) {

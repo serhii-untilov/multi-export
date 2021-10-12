@@ -14,7 +14,8 @@ function setRecord (record, recordNumber) {
     if (this.entity.ID) { return false }
     this.entity.name = record.POCA || record.DOL
     this.entity.description = `${this.entity.name} (${this.entity.code})`
-    this.dictionary.setDictPositionIDbyPath(this.dictionary.getCommonID(), this.entity.code, this.entity.name, path.dirname(this.sourceFullFileName))
+    const exists = this.dictionary.setDictPositionIDbyPath(this.entity.code, this.entity.name, path.dirname(this.sourceFullFileName))
+    if (exists) { return false }
     this.entity.ID = this.dictionary.getDictPositionIDbyPath(this.entity.code, path.dirname(this.sourceFullFileName))
     return true
 }

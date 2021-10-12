@@ -6,7 +6,7 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 
 const Entity = require('../entity/SimpleEntity')
-const TARGET_FILE_NAME = 'Графіки роботи (hr_workSchedule).csv'
+const TARGET_FILE_NAME = 'Довідник Стажі роботи (hr_dictExperience).csv'
 
 function setRecord (record) {
     this.entity.ID = record.id
@@ -31,8 +31,14 @@ const makeFile = function (target) {
             if (!target.append) { removeFile(target.fullFileName) }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
-                { id: 5, code: '5', name: `П'ятиденка` },
-                { id: 6, code: '6', name: 'Шестиденка' }
+                { id: 1, code: '1', name: 'Загальний' },
+                { id: 2, code: '2', name: 'На підприємстві' },
+                { id: 3, code: '3', name: 'Страховий' },
+                { id: 4, code: '4', name: 'Держслужба' },
+                { id: 5, code: '5', name: 'Педагогічний' },
+                { id: 6, code: '6', name: 'Медпрацівників' },
+                { id: 7, code: '7', name: 'Спеціальний' },
+                { id: 8, code: '8', name: 'Бібліотечний' }
             ]
             for (let i = 0; i < source.length; i++) {
                 if (target.setRecord(source[i])) {

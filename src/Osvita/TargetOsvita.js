@@ -15,8 +15,7 @@ const makeFile = function (target) {
                     let id = 1
                     fs.createReadStream(target.sourceFullFileName)
                         .pipe(new YADBF({
-                            // encoding: 'cp1251'
-                            encoding: 'cp866'
+                            encoding: 'cp866' // 'cp1251'
                         }))
                         .on('data', record => {
                             if (!record.deleted) {

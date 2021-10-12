@@ -8,13 +8,18 @@ const { PAYEL401, PAYEL402, PAYEL403 } = require('./hr_payEl')
 const Entity = require('../entity/Accrual')
 const TARGET_FILE_NAME = 'Архів розрахункових листів працівників (hr_accrual).csv'
 
+const minDate = new Date(new Date().getFullYear() - 1, 0, 1)
+
 function setRecord (record, recordNumber) {
     this.entity = []
 
     const year = Number(('' + record.PERIOD).substring(0, 4))
     const month = Number(('' + record.PERIOD).substring(4, 6))
-    const daysInMonth = new Date(year, month, 0).getDate()
     const periodCalc = ('' + record.PERIOD).substring(0, 4) + '-' + ('' + record.PERIOD).substring(4, 6) + '-01'
+
+    if (new Date(periodCalc) < minDate) { return false }
+
+    const daysInMonth = new Date(year, month, 0).getDate()
 
     // Заробіток для розрахунку лікарняного
     const entity0 = new Entity()

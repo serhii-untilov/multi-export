@@ -58,6 +58,8 @@ function setRecord (record, recordNumber) {
         this.entity.payElID = PAYEL146
         this.entity.accrualSum = 0
     }
+
+    this.appointmentDate = this.entity.dateFrom
     return true
 }
 

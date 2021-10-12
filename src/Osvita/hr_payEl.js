@@ -55,8 +55,8 @@ const makeFile = function (target) {
                 { id: PAYEL402, code: '402', name: 'Заробіток для розрахунку відпустки' },
                 { id: PAYEL403, code: '403', name: 'Заробіток для розрахунку середнього заробітку' }
             ]
-            source.forEach((record) => {
-                if (target.setRecord(record)) {
+            for (let i = 0; i < source.length; i++) {
+                if (target.setRecord(source[i])) {
                     target.recordsCount++
                     buffer += target.entity.getRecord()
                     fs.appendFile(target.fullFileName, buffer, (err) => {
@@ -64,7 +64,7 @@ const makeFile = function (target) {
                     })
                     buffer = ''
                 }
-            })
+            }
             target.state = target.recordsCount ? Target.FILE_CREATED : Target.FILE_EMPTY
             resolve(target)
         } catch (err) {
