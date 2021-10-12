@@ -47,9 +47,9 @@ const makeFile = function (target) {
                             resolve(target)
                         })
                         .on('error', err => {
-                            console.error(`an error was thrown: ${err}`)
+                            console.error(`an error was thrown: ${target.sourceFullFileName}: ${err}`)
                             target.state = Target.FILE_ERROR
-                            target.err = err.message
+                            target.err = `${target.sourceFullFileName}: ${err.message}`
                             resolve(target)
                         })
                 } else {

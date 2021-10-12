@@ -48,6 +48,14 @@ class SourceOsvita extends Source {
                 .then(() => ac_dictdockind(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictBenefitsKind(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictExperience(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => getAllFiles(config.osvitaDbPath, /^DO[0-9]+\.DBF/i))
+                .then(async (fileList) => {
+                    for (let j = 0; j < fileList.length; j++) {
+                        const target = await hr_organization(config, dictionary, fileList[j], j)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
+                    }
+                })
                 .then(() => getAllFiles(config.osvitaDbPath, /^S_BAN.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
@@ -85,7 +93,6 @@ class SourceOsvita extends Source {
                 .then(async (fileList) => {
                     const sourceList = [
                         hr_payOut,
-                        hr_organization,
                         hr_department,
                         hr_employee,
                         hr_employeeNumber,
