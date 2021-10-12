@@ -51,7 +51,9 @@ class SourceOsvita extends Source {
                 .then(() => getAllFiles(config.osvitaDbPath, /^DO[0-9]+\.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
-                        await hr_organization(config, dictionary, fileList[j], j)
+                        const target = await hr_organization(config, dictionary, fileList[j], j)
+                        if (!target.append) { targetList.push(target) }
+                        await sendFile(target)
                     }
                 })
                 .then(() => getAllFiles(config.osvitaDbPath, /^S_BAN.DBF/i))
