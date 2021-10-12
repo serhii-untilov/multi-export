@@ -8,12 +8,13 @@ const Entity = require('../entity/Organization')
 const TARGET_FILE_NAME = 'Організація (hr_organization).csv'
 
 function setRecord (record, recordNumber) {
-    this.entity.ID = record.BOL
-    this.entity.code = record.BOL
+    const orgID = this.sourceFullFileName.replace(/(.*DO0*)([0-9]*)(\.DBF)/i, '$2')
+    this.entity.ID = orgID
+    this.entity.code = '' + orgID
     if (this.dictionary.getOrganizationID(this.entity.code)) { return false }
-    this.entity.name = record.BOL
-    this.entity.fullName = record.BOL
-    this.entity.description = this.entity.name + ' (' + this.entity.code + ')'
+    this.entity.name = this.entity.code + ' ' + record.NUCH1
+    this.entity.fullName = this.entity.code + ' ' + record.NUCH1
+    this.entity.description = this.entity.code + ' ' + record.NUCH1
     this.dictionary.setOrganizationID(this.entity.code, this.entity.ID)
     return true
 }
