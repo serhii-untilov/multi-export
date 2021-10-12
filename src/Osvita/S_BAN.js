@@ -18,7 +18,7 @@ function setRecord (record, recordNumber) {
 
 function makeTarget (config, dictionary, sourceFullFileName, index) {
     const target = new Target.Target()
-    target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
+    target.fullFileName = null
     target.sourceFullFileName = sourceFullFileName
     target.dictionary = dictionary
     target.entity = new Entity()

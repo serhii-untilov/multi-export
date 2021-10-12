@@ -25,24 +25,24 @@ const makeFile = function (target) {
                                             target.recordsCount++
                                             id++
                                             buffer += target.entity[i].getRecord()
-                                            fs.appendFile(target.fullFileName, buffer, (err) => {
-                                                if (err) throw err
-                                            })
+                                            fs.appendFileSync(target.fullFileName, buffer)
                                             buffer = ''
                                         }
                                     } else {
                                         target.recordsCount++
                                         id++
                                         buffer += target.entity.getRecord()
-                                        fs.appendFile(target.fullFileName, buffer, (err) => {
-                                            if (err) throw err
-                                        })
+                                        fs.appendFileSync(target.fullFileName, buffer)
                                         buffer = ''
                                     }
                                 }
                             }
                         })
                         .on('end', () => {
+                            if (buffer.length && target.fullFileName) {
+                                fs.appendFileSync(target.fullFileName, buffer)
+                                buffer = ''
+                            }
                             target.state = target.recordsCount ? Target.FILE_CREATED : Target.FILE_EMPTY
                             resolve(target)
                         })
