@@ -24,6 +24,13 @@ const hr_dictStaffCat = require('./hr_dictStaffCat')
 const hr_accrual = require('./hr_accrual')
 const hr_workSchedule = require('./hr_workSchedule')
 const S_BAN = require('./S_BAN')
+const ac_dictdockind = require('./ac_dictdockind')
+const hr_employeeDocs = require('./hr_employeeDocs')
+const ac_addresses = require('./ac_addresses')
+const hr_dictBenefitsKind = require('./hr_dictBenefitsKind')
+const hr_employeeBenefits = require('./hr_employeeBenefits')
+const hr_dictExperience = require('./hr_dictExperience')
+const hr_employeeExperience = require('./hr_employeeExperience')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -38,6 +45,9 @@ class SourceOsvita extends Source {
                 .then(() => ac_fundSource(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => ac_dictdockind(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictBenefitsKind(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictExperience(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => getAllFiles(config.osvitaDbPath, /^S_BAN.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
@@ -81,7 +91,11 @@ class SourceOsvita extends Source {
                         hr_employeeNumber,
                         hr_employeePosition,
                         hr_employeeTaxLimit,
-                        hr_payRetention
+                        hr_payRetention,
+                        hr_employeeDocs,
+                        ac_addresses,
+                        hr_employeeBenefits,
+                        hr_employeeExperience
                     ]
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
