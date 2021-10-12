@@ -3,6 +3,7 @@
 const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
+const dateFormat = require('../helper/dateFormat')
 
 const Entity = require('../entity/EmployeeBenefits')
 const TARGET_FILE_NAME = 'Пільги працівників (hr_employeeBenefits).csv'
@@ -13,6 +14,8 @@ function setRecord (record, recordNumber) {
     this.entity.orgID = record.BOL
     this.entity.employeeID = ID
     this.entity.dictBenefitsKindID = record.KATCHER
+    this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
+
     return !!(this.entity.dictBenefitsKindID)
 }
 
