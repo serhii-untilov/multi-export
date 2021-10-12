@@ -12,6 +12,7 @@ function setRecord (record, recordNumber) {
     this.entity.ID = orgID
     this.entity.code = '' + orgID
     if (this.dictionary.getOrganizationID(this.entity.code)) { return false }
+    this.entity.EDRPOUCode = record.ZKPO
     this.entity.name = this.entity.code + ' ' + record.NUCH1
     this.entity.fullName = this.entity.code + ' ' + record.NUCH1
     this.entity.description = this.entity.code + ' ' + record.NUCH1
