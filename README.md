@@ -62,8 +62,17 @@ Configure SQL Server access protocols:
 PostgreSQL convert UUID into bigint
 -----------------------------------
 ```
-CREATE OR REPLACE FUNCTION base.uuid_bigint (hexval varchar)
-RETURNS bigint AS $result$
+-- FUNCTION: base.uuid_bigint(character varying)
+
+-- DROP FUNCTION base.uuid_bigint(character varying);
+
+CREATE OR REPLACE FUNCTION base.uuid_bigint(
+	hexval character varying)
+RETURNS bigint
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+AS $BODY$
 declare
 	result bigint;
 BEGIN
@@ -72,7 +81,10 @@ BEGIN
    select abs(result) into result;
    RETURN result;
 END;
-$result$ LANGUAGE plpgsql;
+$BODY$;
+
+ALTER FUNCTION base.uuid_bigint(character varying)
+    OWNER TO test;
 ```
 ```
 -- Test
