@@ -10,7 +10,7 @@ const { getAllFiles } = require('../helper/getFileList')
 const { makeTarget: hr_payEl } = require('./hr_payEl')
 const { makeTarget: hr_dictCategoryECB } = require('./hr_dictCategoryECB')
 const hr_taxLimit = require('./hr_taxLimit')
-const hr_organization = require('./hr_organization')
+const DO = require('./DO')
 const hr_department = require('./hr_department')
 const hr_dictPosition = require('./hr_dictPosition')
 const ac_fundSource = require('./ac_fundSource')
@@ -31,6 +31,7 @@ const hr_dictBenefitsKind = require('./hr_dictBenefitsKind')
 const hr_employeeBenefits = require('./hr_employeeBenefits')
 const hr_dictExperience = require('./hr_dictExperience')
 const hr_employeeExperience = require('./hr_employeeExperience')
+const hr_organization = require('./hr_organization')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -40,7 +41,6 @@ class SourceOsvita extends Source {
             const targetList = []
             const dictionary = new Dictionary(config)
             makeDir(config.targetPath)
-                // Simple sources
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => ac_fundSource(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -51,9 +51,7 @@ class SourceOsvita extends Source {
                 .then(() => getAllFiles(config.osvitaDbPath, /^DO[0-9]+\.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
-                        const target = await hr_organization(config, dictionary, fileList[j], j)
-                        if (!target.append) { targetList.push(target) }
-                        await sendFile(target)
+                        await DO(config, dictionary, fileList[j], j)
                     }
                 })
                 .then(() => getAllFiles(config.osvitaDbPath, /^S_BAN.DBF/i))
@@ -63,7 +61,6 @@ class SourceOsvita extends Source {
                     }
                 })
                 .then(() => getAllFiles(config.osvitaDbPath, /^SOCPIL.DBF/i))
-                // .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
                         const target = await hr_taxLimit(config, dictionary, fileList[j], j)
@@ -71,7 +68,6 @@ class SourceOsvita extends Source {
                         await sendFile(target)
                     }
                 })
-                // .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => getAllFiles(config.osvitaDbPath, /^SPRA_DOL.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
@@ -80,7 +76,6 @@ class SourceOsvita extends Source {
                         await sendFile(target)
                     }
                 })
-                // .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => getAllFiles(config.osvitaDbPath, /^KATEGOR.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
@@ -93,6 +88,7 @@ class SourceOsvita extends Source {
                 .then(async (fileList) => {
                     const sourceList = [
                         hr_payOut,
+                        hr_organization,
                         hr_department,
                         hr_employee,
                         hr_employeeNumber,
