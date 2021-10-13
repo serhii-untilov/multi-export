@@ -20,6 +20,7 @@ function setRecord (record, recordNumber) {
         record.ADRR +
         ((record.ADRG || record.ADRR) && record.ADRO ? ', ' : '') +
         record.ADRO
+    this.entity.countryID = 804
 
     return !!(this.entity.address)
 }
