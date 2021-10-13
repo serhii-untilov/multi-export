@@ -8,7 +8,9 @@ const { PAYEL401, PAYEL402, PAYEL403 } = require('./hr_payEl')
 const Entity = require('../entity/Accrual')
 const TARGET_FILE_NAME = 'Архів розрахункових листів працівників (hr_accrual).csv'
 
-const minDate = new Date(new Date().getFullYear() - 1, 0, 1)
+// const minDate = new Date(new Date().getFullYear() - 1, 0, 1)
+const currentDate = new Date()
+const minDate = new Date(currentDate.setMonth(currentDate.getMonth() - 14))
 
 function setRecord (record, recordNumber) {
     this.entity = []
