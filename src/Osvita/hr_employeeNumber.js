@@ -10,6 +10,7 @@ const TARGET_FILE_NAME = 'Особові рахунки працівників (
 
 function setRecord (record, recordNumber) {
     const ID = Number(record.TAB) + Number(record.BOL) * 10000
+
     this.entity.ID = ID
     this.entity.employeeID = ID
     this.entity.orgID = record.BOL
@@ -20,7 +21,12 @@ function setRecord (record, recordNumber) {
     this.entity.description = record.FAM + ' ' + record.IM + ' ' + record.OT + ' (' + record.TAB + ')'
     this.entity.payOutID = record.STEPEN1 ? record.STEPEN1 : ''
     this.entity.personalAccount = record.NLS_S
+    this.entity.appointmentDate = this.entity.dateFrom
+    this.entity.appointmentOrderDate = record.DATP ? dateFormat(record.DATP) : ''
+    this.entity.appointmentOrderNumber = record.NAKP || ''
+
     this.dictionary.setTaxCode(ID, record.IKOD)
+
     return true
 }
 

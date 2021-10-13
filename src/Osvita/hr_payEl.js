@@ -5,11 +5,13 @@ const removeFile = require('../helper/removeFile')
 const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 
+const PAYEL001 = 1 // Посадовий оклад
 const PAYEL146 = 146 // ПЕД. ЗАРПЛ
 const PAYEL147 = 147 // АДМИН ЗАРПЛ
 const PAYEL246 = 246 // ЗАРПЛ ВИХОВАТЕЛЯ
 const PAYEL247 = 247 // ИНША ЗАРПЛ
 const PAYEL248 = 248 // ЗАРПЛ СПЕЦИАЛИСТА
+const PAYEL249 = 249 // ЗАРПЛ МЕДПРАЦІВНИКА
 const PAYEL301 = 301 // Профсоюзний внесок
 const PAYEL401 = 401 // Заробіток для розрахунку лікарняного
 const PAYEL402 = 402 // Заробіток для розрахунку відпустки
@@ -45,11 +47,13 @@ const makeFile = function (target) {
             if (!target.append) { removeFile(target.fullFileName) }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
+                { id: PAYEL001, code: '1', name: 'Посадовий оклад' },
                 { id: PAYEL146, code: '146', name: 'Педагогічна зарплата' },
                 { id: PAYEL147, code: '147', name: 'Адміністративна зарплата' },
                 { id: PAYEL246, code: '246', name: 'Зарплата вихователя' },
                 { id: PAYEL247, code: '247', name: 'Інша зарплата' },
                 { id: PAYEL248, code: '248', name: 'Зарплата спеціаліста' },
+                { id: PAYEL249, code: '249', name: 'Зарплата медпрацівників' },
                 { id: PAYEL301, code: '301', name: 'Профсоюзний внесок' },
                 { id: PAYEL401, code: '401', name: 'Заробіток для розрахунку лікарняного' },
                 { id: PAYEL402, code: '402', name: 'Заробіток для розрахунку відпустки' },
@@ -75,11 +79,13 @@ const makeFile = function (target) {
 }
 
 module.exports = {
+    PAYEL001,
     PAYEL146,
     PAYEL147,
     PAYEL246,
     PAYEL247,
     PAYEL248,
+    PAYEL249,
     PAYEL301,
     PAYEL401,
     PAYEL402,

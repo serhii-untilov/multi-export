@@ -15,6 +15,9 @@ class EmployeeNumber extends Entity {
         this.payOutID = ''
         this.personalAccount = ''
         this.orgID = ''
+        this.appointmentDate = ''
+        this.appointmentOrderDate = ''
+        this.appointmentOrderNumber = ''
     }
 }
 

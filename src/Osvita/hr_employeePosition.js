@@ -5,7 +5,7 @@ const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
 // const makePositionID = require('../helper/makePositionID')
-const { PAYEL146, PAYEL147, PAYEL246, PAYEL247, PAYEL248 } = require('./hr_payEl')
+const { PAYEL001, PAYEL146, PAYEL147, PAYEL246, PAYEL247, PAYEL248, PAYEL249 } = require('./hr_payEl')
 const { ECB1, ECB2 } = require('./hr_dictCategoryECB')
 const path = require('path')
 
@@ -49,17 +49,29 @@ function setRecord (record, recordNumber) {
         this.entity.payElID = PAYEL246
         this.entity.accrualSum = record.S03
     } else if (record.S04) {
-        this.entity.payElID = PAYEL247
+        this.entity.payElID = getPayEl(record) || PAYEL247
         this.entity.accrualSum = record.S04
     } else if (record.S05) {
-        this.entity.payElID = PAYEL248
+        this.entity.payElID = getPayEl(record) || PAYEL248
         this.entity.accrualSum = record.S05
+    } else if (record.S06) {
+        this.entity.payElID = getPayEl(record) || PAYEL247
+        this.entity.accrualSum = record.S06
+    } else if (record.S07) {
+        this.entity.payElID = getPayEl(record) || PAYEL247
+        this.entity.accrualSum = record.S07
+    } else if (record.S08) {
+        this.entity.payElID = getPayEl(record) || PAYEL247
+        this.entity.accrualSum = record.S08
     } else {
         this.entity.payElID = PAYEL146
         this.entity.accrualSum = 0
     }
 
-    this.appointmentDate = this.entity.dateFrom
+    this.entity.appointmentDate = this.entity.dateFrom
+    this.orderNumber = record.NAKP || ''
+    this.orderDate = record.DATP ? dateFormat(record.DATP) : ''
+
     return true
 }
 
@@ -74,4 +86,19 @@ function makeTarget (config, dictionary, sourceFile, index) {
     return makeFile(target)
 }
 
+function getPayEl (record) {
+    if (record.SPECST === 1) {
+        // ознака спецстажу (1 - педпацівник)
+        return PAYEL146
+    } else if (record.SPECST === 2) {
+        // ознака спецстажу (2 - медпрацівник)
+        return PAYEL249
+    } else if (record.PR_GA) {
+        // ознака держслужбовця (1 - так)
+        return PAYEL001
+    }
+    return null
+}
+
 module.exports = makeTarget
+
