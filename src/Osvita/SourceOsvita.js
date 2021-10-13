@@ -67,11 +67,7 @@ class SourceOsvita extends Source {
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
                         const target = await hr_taxLimit(config, dictionary, fileList[j], j)
-                        if (target.append) {
-                            updateTarget(targetList, target)
-                        } else {
-                            targetList.push(target)
-                        }
+                        pushTarget(targetList, target)
                         await sendFile(target)
                     }
                 })
@@ -79,11 +75,7 @@ class SourceOsvita extends Source {
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
                         const target = await hr_dictPosition(config, dictionary, fileList[j], j)
-                        if (target.append) {
-                            updateTarget(targetList, target)
-                        } else {
-                            targetList.push(target)
-                        }
+                        pushTarget(targetList, target)
                         await sendFile(target)
                     }
                 })
@@ -91,11 +83,7 @@ class SourceOsvita extends Source {
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
                         const target = await hr_dictStaffCat(config, dictionary, fileList[j], j)
-                        if (target.append) {
-                            updateTarget(targetList, target)
-                        } else {
-                            targetList.push(target)
-                        }
+                        pushTarget(targetList, target)
                         await sendFile(target)
                     }
                 })
@@ -118,11 +106,7 @@ class SourceOsvita extends Source {
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
                             const target = await sourceList[i](config, dictionary, fileList[j], j)
-                            if (target.append) {
-                                updateTarget(targetList, target)
-                            } else {
-                                targetList.push(target)
-                            }
+                            pushTarget(targetList, target)
                             await sendFile(target)
                         }
                     }
@@ -135,11 +119,7 @@ class SourceOsvita extends Source {
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
                             const target = await sourceList[i](config, dictionary, fileList[j], j)
-                            if (target.append) {
-                                updateTarget(targetList, target)
-                            } else {
-                                targetList.push(target)
-                            }
+                            pushTarget(targetList, target)
                             await sendFile(target)
                         }
                     }
@@ -163,13 +143,15 @@ class SourceOsvita extends Source {
     }
 }
 
-function updateTarget (targetList, target) {
+function pushTarget (targetList, target) {
     const update = targetList.find(o => o.fullFileName === target.fullFileName)
     if (update) {
         update.recordsCount += target.recordsCount
         if (update.recordsCount) {
             update.state = Target.FILE_CREATED
         }
+    } else {
+        targetList.push(target)
     }
 }
 
