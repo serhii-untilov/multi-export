@@ -58,3 +58,23 @@ Configure SQL Server access protocols:
 * Then make double click on the TCP/IP protocol and in the opened dialog box find the IPAll section: 
     * Write 0 in TCP Dynamic ports 
     * Write 1433 in TCP Port
+
+PostgreSQL convert UUID into bigint
+-----------------------------------
+```
+CREATE OR REPLACE FUNCTION base.uuid_bigint (hexval varchar)
+RETURNS bigint AS $result$
+declare
+	result bigint;
+BEGIN
+   select substring((select replace(hexval,'-','')) from 1 for 16) into hexval;
+   EXECUTE 'SELECT x''' || hexval || '''::bigint' INTO result;
+   select abs(result) into result;
+   RETURN result;
+END;
+$result$ LANGUAGE plpgsql;
+```
+```
+-- Test
+select base.uuid_bigint(id::text), * from base.department;
+```
