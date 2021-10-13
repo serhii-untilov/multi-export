@@ -6,46 +6,47 @@ const getFullFileName = require('../helper/getFullFileName')
 class Dictionary {
     constructor (config) {
         this.config = config
-        this.TaxCode = {}
-        this.PayElID = {}
+        this.taxCode = {}
+        this.payElID = {}
         this.payElUsed = new Set()
-        this.DepartmentID = {}
-        this.WorkScheduleID = {}
-        this.PositionID = {}
-        this.DictPositionName = {}
-        this.DictPositionID = []
-        this.EmployeeFullName = {}
-        this.DictStaffCatID = {}
+        this.departmentID = {}
+        this.workScheduleID = {}
+        this.positionID = {}
+        this.dictPositionName = {}
+        this.dictPositionID = []
+        this.employeeFullName = {}
+        this.dictStaffCatID = {}
         this.catID_SchedID = {}
-        this.TaxLimitID = {}
-        this.TaxLimitUsed = new Set()
-        this.OrganizationID = {}
-        this.FundSourceID = {}
-        this.PayOutID = {}
-        this.PayOut = []
-        this.DictCategoryECBID = {}
-        this.DictStaffCatIDbyPath = []
+        this.taxLimitID = {}
+        this.taxLimitUsed = new Set()
+        this.organization = []
+        this.organizationID = {}
+        this.fundSourceID = {}
+        this.payOutID = {}
+        this.payOut = []
+        this.dictCategoryECBID = {}
+        this.dictStaffCatIDbyPath = []
 
         this.commonID = 0
-        this.error_count = 0
+        this.errorCount = 0
     }
 
     setTaxLimitUsed (code) {
-        if (!this.TaxLimitUsed.has(code)) {
-            this.TaxLimitUsed.add(code)
+        if (!this.taxLimitUsed.has(code)) {
+            this.taxLimitUsed.add(code)
         }
     }
 
     isTaxLimitUsed (code) {
-        return this.TaxLimitUsed.has(code)
+        return this.taxLimitUsed.has(code)
     }
 
     setTaxLimitID (code, ID) {
-        this.TaxLimitID[code] = ID
+        this.taxLimitID[code] = ID
     }
 
     getTaxLimitID (code) {
-        return this.TaxLimitID[code]
+        return this.taxLimitID[code]
     }
 
     setPayElUsed (cd) {
@@ -69,22 +70,22 @@ class Dictionary {
     }
 
     setDictStaffCatID (code, ID) {
-        this.DictStaffCatID[code] = ID
+        this.dictStaffCatID[code] = ID
     }
 
     getDictStaffCatID (code) {
-        return this.DictStaffCatID[code]
+        return this.dictStaffCatID[code]
     }
 
     getDictStaffCatIDbyPath (code, path) {
-        const found = this.DictStaffCatIDbyPath.find(o => o.code == code && o.path === path)
+        const found = this.dictStaffCatIDbyPath.find(o => o.code == code && o.path === path)
         return found ? found.ID : null
     }
 
     setDictStaffCatIDbyPath (code, name, path) {
-        const found = this.DictStaffCatIDbyPath.find(o => o.name === name)
+        const found = this.dictStaffCatIDbyPath.find(o => o.name === name)
         const ID = found ? found.ID : this.getCommonID()
-        this.DictStaffCatIDbyPath.push({ ID, code, name, path })
+        this.dictStaffCatIDbyPath.push({ ID, code, name, path })
         return !!found // already exists
     }
 
@@ -93,125 +94,133 @@ class Dictionary {
     }
 
     setEmployeeFullName (ID, fullName) {
-        this.EmployeeFullName[ID] = fullName
+        this.employeeFullName[ID] = fullName
     }
 
     getEmployeeFullName (ID) {
-        return this.EmployeeFullName[ID]
+        return this.employeeFullName[ID]
     }
 
     setDictPositionName (ID, name) {
-        this.DictPositionName[ID] = name
+        this.dictPositionName[ID] = name
     }
 
     getDictPositionName (ID) {
-        return this.DictPositionName[ID]
+        return this.dictPositionName[ID]
     }
 
     getDictPositionIDbyPath (code, path) {
-        const found = this.DictPositionID.find(o => o.code == code && o.path === path)
+        const found = this.dictPositionID.find(o => o.code == code && o.path === path)
         return found ? found.ID : null
     }
 
     getDictPositionNamebyPath (code, path) {
-        const found = this.DictPositionID.find(o => o.code == code && o.path === path)
+        const found = this.dictPositionID.find(o => o.code == code && o.path === path)
         return found ? found.name : null
     }
 
     setDictPositionIDbyPath (code, name, path) {
-        const found = this.DictPositionID.find(o => o.name === name)
+        const found = this.dictPositionID.find(o => o.name === name)
         const ID = found ? found.ID : this.getCommonID()
-        this.DictPositionID.push({ ID, code, name, path })
+        this.dictPositionID.push({ ID, code, name, path })
         return !!found
     }
 
     setPositionID (ID) {
-        this.PositionID[ID] = ID // for check presense
+        this.positionID[ID] = ID // for check presense
     }
 
     getPositionID (ID) {
-        return this.PositionID[ID] // to check presense
+        return this.positionID[ID] // to check presense
     }
 
     setWorkScheduleID (code, ID) {
-        this.WorkScheduleID[code] = ID
+        this.workScheduleID[code] = ID
     }
 
     getWorkScheduleID (code) {
-        return this.WorkScheduleID[code]
+        return this.workScheduleID[code]
     }
 
     setDepartmentID (code, ID) {
-        this.DepartmentID[code] = ID
+        this.departmentID[code] = ID
     }
 
     getDepartmentID (code) {
-        return this.DepartmentID[code] || ''
+        return this.departmentID[code] || ''
     }
 
     setOrganizationID (code, ID) {
-        this.OrganizationID[code] = ID
+        this.organizationID[code] = ID
     }
 
     getOrganizationID (code) {
-        return this.OrganizationID[code] || ''
+        return this.organizationID[code] || ''
+    }
+
+    setOrganization (ID, code, name, edrpou) {
+        this.organization.push({ ID, code, name, edrpou })
+    }
+
+    getOrganization (ID) {
+        return this.organization.find(o => o.ID === ID)
     }
 
     setFundSourceID (code, ID) {
-        this.FundSourceID[code] = ID
+        this.fundSourceID[code] = ID
     }
 
     getFundSourceID (code) {
-        return this.FundSourceID[code] || ''
+        return this.fundSourceID[code] || ''
     }
 
     setPayOutID (code, ID) {
-        this.PayOutID[code] = ID
+        this.payOutID[code] = ID
     }
 
     getPayOutID (code) {
-        return this.PayOutID[code] || ''
+        return this.payOutID[code] || ''
     }
 
     getPayOut (code, path) {
-        return this.PayOut.find(o => o.code === code && o.path === path)
+        return this.payOut.find(o => o.code === code && o.path === path)
     }
 
     setPayOut (ID, code, name, path) {
-        this.PayOut.push({ ID, code, name, path })
+        this.payOut.push({ ID, code, name, path })
     }
 
     setDictCategoryECBID (code, ID) {
-        this.DictCategoryECBID[code] = ID
+        this.dictCategoryECBID[code] = ID
     }
 
     getDictCategoryECBID (code) {
-        return this.DictCategoryECBID[code] || ''
+        return this.dictCategoryECBID[code] || ''
     }
 
     setTaxCode (tabNum, taxCode) {
-        this.TaxCode[tabNum] = taxCode
+        this.taxCode[tabNum] = taxCode
     }
 
     getTaxCode (tabNum) {
-        return this.TaxCode[tabNum] || ''
+        return this.taxCode[tabNum] || ''
     }
 
     setPayElID (cd, payElID) {
         const code = cd.substring(0, 32)
-        this.PayElID[code] = payElID
+        this.payElID[code] = payElID
     }
 
     getPayElID (cd) {
         const code = cd.substring(0, 32)
-        if (this.PayElID[code]) {
-            return this.PayElID[code]
+        if (this.payElID[code]) {
+            return this.payElID[code]
         } else {
-            let ID = Object.keys(this.PayElID).length + 1
+            let ID = Object.keys(this.payElID).length + 1
             ID = this._append_hr_payEl(ID, code, code)
             if (!ID) {
-                this.error_count += 1
-                console.log('Error [' + this.error_count + ']. Not found PayElCd: ' + code + '.')
+                this.errorCount += 1
+                console.log('Error [' + this.errorCount + ']. Not found PayElCd: ' + code + '.')
             } else {
                 this.setPayElID(code, ID)
             }
