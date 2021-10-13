@@ -33,6 +33,8 @@ class EmployeePosition extends Entity {
         this.accountID = ''
         this.organizationID = ''
         this.appointmentDate = ''
+        this.orderNumber = ''
+        this.orderDate = ''
     }
 }
 
