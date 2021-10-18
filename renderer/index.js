@@ -255,35 +255,35 @@ codeDep.addEventListener('change', (evt) => {
 const apkHost = document.getElementById('apk-host')
 apkHost.addEventListener('change', (evt) => {
     evt.preventDefault()
-    this.config.apk.host = evt.target.value
+    this.config.APK.host = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 
 const apkLogin = document.getElementById('apk-login')
 apkLogin.addEventListener('change', (evt) => {
     evt.preventDefault()
-    this.config.apk.login = evt.target.value
+    this.config.APK.login = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 
 const apkPassword = document.getElementById('apk-password')
 apkPassword.addEventListener('change', (evt) => {
     evt.preventDefault()
-    this.config.apk.password = evt.target.value
+    this.config.APK.password = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 
 const apkDatabase = document.getElementById('apk-database')
 apkDatabase.addEventListener('change', (evt) => {
     evt.preventDefault()
-    this.config.apk.database = evt.target.value
+    this.config.APK.database = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 
 const apkPort = document.getElementById('apk-port')
 apkPort.addEventListener('change', (evt) => {
     evt.preventDefault()
-    this.config.apk.port = evt.target.value
+    this.config.APK.port = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 

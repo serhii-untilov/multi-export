@@ -81,6 +81,7 @@ function getFileList () {
 function dbConfig (config) {
     return {
         host: config.APK.host,
+        port: config.APK.port,
         user: config.APK.login,
         password: config.APK.password,
         database: config.APK.database,

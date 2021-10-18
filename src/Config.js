@@ -32,10 +32,10 @@ class Config {
 
         // APK DB connect
         this.APK.host = 'localhost'
+        this.APK.port = '5433'
         this.APK.login = 'test'
         this.APK.password = 'test'
         this.APK.database = 'test'
-        this.APK.port = '5433'
     }
 }
 
