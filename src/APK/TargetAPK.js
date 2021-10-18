@@ -44,11 +44,10 @@ async function doQuery (target, queryText) {
         const query = new QueryStream(queryText)
         const stream = target.client.query(query)
         stream.on('error', (err) => { reject(err) })
-        stream.on('row', (row, res) => {
+        stream.on('data', (row) => {
             if (printHeader) {
                 printHeader = false
-                const columns = res.fields.map(o => o.name)
-                writeHeader(columns)
+                writeHeader(row)
             }
             target.recordsCount++
             writeRow(row)
@@ -62,7 +61,6 @@ async function doQuery (target, queryText) {
             }
         })
         stream.on('end', () => {
-            stream.release()
             if (target.recordsCount) {
                 fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) {
@@ -76,17 +74,13 @@ async function doQuery (target, queryText) {
             }
             resolve(target)
         })
-        stream.pipe(JSONStream.stringify()).pipe(process.stdout)
 
-        function writeHeader (columns) {
+        function writeHeader (row) {
             let columnNumber = 0
-            for (const column in columns) {
-                // eslint-disable-next-line no-prototype-builtins
-                if (columns.hasOwnProperty(column)) {
-                    if (columnNumber > 0) buffer += ';'
-                    columnNumber++
-                    buffer += `${column}`
-                }
+            for (const column in row) {
+                if (columnNumber > 0) buffer += ';'
+                columnNumber++
+                buffer += `${column}`
             }
             buffer += '\n'
         }
@@ -94,11 +88,8 @@ async function doQuery (target, queryText) {
         function writeRow (row) {
             let separator = ''
             for (const column in row) {
-                // eslint-disable-next-line no-prototype-builtins
-                if (row.hasOwnProperty(column)) {
-                    buffer += `${separator}${row[column]}`
-                    separator = ';'
-                }
+                buffer += `${separator}${row[column]}`
+                separator = ';'
             }
             buffer += '\n'
         }
