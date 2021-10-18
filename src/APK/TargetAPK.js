@@ -40,9 +40,8 @@ async function doQuery (target, queryText) {
         removeFile(target.fullFileName)
         let buffer = ''
         let printHeader = true
-        target.pool.connect()
-            .then(client => {
-                const stream = client.query(new QueryStream(queryText))
+        target.client.query(new QueryStream(queryText))
+            .then((stream) => {
                 stream.on('error', (err) => { reject(err) })
                 stream.on('row', (row, res) => {
                     if (printHeader) {
@@ -62,7 +61,7 @@ async function doQuery (target, queryText) {
                     }
                 })
                 stream.on('end', () => {
-                    client.release()
+                    stream.release()
                     if (target.recordsCount) {
                         fs.appendFile(target.fullFileName, buffer, (err) => {
                             if (err) {

@@ -25,11 +25,11 @@ class SourceAPK extends Source {
             console.log(err)
             sendFailed(err.message)
         })
-
-        pool.connect()
-            .then(() => makeDir(config.targetPath))
-            .then(() => getFileList())
-            .then((fileList) => {
+        let fileList
+        makeDir(config.targetPath)
+            .then(() => fileList = getFileList())
+            .then(() => pool.connect()
+            .then((client) => {
                 return Promise.all(
                     fileList.map((queryFileName) => {
                         return new Promise((resolve, reject) => {
@@ -38,7 +38,7 @@ class SourceAPK extends Source {
                             target.fullFileName = getFullFileName(config.targetPath, fileName + '.csv')
                             target.queryFileName = getFullFileName(SQL_FILES_DIR, queryFileName)
                             target.config = config
-                            target.pool = pool
+                            target.client = client
                             makeFile(target)
                                 .then(target => {
                                     sendFile(target)
