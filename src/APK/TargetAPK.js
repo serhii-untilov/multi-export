@@ -5,6 +5,7 @@ const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
 const iconv = require('iconv-lite')
 const QueryStream = require('pg-query-stream')
+const JSONStream = require('JSONStream')
 
 const BATCH_SIZE = 10000
 
@@ -40,42 +41,43 @@ async function doQuery (target, queryText) {
         removeFile(target.fullFileName)
         let buffer = ''
         let printHeader = true
-        target.client.query(new QueryStream(queryText))
-            .then((stream) => {
-                stream.on('error', (err) => { reject(err) })
-                stream.on('row', (row, res) => {
-                    if (printHeader) {
-                        printHeader = false
-                        const columns = res.fields.map(o => o.name)
-                        writeHeader(columns)
-                    }
-                    target.recordsCount++
-                    writeRow(row)
-                    if (target.recordsCount % BATCH_SIZE === 0) {
-                        stream.pause()
-                        fs.appendFile(target.fullFileName, buffer, (err) => {
-                            if (err) throw err
-                        })
-                        buffer = ''
-                        stream.resume()
-                    }
+        const query = new QueryStream(queryText)
+        const stream = target.client.query(query)
+        stream.on('error', (err) => { reject(err) })
+        stream.on('row', (row, res) => {
+            if (printHeader) {
+                printHeader = false
+                const columns = res.fields.map(o => o.name)
+                writeHeader(columns)
+            }
+            target.recordsCount++
+            writeRow(row)
+            if (target.recordsCount % BATCH_SIZE === 0) {
+                stream.pause()
+                fs.appendFile(target.fullFileName, buffer, (err) => {
+                    if (err) throw err
                 })
-                stream.on('end', () => {
-                    stream.release()
-                    if (target.recordsCount) {
-                        fs.appendFile(target.fullFileName, buffer, (err) => {
-                            if (err) {
-                                reject(err)
-                            };
-                        })
-                        buffer = ''
-                        target.state = Target.FILE_CREATED
-                    } else {
-                        target.state = Target.FILE_EMPTY
-                    }
-                    resolve(target)
+                buffer = ''
+                stream.resume()
+            }
+        })
+        stream.on('end', () => {
+            stream.release()
+            if (target.recordsCount) {
+                fs.appendFile(target.fullFileName, buffer, (err) => {
+                    if (err) {
+                        reject(err)
+                    };
                 })
-            })
+                buffer = ''
+                target.state = Target.FILE_CREATED
+            } else {
+                target.state = Target.FILE_EMPTY
+            }
+            resolve(target)
+        })
+        stream.pipe(JSONStream.stringify()).pipe(process.stdout)
+
         function writeHeader (columns) {
             let columnNumber = 0
             for (const column in columns) {
