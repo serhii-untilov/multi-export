@@ -11,7 +11,7 @@ const electron = require('electron')
 const remote = electron.remote
 const mainProcess = remote.require('./main')
 
-// const config = null
+const config = null
 
 let targetList = []
 
