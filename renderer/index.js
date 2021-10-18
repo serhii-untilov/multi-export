@@ -11,7 +11,7 @@ const electron = require('electron')
 const remote = electron.remote
 const mainProcess = remote.require('./main')
 
-// const config = null
+const config = null
 
 let targetList = []
 
@@ -389,6 +389,12 @@ ipcRenderer.on('config', (event, config) => {
     parusDbPath.value = config.parusDbPath || ''
     c1DbPath.value = config.c1DbPath || ''
     osvitaDbPath.value = config.osvitaDbPath || ''
+
+    apkHost.value = config.apkHost || ''
+    apkPort.value = config.apkPort || ''
+    apkLogin.value = config.apkLogin || ''
+    apkPassword.value = config.apkPassword || ''
+    apkDatabase.value = config.apkDatabase || ''
 
     isArchive.checked = config.isArchive
 
