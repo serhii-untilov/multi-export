@@ -38,6 +38,10 @@ body {
   color: green;
  }
 
+ .apk {
+  color: brown;
+ }
+
   /* make image black and white */ 
   /* -webkit-filter: grayscale(60%);*/
 .black-white {  

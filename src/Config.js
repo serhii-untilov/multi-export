@@ -6,6 +6,7 @@ const AFINA = 'afina'
 const PARUS = 'parus'
 const C7 = 'C7'
 const OSVITA = 'osvita'
+const APK = 'APK'
 
 class Config {
     constructor () {
@@ -45,5 +46,6 @@ module.exports = {
     AFINA,
     PARUS,
     C7,
-    OSVITA
+    OSVITA,
+    APK
 }
