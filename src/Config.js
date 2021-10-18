@@ -28,6 +28,13 @@ class Config {
         this.parusDbPath = ''
         this.c1DbPath = ''
         this.osvitaDbPath = ''
+
+        // APK DB connect
+        this.APK.host = 'localhost'
+        this.APK.login = 'test'
+        this.APK.password = 'test'
+        this.APK.database = 'test'
+        this.APK.port = '5433'
     }
 }
 
