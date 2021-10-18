@@ -12,7 +12,7 @@ const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
 
 const SQL_FILES_DIR = './assets/APK/'
-const FILE_NAME = 'APK.zip'
+const FILE_NAME = 'AПК.zip'
 
 const POOL_SIZE = 4
 const CONNECTION_TIMEOUT = 20 * 60 * 1000 // 20 minutes
@@ -80,11 +80,11 @@ function getFileList () {
 
 function dbConfig (config) {
     return {
-        host: config.APK.host,
-        port: config.APK.port,
-        user: config.APK.login,
-        password: config.APK.password,
-        database: config.APK.database,
+        host: config.apkHost,
+        port: config.apkPort,
+        user: config.apkLogin,
+        password: config.apkPassword,
+        database: config.apkDatabase,
         connectionTimeoutMillis: CONNECTION_TIMEOUT,
         idleTimeoutMillis: REQUEST_TIMEOUT,
         max: POOL_SIZE

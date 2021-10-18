@@ -31,11 +31,11 @@ class Config {
         this.osvitaDbPath = ''
 
         // APK DB connect
-        this.APK.host = 'localhost'
-        this.APK.port = '5433'
-        this.APK.login = 'test'
-        this.APK.password = 'test'
-        this.APK.database = 'test'
+        this.apkHost = 'localhost'
+        this.apkPort = '5433'
+        this.apkLogin = 'test'
+        this.apkPassword = 'test'
+        this.apkDatabase = 'test'
     }
 }
 
