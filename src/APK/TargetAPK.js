@@ -38,48 +38,45 @@ function readQueryFromFile (fileName) {
 async function doQuery (target, queryText) {
     return new Promise((resolve, reject) => {
         removeFile(target.fullFileName)
-
         let buffer = ''
         let printHeader = true
-        const client = target.pool.connect()
-        const stream = client.query(new QueryStream(queryText))
-
-        stream.on('error', (err) => { reject(err) })
-
-        stream.on('row', (row, res) => {
-            if (printHeader) {
-                printHeader = false
-                const columns = res.fields.map(o => o.name)
-                writeHeader(columns)
-            }
-            target.recordsCount++
-            writeRow(row)
-            if (target.recordsCount % BATCH_SIZE === 0) {
-                stream.pause()
-                fs.appendFile(target.fullFileName, buffer, (err) => {
-                    if (err) throw err
+        target.pool.connect()
+            .then(client => {
+                const stream = client.query(new QueryStream(queryText))
+                stream.on('error', (err) => { reject(err) })
+                stream.on('row', (row, res) => {
+                    if (printHeader) {
+                        printHeader = false
+                        const columns = res.fields.map(o => o.name)
+                        writeHeader(columns)
+                    }
+                    target.recordsCount++
+                    writeRow(row)
+                    if (target.recordsCount % BATCH_SIZE === 0) {
+                        stream.pause()
+                        fs.appendFile(target.fullFileName, buffer, (err) => {
+                            if (err) throw err
+                        })
+                        buffer = ''
+                        stream.resume()
+                    }
                 })
-                buffer = ''
-                stream.resume()
-            }
-        })
-
-        stream.on('end', () => {
-            client.release()
-            if (target.recordsCount) {
-                fs.appendFile(target.fullFileName, buffer, (err) => {
-                    if (err) {
-                        reject(err)
-                    };
+                stream.on('end', () => {
+                    client.release()
+                    if (target.recordsCount) {
+                        fs.appendFile(target.fullFileName, buffer, (err) => {
+                            if (err) {
+                                reject(err)
+                            };
+                        })
+                        buffer = ''
+                        target.state = Target.FILE_CREATED
+                    } else {
+                        target.state = Target.FILE_EMPTY
+                    }
+                    resolve(target)
                 })
-                buffer = ''
-                target.state = Target.FILE_CREATED
-            } else {
-                target.state = Target.FILE_EMPTY
-            }
-            resolve(target)
-        })
-
+            })
         function writeHeader (columns) {
             let columnNumber = 0
             for (const column in columns) {
