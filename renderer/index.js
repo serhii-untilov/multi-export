@@ -390,6 +390,12 @@ ipcRenderer.on('config', (event, config) => {
     c1DbPath.value = config.c1DbPath || ''
     osvitaDbPath.value = config.osvitaDbPath || ''
 
+    apkHost.value = config.apkHost || ''
+    apkPort.value = config.apkPort || ''
+    apkLogin.value = config.apkLogin || ''
+    apkPassword.value = config.apkPassword || ''
+    apkDatabase.value = config.apkDatabase || ''
+
     isArchive.checked = config.isArchive
 
     renderMenu()
