@@ -27,8 +27,8 @@ class SourceAPK extends Source {
         })
         let fileList
         makeDir(config.targetPath)
-            .then(() => fileList = getFileList())
-            .then(() => pool.connect()
+            .then(() => { fileList = getFileList() })
+            .then(() => pool.connect())
             .then((client) => {
                 return Promise.all(
                     fileList.map((queryFileName) => {
