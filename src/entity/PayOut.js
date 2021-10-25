@@ -9,6 +9,7 @@ class PayOut extends Entity {
         this.code = ''
         this.name = ''
         this.orgID = ''
+        this.description = ''
     }
 }
 

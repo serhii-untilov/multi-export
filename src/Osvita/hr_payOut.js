@@ -13,7 +13,7 @@ function setRecord (record, recordNumber) {
     this.entity.ID = Number(record.STEPEN1) + Number(record.BOL) * 10000
     this.entity.code = record.STEPEN1
     const payOut = this.dictionary.getPayOut(this.entity.code, path.dirname(this.sourceFullFileName))
-    this.entity.ID = payOut.ID
+    // this.entity.ID = payOut.ID
     if (this.dictionary.getPayOutID(this.entity.ID)) { return false }
     this.entity.name = payOut.name
     this.entity.description = this.entity.name + ' (' + this.entity.code + ')'

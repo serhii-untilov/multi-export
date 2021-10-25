@@ -15,7 +15,7 @@ const DO = require('./DO')
 const hr_department = require('./hr_department')
 const hr_dictPosition = require('./hr_dictPosition')
 const ac_fundSource = require('./ac_fundSource')
-// const hr_payOut = require('./hr_payOut')
+const hr_payOut = require('./hr_payOut')
 const hr_employee = require('./hr_employee')
 const hr_employeeNumber = require('./hr_employeeNumber')
 const hr_employeePosition = require('./hr_employeePosition')
@@ -90,7 +90,7 @@ class SourceOsvita extends Source {
                 .then(() => getAllFiles(config.osvitaDbPath, /^B[0-9]+\.DBF/i))
                 .then(async (fileList) => {
                     const sourceList = [
-                        // hr_payOut,
+                        hr_payOut,
                         hr_organization,
                         hr_department,
                         hr_employee,
