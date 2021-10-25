@@ -15,8 +15,8 @@ function setRecord (record, recordNumber) {
     const payOut = this.dictionary.getPayOut(this.entity.code, path.dirname(this.sourceFullFileName))
     // this.entity.ID = payOut.ID
     if (this.dictionary.getPayOutID(this.entity.ID)) { return false }
-    this.entity.name = payOut.name
-    this.entity.description = this.entity.name + ' (' + this.entity.code + ')'
+    this.entity.name = payOut.name + ' (' + record.BOL + ')'
+    this.entity.description = this.entity.name
     this.dictionary.setPayOutID(this.entity.ID, this.entity.ID)
     this.entity.orgID = record.BOL
     return true
