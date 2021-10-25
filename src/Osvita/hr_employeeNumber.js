@@ -4,6 +4,7 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
+const path = require('path')
 
 const Entity = require('../entity/EmployeeNumber')
 const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
@@ -19,7 +20,14 @@ function setRecord (record, recordNumber) {
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
     this.entity.description = record.FAM + ' ' + record.IM + ' ' + record.OT + ' (' + record.TAB + ')'
-    this.entity.payOutID = record.STEPEN1 ? record.STEPEN1 : ''
+
+    this.entity.payOutID = record.STEPEN1 ? Number(record.STEPEN1) + Number(record.BOL) * 10000 : ''    
+    // this.entity.payOutID = ''
+    // if (record.STEPEN1) {
+    //     const payOut = this.dictionary.getPayOut(record.STEPEN1, path.dirname(this.sourceFullFileName))
+    //     this.entity.payOutID = payOut.ID
+    // }
+
     this.entity.personalAccount = record.NLS_S
     this.entity.appointmentDate = this.entity.dateFrom
     this.entity.appointmentOrderDate = record.DATP ? dateFormat(record.DATP) : ''

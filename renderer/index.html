@@ -21,6 +21,7 @@
         <a href="#" class="btn btn-link menu-item" id="selectParus">Парус</a>
         <a href="#" class="btn btn-link menu-item" id="select1C">1С</a>
         <a href="#" class="btn btn-link menu-item" id="selectOsvita">Освіта</a>
+        <a href="#" class="btn btn-link menu-item" id="selectAPK">АПК</a>
       </section>
       <section class="navbar-section">
         <a href="#" class="btn btn-link black-white" id="selectA5">
@@ -54,7 +55,6 @@
             Експорт виконується безпосередньо із бази даних<br />
             Для виконання експорту необхідно <a href="#" id="homeSelectISPro">вказати параметри підключення до бази
               даних</a>
-
           </p>
 
           <a href="#" class="btn btn-link system-caption" id="captionAfina">
@@ -64,7 +64,6 @@
             Експорт виконується із файлів бази даних<br />
             Для виконання експорту необхідно <a href="#" id="homeSelectAfina">вказати каталог у якому розміщені файли
               бази даних</a>
-
           </p>
 
           <a href="#" class="btn btn-link system-caption" id="captionParus">
@@ -92,7 +91,15 @@
             Експорт виконується із файлів бази даних<br />
             Для виконання експорту необхідно <a href="#" id="homeSelectOsvita">вказати каталог у якому розміщені файли
               бази даних</a>
+          </p>
 
+          <a href="#" class="btn btn-link system-caption" id="captionAPK">
+            <h4 class="mt-3 mb-1 apk">АПК</h4>
+          </a>
+          <p>
+            Експорт виконується безпосередньо із бази даних<br />
+            Для виконання експорту необхідно <a href="#" id="homeSelectAPK">вказати параметри підключення до бази
+              даних</a>
           </p>
 
         </div>
@@ -212,6 +219,39 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- APK params panel -->
+
+          <div id="apk-panel">
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="apk-host">Сервер бази даних</label>
+                <input class="form-input" type="text" id="apk-host" placeholder="localhost">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="apk-port">Порт</label>
+                <input class="form-input" type="text" id="apk-port" placeholder="5433">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="apk-database">База даних</label>
+                <input class="form-input" type="text" id="apk-database" placeholder="test">
+              </div>
+            </div>
+            <br />
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="apk-login">Логін</label>
+                <input class="form-input" type="text" id="apk-login" placeholder="test">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="apk-password">Пароль</label>
+                <input class="form-input" type="password" id="apk-password" placeholder="test">
+              </div>
+            </div>
+            <!-- <br /> -->
+            <!-- <div class="columns">
+            </div>             -->
           </div>
 
           <br />

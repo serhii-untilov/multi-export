@@ -6,6 +6,7 @@ const AFINA = 'afina'
 const PARUS = 'parus'
 const C7 = 'C7'
 const OSVITA = 'osvita'
+const APK = 'APK'
 
 class Config {
     constructor () {
@@ -28,6 +29,13 @@ class Config {
         this.parusDbPath = ''
         this.c1DbPath = ''
         this.osvitaDbPath = ''
+
+        // APK DB connect
+        this.apkHost = 'localhost'
+        this.apkPort = '5433'
+        this.apkLogin = 'test'
+        this.apkPassword = 'test'
+        this.apkDatabase = 'test'
     }
 }
 
@@ -38,5 +46,6 @@ module.exports = {
     AFINA,
     PARUS,
     C7,
-    OSVITA
+    OSVITA,
+    APK
 }

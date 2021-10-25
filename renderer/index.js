@@ -11,7 +11,7 @@ const electron = require('electron')
 const remote = electron.remote
 const mainProcess = remote.require('./main')
 
-// const config = null
+const config = null
 
 let targetList = []
 
@@ -23,6 +23,7 @@ const afinaPanel = document.getElementById('afina-panel')
 const parusPanel = document.getElementById('parus-panel')
 const c1Panel = document.getElementById('c1-panel')
 const osvitaPanel = document.getElementById('osvita-panel')
+const apkPanel = document.getElementById('apk-panel')
 const commonParamsPanel = document.getElementById('common-params-panel')
 const controlPanel = document.getElementById('control-panel')
 const resultPanel = document.getElementById('result-panel')
@@ -58,6 +59,7 @@ const renderPanels = () => {
     setVisible(parusPanel, this.config && this.config.source === Config.PARUS)
     setVisible(c1Panel, this.config && this.config.source === Config.C7)
     setVisible(osvitaPanel, this.config && this.config.source === Config.OSVITA)
+    setVisible(apkPanel, this.config && this.config.source === Config.APK)
     setVisible(commonParamsPanel, this.config && this.config.source !== Config.HOME)
     setVisible(controlPanel, this.config && this.config.source !== Config.HOME)
     setVisible(bodyPanel, false)
@@ -72,6 +74,7 @@ const renderMenu = () => {
     setSelected(buttonSelectParus, this.config.source === Config.PARUS)
     setSelected(buttonSelect1C, this.config.source === Config.C7)
     setSelected(buttonSelectOsvita, this.config.source === Config.OSVITA)
+    setSelected(buttonSelectAPK, this.config.source === Config.APK)
 }
 
 const selectHome = () => {
@@ -155,6 +158,20 @@ buttonSelectOsvita.addEventListener('click', selectOsvita)
 document.getElementById('homeSelectOsvita').addEventListener('click', selectOsvita)
 document.getElementById('captionOsvita').addEventListener('click', selectOsvita)
 
+const selectAPK = () => {
+    if (this.config.source === Config.APK) { return }
+    buttonRunExport.classList.remove('loading')
+    targetList.length = 0
+    this.config.source = Config.APK
+    ipcRenderer.send('set-config', this.config)
+    renderMenu()
+    renderPanels()
+}
+const buttonSelectAPK = document.getElementById('selectAPK')
+buttonSelectAPK.addEventListener('click', selectAPK)
+document.getElementById('homeSelectAPK').addEventListener('click', selectAPK)
+document.getElementById('captionAPK').addEventListener('click', selectAPK)
+
 document.getElementById('homeSelectA5').addEventListener('click', () => {
     shell.openExternal('https://a5buh.com')
 })
@@ -232,6 +249,41 @@ const codeDep = document.getElementById('code-dep')
 codeDep.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.codeDep = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const apkHost = document.getElementById('apk-host')
+apkHost.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.apkHost = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const apkLogin = document.getElementById('apk-login')
+apkLogin.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.apkLogin = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const apkPassword = document.getElementById('apk-password')
+apkPassword.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.apkPassword = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const apkDatabase = document.getElementById('apk-database')
+apkDatabase.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.apkDatabase = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const apkPort = document.getElementById('apk-port')
+apkPort.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.apkPort = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 
@@ -337,6 +389,12 @@ ipcRenderer.on('config', (event, config) => {
     parusDbPath.value = config.parusDbPath || ''
     c1DbPath.value = config.c1DbPath || ''
     osvitaDbPath.value = config.osvitaDbPath || ''
+
+    apkHost.value = config.apkHost || ''
+    apkPort.value = config.apkPort || ''
+    apkLogin.value = config.apkLogin || ''
+    apkPassword.value = config.apkPassword || ''
+    apkDatabase.value = config.apkDatabase || ''
 
     isArchive.checked = config.isArchive
 
