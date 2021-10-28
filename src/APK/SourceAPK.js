@@ -10,6 +10,7 @@ const makeFile = require('./TargetAPK')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
+const initDB = require('./initDB')
 
 const SQL_FILES_DIR = './assets/APK/'
 const FILE_NAME = 'AПК.zip'
@@ -26,11 +27,19 @@ class SourceAPK extends Source {
             sendFailed(err.message)
         })
         let fileList
+        let client
         makeDir(config.targetPath)
             .then(() => getFileList())
-            .then((fl) => {fileList = fl})
+            .then((result) => {fileList = result})
             .then(() => pool.connect())
-            .then((client) => {
+            .then((result) => { client = result })
+            .then(() => {
+                const target = new Target.Target()
+                target.config = config
+                target.client = client
+                return initDB(target)
+            })
+            .then(() => {
                 return Promise.all(
                     fileList.map((queryFileName) => {
                         return new Promise((resolve, reject) => {
