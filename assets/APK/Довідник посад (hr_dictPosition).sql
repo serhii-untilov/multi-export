@@ -1,6 +1,4 @@
 -- Довідник посад
--- select * from staff.dict_work_post
--- select * from staff.enum_work_post_category 
 select base.uuid_bigint(p1.id::text) "ID",
 	p1.code "code",
 	left(case when p1.description is not null then concat(p1.name, ', ', p1.description) else p1.name end, 256) "name",
