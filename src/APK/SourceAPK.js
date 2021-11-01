@@ -11,6 +11,7 @@ const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
 const initDB = require('./initDB')
+const dictDocKind = require('./hr_dictDocKind')
 
 const SQL_FILES_DIR = './assets/APK/'
 const FILE_NAME = 'AПК.zip'
@@ -39,6 +40,7 @@ class SourceAPK extends Source {
                 target.client = client
                 return initDB(target)
             })
+            .then(() => { return dictDocKind(config)})
             .then(() => {
                 return Promise.all(
                     fileList.map((queryFileName) => {

@@ -1,0 +1,38 @@
+-- Паспорт
+-- select * from base.info_pasport
+select base.uuid_bigint(h1.id::text) "ID",
+	base.uuid_bigint(e1.id::text) "employeeID",
+	base.uuid_bigint((case when dt2.name = 'Організація' then dh2.owner_structure_id when dt3.name = 'Організація' then dh3.owner_structure_id else null end)::text) as "orgID",
+	h1.employe_no "tabNum",
+	coalesce(e1.ident_code, '') "taxCode",
+	e1.name_last "lastName",
+	e1.name_first "firstName",
+	e1.name_middle "middleName",
+    '1' dictDocKindID,
+    coalesce(ps.series, '') docSeries,
+    ps.no docNumber,
+    coalesce(ps.issued_by, '') docIssued,
+    coalesce(cast(cast(ps.issued_at as date) as varchar), '') docIssuedDate,
+    concat('Паспорт', case when length(ps.series) > 0 then  ' ' else '' end, ps.series, case when length(ps.no) > 0 then ' ' else '' end, ps.no) description
+from staff.employe e1 -- категория застрахованої особи
+inner join staff.doc_hiring h1 on h1.employe_id = e1.id
+inner join staff.info_staff i1 on i1.employe_owner_id = e1.id
+inner join staff.work_place wp on wp.keeper_id = e1.id
+inner join base.info_pasport ps on ps.person_owner_id=e1.id
+left join staff.doc_dismissal d1 on d1.id = wp.doc_dismissal_id
+---
+left join base.info_dep_history dh1 on dh1.owner_structure_id = h1.department_id
+left join base.info_structure_history ds1 on ds1.owner_structure_id = dh1.parent_structure_id
+left join base.dict_structure_type dt1 on dt1.id = dh1.structure_type_id
+left join base.info_structure_history dh2 on dh2.owner_structure_id = dh1.parent_structure_id
+left join base.dict_structure_type dt2 on dt2.id = dh2.structure_type_id
+left join base.info_structure_history dh3 on dh3.owner_structure_id = dh2.parent_structure_id
+left join base.dict_structure_type dt3 on dt3.id = dh3.structure_type_id
+---
+where e1.deleted_at is null
+and h1.deleted_at is null
+and h1.active 
+and d1.from_date is null
+and wp.deleted_at is null
+and i1.deleted_at is null
+order by e1.name_last;

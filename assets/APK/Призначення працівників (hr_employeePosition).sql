@@ -1,5 +1,6 @@
 -- Призначення працівників
 select base.uuid_bigint(h1.id::text) "ID",
+	base.uuid_bigint(h1.id::text) "employeeNumberID",
 	base.uuid_bigint(e1.id::text) "employeeID",
 	base.uuid_bigint((case when dt2.name = 'Організація' then dh2.owner_structure_id when dt3.name = 'Організація' then dh3.owner_structure_id else null end)::text) as "orgID",
 	h1.employe_no "tabNum",
@@ -7,7 +8,7 @@ select base.uuid_bigint(h1.id::text) "ID",
 	e1.name_last "lastName",
 	e1.name_first "firstName",
 	e1.name_middle "middleName",
-	cast(cast(h1.from_date as date) as varchar) "dateFrom",
+	cast(cast(wp.from_date as date) as varchar) "dateFrom",
 	'' "dateTo" --cast(cast(d1.from_date as date) as varchar) "dateTo"
 	,cast(cast(h1.from_date as date) as varchar) "appointmentDate"
 	,cast(cast(h1.issued_at as date) as varchar) "appointmentOrderDate"
@@ -15,11 +16,13 @@ select base.uuid_bigint(h1.id::text) "ID",
 	,concat(e1.name_last, ' ', e1.name_first, ' ', e1.name_middle, ' [', h1.employe_no, ']') "description"
 	,base.uuid_bigint(h1.department_id::text) "departmentID"
 	,base.uuid_bigint(h1.work_post_type_id::text) "dictPositionID"
+	-- ,case when h1.work_period_time is NULL then '40' else regexp_replace(h1.work_period_time::text, '\D','','g') end "workScheduleID",
 	,t2."workScheduleID" "workScheduleID",
 	case when wp.salary_source_id is not null then base.uuid_bigint(wp.salary_source_id::text)::text
 	when h1.salary_source_id is not null then base.uuid_bigint(h1.salary_source_id::text)::text
 	else '' end "dictFundSourceID"
 	,h1.qualification
+	,case when staff.tax_by_work_place_at(cast(now() as date),wp.id) is not null then base.uuid_bigint(staff.tax_by_work_place_at(cast(now() as date),wp.id)::text)::text else '' end dictCategoryECBID
 from staff.employe e1
 inner join staff.doc_hiring h1 on h1.employe_id = e1.id
 left join staff.info_staff i1 on i1.employe_owner_id = e1.id
