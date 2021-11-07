@@ -26,9 +26,18 @@ class Dictionary {
         this.payOut = []
         this.dictCategoryECBID = {}
         this.dictStaffCatIDbyPath = []
+        this.employeeByName = []
 
         this.commonID = 0
         this.errorCount = 0
+    }
+
+    setEmployeeByName (lastName, firstName, middleName, dictTarifCoeffID) {
+        this.employeeByName.push({ lastName, firstName, middleName, dictTarifCoeffID })
+    }
+
+    getEmployeeByName (lastName, firstName, middleName) {
+        return this.employeeByName.find(o => o.lastName.toUpperCase() === lastName.toUpperCase() && o.firstName.toUpperCase() === firstName.toUpperCase() && o.middleName.toUpperCase() === middleName.toUpperCase())
     }
 
     setTaxLimitUsed (code) {
@@ -78,7 +87,7 @@ class Dictionary {
     }
 
     getDictStaffCatIDbyPath (code, path) {
-        const found = this.dictStaffCatIDbyPath.find(o => o.code == code && o.path === path)
+        const found = this.dictStaffCatIDbyPath.find(o => o.code === code && o.path === path)
         return found ? found.ID : null
     }
 

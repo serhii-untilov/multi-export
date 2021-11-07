@@ -34,6 +34,8 @@ const hr_dictExperience = require('./hr_dictExperience')
 const hr_employeeExperience = require('./hr_employeeExperience')
 const hr_organization = require('./hr_organization')
 const cdn_country = require('./cdn_country')
+const hr_dictTarifCoeff = require('./hr_dictTarifCoeff')
+const S = require('./S')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -51,6 +53,13 @@ class SourceOsvita extends Source {
                 .then(() => hr_dictBenefitsKind(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictExperience(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => cdn_country(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictTarifCoeff(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => getAllFiles(config.osvitaDbPath, /^S[0-9]+\.DBF/i))
+                .then(async (fileList) => {
+                    for (let j = 0; j < fileList.length; j++) {
+                        await S(config, dictionary, fileList[j], j)
+                    }
+                })
                 .then(() => getAllFiles(config.osvitaDbPath, /^DO[0-9]+\.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
