@@ -17,7 +17,7 @@ function setRecord (record, recordNumber) {
     this.entity.shortFIO = record.FAM + ' ' + record.IM[0] + '.' + record.OT[0] + '.'
     this.entity.fullFIO = record.FAM + ' ' + record.IM + ' ' + record.OT
     this.entity.tabNum = record.TAB
-    this.entity.sexType = record.KAT === 2 ? 'M' : record.SEX === 1 ? 'W' : ''
+    this.entity.sexType = record.KAT === 2 ? 'M' : record.KAT === 1 ? 'W' : ''
     this.entity.taxCode = record.IKOD
     this.entity.description = this.entity.fullFIO + ' (' + record.TAB + ')'
     this.entity.locName = this.entity.fullFIO
