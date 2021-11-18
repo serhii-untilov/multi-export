@@ -21,6 +21,7 @@ function setRecord (record, recordNumber) {
     this.entity.taxCode = record.IKOD
     this.entity.description = this.entity.fullFIO + ' (' + record.TAB + ')'
     this.entity.locName = this.entity.fullFIO
+    this.entity.citizenshipID = record.GRAJDAN === 1 ? '804' : ''
     this.dictionary.setEmployeeFullName(this.entity.ID, this.entity.fullFIO)
     return true
 }
