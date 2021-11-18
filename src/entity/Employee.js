@@ -25,6 +25,7 @@ class Employee extends Entity {
         this.monthBirthDate = ''
         this.yearBirthDate = ''
         this.organizationID = ''
+        this.citizenshipID = ''
     }
 }
 
