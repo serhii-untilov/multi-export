@@ -105,4 +105,3 @@ function getPayEl (record) {
 }
 
 module.exports = makeTarget
-
