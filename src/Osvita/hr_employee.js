@@ -3,6 +3,8 @@
 const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
+const decodeIPN = require('../helper/decodeIPN')
+const dateFormat = require('../helper/dateFormat')
 
 const Entity = require('../entity/Employee')
 const TARGET_FILE_NAME = 'Працівники (hr_employee).csv'
@@ -22,6 +24,11 @@ function setRecord (record, recordNumber) {
     this.entity.description = this.entity.fullFIO + ' (' + record.TAB + ')'
     this.entity.locName = this.entity.fullFIO
     this.entity.citizenshipID = record.GRAJDAN === 1 ? '804' : ''
+    const decodedIPN = decodeIPN(record.IKOD)
+    this.entity.birthDate = dateFormat(decodedIPN.birthDate)
+    if (!this.entity.sexType) {
+        this.entity.sexType = decodedIPN.sex || ''
+    }
     this.dictionary.setEmployeeFullName(this.entity.ID, this.entity.fullFIO)
     return true
 }

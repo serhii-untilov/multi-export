@@ -9,26 +9,36 @@ const Entity = require('../entity/EmployeeExperience')
 const TARGET_FILE_NAME = 'Стаж роботи працівників (hr_employeeExperience).csv'
 
 function setRecord (record, recordNumber) {
-    const ID = Number(record.TAB) + Number(record.BOL) * 10000
-    this.entity.ID = ID
-    this.entity.employeeID = ID
-    this.entity.employeeNumberID = ID
+    this.entity = []
 
+    this.entity.push(new Entity())
+    const ID = Number(record.TAB) + Number(record.BOL) * 10000
+    this.entity[0].ID = ID
+    this.entity[0].employeeID = ID
+    this.entity[0].employeeNumberID = ID
     if (record.SPECST === 1) {
         // ознака спецстажу (1 - педпацівник)
-        this.entity.dictExperienceID = 5
-        this.entity.calcDate = record.DATPOST ? dateFormat(record.DATPOST) : ''
+        this.entity[0].dictExperienceID = 5
+        this.entity[0].calcDate = record.DATPOST ? dateFormat(record.DATPOST) : ''
     } else if (record.SPECST === 2) {
         // ознака спецстажу (2 - медпрацівник)
-        this.entity.dictExperienceID = 6
-        this.entity.calcDate = record.DATPOST ? dateFormat(record.DATPOST) : ''
+        this.entity[0].dictExperienceID = 6
+        this.entity[0].calcDate = record.DATPOST ? dateFormat(record.DATPOST) : ''
     } else if (record.PR_GA) {
         // ознака держслужбовця (1 - так)
-        this.entity.dictExperienceID = 4
-        this.entity.calcDate = record.DATPOST ? dateFormat(record.DATPOST) : ''
+        this.entity[0].dictExperienceID = 4
+        this.entity[0].calcDate = record.DATPOST ? dateFormat(record.DATPOST) : ''
     }
-
-    return !!(this.entity.dictExperienceID)
+    if (this.entity[0].dictExperienceID) {
+        this.entity.push(new Entity())
+        this.entity[1].ID = ID
+        this.entity[1].employeeID = ID
+        this.entity[1].employeeNumberID = ID
+        this.entity[1].dictExperienceID = 3 // Страховий
+        this.entity[1].calcDate = this.entity[0].calcDate
+        return true
+    }
+    return false
 }
 
 function makeTarget (config, dictionary, sourceFile, index) {
