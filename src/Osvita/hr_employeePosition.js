@@ -72,9 +72,9 @@ function setRecord (record, recordNumber) {
     this.orderNumber = record.NAKP || ''
     this.orderDate = record.DATP ? dateFormat(record.DATP) : ''
 
-    const employeeByName = this.dictionary.getEmployeeByName(record.FAM, record.IM, record.OT)
-    if (employeeByName) {
-        this.entity.dictTarifCoeffID = employeeByName.dictTarifCoeffID
+    const dictTarif = this.dictionary.getDictTarifCoeffIDbyName(record.FAM, record.IM, record.OT)
+    if (dictTarif && dictTarif.dictTarifCoeffID) {
+        this.entity.dictTarifCoeffID = dictTarif.dictTarifCoeffID
     }
     return true
 }

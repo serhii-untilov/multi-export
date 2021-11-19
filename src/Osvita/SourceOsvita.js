@@ -36,6 +36,8 @@ const hr_organization = require('./hr_organization')
 const cdn_country = require('./cdn_country')
 const hr_dictTarifCoeff = require('./hr_dictTarifCoeff')
 const S = require('./S')
+const hr_dictEducationLevel = require('./hr_dictEducationLevel')
+const hr_employeeEducation = require('./hr_employeeEducation')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -46,6 +48,7 @@ class SourceOsvita extends Source {
             const dictionary = new Dictionary(config)
             makeDir(config.targetPath)
                 .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictEducationLevel(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => ac_fundSource(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
                 .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
@@ -110,7 +113,8 @@ class SourceOsvita extends Source {
                         hr_employeeDocs,
                         ac_addresses,
                         hr_employeeBenefits,
-                        hr_employeeExperience
+                        hr_employeeExperience,
+                        hr_employeeEducation
                     ]
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {

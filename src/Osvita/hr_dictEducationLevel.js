@@ -5,8 +5,8 @@ const removeFile = require('../helper/removeFile')
 const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 
-const Entity = require('../entity/FundSource')
-const TARGET_FILE_NAME = 'Джерело фінансування (ac_fundSource).csv'
+const Entity = require('../entity/SimpleEntity')
+const TARGET_FILE_NAME = 'Рівень освіти (hr_dictEducationLevel).csv'
 
 function setRecord (record) {
     this.entity.ID = record.id
@@ -31,8 +31,13 @@ const makeFile = function (target) {
             if (!target.append) { removeFile(target.fullFileName) }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
-                { id: 1, code: '1', name: '8011с Освітня субвенція' },
-                { id: 2, code: '2', name: '8011 Місцевий бюджет' }
+                { id: 1, code: '1', name: 'Базова загальна середня' },
+                { id: 2, code: '2', name: 'Повна загальна середня' },
+                { id: 3, code: '3', name: 'Середня спеціальна' },
+                { id: 4, code: '4', name: 'Професійно-технічна' },
+                { id: 5, code: '5', name: 'Неповна вища' },
+                { id: 6, code: '6', name: 'Базова вища' },
+                { id: 7, code: '7', name: 'Повна вища' }
             ]
             for (let i = 0; i < source.length; i++) {
                 if (target.setRecord(source[i])) {

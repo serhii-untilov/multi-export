@@ -26,18 +26,27 @@ class Dictionary {
         this.payOut = []
         this.dictCategoryECBID = {}
         this.dictStaffCatIDbyPath = []
-        this.employeeByName = []
+        this.dictTarifCoeffIDbyName = []
+        this.dictEducationLevelIDbyName = []
 
         this.commonID = 0
         this.errorCount = 0
     }
 
-    setEmployeeByName (lastName, firstName, middleName, dictTarifCoeffID) {
-        this.employeeByName.push({ lastName, firstName, middleName, dictTarifCoeffID })
+    setDictEducationLevelIDbyName (lastName, firstName, middleName, dictEducationLevelID) {
+        this.dictEducationLevelIDbyName.push({ lastName, firstName, middleName, dictEducationLevelID })
     }
 
-    getEmployeeByName (lastName, firstName, middleName) {
-        return this.employeeByName.find(o => o.lastName.toUpperCase() === lastName.toUpperCase() && o.firstName.toUpperCase() === firstName.toUpperCase() && o.middleName.toUpperCase() === middleName.toUpperCase())
+    getDictEducationLevelIDbyName (lastName, firstName, middleName) {
+        return this.dictEducationLevelIDbyName.find(o => o.lastName.toUpperCase() === lastName.toUpperCase() && o.firstName.toUpperCase() === firstName.toUpperCase() && o.middleName.toUpperCase() === middleName.toUpperCase())
+    }
+
+    setDictTarifCoeffIDbyName (lastName, firstName, middleName, dictTarifCoeffID) {
+        this.dictTarifCoeffIDbyName.push({ lastName, firstName, middleName, dictTarifCoeffID })
+    }
+
+    getDictTarifCoeffIDbyName (lastName, firstName, middleName) {
+        return this.dictTarifCoeffIDbyName.find(o => o.lastName.toUpperCase() === lastName.toUpperCase() && o.firstName.toUpperCase() === firstName.toUpperCase() && o.middleName.toUpperCase() === middleName.toUpperCase())
     }
 
     setTaxLimitUsed (code) {
@@ -119,12 +128,12 @@ class Dictionary {
     }
 
     getDictPositionIDbyPath (code, path) {
-        const found = this.dictPositionID.find(o => o.code == code && o.path === path)
+        const found = this.dictPositionID.find(o => o.code === code && o.path === path)
         return found ? found.ID : null
     }
 
     getDictPositionNamebyPath (code, path) {
-        const found = this.dictPositionID.find(o => o.code == code && o.path === path)
+        const found = this.dictPositionID.find(o => o.code === code && o.path === path)
         return found ? found.name : null
     }
 
