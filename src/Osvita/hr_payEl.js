@@ -5,7 +5,10 @@ const removeFile = require('../helper/removeFile')
 const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 
-const PAYEL001 = 1 // Посадовий оклад
+const PAYEL001 = 1 // Нормовано в днях
+const PAYEL002 = 2 // Нормовано в годинах
+const PAYEL003 = 3 // за ЦПД
+const PAYEL025 = 25 // Посадовий оклад
 const PAYEL146 = 146 // ПЕД. ЗАРПЛ
 const PAYEL147 = 147 // АДМИН ЗАРПЛ
 const PAYEL246 = 246 // ЗАРПЛ ВИХОВАТЕЛЯ
@@ -47,7 +50,10 @@ const makeFile = function (target) {
             if (!target.append) { removeFile(target.fullFileName) }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
-                { id: PAYEL001, code: '1', name: 'Посадовий оклад' },
+                { id: PAYEL001, code: '001', name: 'Нормовано в днях' },
+                { id: PAYEL002, code: '002', name: 'Нормовано в годинах' },
+                { id: PAYEL003, code: '003', name: 'за ЦПД' },
+                { id: PAYEL025, code: '025', name: 'Посадовий оклад' },
                 { id: PAYEL146, code: '146', name: 'Педагогічна зарплата' },
                 { id: PAYEL147, code: '147', name: 'Адміністративна зарплата' },
                 { id: PAYEL246, code: '246', name: 'Зарплата вихователя' },
@@ -80,6 +86,9 @@ const makeFile = function (target) {
 
 module.exports = {
     PAYEL001,
+    PAYEL002,
+    PAYEL003,
+    PAYEL025,
     PAYEL146,
     PAYEL147,
     PAYEL246,

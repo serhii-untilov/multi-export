@@ -28,9 +28,23 @@ class Dictionary {
         this.dictStaffCatIDbyPath = []
         this.dictTarifCoeffIDbyName = []
         this.dictEducationLevelIDbyName = []
+        this.experienceByName = []
 
         this.commonID = 0
+        this.employeeExperienceID = 0
         this.errorCount = 0
+    }
+
+    getEmployeeExperienceID () {
+        return ++this.employeeExperienceID
+    }
+
+    setExperienceByName (lastName, firstName, middleName, years, months, days) {
+        this.experienceByName.push({ lastName, firstName, middleName, years, months, days })
+    }
+
+    getExperienceByName (lastName, firstName, middleName) {
+        return this.experienceByName.find(o => o.lastName.toUpperCase() === lastName.toUpperCase() && o.firstName.toUpperCase() === firstName.toUpperCase() && o.middleName.toUpperCase() === middleName.toUpperCase())
     }
 
     setDictEducationLevelIDbyName (lastName, firstName, middleName, dictEducationLevelID) {

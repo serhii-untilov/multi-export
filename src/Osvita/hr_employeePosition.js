@@ -5,7 +5,7 @@ const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
 // const makePositionID = require('../helper/makePositionID')
-const { PAYEL001, PAYEL146, PAYEL147, PAYEL246, PAYEL247, PAYEL248, PAYEL249 } = require('./hr_payEl')
+const { PAYEL001, PAYEL002, PAYEL003, PAYEL025, PAYEL146, PAYEL147, PAYEL246, PAYEL247, PAYEL248, PAYEL249 } = require('./hr_payEl')
 const { ECB1, ECB2 } = require('./hr_dictCategoryECB')
 const path = require('path')
 
@@ -91,15 +91,26 @@ function makeTarget (config, dictionary, sourceFile, index) {
 }
 
 function getPayEl (record) {
-    if (record.SPECST === 1) {
-        // ознака спецстажу (1 - педпацівник)
-        return PAYEL146
-    } else if (record.SPECST === 2) {
-        // ознака спецстажу (2 - медпрацівник)
-        return PAYEL249
-    } else if (record.PR_GA) {
-        // ознака держслужбовця (1 - так)
+    if (record.VOPL === 1 && record.KAT === '26') {
+        return PAYEL003
+    }
+    // ознака держслужбовця (1 - так)
+    if (record.PR_GA) {
+        return PAYEL025
+    }
+    if (record.VOPL === 1) {
         return PAYEL001
+    }
+    if (record.VOPL === 2) {
+        return PAYEL002
+    }
+    // ознака спецстажу (1 - педпацівник)
+    if (record.SPECST === 1) {
+        return PAYEL146
+    }
+    // ознака спецстажу (2 - медпрацівник)
+    if (record.SPECST === 2) {
+        return PAYEL249
     }
     return null
 }

@@ -15,6 +15,9 @@ function setRecord (record, recordNumber) {
             this.dictionary.setDictEducationLevelIDbyName(record.FAM, record.IM, record.OT, dictEducationLevelID)
         }
     }
+    if (record.STYEAR || record.STMONTH || record.STDAY) {
+        this.dictionary.setExperienceByName(record.FAM, record.IM, record.OT, record.STYEAR, record.STMONTH, record.STDAY)
+    }
     return false
 }
 

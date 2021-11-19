@@ -13,10 +13,18 @@ function setRecord (record, recordNumber) {
 
     this.entity.push(new Entity())
     const ID = Number(record.TAB) + Number(record.BOL) * 10000
-    this.entity[0].ID = ID
+    this.entity[0].ID = this.dictionary.getEmployeeExperienceID()
     this.entity[0].employeeID = ID
     this.entity[0].employeeNumberID = ID
-    if (record.SPECST === 1) {
+    const experience = this.dictionary.getExperienceByName(record.FAM, record.IM, record.OT)
+    if (experience) {
+        const baseDate = new Date('2021-09-01')
+        baseDate.setFullYear(baseDate.getFullYear() - experience.years)
+        baseDate.setMonth(baseDate.getMonth() - experience.months)
+        baseDate.setDate(baseDate.getDate() - experience.days)
+        this.entity[0].calcDate = dateFormat(baseDate)
+        this.entity[0].dictExperienceID = this.entity[0].calcDate ? 5 : 0
+    } else if (record.SPECST === 1) {
         // ознака спецстажу (1 - педпацівник)
         this.entity[0].dictExperienceID = 5
         this.entity[0].calcDate = record.DATPOST ? dateFormat(record.DATPOST) : ''
@@ -31,7 +39,7 @@ function setRecord (record, recordNumber) {
     }
     if (this.entity[0].dictExperienceID) {
         this.entity.push(new Entity())
-        this.entity[1].ID = ID
+        this.entity[1].ID = this.dictionary.getEmployeeExperienceID()
         this.entity[1].employeeID = ID
         this.entity[1].employeeNumberID = ID
         this.entity[1].dictExperienceID = 3 // Страховий
