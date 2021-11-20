@@ -3,7 +3,7 @@ function decodeIPN (ipn) {
     const days = parseInt(ipn.substring(0, 5))
     const birthDate = new Date('1899-12-31')
     birthDate.setDate(birthDate.getDate() + days)
-    const sex = parseInt(ipn.substring(0, 4)) % 2 ? 'W' : 'M'
+    const sex = parseInt(ipn.substring(8, 9)) % 2 ? 'W' : 'M'
     return { birthDate, sex }
 }
 
