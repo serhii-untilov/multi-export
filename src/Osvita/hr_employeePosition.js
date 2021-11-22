@@ -40,13 +40,13 @@ function setRecord (record, recordNumber) {
     this.entity.dictCategoryECBID = record.INVALID ? ECB2 : ECB1
 
     if (record.S00) {
-        this.entity.payElID = PAYEL146
+        this.entity.payElID = getPayEl(record) || PAYEL146
         this.entity.accrualSum = record.S00
     } else if (record.S01) {
-        this.entity.payElID = PAYEL147
+        this.entity.payElID = getPayEl(record) || PAYEL147
         this.entity.accrualSum = record.S01
     } else if (record.S03) {
-        this.entity.payElID = PAYEL246
+        this.entity.payElID = getPayEl(record) || PAYEL246
         this.entity.accrualSum = record.S03
     } else if (record.S04) {
         this.entity.payElID = getPayEl(record) || PAYEL247
@@ -64,7 +64,7 @@ function setRecord (record, recordNumber) {
         this.entity.payElID = getPayEl(record) || PAYEL247
         this.entity.accrualSum = record.S08
     } else {
-        this.entity.payElID = PAYEL146
+        this.entity.payElID = getPayEl(record) || PAYEL146
         this.entity.accrualSum = 0
     }
 
