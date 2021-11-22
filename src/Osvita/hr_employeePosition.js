@@ -91,17 +91,20 @@ function makeTarget (config, dictionary, sourceFile, index) {
 }
 
 function getPayEl (record) {
-    if (record.VOPL === 1 && record.VS === 26) {
+    let VOPL = record.VOPL || 1
+    if (VOPL > 2) { VOPL = 1 }
+
+    if (VOPL === 1 && record.VS === 26) {
         return PAYEL003
     }
     // ознака держслужбовця (1 - так)
     if (record.PR_GA) {
         return PAYEL025
     }
-    if (record.VOPL === 1) {
+    if (VOPL === 1) {
         return PAYEL001
     }
-    if (record.VOPL === 2) {
+    if (VOPL === 2) {
         return PAYEL002
     }
     // ознака спецстажу (1 - педпацівник)

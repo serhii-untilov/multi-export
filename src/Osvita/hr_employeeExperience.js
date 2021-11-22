@@ -18,7 +18,7 @@ function setRecord (record, recordNumber) {
     this.entity[0].employeeNumberID = ID
     const experience = this.dictionary.getExperienceByName(record.FAM, record.IM, record.OT)
     if (experience) {
-        const baseDate = new Date('2021-10-01')
+        const baseDate = new Date(this.baseDate || '2021-10-01')
         baseDate.setFullYear(baseDate.getFullYear() - experience.years)
         baseDate.setMonth(baseDate.getMonth() - experience.months)
         baseDate.setDate(baseDate.getDate() - experience.days)
@@ -57,6 +57,7 @@ function makeTarget (config, dictionary, sourceFile, index) {
     target.entity = new Entity()
     target.setRecord = setRecord
     target.append = index > 0
+    target.baseDate = config.osvitaBaseDate
     return makeFile(target)
 }
 

@@ -351,6 +351,13 @@ document.getElementById('select-osvita-path').addEventListener('click', async ()
     }
 })
 
+const osvitaBaseDate = document.getElementById('osvita-base-date')
+osvitaBaseDate.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.osvitaBaseDate = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
 const targetPath = document.getElementById('target-path')
 targetPath.addEventListener('change', (evt) => {
     evt.preventDefault()
@@ -389,6 +396,7 @@ ipcRenderer.on('config', (event, config) => {
     parusDbPath.value = config.parusDbPath || ''
     c1DbPath.value = config.c1DbPath || ''
     osvitaDbPath.value = config.osvitaDbPath || ''
+    osvitaBaseDate.value = config.osvitaBaseDate || ''
 
     apkHost.value = config.apkHost || ''
     apkPort.value = config.apkPort || ''

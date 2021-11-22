@@ -29,6 +29,7 @@ class Config {
         this.parusDbPath = ''
         this.c1DbPath = ''
         this.osvitaDbPath = ''
+        this.osvitaBaseDate = ''
 
         // APK DB connect
         this.apkHost = 'localhost'
