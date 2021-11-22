@@ -91,7 +91,7 @@ function makeTarget (config, dictionary, sourceFile, index) {
 }
 
 function getPayEl (record) {
-    if (record.VOPL === 1 && record.KAT === '26') {
+    if (record.VOPL === 1 && record.VS === 26) {
         return PAYEL003
     }
     // ознака держслужбовця (1 - так)
