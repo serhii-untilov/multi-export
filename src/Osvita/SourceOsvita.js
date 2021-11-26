@@ -38,6 +38,7 @@ const hr_dictTarifCoeff = require('./hr_dictTarifCoeff')
 const S = require('./S')
 const hr_dictEducationLevel = require('./hr_dictEducationLevel')
 const hr_employeeEducation = require('./hr_employeeEducation')
+const hr_employeeAccrual = require('./hr_employeeAccrual')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -114,7 +115,8 @@ class SourceOsvita extends Source {
                         ac_addresses,
                         hr_employeeBenefits,
                         hr_employeeExperience,
-                        hr_employeeEducation
+                        hr_employeeEducation,
+                        hr_employeeAccrual
                     ]
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {

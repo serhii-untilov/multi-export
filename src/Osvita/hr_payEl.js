@@ -11,6 +11,7 @@ const PAYEL003 = 3 // за ЦПД
 const PAYEL025 = 25 // Посадовий оклад
 const PAYEL146 = 146 // ПЕД. ЗАРПЛ
 const PAYEL147 = 147 // АДМИН ЗАРПЛ
+const PAYEL178 = 178 // Відпустка для догляду за дитиною до 3-х років
 const PAYEL246 = 246 // ЗАРПЛ ВИХОВАТЕЛЯ
 const PAYEL247 = 247 // ИНША ЗАРПЛ
 const PAYEL248 = 248 // ЗАРПЛ СПЕЦИАЛИСТА
@@ -56,6 +57,7 @@ const makeFile = function (target) {
                 { id: PAYEL025, code: '025', name: 'Посадовий оклад' },
                 { id: PAYEL146, code: '146', name: 'Педагогічна зарплата' },
                 { id: PAYEL147, code: '147', name: 'Адміністративна зарплата' },
+                { id: PAYEL178, code: '178', name: 'Відпустка для догляду за дитиною до 3-х років' },
                 { id: PAYEL246, code: '246', name: 'Зарплата вихователя' },
                 { id: PAYEL247, code: '247', name: 'Інша зарплата' },
                 { id: PAYEL248, code: '248', name: 'Зарплата спеціаліста' },
@@ -91,6 +93,7 @@ module.exports = {
     PAYEL025,
     PAYEL146,
     PAYEL147,
+    PAYEL178,
     PAYEL246,
     PAYEL247,
     PAYEL248,
