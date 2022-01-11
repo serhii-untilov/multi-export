@@ -9,7 +9,8 @@ const Entity = require('../entity/EmployeeBenefits')
 const TARGET_FILE_NAME = 'Пільги працівників (hr_employeeBenefits).csv'
 
 function setRecord (record, recordNumber) {
-    const ID = Number(record.TAB) + Number(record.BOL) * 10000
+    if (record.DATZ && record.DATZ < this.baseDate) { return false }
+    const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     this.entity.ID = ID
     this.entity.orgID = record.BOL
     this.entity.employeeID = ID
@@ -27,6 +28,7 @@ function makeTarget (config, dictionary, sourceFile, index) {
     target.entity = new Entity()
     target.setRecord = setRecord
     target.append = index > 0
+    target.baseDate = new Date(config.osvitaBaseDate || '2022-01-01')
     return makeFile(target)
 }
 

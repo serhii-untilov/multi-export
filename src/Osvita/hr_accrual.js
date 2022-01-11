@@ -45,7 +45,7 @@ function setRecord (record, recordNumber) {
     entity1.periodCalc = periodCalc
     entity1.periodSalary = periodCalc
     entity1.tabNum = record.TAB
-    entity1.employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000
+    entity1.employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(10000, record.UWOL || 0)
     entity1.paySum = record.SUMOTP || ''
     if (daysInMonth) {
         entity1.days = (daysInMonth || 0) - (record.ADMDNI || 0)

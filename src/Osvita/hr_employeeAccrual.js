@@ -10,8 +10,9 @@ const Entity = require('../entity/PayRetention')
 const TARGET_FILE_NAME = 'Постійні нарахування працівників (hr_employeeAccrual).csv'
 
 function setRecord (record, recordNumber) {
+    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     if (record.OTPUX !== 1) { return false }
-    const ID = Number(record.TAB) + Number(record.BOL) * 10000
+    const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
 
     this.entity.ID = ID
     this.entity.tabNum = record.TAB
@@ -34,7 +35,7 @@ function makeTarget (config, dictionary, sourceFile, index) {
     target.entity = new Entity()
     target.setRecord = setRecord
     target.append = index > 0
-    target.baseDate = config.osvitaBaseDate
+    target.baseDate = new Date(config.osvitaBaseDate || '2022-01-01')
     return makeFile(target)
 }
 
