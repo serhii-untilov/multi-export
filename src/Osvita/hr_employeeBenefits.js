@@ -9,14 +9,12 @@ const Entity = require('../entity/EmployeeBenefits')
 const TARGET_FILE_NAME = 'Пільги працівників (hr_employeeBenefits).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     this.entity.ID = ID
     this.entity.orgID = record.BOL
     this.entity.employeeID = ID
     this.entity.dictBenefitsKindID = record.KATCHER
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
-
     return !!(this.entity.dictBenefitsKindID)
 }
 

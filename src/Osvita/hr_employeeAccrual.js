@@ -10,12 +10,11 @@ const Entity = require('../entity/PayRetention')
 const TARGET_FILE_NAME = 'Постійні нарахування працівників (hr_employeeAccrual).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     if (record.OTPUX !== 1) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
 
     this.entity.ID = ID
-    this.entity.tabNum = record.TAB
+    this.entity.tabNum = record.UWOL ? ID : record.TAB
     this.entity.employeeID = ID
     this.entity.taxCode = record.IKOD ? record.IKOD : ''
     this.entity.employeeNumberID = ID

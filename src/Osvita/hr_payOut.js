@@ -9,7 +9,6 @@ const Entity = require('../entity/PayOut')
 const TARGET_FILE_NAME = 'Шаблони виплати (hr_payOut).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     if (!record.STEPEN1) { return false }
     this.entity.ID = Number(record.STEPEN1) + Number(record.BOL) * 10000
     this.entity.code = record.STEPEN1

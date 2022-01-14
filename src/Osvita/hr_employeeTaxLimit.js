@@ -9,11 +9,10 @@ const Entity = require('../entity/EmployeeTaxLimit')
 const TARGET_FILE_NAME = 'Пільги ПДФО працівників (hr_employeeTaxLimit).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     if (!record.KOD_PIL || !Number(record.KOD_PIL)) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     this.entity.ID = ID
-    this.entity.tabNum = record.TAB
+    this.entity.tabNum = record.UWOL ? ID : record.TAB
     this.entity.employeeID = ID
     this.entity.taxCode = record.IKOD
     this.entity.employeeNumberID = ID

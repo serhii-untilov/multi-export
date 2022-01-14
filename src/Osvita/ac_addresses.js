@@ -8,7 +8,6 @@ const Entity = require('../entity/Addresses')
 const TARGET_FILE_NAME = 'Адреси працівників (ac_address).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     this.entity.ID = ID
     this.entity.orgID = record.BOL

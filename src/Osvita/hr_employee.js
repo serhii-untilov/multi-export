@@ -10,7 +10,6 @@ const Entity = require('../entity/Employee')
 const TARGET_FILE_NAME = 'Працівники (hr_employee).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     this.entity.ID = ID
     this.entity.organizationID = record.BOL
@@ -19,7 +18,7 @@ function setRecord (record, recordNumber) {
     this.entity.middleName = record.OT
     this.entity.shortFIO = record.FAM + ' ' + record.IM[0] + '.' + record.OT[0] + '.'
     this.entity.fullFIO = record.FAM + ' ' + record.IM + ' ' + record.OT
-    this.entity.tabNum = record.TAB
+    this.entity.tabNum = record.UWOL ? ID : record.TAB
     this.entity.sexType = record.KAT === '2' ? 'M' : record.KAT === '1' ? 'W' : ''
     this.entity.taxCode = record.IKOD
     this.entity.description = this.entity.fullFIO + ' (' + record.TAB + ')'

@@ -8,7 +8,6 @@ const Entity = require('../entity/Organization')
 const TARGET_FILE_NAME = 'Організація (hr_organization).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     this.entity.ID = record.BOL
     this.entity.code = '' + record.BOL
     if (this.dictionary.getOrganizationID(this.entity.code)) { return false }

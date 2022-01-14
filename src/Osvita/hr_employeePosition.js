@@ -13,11 +13,10 @@ const Entity = require('../entity/EmployeePosition')
 const TARGET_FILE_NAME = 'Призначення працівників (hr_employeePosition).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
 
     this.entity.ID = ID
-    this.entity.tabNum = record.TAB
+    this.entity.tabNum = record.UWOL ? ID : record.TAB
     this.entity.employeeID = ID
     this.entity.taxCode = record.IKOD ? record.IKOD : ''
     this.entity.employeeNumberID = ID

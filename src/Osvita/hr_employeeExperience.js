@@ -9,7 +9,6 @@ const Entity = require('../entity/EmployeeExperience')
 const TARGET_FILE_NAME = 'Стаж роботи працівників (hr_employeeExperience).csv'
 
 function setRecord (record, recordNumber) {
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
     this.entity = []
     this.entity.push(new Entity())
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
