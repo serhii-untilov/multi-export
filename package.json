@@ -1,6 +1,6 @@
 {
   "name": "multi-export",
-  "version": "1.4.08",
+  "version": "1.4.09",
   "description": "Multi export for import into an A5 DB",
   "main": "main.js",
   "scripts": {

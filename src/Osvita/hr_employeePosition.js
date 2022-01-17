@@ -21,7 +21,7 @@ function setRecord (record, recordNumber) {
     this.entity.taxCode = record.IKOD ? record.IKOD : ''
     this.entity.employeeNumberID = ID
 
-    this.entity.organizationID = record.BOL
+    this.entity.orgID = record.BOL
     this.entity.departmentID = this.dictionary.getDepartmentID(record.BOL)
     this.entity.dictPositionID = this.dictionary.getDictPositionIDbyPath(record.B_DOL, path.dirname(this.sourceFullFileName)) || ''
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
