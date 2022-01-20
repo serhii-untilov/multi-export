@@ -15,7 +15,7 @@ function setRecord (record, recordNumber) {
     this.entity.employeeID = ID
     this.entity.orgID = record.BOL
     this.entity.taxCode = record.IKOD
-    this.entity.tabNum = record.UWOL ? ID : record.TAB
+    this.entity.tabNum = record.TAB
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
     this.entity.description = record.FAM + ' ' + record.IM + ' ' + record.OT + ' (' + record.TAB + ')'

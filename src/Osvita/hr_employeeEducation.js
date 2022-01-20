@@ -11,7 +11,7 @@ const TARGET_FILE_NAME = 'Освіта (hr_employeeEducation).csv'
 function setRecord (record, recordNumber) {
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     this.entity.ID = ID
-    this.entity.tabNum = record.UWOL ? ID : record.TAB
+    this.entity.tabNum = record.TAB
     this.entity.employeeID = ID
     this.entity.taxCode = record.IKOD ? record.IKOD : ''
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
