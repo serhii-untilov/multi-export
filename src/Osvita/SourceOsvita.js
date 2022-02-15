@@ -39,6 +39,7 @@ const S = require('./S')
 const hr_dictEducationLevel = require('./hr_dictEducationLevel')
 const hr_employeeEducation = require('./hr_employeeEducation')
 const hr_employeeAccrual = require('./hr_employeeAccrual')
+const ac_dictProgClass = require('./ac_dictProgClass')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -62,6 +63,12 @@ class SourceOsvita extends Source {
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
                         await S(config, dictionary, fileList[j], j)
+                    }
+                })
+                .then(() => getAllFiles(config.osvitaDbPath, /^B[0-9]+\.DBF/i))
+                .then(async (fileList) => {
+                    for (let j = 0; j < fileList.length; j++) {
+                        await ac_dictProgClass(config, dictionary, fileList[j], j)
                     }
                 })
                 .then(() => getAllFiles(config.osvitaDbPath, /^DO[0-9]+\.DBF/i))

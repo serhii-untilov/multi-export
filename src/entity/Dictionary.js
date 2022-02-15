@@ -29,10 +29,26 @@ class Dictionary {
         this.dictTarifCoeffIDbyName = []
         this.dictEducationLevelIDbyName = []
         this.experienceByName = []
+        this.dictProgClass = []
 
         this.commonID = 0
         this.employeeExperienceID = 0
         this.errorCount = 0
+    }
+
+    getDictProgClass (code) {
+        return this.dictProgClass.find(o => o.code === code)
+    }
+
+    getNextDictProgClassID (code) {
+        const found = this.dictProgClass.find(o => o.code === code)
+        if (found) { return found.ID }
+        const maxID = this.dictProgClass.reduce((a, b) => { return Math.max(a, b.ID) }, 0)
+        return maxID + 1
+    }
+
+    setDictProgClassID (code, ID) {
+        this.dictProgClass.push({ code, ID })
     }
 
     getEmployeeExperienceID () {

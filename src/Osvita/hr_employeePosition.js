@@ -12,7 +12,7 @@ const path = require('path')
 const Entity = require('../entity/EmployeePosition')
 const TARGET_FILE_NAME = 'Призначення працівників (hr_employeePosition).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
 
     this.entity.ID = ID
@@ -38,6 +38,8 @@ function setRecord (record, recordNumber) {
     this.entity.dictStaffCatID = this.dictionary.getDictStaffCatIDbyPath(record.KAT, path.dirname(this.sourceFullFileName)) || ''
     this.entity.dictFundSourceID = record.FOND ? record.FOND : ''
     this.entity.dictCategoryECBID = record.INVALID ? ECB2 : ECB1
+    const dictProgClass = this.dictionary.getDictProgClass(record.KPK)
+    this.entity.dictProgClassID = dictProgClass ? dictProgClass.ID : ''
 
     if (record.S00) {
         this.entity.payElID = getPayEl(record) || PAYEL146

@@ -36,6 +36,7 @@ class EmployeePosition extends Entity {
         this.orderNumber = ''
         this.orderDate = ''
         this.dictTarifCoeffID = ''
+        this.dictProgClassID = ''
     }
 }
 
