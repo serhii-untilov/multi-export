@@ -4,6 +4,7 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const { PAYEL401, PAYEL402, PAYEL403 } = require('./hr_payEl')
+const round = require('../helper/round')
 
 const Entity = require('../entity/Accrual')
 const TARGET_FILE_NAME = 'Архів розрахункових листів працівників (hr_accrual).csv'
@@ -31,7 +32,7 @@ function setRecord (record, recordNumber) {
     entity0.periodSalary = periodCalc
     entity0.tabNum = record.TAB
     entity0.employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000
-    entity0.paySum = Math.round((record.VIBBOL || 0) + (record.OTPSUM || 0) + (record.OTCHS || 0) + (record.OFMP || 0) + (record.ODOPS || 0), 2)
+    entity0.paySum = (record.VIBBOL || 0) + (record.OTPSUM || 0) + (record.OTCHS || 0) + (record.OFMP || 0) + (record.ODOPS || 0)
     entity0.days = daysInMonth
     entity0.flagsRec = 8 // | (record.STOR > 0 ? 512 : 0) // 8 - import, 512 - storno
     if (entity0.paySum > 0 && entity0.days > 0) {
