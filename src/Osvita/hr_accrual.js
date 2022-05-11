@@ -4,7 +4,6 @@ const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const { PAYEL401, PAYEL402, PAYEL403 } = require('./hr_payEl')
-const round = require('../helper/round')
 
 const Entity = require('../entity/Accrual')
 const TARGET_FILE_NAME = 'Архів розрахункових листів працівників (hr_accrual).csv'
