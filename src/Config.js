@@ -30,6 +30,7 @@ class Config {
         this.c1DbPath = ''
         this.osvitaDbPath = ''
         this.osvitaBaseDate = ''
+        this.osvitaVersion = ''
 
         // APK DB connect
         this.apkHost = 'localhost'

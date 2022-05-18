@@ -358,6 +358,13 @@ osvitaBaseDate.addEventListener('change', (evt) => {
     ipcRenderer.send('set-config', this.config)
 })
 
+const osvitaVersion = document.getElementById('osvita-version')
+osvitaVersion.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.osvitaVersion = evt.target.selectedIndex // value
+    ipcRenderer.send('set-config', this.config)
+})
+
 const targetPath = document.getElementById('target-path')
 targetPath.addEventListener('change', (evt) => {
     evt.preventDefault()
@@ -397,6 +404,7 @@ ipcRenderer.on('config', (event, config) => {
     c1DbPath.value = config.c1DbPath || ''
     osvitaDbPath.value = config.osvitaDbPath || ''
     osvitaBaseDate.value = config.osvitaBaseDate || ''
+    osvitaVersion.selectedIndex = config.osvitaVersion || ''
 
     apkHost.value = config.apkHost || ''
     apkPort.value = config.apkPort || ''

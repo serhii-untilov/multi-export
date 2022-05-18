@@ -208,6 +208,20 @@
           <div id="osvita-panel">
             <div class="columns">
               <div class="column col-8">
+                <label class="form-label" for="osvita-version">Версія програми:</label>
+                <select class="form-select" id="osvita-version" >
+                  <option>Без тарифікації (для департаменту)</option>
+                  <option>З тарифікацією (для організацій)</option>
+                </select>
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="osvita-base-date">Вихідні дані станом на дату:</label>
+                <input class="form-input" type="date" id="osvita-base-date" placeholder="Вкажіть дату на яку розраховано стаж">
+              </div>
+            </div>
+            <br />
+            <div class="columns">
+              <div class="column col-8">
                 <label class="form-label" for="osvita-db-path">Каталог бази даних</label>
                 <div class="columns">
                   <div class="column col-11">
@@ -219,8 +233,6 @@
                 </div>
               </div>
               <div class="column col-4">
-                <label class="form-label" for="osvita-base-date">Вихідні дані станом на дату:</label>
-                <input class="form-input" type="date" id="osvita-base-date" placeholder="Вкажіть дату на яку розраховано стаж">
               </div>
             </div>
           </div>
