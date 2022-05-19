@@ -65,6 +65,10 @@ const renderPanels = () => {
     setVisible(bodyPanel, false)
     setVisible(footerPanel, this.config && this.config.source === Config.HOME)
     setVisible(resultPanel, false)
+    setVisible(osvitaOrganization, osvitaVersion.selectedIndex === 0)
+    setVisible(osvitaOrganizationLabel, osvitaVersion.selectedIndex === 0)
+    setVisible(osvitaDepartment, osvitaVersion.selectedIndex === 0)
+    setVisible(osvitaDepartmentLabel, osvitaVersion.selectedIndex === 0)
 }
 
 const renderMenu = () => {
@@ -358,11 +362,31 @@ osvitaBaseDate.addEventListener('change', (evt) => {
     ipcRenderer.send('set-config', this.config)
 })
 
+const osvitaOrganizationLabel = document.getElementById('osvita-organization-label')
+const osvitaOrganization = document.getElementById('osvita-organization')
+osvitaOrganization.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.osvitaOrganization = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const osvitaDepartmentLabel = document.getElementById('osvita-department-label')
+const osvitaDepartment = document.getElementById('osvita-department')
+osvitaDepartment.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.osvitaDepartment = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
 const osvitaVersion = document.getElementById('osvita-version')
 osvitaVersion.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.osvitaVersion = evt.target.selectedIndex // value
     ipcRenderer.send('set-config', this.config)
+    setVisible(osvitaOrganization, osvitaVersion.selectedIndex === 0)
+    setVisible(osvitaOrganizationLabel, osvitaVersion.selectedIndex === 0)
+    setVisible(osvitaDepartment, osvitaVersion.selectedIndex === 0)
+    setVisible(osvitaDepartmentLabel, osvitaVersion.selectedIndex === 0)
 })
 
 const targetPath = document.getElementById('target-path')
@@ -405,6 +429,8 @@ ipcRenderer.on('config', (event, config) => {
     osvitaDbPath.value = config.osvitaDbPath || ''
     osvitaBaseDate.value = config.osvitaBaseDate || ''
     osvitaVersion.selectedIndex = config.osvitaVersion || ''
+    osvitaOrganization.value = config.osvitaOrganization || ''
+    osvitaDepartment.value = config.osvitaDepartment || ''
 
     apkHost.value = config.apkHost || ''
     apkPort.value = config.apkPort || ''

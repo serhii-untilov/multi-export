@@ -8,6 +8,8 @@ const Entity = require('../entity/Department')
 const TARGET_FILE_NAME = 'Підрозділи (hr_department).csv'
 
 function setRecord (record, recordNumber) {
+    if (this.mapper) this.mapper(record)
+    if (this.filter && !this.filter(record)) return false
     this.entity.ID = record.BOL
     this.entity.code = record.BOL
     if (this.dictionary.getDepartmentID(this.entity.code)) { return false }
@@ -28,6 +30,8 @@ function makeTarget (config, dictionary, sourceFile, index) {
     target.setRecord = setRecord
     target.append = index > 0
     target.baseDate = new Date(config.osvitaBaseDate || '2022-01-01')
+    target.filter = config.filter
+    target.mapper = config.mapper
     return makeFile(target)
 }
 

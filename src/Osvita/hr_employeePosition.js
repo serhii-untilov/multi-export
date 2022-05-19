@@ -12,7 +12,9 @@ const path = require('path')
 const Entity = require('../entity/EmployeePosition')
 const TARGET_FILE_NAME = 'Призначення працівників (hr_employeePosition).csv'
 
-function setRecord(record, recordNumber) {
+function setRecord (record, recordNumber) {
+    if (this.mapper) this.mapper(record)
+    if (this.filter && !this.filter(record)) return false
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
 
     this.entity.ID = ID
@@ -90,6 +92,8 @@ function makeTarget (config, dictionary, sourceFile, index) {
     target.setRecord = setRecord
     target.append = index > 0
     target.baseDate = new Date(config.osvitaBaseDate || '2022-01-01')
+    target.filter = config.filter
+    target.mapper = config.mapper
     return makeFile(target)
 }
 

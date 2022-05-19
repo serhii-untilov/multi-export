@@ -1,12 +1,10 @@
 'use strict'
 
-const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const path = require('path')
 
 const Entity = require('../entity/SimpleEntity')
-const TARGET_FILE_NAME = null
 
 function setRecord (record, recordNumber) {
     this.entity.code = record.K_B

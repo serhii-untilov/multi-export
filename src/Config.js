@@ -31,6 +31,8 @@ class Config {
         this.osvitaDbPath = ''
         this.osvitaBaseDate = ''
         this.osvitaVersion = ''
+        this.osvitaOrganization = ''
+        this.osvitaDepartment = ''
 
         // APK DB connect
         this.apkHost = 'localhost'

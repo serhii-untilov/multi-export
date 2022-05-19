@@ -1,6 +1,5 @@
 'use strict'
 
-const getFullFileName = require('../helper/getFullFileName')
 const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 

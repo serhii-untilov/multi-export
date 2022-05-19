@@ -40,11 +40,38 @@ const hr_dictEducationLevel = require('./hr_dictEducationLevel')
 const hr_employeeEducation = require('./hr_employeeEducation')
 const hr_employeeAccrual = require('./hr_employeeAccrual')
 const ac_dictProgClass = require('./ac_dictProgClass')
+const path = require('path')
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
+const MARGIN_DATE = new Date(new Date().getFullYear(), 0, 1)
+
 class SourceOsvita extends Source {
     async read (config, sendFile, sendDone, sendFailed) {
+        const fieldsMap = [
+            { DATUWOL: 'DATZ' }
+        ]
+        config.mapper = (record) => {
+            fieldsMap.forEach((o) => {
+                const source = Object.keys(o)[0]
+                const destination = Object.values(o)[0]
+                if (source in record && destination in record) {
+                    record[destination] = record[source]
+                }
+            })
+        }
+        config.filter = (record) => {
+            if (config.osvitaVersion === 0 &&
+                config.osvitaDepartment.length &&
+                'OTD' in record &&
+                record.OTD.toString() !== config.osvitaDepartment) {
+                return false
+            }
+            if (record.DATZ && record.DATZ < MARGIN_DATE) {
+                return false
+            }
+            return true
+        }
         try {
             const targetList = []
             const dictionary = new Dictionary(config)
@@ -127,6 +154,8 @@ class SourceOsvita extends Source {
                     ]
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
+                            if (config.osvitaVersion === 0 && config.osvitaOrganization.length && organizationNumber(fileList[j]) !== config.osvitaOrganization) continue
+
                             const target = await sourceList[i](config, dictionary, fileList[j], j)
                             pushTarget(targetList, target)
                             await sendFile(target)
@@ -175,6 +204,11 @@ function pushTarget (targetList, target) {
     } else {
         targetList.push(target)
     }
+}
+
+function organizationNumber (fileName) {
+    const name = path.parse(fileName).name
+    return name[name.length - 1]
 }
 
 module.exports = SourceOsvita

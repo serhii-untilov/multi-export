@@ -13,6 +13,8 @@ const currentDate = new Date()
 const minDate = new Date(currentDate.setMonth(currentDate.getMonth() - 14))
 
 function setRecord (record, recordNumber) {
+    if (this.mapper) this.mapper(record)
+    if (this.filter && !this.filter(record)) return false
     this.entity = []
 
     const year = Number(('' + record.PERIOD).substring(0, 4))
@@ -83,6 +85,8 @@ function makeTarget (config, dictionary, sourceFile, index) {
     target.entity = new Entity()
     target.setRecord = setRecord
     target.append = index > 0
+    target.filter = config.filter
+    target.mapper = config.mapper
     return makeFile(target)
 }
 
