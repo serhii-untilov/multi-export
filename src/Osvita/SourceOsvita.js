@@ -42,6 +42,11 @@ const hr_employeeAccrual = require('./hr_employeeAccrual')
 const ac_dictProgClass = require('./ac_dictProgClass')
 const path = require('path')
 
+const Version = {
+    NO_TARIFFING: 0, // Без тарифікації (для департаменту освіти)
+    TARIFFING: 1 // Тарифікація (для установ освіти)
+}
+
 const ARC_FILE_NAME = 'Osvita.zip'
 
 const MARGIN_DATE = new Date(new Date().getFullYear(), 0, 1)
@@ -51,17 +56,19 @@ class SourceOsvita extends Source {
         const fieldsMap = [
             { DATUWOL: 'DATZ' }
         ]
-        config.mapper = (record) => {
-            fieldsMap.forEach((o) => {
-                const source = Object.keys(o)[0]
-                const destination = Object.values(o)[0]
-                if (source in record && destination in record) {
-                    record[destination] = record[source]
-                }
-            })
+        if (config.osvitaVersion === Version.NO_TARIFFING) {
+            config.mapper = (record) => {
+                fieldsMap.forEach((o) => {
+                    const source = Object.keys(o)[0]
+                    const destination = Object.values(o)[0]
+                    if (source in record && destination in record) {
+                        record[destination] = record[source]
+                    }
+                })
+            }
         }
         config.filter = (record) => {
-            if (config.osvitaVersion === 0 &&
+            if (config.osvitaVersion === Version.NO_TARIFFING &&
                 config.osvitaDepartment.length &&
                 'OTD' in record &&
                 record.OTD.toString() !== config.osvitaDepartment) {
@@ -154,7 +161,7 @@ class SourceOsvita extends Source {
                     ]
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
-                            if (config.osvitaVersion === 0 && config.osvitaOrganization.length && organizationNumber(fileList[j]) !== config.osvitaOrganization) continue
+                            if (config.osvitaVersion === Version.NO_TARIFFING && config.osvitaOrganization.length && organizationNumber(fileList[j]) !== config.osvitaOrganization) continue
 
                             const target = await sourceList[i](config, dictionary, fileList[j], j)
                             pushTarget(targetList, target)
