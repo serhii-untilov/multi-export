@@ -126,11 +126,13 @@ class Dictionary {
     }
 
     getDictStaffCatIDbyPath (code, path) {
+        code = code.toString()
         const found = this.dictStaffCatIDbyPath.find(o => o.code === code && o.path === path)
         return found ? found.ID : null
     }
 
     setDictStaffCatIDbyPath (code, name, path) {
+        code = code.toString()
         const found = this.dictStaffCatIDbyPath.find(o => o.name === name)
         const ID = found ? found.ID : this.getCommonID()
         this.dictStaffCatIDbyPath.push({ ID, code, name, path })
@@ -158,16 +160,19 @@ class Dictionary {
     }
 
     getDictPositionIDbyPath (code, path) {
+        code = code.toString()
         const found = this.dictPositionID.find(o => o.code === code && o.path === path)
         return found ? found.ID : null
     }
 
     getDictPositionNamebyPath (code, path) {
+        code = code.toString()
         const found = this.dictPositionID.find(o => o.code === code && o.path === path)
         return found ? found.name : null
     }
 
     setDictPositionIDbyPath (code, name, path) {
+        code = code.toString()
         const found = this.dictPositionID.find(o => o.name === name)
         const ID = found ? found.ID : this.getCommonID()
         this.dictPositionID.push({ ID, code, name, path })
@@ -231,10 +236,12 @@ class Dictionary {
     }
 
     getPayOut (code, path) {
+        code = code.toString()
         return this.payOut.find(o => o.code === code && o.path === path)
     }
 
     setPayOut (ID, code, name, path) {
+        code = code.toString()
         this.payOut.push({ ID, code, name, path })
     }
 
