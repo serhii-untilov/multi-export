@@ -16,10 +16,16 @@ const PAYEL246 = 246 // ЗАРПЛ ВИХОВАТЕЛЯ
 const PAYEL247 = 247 // ИНША ЗАРПЛ
 const PAYEL248 = 248 // ЗАРПЛ СПЕЦИАЛИСТА
 const PAYEL249 = 249 // ЗАРПЛ МЕДПРАЦІВНИКА
-const PAYEL301 = 301 // Профсоюзний внесок
+const PAYEL301 = 301 // Профспілковий внесок
 const PAYEL401 = 401 // Заробіток для розрахунку лікарняного
 const PAYEL402 = 402 // Заробіток для розрахунку відпустки
 const PAYEL403 = 403 // Заробіток для розрахунку середнього заробітку
+
+const PAYEL006 = 6 // Надбавка до окладу
+const PAYEL011 = 11 // Надбавка за ранг
+const PAYEL012 = 12 // Надбавка за вислугу
+const PAYEL013 = 13 // Надбавка за інтенсивність праці
+const PAYEL029 = 29 // Аванс
 
 const Entity = require('../entity/PayEl')
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
@@ -62,10 +68,16 @@ const makeFile = function (target) {
                 { id: PAYEL247, code: '247', name: 'Інша зарплата' },
                 { id: PAYEL248, code: '248', name: 'Зарплата спеціаліста' },
                 { id: PAYEL249, code: '249', name: 'Зарплата медпрацівників' },
-                { id: PAYEL301, code: '301', name: 'Профсоюзний внесок' },
+                { id: PAYEL301, code: '301', name: 'Профспілковий внесок' },
                 { id: PAYEL401, code: '401', name: 'Заробіток для розрахунку лікарняного' },
                 { id: PAYEL402, code: '402', name: 'Заробіток для розрахунку відпустки' },
-                { id: PAYEL403, code: '403', name: 'Заробіток для розрахунку середнього заробітку' }
+                { id: PAYEL403, code: '403', name: 'Заробіток для розрахунку середнього заробітку' },
+
+                { id: PAYEL006, code: '006', name: 'Надбавка до окладу' },
+                { id: PAYEL011, code: '011', name: 'Надбавка за ранг' },
+                { id: PAYEL012, code: '012', name: 'Надбавка за вислугу' },
+                { id: PAYEL013, code: '013', name: 'Надбавка за інтенсивність праці' },
+                { id: PAYEL029, code: '029', name: 'Аванс' }
             ]
             for (let i = 0; i < source.length; i++) {
                 if (target.setRecord(source[i])) {
@@ -102,5 +114,6 @@ module.exports = {
     PAYEL401,
     PAYEL402,
     PAYEL403,
+    PAYEL029,
     makeTarget
 }

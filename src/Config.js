@@ -8,6 +8,11 @@ const C7 = 'C7'
 const OSVITA = 'osvita'
 const APK = 'APK'
 
+const Version = {
+    NO_TARIFFING: 0, // Без тарифікації (для департаменту освіти)
+    TARIFFING: 1 // Тарифікація (для установ освіти)
+}
+
 class Config {
     constructor () {
         // Params for targeted files
@@ -45,6 +50,7 @@ class Config {
 
 module.exports = {
     Config,
+    Version,
     HOME,
     ISPRO,
     AFINA,

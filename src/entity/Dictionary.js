@@ -32,6 +32,7 @@ class Dictionary {
         this.dictProgClass = []
 
         this.commonID = 0
+        this.entityID = {}
         this.employeeExperienceID = 0
         this.errorCount = 0
     }
@@ -137,6 +138,11 @@ class Dictionary {
         const ID = found ? found.ID : this.getCommonID()
         this.dictStaffCatIDbyPath.push({ ID, code, name, path })
         return !!found // already exists
+    }
+
+    getEntityID (name) {
+        this.entityID[name] = this.entityID[name] ? this.entityID[name] + 1 : 1
+        return this.entityID[name]
     }
 
     getCommonID () {

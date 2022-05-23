@@ -1,5 +1,6 @@
 'use strict'
 
+const { Version } = require('../Config')
 const Source = require('../Source')
 const Target = require('../Target')
 const Dictionary = require('../entity/Dictionary')
@@ -41,11 +42,6 @@ const hr_employeeEducation = require('./hr_employeeEducation')
 const hr_employeeAccrual = require('./hr_employeeAccrual')
 const ac_dictProgClass = require('./ac_dictProgClass')
 const path = require('path')
-
-const Version = {
-    NO_TARIFFING: 0, // Без тарифікації (для департаменту освіти)
-    TARIFFING: 1 // Тарифікація (для установ освіти)
-}
 
 const ARC_FILE_NAME = 'Osvita.zip'
 
@@ -162,7 +158,6 @@ class SourceOsvita extends Source {
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
                             if (config.osvitaVersion === Version.NO_TARIFFING && config.osvitaOrganization.length && organizationNumber(fileList[j]) !== config.osvitaOrganization) continue
-
                             const target = await sourceList[i](config, dictionary, fileList[j], j)
                             pushTarget(targetList, target)
                             await sendFile(target)

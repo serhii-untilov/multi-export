@@ -15,6 +15,7 @@ class PayRetention extends Entity {
         this.payElID = ''
         this.rate = ''
         this.baseSum = ''
+        this.paymentMethod = '1' // Банк
     }
 }
 
