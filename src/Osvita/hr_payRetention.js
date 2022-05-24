@@ -19,7 +19,7 @@ function setRecord (record, recordNumber) {
 
     if (record.PROF === 1) {
         const entity = new Entity()
-        entity.ID = employeeNumberID
+        entity.ID = this.dictionary.getEntityID('hr_payRetention')
         entity.tabNum = record.TAB
         entity.employeeID = employeeNumberID
         entity.taxCode = taxCode
@@ -33,7 +33,7 @@ function setRecord (record, recordNumber) {
 
     if (record.AWAN) {
         const entity = new Entity()
-        entity.ID = employeeNumberID
+        entity.ID = this.dictionary.getEntityID('hr_payRetention')
         entity.tabNum = record.TAB
         entity.employeeID = employeeNumberID
         entity.taxCode = taxCode
