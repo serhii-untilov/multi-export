@@ -42,6 +42,7 @@ function setRecord (record, recordNumber) {
         entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
         entity.payElID = PAYEL029
         entity.baseSum = record.AWAN
+        entity.paymentMethod = '1' // Банк
         this.entity.push(entity)
     }
 
