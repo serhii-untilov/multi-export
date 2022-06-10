@@ -14,7 +14,7 @@ function setRecord (record, recordNumber) {
     this.entity.ID = this.dictionary.getNextDictProgClassID(this.entity.code)
     this.entity.name = '' + record.KPK
     this.entity.description = `${this.entity.name} (${this.entity.code})`
-    this.dictionary.setDictProgClassID(this.entity.code, this.entity.ID)
+    this.dictionary.setDictProgClass(this.entity.code, this.entity.ID)
     return true
 }
 

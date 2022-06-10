@@ -39,12 +39,12 @@ class Dictionary {
         this.errorCount = 0
     }
 
-    setDictFundSourceID (employeeNumberID, dictProgClassID) {
-        this.dictFundSourceID[employeeNumberID] = dictProgClassID
+    setDictFundSourceID (employeeNumberID, dictFundSourceID) {
+        this.dictFundSourceID[employeeNumberID] = dictFundSourceID
     }
 
     getDictFundSourceID (employeeNumberID) {
-        return this.dictFundSourceID[employeeNumberID]
+        return this.dictFundSourceID[employeeNumberID] || ''
     }
 
     setDictProgClassID (employeeNumberID, dictProgClassID) {
@@ -52,11 +52,7 @@ class Dictionary {
     }
 
     getDictProgClassID (employeeNumberID) {
-        return this.dictProgClassID[employeeNumberID]
-    }
-
-    getDictProgClass (code) {
-        return this.dictProgClass.find(o => o.code === code)
+        return this.dictProgClassID[employeeNumberID] || ''
     }
 
     getNextDictProgClassID (code) {
@@ -66,8 +62,12 @@ class Dictionary {
         return maxID + 1
     }
 
-    setDictProgClassID (code, ID) {
+    setDictProgClass (code, ID) {
         this.dictProgClass.push({ code, ID })
+    }
+
+    getDictProgClass (code) {
+        return this.dictProgClass.find(o => o.code === code)
     }
 
     getEmployeeExperienceID () {

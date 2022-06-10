@@ -38,13 +38,13 @@ function setRecord (record, recordNumber) {
     const positionName = this.dictionary.getDictPositionNamebyPath(record.B_DOL, path.dirname(this.sourceFullFileName)) || ''
     this.entity.description = `${this.entity.tabNum} ${fullName} ${positionName}`
     this.entity.dictStaffCatID = this.dictionary.getDictStaffCatIDbyPath(record.KAT, path.dirname(this.sourceFullFileName)) || ''
-    this.entity.dictFundSourceID = record.FOND ? record.FOND : ''
+    this.entity.dictFundSourceID = record.FOND || ''
     this.entity.dictCategoryECBID = record.INVALID ? ECB2 : ECB1
     const dictProgClass = this.dictionary.getDictProgClass(record.KPK)
     this.entity.dictProgClassID = dictProgClass ? dictProgClass.ID : ''
 
     this.dictionary.setDictProgClassID(ID, this.entity.dictProgClassID)
-    this.dictionary.setFundSourceID(ID, this.entity.dictFundSourceID)
+    this.dictionary.setDictFundSourceID(ID, this.entity.dictFundSourceID)
 
     if (record.S00) {
         this.entity.payElID = getPayEl(record) || PAYEL146
