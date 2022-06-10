@@ -43,6 +43,9 @@ function setRecord (record, recordNumber) {
     const dictProgClass = this.dictionary.getDictProgClass(record.KPK)
     this.entity.dictProgClassID = dictProgClass ? dictProgClass.ID : ''
 
+    this.dictionary.setDictProgClassID(ID, this.entity.dictProgClassID)
+    this.dictionary.setFundSourceID(ID, this.entity.dictFundSourceID)
+
     if (record.S00) {
         this.entity.payElID = getPayEl(record) || PAYEL146
         this.entity.accrualSum = record.S00

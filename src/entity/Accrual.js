@@ -30,6 +30,8 @@ class Accrual extends Entity {
         this.dateFromAvg = ''
         this.dateToAvg = ''
         this.sumAvg = ''
+        this.dictProgClassID = ''
+        this.dictFundSourceID = ''
     }
 }
 

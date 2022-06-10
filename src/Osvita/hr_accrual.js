@@ -36,6 +36,8 @@ function setRecord (record, recordNumber) {
     entity0.paySum = (record.VIBBOL || 0) + (record.OTPSUM || 0) + (record.OTCHS || 0) + (record.OFMP || 0) + (record.ODOPS || 0)
     entity0.days = daysInMonth
     entity0.flagsRec = 8 // | (record.STOR > 0 ? 512 : 0) // 8 - import, 512 - storno
+    entity0.dictProgClassID = this.dictionary.getDictProgClassID(entity0.employeeNumberID)
+    entity0.dictFundSourceID = this.dictionary.getDictFundSourceID(entity0.employeeNumberID)
     if (entity0.paySum > 0 && entity0.days > 0) {
         this.entity.push(entity0)
     }
@@ -53,6 +55,8 @@ function setRecord (record, recordNumber) {
         entity1.days = (daysInMonth || 0) - (record.ADMDNI || 0)
     }
     entity1.flagsRec = 8 // | (record.STOR > 0 ? 512 : 0) // 8 - import, 512 - storno
+    entity1.dictProgClassID = this.dictionary.getDictProgClassID(entity1.employeeNumberID)
+    entity1.dictFundSourceID = this.dictionary.getDictFundSourceID(entity1.employeeNumberID)
     if (entity1.paySum > 0 && entity1.days > 0) {
         this.entity.push(entity1)
     }
@@ -70,6 +74,8 @@ function setRecord (record, recordNumber) {
         entity2.days = (daysInMonth || 0) - (record.ADMDNI || 0)
     }
     entity2.flagsRec = 8 // | (record.STOR > 0 ? 512 : 0) // 8 - import, 512 - storno
+    entity2.dictProgClassID = this.dictionary.getDictProgClassID(entity2.employeeNumberID)
+    entity2.dictFundSourceID = this.dictionary.getDictFundSourceID(entity2.employeeNumberID)
     if (entity2.paySum > 0 && entity2.days > 0) {
         this.entity.push(entity2)
     }

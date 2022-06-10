@@ -30,11 +30,29 @@ class Dictionary {
         this.dictEducationLevelIDbyName = []
         this.experienceByName = []
         this.dictProgClass = []
+        this.dictProgClassID = {}
+        this.dictFundSourceID = {}
 
         this.commonID = 0
         this.entityID = {}
         this.employeeExperienceID = 0
         this.errorCount = 0
+    }
+
+    setDictFundSourceID (employeeNumberID, dictProgClassID) {
+        this.dictFundSourceID[employeeNumberID] = dictProgClassID
+    }
+
+    getDictFundSourceID (employeeNumberID) {
+        return this.dictFundSourceID[employeeNumberID]
+    }
+
+    setDictProgClassID (employeeNumberID, dictProgClassID) {
+        this.dictProgClassID[employeeNumberID] = dictProgClassID
+    }
+
+    getDictProgClassID (employeeNumberID) {
+        return this.dictProgClassID[employeeNumberID]
     }
 
     getDictProgClass (code) {
