@@ -32,6 +32,7 @@ class Dictionary {
         this.dictProgClass = []
         this.dictProgClassID = {}
         this.dictFundSourceID = {}
+        this.employeeNumberID = []
 
         this.commonID = 0
         this.entityID = {}
@@ -39,8 +40,18 @@ class Dictionary {
         this.errorCount = 0
     }
 
+    setEmployeeNumberID (employeeNumberID) {
+        this.employeeNumberID.push(employeeNumberID)
+    }
+
+    findEmployeeNumberID (employeeNumberID) {
+        return !!this.employeeNumberID.find(o => o === employeeNumberID)
+    }
+
     setDictFundSourceID (employeeNumberID, dictFundSourceID) {
-        this.dictFundSourceID[employeeNumberID] = dictFundSourceID
+        if (dictFundSourceID) {
+            this.dictFundSourceID[employeeNumberID] = dictFundSourceID
+        }
     }
 
     getDictFundSourceID (employeeNumberID) {
@@ -48,7 +59,9 @@ class Dictionary {
     }
 
     setDictProgClassID (employeeNumberID, dictProgClassID) {
-        this.dictProgClassID[employeeNumberID] = dictProgClassID
+        if (dictProgClassID) {
+            this.dictProgClassID[employeeNumberID] = dictProgClassID
+        }
     }
 
     getDictProgClassID (employeeNumberID) {

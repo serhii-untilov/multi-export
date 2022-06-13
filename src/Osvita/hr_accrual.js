@@ -24,6 +24,8 @@ function setRecord (record, recordNumber) {
     if (new Date(periodCalc) < minDate) { return false }
 
     const daysInMonth = new Date(year, month, 0).getDate()
+    const employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000
+    if (!this.dictionary.findEmployeeNumberID(employeeNumberID)) return false
 
     // Заробіток для розрахунку лікарняного
     const entity0 = new Entity()
@@ -32,7 +34,7 @@ function setRecord (record, recordNumber) {
     entity0.periodCalc = periodCalc
     entity0.periodSalary = periodCalc
     entity0.tabNum = record.TAB
-    entity0.employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000
+    entity0.employeeNumberID = employeeNumberID
     entity0.paySum = (record.VIBBOL || 0) + (record.OTPSUM || 0) + (record.OTCHS || 0) + (record.OFMP || 0) + (record.ODOPS || 0)
     entity0.days = daysInMonth
     entity0.flagsRec = 8 // | (record.STOR > 0 ? 512 : 0) // 8 - import, 512 - storno
@@ -49,7 +51,7 @@ function setRecord (record, recordNumber) {
     entity1.periodCalc = periodCalc
     entity1.periodSalary = periodCalc
     entity1.tabNum = record.TAB
-    entity1.employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000
+    entity1.employeeNumberID = employeeNumberID
     entity1.paySum = record.SUMOTP || ''
     if (daysInMonth) {
         entity1.days = (daysInMonth || 0) - (record.ADMDNI || 0)
@@ -68,7 +70,7 @@ function setRecord (record, recordNumber) {
     entity2.periodCalc = periodCalc
     entity2.periodSalary = periodCalc
     entity2.tabNum = record.TAB
-    entity2.employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000
+    entity2.employeeNumberID = employeeNumberID
     entity2.paySum = record.SUMOTP || ''
     if (daysInMonth) {
         entity2.days = (daysInMonth || 0) - (record.ADMDNI || 0)

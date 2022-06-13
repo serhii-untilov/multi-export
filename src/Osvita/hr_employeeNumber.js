@@ -33,6 +33,7 @@ function setRecord (record, recordNumber) {
     this.entity.appointmentOrderNumber = record.NAKP || ''
 
     this.dictionary.setTaxCode(ID, record.IKOD)
+    this.dictionary.setEmployeeNumberID(ID)
 
     return true
 }
