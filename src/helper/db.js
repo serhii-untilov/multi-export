@@ -76,9 +76,9 @@ function makeQuerySqlServer (dbName, tableName, tableStruct) {
 }
 
 function addWhereOrgID (queryText, orgID) {
-    if (queryText.includes('orgID') || queryText.includes('orgid')) {
+    if (queryText.search(/\WorgID\W/gi) >= 0) {
         return queryText + ` where orgID = ${orgID}`
-    } else if (queryText.includes('organizationID') || queryText.includes('organizationid')) {
+    } else if (queryText.search(/\WorganizationID\W/gi) >= 0) {
         return queryText + ` where organizationID = ${orgID}`
     } else {
         return queryText
