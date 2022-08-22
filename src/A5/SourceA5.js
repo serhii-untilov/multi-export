@@ -49,23 +49,26 @@ const tableList = [
 
 class SourceA5 extends Source {
     async read (config, sendFile, sendDone, sendFailed) {
-        const connection = new Client(dbConfig(config))
-        connection.on('error', (err) => {
+        const pool = new Pool(dbConfig(config))
+        pool.on('error', (err) => {
             console.log(err)
             sendFailed(err.message)
         })
-        connection.connect()
         makeDir(config.targetPath)
             .then(() => {
                 return Promise.all(
                     tableList.map((tableName) => {
                         return new Promise((resolve, reject) => {
-                            const target = new Target.Target()
-                            target.tableName = tableName
-                            target.fullFileName = getFullFileName(config.targetPath, tableName + '.csv')
-                            target.config = config
-                            target.client = connection
-                            makeFile(target)
+                            pool.connect()
+                                .then(client => {
+                                    const target = new Target.Target()
+                                    target.tableName = tableName
+                                    target.fullFileName = getFullFileName(config.targetPath, tableName + '.csv')
+                                    target.config = config
+                                    target.client = client
+                                    return target
+                                })
+                                .then(target => makeFile(target))
                                 .then(target => {
                                     sendFile(target)
                                     resolve(target)
@@ -102,10 +105,10 @@ function dbConfig (config) {
         port: config.a5Port,
         user: config.a5Login,
         password: config.a5Password,
-        database: config.a5Database // ,
-        // connectionTimeoutMillis: CONNECTION_TIMEOUT,
-        // idleTimeoutMillis: REQUEST_TIMEOUT,
-        // max: POOL_SIZE
+        database: config.a5Database,
+        connectionTimeoutMillis: CONNECTION_TIMEOUT,
+        idleTimeoutMillis: REQUEST_TIMEOUT,
+        max: POOL_SIZE
     }
 }
 

@@ -23,9 +23,11 @@ async function getTableStruct (dbType, connection, tableName) {
     case DBtype.POSTGRES:
         return new Promise((resolve, reject) => {
             const queryText =
-            `select column_name, data_type, character_maximum_length from INFORMATION_SCHEMA.COLUMNS where table_name ='${tableName}';`
+            `select column_name, data_type, character_maximum_length from INFORMATION_SCHEMA.COLUMNS where table_name ='${tableName.toLowerCase()}';`
             connection.query(queryText)
-                .then(res => resolve(res))
+                .then(res => {
+                    res.rows.length ? resolve(res.rows) : reject(new Error(`Table doesn't exists.`))
+                })
                 .catch(err => reject(err))
         })
     case DBtype.MSSQL:

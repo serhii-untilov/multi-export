@@ -12,9 +12,7 @@ const BATCH_SIZE = 10000
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         getTableStruct(target.config.a5dbType, target.client, target.tableName)
-            .then((tableStruct) => {
-                makeQuery(target.config.a5dbType, target.config.a5Database, target.tableName, tableStruct)
-            })
+            .then((tableStruct) => makeQuery(target.config.a5dbType, target.config.a5Database, target.tableName, tableStruct))
             .then((queryText) => doQuery(target, queryText))
             .then(() => resolve(target))
             .catch((err) => {
@@ -32,7 +30,9 @@ async function doQuery (target, queryText) {
         let printHeader = true
         const query = new QueryStream(queryText)
         const stream = target.client.query(query)
-        stream.on('error', (err) => { reject(err) })
+        stream.on('error', (err) => {
+            reject(err)
+        })
         stream.on('data', (row) => {
             if (printHeader) {
                 printHeader = false
@@ -77,7 +77,7 @@ async function doQuery (target, queryText) {
         function writeRow (row) {
             let separator = ''
             for (const column in row) {
-                buffer += `${separator}${row[column]}`
+                buffer += row[column] ? `${separator}${row[column]}` : ''
                 separator = ';'
             }
             buffer += '\n'
