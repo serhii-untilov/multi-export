@@ -8,6 +8,7 @@ const makeFile = require('./TargetA5')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
+const { DBtype } = require('../Config')
 
 const FILE_NAME = 'A5.zip'
 
@@ -54,7 +55,10 @@ class SourceA5 extends Source {
             console.log(err)
             sendFailed(err.message)
         })
+        let orgID
         makeDir(config.targetPath)
+            .then(() => getOrgID(config.a5dbType, config.a5Database, config.a5orgCode, pool))
+            .then(res => { orgID = res })
             .then(() => {
                 return Promise.all(
                     tableList.map((tableName) => {
@@ -66,6 +70,7 @@ class SourceA5 extends Source {
                                     target.fullFileName = getFullFileName(config.targetPath, tableName + '.csv')
                                     target.config = config
                                     target.client = client
+                                    target.orgID = orgID
                                     return target
                                 })
                                 .then(target => makeFile(target))
@@ -81,10 +86,8 @@ class SourceA5 extends Source {
             })
             .then((targetList) => {
                 if (config.isArchive) {
-                    let arcFileName
-                    getFullFileName(config.targetPath, FILE_NAME)
-                        .then(fullFileName => { arcFileName = fullFileName })
-                        .then(() => makeArchive(arcFileName, targetList))
+                    const arcFileName = getFullFileName(config.targetPath, FILE_NAME)
+                    makeArchive(arcFileName, targetList)
                         .then(() => removeTargetFiles(targetList))
                         .then(() => sendDone(arcFileName))
                         .catch(err => {
@@ -110,6 +113,36 @@ function dbConfig (config) {
         connectionTimeoutMillis: CONNECTION_TIMEOUT,
         idleTimeoutMillis: REQUEST_TIMEOUT,
         max: POOL_SIZE
+    }
+}
+
+async function getOrgID (dbType, dbName, orgCode, pool) {
+    if (!orgCode) {
+        return new Promise((resolve) => {
+            resolve(null)
+        })
+    }
+    switch (dbType) {
+    case DBtype.POSTGRES:
+        return new Promise((resolve, reject) => {
+            let client
+            pool.connect()
+                .then(res => {
+                    client = res
+                    return res
+                })
+                .then(client => {
+                    return client.query(`select max(ID) ID from ${dbName}.ac_organization where (code = '${orgCode}' or okpocode = '${orgCode}') and mi_deleteDate >= '9999-12-31';`)
+                })
+                .then(res => {
+                    client.release(true); resolve(res.rows.length ? res.rows[0].id : null)
+                })
+                .catch(err => reject(err))
+        })
+    // case DBtype.MSSQL: {
+    // }
+    default:
+        throw new Error(`Unknown dbType (${dbType}).`)
     }
 }
 

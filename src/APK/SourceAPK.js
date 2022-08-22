@@ -63,10 +63,8 @@ class SourceAPK extends Source {
             })
             .then((targetList) => {
                 if (config.isArchive) {
-                    let arcFileName
-                    getFullFileName(config.targetPath, FILE_NAME)
-                        .then((fullFileName) => { arcFileName = fullFileName })
-                        .then(() => makeArchive(arcFileName, targetList))
+                    const arcFileName = getFullFileName(config.targetPath, FILE_NAME)
+                    makeArchive(arcFileName, targetList)
                         .then(() => removeTargetFiles(targetList))
                         .then(() => sendDone(arcFileName))
                         .catch((err) => sendFailed(err.message))

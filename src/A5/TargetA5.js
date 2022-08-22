@@ -5,17 +5,20 @@ const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
 const QueryStream = require('pg-query-stream')
 
-const { getTableStruct, makeQuery } = require('../helper/db')
+const { getTableStruct, makeQuery, addWhereOrgID } = require('../helper/db')
 
 const BATCH_SIZE = 10000
 
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         getTableStruct(target.config.a5dbType, target.client, target.tableName)
-            .then((tableStruct) => makeQuery(target.config.a5dbType, target.config.a5Database, target.tableName, tableStruct))
-            .then((queryText) => doQuery(target, queryText))
+            .then(tableStruct => makeQuery(target.config.a5dbType, target.config.a5Database, target.tableName, tableStruct))
+            .then(queryText => {
+                return addWhereOrgID(queryText, target.orgID)
+            })
+            .then(queryText => doQuery(target, queryText))
             .then(() => resolve(target))
-            .catch((err) => {
+            .catch(err => {
                 target.state = Target.FILE_ERROR
                 target.err = err.message
                 resolve(target)

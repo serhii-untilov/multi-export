@@ -75,7 +75,18 @@ function makeQuerySqlServer (dbName, tableName, tableStruct) {
     return queryText
 }
 
+function addWhereOrgID (queryText, orgID) {
+    if (queryText.includes('orgID') || queryText.includes('orgid')) {
+        return queryText + ` where orgID = ${orgID}`
+    } else if (queryText.includes('organizationID') || queryText.includes('organizationid')) {
+        return queryText + ` where organizationID = ${orgID}`
+    } else {
+        return queryText
+    }
+}
+
 module.exports = {
     getTableStruct,
-    makeQuery
+    makeQuery,
+    addWhereOrgID
 }

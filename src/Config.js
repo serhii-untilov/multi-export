@@ -59,7 +59,7 @@ class Config {
         this.a5Login = ''
         this.a5Password = ''
         this.a5Database = ''
-        this.a5organizationCode = ''
+        this.a5orgCode = ''
     }
 }
 

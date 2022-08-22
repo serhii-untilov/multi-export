@@ -343,6 +343,13 @@ a5Database.addEventListener('change', (evt) => {
     ipcRenderer.send('set-config', this.config)
 })
 
+const a5orgCode = document.getElementById('a5-org-code')
+a5orgCode.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.a5orgCode = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
 const a5Port = document.getElementById('a5-port')
 a5Port.addEventListener('change', (evt) => {
     evt.preventDefault()
@@ -503,6 +510,7 @@ ipcRenderer.on('config', (event, config) => {
     a5Login.value = config.a5Login || ''
     a5Password.value = config.a5Password || ''
     a5Database.value = config.a5Database || ''
+    a5orgCode.value = config.a5orgCode || ''
 
     isArchive.checked = config.isArchive
 
