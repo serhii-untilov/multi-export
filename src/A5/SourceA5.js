@@ -1,6 +1,6 @@
 'use strict'
 
-const { Pool, Client } = require('pg')
+const { Pool } = require('pg')
 const Source = require('../Source')
 const Target = require('../Target')
 const makeDir = require('../helper/makeDir')
@@ -71,6 +71,7 @@ class SourceA5 extends Source {
                                 .then(target => makeFile(target))
                                 .then(target => {
                                     sendFile(target)
+                                    target.client.release(true)
                                     resolve(target)
                                 })
                                 .catch(err => reject(err))

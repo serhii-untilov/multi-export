@@ -26,7 +26,7 @@ async function getTableStruct (dbType, connection, tableName) {
             `select column_name, data_type, character_maximum_length from INFORMATION_SCHEMA.COLUMNS where table_name ='${tableName.toLowerCase()}';`
             connection.query(queryText)
                 .then(res => {
-                    res.rows.length ? resolve(res.rows) : reject(new Error(`Table doesn't exists.`))
+                    res.rows.length ? resolve(res.rows) : reject(new Error('Table does not exists.'))
                 })
                 .catch(err => reject(err))
         })
@@ -56,7 +56,7 @@ function makeQueryPostgres (dbName, tableName, tableStruct) {
             const colType = column.data_type
             if (index) { queryText += ', ' }
             if (colType.includes('timestamp')) {
-                queryText += `concat(left(t1.${colName}::text, 4), '-', substring(t1.${colName}::text from 5 for 2), '-', right(t1.${colName}::text, 2)) "${colName}"`
+                queryText += `case when t1.${colName} is null then '' else concat(left(t1.${colName}::text, 4), '-', substring(t1.${colName}::text from 6 for 2), '-', substring(t1.${colName}::text from 9 for 2)) end "${colName}"`
             } else {
                 queryText += `t1.${colName} "${colName}"`
             }

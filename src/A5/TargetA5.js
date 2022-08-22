@@ -77,7 +77,7 @@ async function doQuery (target, queryText) {
         function writeRow (row) {
             let separator = ''
             for (const column in row) {
-                buffer += row[column] ? `${separator}${row[column]}` : ''
+                buffer += `${separator}${row[column] ? row[column] : ''}`
                 separator = ';'
             }
             buffer += '\n'
