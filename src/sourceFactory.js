@@ -6,6 +6,7 @@ const Source1C7 = require('./1C7/Source1C7')
 const SourceParus = require('./Parus/SourceParus')
 const SourceOsvita = require('./Osvita/SourceOsvita')
 const SourceAPK = require('./APK/SourceAPK')
+const SourceA5 = require('./A5/SourceA5')
 
 const makeSource = (config) => {
     if (config.source === Config.ISPRO) {
@@ -18,6 +19,8 @@ const makeSource = (config) => {
         return new SourceOsvita()
     } else if (config.source === Config.APK) {
         return new SourceAPK()
+    } else if (config.source === Config.A5) {
+        return new SourceA5()
     } else {
         throw new Error('Not implemented source. You need to implement it.')
     }

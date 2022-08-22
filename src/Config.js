@@ -7,10 +7,16 @@ const PARUS = 'parus'
 const C7 = 'C7'
 const OSVITA = 'osvita'
 const APK = 'APK'
+const A5 = 'A5'
 
 const Version = {
     NO_TARIFFING: 0, // Без тарифікації (для департаменту освіти)
     TARIFFING: 1 // Тарифікація (для установ освіти)
+}
+
+const DBtype = {
+    POSTGRES: 0,
+    MSSQL: 1
 }
 
 class Config {
@@ -45,6 +51,15 @@ class Config {
         this.apkLogin = 'test'
         this.apkPassword = 'test'
         this.apkDatabase = 'test'
+
+        // A5 DB connect
+        this.a5dbType = ''
+        this.a5Host = 'localhost'
+        this.a5Port = '5433'
+        this.a5Login = ''
+        this.a5Password = ''
+        this.a5Database = ''
+        this.a5organizationCode = ''
     }
 }
 
@@ -57,5 +72,7 @@ module.exports = {
     PARUS,
     C7,
     OSVITA,
-    APK
+    APK,
+    A5,
+    DBtype
 }

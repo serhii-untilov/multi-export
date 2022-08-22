@@ -12,7 +12,7 @@
   <div class="container" style="border: 0px; padding-top: 4px;">
 
     <header class="navbar">
-      <section class="navbar-section"">
+      <section class="navbar-section">
         <a href=" #" class="btn btn-link mr-2 brand" id="selectHome">
         Мульті-Експорт
         </a>
@@ -22,12 +22,13 @@
         <a href="#" class="btn btn-link menu-item" id="select1C">1С</a>
         <a href="#" class="btn btn-link menu-item" id="selectOsvita">Освіта</a>
         <a href="#" class="btn btn-link menu-item" id="selectAPK">АПК</a>
+        <a href="#" class="btn btn-link menu-item" id="selectA5">А5</a>
       </section>
       <section class="navbar-section">
-        <a href="#" class="btn btn-link black-white" id="selectA5">
+        <a href="#" class="btn btn-link black-white" id="goHomeA5">
           <img src="../assets/images/a5.png" width="24" height="24" alt="A5">
         </a>
-        <a href="#" class="btn btn-link black-white" id="selectGitHub">
+        <a href="#" class="btn btn-link black-white" id="goGitHub">
           <img src="../assets/images/github-green.png" style="padding-top: 2px;" width="22" height="22" alt="GitHub">
         </a>
       </section>
@@ -45,7 +46,7 @@
 
           <p>Експорт довідників і даних обліку із програмних систем.<br />
             Cтворення стандартних вихідних файлів для імпорту у систему
-            <a href="#" id="homeSelectA5">А5 Бухгалтерія</a>
+            <a href="#" id="linkHomeA5">А5 Бухгалтерія</a>
           </p>
 
           <a href="#" class="btn btn-link system-caption" id="captionISPro">
@@ -99,6 +100,15 @@
           <p>
             Експорт виконується безпосередньо із бази даних<br />
             Для виконання експорту необхідно <a href="#" id="homeSelectAPK">вказати параметри підключення до бази
+              даних</a>
+          </p>
+
+          <a href="#" class="btn btn-link system-caption" id="captionA5">
+            <h4 class="mt-3 mb-1">А5</h4>
+          </a>
+          <p>
+            Експорт виконується безпосередньо із бази даних<br />
+            Для виконання експорту необхідно <a href="#" id="homeSelectA5">вказати параметри підключення до бази
               даних</a>
           </p>
 
@@ -272,6 +282,46 @@
               <div class="column col-4">
                 <label class="form-label" for="apk-password">Пароль</label>
                 <input class="form-input" type="password" id="apk-password" placeholder="test">
+              </div>
+            </div>
+            <!-- <br /> -->
+            <!-- <div class="columns">
+            </div>             -->
+          </div>
+
+          <!-- A5 params panel -->
+
+          <div id="a5-panel">
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="a5-db-type">СУБД:</label>
+                <select class="form-select" id="a5-db-type" >
+                  <option>PostgreSQL</option>
+                  <option>SQL Server</option>
+                </select>
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="a5-host">Сервер бази даних</label>
+                <input class="form-input" type="text" id="a5-host" placeholder="localhost">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="a5-port">Порт</label>
+                <input class="form-input" type="text" id="a5-port" placeholder="5432">
+              </div>
+            </div>
+            <br />
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="a5-database">База даних</label>
+                <input class="form-input" type="text" id="a5-database" placeholder="test">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="a5-login">Логін</label>
+                <input class="form-input" type="text" id="a5-login" placeholder="admin">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="a5-password">Пароль</label>
+                <input class="form-input" type="password" id="a5-password" placeholder="admin">
               </div>
             </div>
             <!-- <br /> -->

@@ -24,6 +24,7 @@ const parusPanel = document.getElementById('parus-panel')
 const c1Panel = document.getElementById('c1-panel')
 const osvitaPanel = document.getElementById('osvita-panel')
 const apkPanel = document.getElementById('apk-panel')
+const a5Panel = document.getElementById('a5-panel')
 const commonParamsPanel = document.getElementById('common-params-panel')
 const controlPanel = document.getElementById('control-panel')
 const resultPanel = document.getElementById('result-panel')
@@ -60,6 +61,7 @@ const renderPanels = () => {
     setVisible(c1Panel, this.config && this.config.source === Config.C7)
     setVisible(osvitaPanel, this.config && this.config.source === Config.OSVITA)
     setVisible(apkPanel, this.config && this.config.source === Config.APK)
+    setVisible(a5Panel, this.config && this.config.source === Config.A5)
     setVisible(commonParamsPanel, this.config && this.config.source !== Config.HOME)
     setVisible(controlPanel, this.config && this.config.source !== Config.HOME)
     setVisible(bodyPanel, false)
@@ -79,6 +81,7 @@ const renderMenu = () => {
     setSelected(buttonSelect1C, this.config.source === Config.C7)
     setSelected(buttonSelectOsvita, this.config.source === Config.OSVITA)
     setSelected(buttonSelectAPK, this.config.source === Config.APK)
+    setSelected(buttonSelectA5, this.config.source === Config.A5)
 }
 
 const selectHome = () => {
@@ -176,15 +179,29 @@ buttonSelectAPK.addEventListener('click', selectAPK)
 document.getElementById('homeSelectAPK').addEventListener('click', selectAPK)
 document.getElementById('captionAPK').addEventListener('click', selectAPK)
 
-document.getElementById('homeSelectA5').addEventListener('click', () => {
+const selectA5 = () => {
+    if (this.config.source === Config.A5) { return }
+    buttonRunExport.classList.remove('loading')
+    targetList.length = 0
+    this.config.source = Config.A5
+    ipcRenderer.send('set-config', this.config)
+    renderMenu()
+    renderPanels()
+}
+const buttonSelectA5 = document.getElementById('selectA5')
+buttonSelectA5.addEventListener('click', selectA5)
+document.getElementById('homeSelectA5').addEventListener('click', selectA5)
+document.getElementById('captionA5').addEventListener('click', selectA5)
+
+document.getElementById('linkHomeA5').addEventListener('click', () => {
     shell.openExternal('https://a5buh.com')
 })
 
-document.getElementById('selectA5').addEventListener('click', () => {
+document.getElementById('goHomeA5').addEventListener('click', () => {
     shell.openExternal('https://a5buh.com')
 })
 
-document.getElementById('selectGitHub').addEventListener('click', () => {
+document.getElementById('goGitHub').addEventListener('click', () => {
     shell.openExternal('https://github.com/sergey-untilov/multi-export')
 })
 
@@ -288,6 +305,48 @@ const apkPort = document.getElementById('apk-port')
 apkPort.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.apkPort = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const a5dbType = document.getElementById('a5-db-type')
+a5dbType.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.a5dbType = evt.target.selectedIndex // value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const a5Host = document.getElementById('a5-host')
+a5Host.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.a5Host = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const a5Login = document.getElementById('a5-login')
+a5Login.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.a5Login = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const a5Password = document.getElementById('a5-password')
+a5Password.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.a5Password = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const a5Database = document.getElementById('a5-database')
+a5Database.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.a5Database = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const a5Port = document.getElementById('a5-port')
+a5Port.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.a5Port = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 
@@ -437,6 +496,13 @@ ipcRenderer.on('config', (event, config) => {
     apkLogin.value = config.apkLogin || ''
     apkPassword.value = config.apkPassword || ''
     apkDatabase.value = config.apkDatabase || ''
+
+    a5dbType.selectedIndex = config.a5dbType || ''
+    a5Host.value = config.a5Host || ''
+    a5Port.value = config.a5Port || ''
+    a5Login.value = config.a5Login || ''
+    a5Password.value = config.a5Password || ''
+    a5Database.value = config.a5Database || ''
 
     isArchive.checked = config.isArchive
 
