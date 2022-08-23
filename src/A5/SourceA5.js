@@ -74,7 +74,6 @@ const tableList = [
     { name: 'hr_dictKinshipKind', description: 'Ступені споріднення' },
     { name: 'hr_dictSalaryScheme', description: 'Схема посадових окладів' },
     { name: 'hr_dictSalarySchemeLevel', description: 'Рівень посадового окладу' },
-    { name: 'hr_importDictPenalty' },
     { name: 'hr_dictPenaltyReason', description: 'Причини стягнень' },
     { name: 'hr_dictPenalty', description: 'Види стягнень' },
     { name: 'hr_dictMaritalStatusKind', description: 'Сімейний стан' },
