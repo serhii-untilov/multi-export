@@ -68,25 +68,20 @@ function makeQueryPostgres (dbName, tableName, tableStruct) {
 function makeQuerySqlServer (dbName, tableName, tableStruct) {
     let queryText = 'SELECT '
     tableStruct.forEach((column, index) => {
+        const colName = column.column_name
+        const colType = column.data_type
         if (index) { queryText += ', ' }
-        queryText += column.column_name
+        if (colType.includes('date')) {
+            queryText += `cast(cast(${colName} as DATE) as varchar) as ${colName}`
+        } else {
+            queryText += colName
+        }
     })
-    queryText += ` FROM ${dbName}.${tableName}`
+    queryText += ` FROM ${tableName}`
     return queryText
-}
-
-function addWhereOrgID (queryText, orgID) {
-    if (queryText.search(/\WorgID\W/gi) >= 0) {
-        return queryText + ` where orgID = ${orgID}`
-    } else if (queryText.search(/\WorganizationID\W/gi) >= 0) {
-        return queryText + ` where organizationID = ${orgID}`
-    } else {
-        return queryText
-    }
 }
 
 module.exports = {
     getTableStruct,
-    makeQuery,
-    addWhereOrgID
+    makeQuery
 }
