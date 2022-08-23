@@ -62,64 +62,74 @@ function makeQueryPostgres (dbName, table, tableStruct, orgID) {
             }
         })
     queryText += ` FROM ${dbName}.${table.name} t1`
-    if (!orgID) {}
-    if (table.orgID) {
-        queryText += `\nwhere t1.${table.orgID} = ${orgID}\n`
-    } else if (table.join) {
+    let whereText = ' WHERE 1=1'
+    if (orgID && table.orgID) {
+        whereText += `\nAND t1.${table.orgID} = ${orgID}\n`
+    } else if (orgID && table.join) {
         let detailAlias = 't1'
         table.join.forEach((master, index) => {
             const alias = 'a' + index
             queryText += `\ninner join ${dbName}.${master.name} ${alias} on ${alias}.${master.masterField} = ${detailAlias}.${master.detailField}\n`
             if (master.orgID) {
-                queryText += `\nwhere ${alias}.${master.orgID} = ${orgID}\n`
+                whereText += `\nAND ${alias}.${master.orgID} = ${orgID}\n`
             }
             detailAlias = alias
         })
-    } else {
-        queryText = addWhereOrgID(queryText, orgID)
+    } else if (orgID) {
+        whereText += addWhereOrgID(queryText, orgID)
+    }
+    queryText += whereText
+    if (tableStruct.findIndex(o => o.column_name.toUpperCase() === 'MI_DELETEDATE') >= 0) {
+        queryText += `\nAND t1.mi_deleteDate >= '9999-12-31'`
     }
     return queryText
 }
 
 function makeQuerySqlServer (dbName, table, tableStruct, orgID) {
     let queryText = 'SELECT '
-    tableStruct.forEach((column, index) => {
-        const colName = column.column_name
-        const colType = column.data_type
-        if (index) { queryText += ', ' }
-        if (colType.includes('date')) {
-            queryText += `cast(cast(t1.${colName} as DATE) as varchar) as ${colName}`
-        } else {
-            queryText += `t1.${colName}`
-        }
-    })
+    tableStruct
+        .filter(o => o.column_name.slice(0, 3) !== 'mi_')
+        .forEach((column, index) => {
+            const colName = column.column_name
+            const colType = column.data_type
+            if (index) { queryText += ', ' }
+            if (colType.includes('date')) {
+                queryText += `cast(cast(t1.${colName} as DATE) as varchar) as ${colName}`
+            } else {
+                queryText += `t1.${colName}`
+            }
+        })
     queryText += ` FROM ${table.name} t1`
-    if (!orgID) {}
-    else if (table.orgID) {
-        queryText += `\nwhere t1.${table.orgID} = ${orgID}\n`
-    } else if (table.join) {
+    let whereText = ' WHERE 1=1'
+    if (orgID && table.orgID) {
+        whereText += `\nAND t1.${table.orgID} = ${orgID}\n`
+    } else if (orgID && table.join) {
         let detailAlias = 't1'
         table.join.forEach((master, index) => {
             const alias = 'a' + index
             queryText += `\ninner join ${master.name} ${alias} on ${alias}.${master.masterField} = ${detailAlias}.${master.detailField}\n`
             if (master.orgID) {
-                queryText += `\nwhere ${alias}.${master.orgID} = ${orgID}\n`
+                whereText += `\nAND ${alias}.${master.orgID} = ${orgID}\n`
             }
             detailAlias = alias
         })
-    } else {
-        queryText = addWhereOrgID(queryText, orgID)
+    } else if (orgID) {
+        whereText += addWhereOrgID(queryText, orgID)
+    }
+    queryText += whereText
+    if (tableStruct.findIndex(o => o.column_name.toUpperCase() === 'MI_DELETEDATE') >= 0) {
+        queryText += `\nAND t1.mi_deleteDate >= '9999-12-31'`
     }
     return queryText
 }
 
 function addWhereOrgID (queryText, orgID) {
     if (queryText.search(/\WorgID\W/gi) >= 0) {
-        return queryText + ` where orgID = ${orgID}`
+        return `\nAND orgID = ${orgID}`
     } else if (queryText.search(/\WorganizationID\W/gi) >= 0) {
-        return queryText + ` where organizationID = ${orgID}`
+        return `\nAND organizationID = ${orgID}`
     } else {
-        return queryText
+        return ''
     }
 }
 
