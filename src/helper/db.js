@@ -3,14 +3,14 @@
 const { DBtype } = require('../Config')
 // const QueryStream = require('pg-query-stream')
 
-function makeQuery (dbType, dbName, tableName, tableStruct) {
+function makeQuery (dbType, dbName, table, tableStruct, orgID) {
     return new Promise((resolve, reject) => {
         switch (dbType) {
         case DBtype.POSTGRES:
-            resolve(makeQueryPostgres(dbName, tableName, tableStruct))
+            resolve(makeQueryPostgres(dbName, table, tableStruct, orgID))
             break
         case DBtype.MSSQL:
-            resolve(makeQuerySqlServer(dbName, tableName, tableStruct))
+            resolve(makeQuerySqlServer(dbName, table, tableStruct, orgID))
             break
         default:
             reject(new Error(`Unknown dbType (${dbType}).`))
@@ -47,7 +47,7 @@ async function getTableStruct (dbType, connection, tableName) {
     }
 }
 
-function makeQueryPostgres (dbName, tableName, tableStruct) {
+function makeQueryPostgres (dbName, table, tableStruct, orgID) {
     let queryText = 'SELECT '
     tableStruct
         .filter(o => o.column_name.slice(0, 3) !== 'mi_')
@@ -61,24 +61,66 @@ function makeQueryPostgres (dbName, tableName, tableStruct) {
                 queryText += `t1.${colName} "${colName}"`
             }
         })
-    queryText += ` FROM ${dbName}.${tableName} t1`
+    queryText += ` FROM ${dbName}.${table.name} t1`
+    if (!orgID) {}
+    if (table.orgID) {
+        queryText += `\nwhere t1.${table.orgID} = ${orgID}\n`
+    } else if (table.join) {
+        let detailAlias = 't1'
+        table.join.forEach((master, index) => {
+            const alias = 'a' + index
+            queryText += `\ninner join ${dbName}.${master.name} ${alias} on ${alias}.${master.masterField} = ${detailAlias}.${master.detailField}\n`
+            if (master.orgID) {
+                queryText += `\nwhere ${alias}.${master.orgID} = ${orgID}\n`
+            }
+            detailAlias = alias
+        })
+    } else {
+        queryText = addWhereOrgID(queryText, orgID)
+    }
     return queryText
 }
 
-function makeQuerySqlServer (dbName, tableName, tableStruct) {
+function makeQuerySqlServer (dbName, table, tableStruct, orgID) {
     let queryText = 'SELECT '
     tableStruct.forEach((column, index) => {
         const colName = column.column_name
         const colType = column.data_type
         if (index) { queryText += ', ' }
         if (colType.includes('date')) {
-            queryText += `cast(cast(${colName} as DATE) as varchar) as ${colName}`
+            queryText += `cast(cast(t1.${colName} as DATE) as varchar) as ${colName}`
         } else {
-            queryText += colName
+            queryText += `t1.${colName}`
         }
     })
-    queryText += ` FROM ${tableName}`
+    queryText += ` FROM ${table.name} t1`
+    if (!orgID) {}
+    else if (table.orgID) {
+        queryText += `\nwhere t1.${table.orgID} = ${orgID}\n`
+    } else if (table.join) {
+        let detailAlias = 't1'
+        table.join.forEach((master, index) => {
+            const alias = 'a' + index
+            queryText += `\ninner join ${master.name} ${alias} on ${alias}.${master.masterField} = ${detailAlias}.${master.detailField}\n`
+            if (master.orgID) {
+                queryText += `\nwhere ${alias}.${master.orgID} = ${orgID}\n`
+            }
+            detailAlias = alias
+        })
+    } else {
+        queryText = addWhereOrgID(queryText, orgID)
+    }
     return queryText
+}
+
+function addWhereOrgID (queryText, orgID) {
+    if (queryText.search(/\WorgID\W/gi) >= 0) {
+        return queryText + ` where orgID = ${orgID}`
+    } else if (queryText.search(/\WorganizationID\W/gi) >= 0) {
+        return queryText + ` where organizationID = ${orgID}`
+    } else {
+        return queryText
+    }
 }
 
 module.exports = {

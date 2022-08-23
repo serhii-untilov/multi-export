@@ -11,9 +11,8 @@ const BATCH_SIZE = 10000
 
 async function makeFile (target) {
     try {
-        const tableStruct = await getTableStruct(target.config.a5dbType, target.client, target.tableName)
-        let queryText = await makeQuery(target.config.a5dbType, target.config.a5Database, target.tableName, tableStruct)
-        queryText = addWhereOrgID(queryText, target.orgID)
+        const tableStruct = await getTableStruct(target.config.a5dbType, target.client, target.table.name)
+        const queryText = await makeQuery(target.config.a5dbType, target.config.a5Database, target.table, tableStruct, target.orgID)
         switch (target.config.a5dbType) {
         case DBtype.POSTGRES:
             await doQueryPostgres(target, queryText)
@@ -172,16 +171,6 @@ async function doQuerySqlServer (target, queryText) {
             buffer += '\n'
         }
     })
-}
-
-function addWhereOrgID (queryText, orgID) {
-    if (queryText.search(/\WorgID\W/gi) >= 0) {
-        return queryText + ` where orgID = ${orgID}`
-    } else if (queryText.search(/\WorganizationID\W/gi) >= 0) {
-        return queryText + ` where organizationID = ${orgID}`
-    } else {
-        return queryText
-    }
 }
 
 module.exports = makeFile
