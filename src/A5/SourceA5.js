@@ -275,13 +275,6 @@ const tableList = [
         ]
     },
     {
-        name: 'hr_employeeAccrual',
-        description: 'Постійні нарахування працівників',
-        join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
-        ]
-    },
-    {
         name: 'hr_accrualBalance',
         description: 'Сальдо по місяцям',
         join: [
