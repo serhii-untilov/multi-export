@@ -514,6 +514,8 @@ ipcRenderer.on('config', (event, config) => {
 
     isArchive.checked = config.isArchive
 
+    document.title = `Multi-Export ${config.version || ''}`
+
     renderMenu()
     renderPanels()
 })

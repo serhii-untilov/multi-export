@@ -7,8 +7,12 @@
     "postinstall": "install-app-deps",
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -w --ia32",
-    "rmad": "rm -f -r %APPDATA%/multi-export",
+    "dist": "run-script-os",
+    "dist:win32": "electron-builder -w --ia32",
+    "dist:linux": "electron-builder -l --x64",
+    "rmad": "run-script-os",
+    "rmad:win32": "rm -f -r %APPDATA%/multi-export",
+    "rmad:linux": "rm -f -r ~/.config/multi-export",
     "test": "jest",
     "lint": "standard",
     "scss": "sass .\\multi-export.scss .\\multi-export.css"
@@ -48,6 +52,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "jest": "^24.9.0",
+    "run-script-os": "^1.1.6",
     "standard": "^14.3.1"
   },
   "dependencies": {

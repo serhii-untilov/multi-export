@@ -20,7 +20,9 @@ function main () {
     })
 
     mainWindow.once('show', () => {
-        mainWindow.webContents.send('config', dataStore.getConfig())
+        const config = dataStore.getConfig()
+        config.version = require('./package.json').version
+        mainWindow.webContents.send('config', config)
     })
 
     ipcMain.on('set-config', (event, config) => {
