@@ -1,5 +1,6 @@
 'use strict'
-
+const { Pool } = require('pg')
+const sql = require('mssql')
 const { DBtype } = require('../Config')
 // const QueryStream = require('pg-query-stream')
 
@@ -80,7 +81,7 @@ function makeQueryPostgres (dbName, table, tableStruct, orgID) {
     }
     queryText += whereText
     if (tableStruct.findIndex(o => o.column_name.toUpperCase() === 'MI_DELETEDATE') >= 0) {
-        queryText += `\nAND t1.mi_deleteDate >= '9999-12-31'`
+        queryText += '\nAND t1.mi_deleteDate >= \'9999-12-31\''
     }
     return queryText
 }
@@ -118,22 +119,34 @@ function makeQuerySqlServer (dbName, table, tableStruct, orgID) {
     }
     queryText += whereText
     if (tableStruct.findIndex(o => o.column_name.toUpperCase() === 'MI_DELETEDATE') >= 0) {
-        queryText += `\nAND t1.mi_deleteDate >= '9999-12-31'`
+        queryText += '\nAND t1.mi_deleteDate >= \'9999-12-31\''
     }
     return queryText
 }
 
 function addWhereOrgID (queryText, orgID) {
     if (queryText.search(/\WorgID\W/gi) >= 0) {
-        return `\nAND orgID = ${orgID}`
+        return `\nAND (orgID = ${orgID} OR orgID is NULL)`
     } else if (queryText.search(/\WorganizationID\W/gi) >= 0) {
-        return `\nAND organizationID = ${orgID}`
+        return `\nAND (organizationID = ${orgID} OR organizationID is NULL)`
     } else {
         return ''
     }
 }
 
+function getConnectionPool (dbType, dbConfig) {
+    switch (dbType) {
+    case DBtype.POSTGRES:
+        return new Pool(dbConfig)
+    case DBtype.MSSQL:
+        return new sql.ConnectionPool(dbConfig)
+    default:
+        throw new Error(`Unknown dbType (${dbType}).`)
+    }
+}
+
 module.exports = {
     getTableStruct,
-    makeQuery
+    makeQuery,
+    getConnectionPool
 }

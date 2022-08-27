@@ -1,7 +1,5 @@
 'use strict'
 
-const { Pool } = require('pg')
-const sql = require('mssql')
 const Source = require('../Source')
 const Target = require('../Target')
 const makeDir = require('../helper/makeDir')
@@ -9,6 +7,7 @@ const makeFile = require('./TargetA5')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
+const { getConnectionPool } = require('../helper/db')
 const { DBtype } = require('../Config')
 
 const FILE_NAME = 'A5.zip'
@@ -343,11 +342,7 @@ const tableList = [
 class SourceA5 extends Source {
     async read (config, sendFile, sendDone, sendFailed) {
         try {
-            const pool = config.a5dbType === DBtype.POSTGRES
-                ? new Pool(dbConfig(config))
-                : config.a5dbType === DBtype.MSSQL
-                    ? new sql.ConnectionPool(dbConfig(config))
-                    : null
+            const pool = getConnectionPool(config.a5dbType, dbConfig(config))
             pool.on('error', (err) => {
                 console.log(err)
                 sendFailed(err.message)
@@ -395,7 +390,8 @@ class SourceA5 extends Source {
 }
 
 function dbConfig (config) {
-    if (config.a5dbType === DBtype.POSTGRES) {
+    switch (config.a5dbType) {
+    case DBtype.POSTGRES:
         return {
             host: config.a5Host,
             port: config.a5Port,
@@ -406,7 +402,7 @@ function dbConfig (config) {
             idleTimeoutMillis: REQUEST_TIMEOUT,
             max: POOL_SIZE
         }
-    } else if (config.a5dbType === DBtype.MSSQL) {
+    case DBtype.MSSQL:
         return {
             user: config.a5Login,
             password: config.a5Password,
@@ -421,7 +417,7 @@ function dbConfig (config) {
                 acquireTimeoutMillis: ACQUIRE_TIMEOUT
             }
         }
-    } else {
+    default:
         throw (new Error(`Unknown dbType (${config.a5dbType}).`))
     }
 }
