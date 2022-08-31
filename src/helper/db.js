@@ -52,6 +52,7 @@ function makeQueryPostgres (dbName, table, tableStruct, orgID) {
     let queryText = 'SELECT '
     tableStruct
         .filter(o => o.column_name.slice(0, 3) !== 'mi_')
+        .filter(o => o.data_type.indexOf('json') < 0)
         .forEach((column, index) => {
             const colName = column.column_name
             const colType = column.data_type
@@ -90,6 +91,7 @@ function makeQuerySqlServer (dbName, table, tableStruct, orgID) {
     let queryText = 'SELECT '
     tableStruct
         .filter(o => o.column_name.slice(0, 3) !== 'mi_')
+        .filter(o => o.data_type.indexOf('json') < 0)
         .forEach((column, index) => {
             const colName = column.column_name
             const colType = column.data_type

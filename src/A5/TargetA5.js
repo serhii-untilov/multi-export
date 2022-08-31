@@ -11,7 +11,7 @@ const BATCH_SIZE = 10000
 
 async function makeFile (target) {
     try {
-        const tableStruct = await getTableStruct(target.config.a5dbType, target.client, target.table.name)
+        const tableStruct = structFilterA5(target.table.name, await getTableStruct(target.config.a5dbType, target.client, target.table.name))
         const queryText = await makeQuery(target.config.a5dbType, target.config.a5Database, target.table, tableStruct, target.orgID)
         switch (target.config.a5dbType) {
         case DBtype.POSTGRES:
@@ -47,6 +47,9 @@ async function doQueryPostgres (target, queryText) {
                 writeHeader(row)
             }
             target.recordsCount++
+            // if (target.fullFileName.indexOf('hr_department') >= 0) {
+            //     debugger
+            // }
             writeRow(row)
             if (target.recordsCount % BATCH_SIZE === 0) {
                 stream.pause()
@@ -85,7 +88,9 @@ async function doQueryPostgres (target, queryText) {
         function writeRow (row) {
             let separator = ''
             for (const column in row) {
-                buffer += `${separator}${row[column] ? row[column] : ''}`
+                // buffer += `${separator}${row[column] ? row[column] : ''}`
+                // buffer += `${separator}${row[column]}`
+                buffer += `${separator}${row[column] !== null ? row[column] : ''}`
                 separator = ';'
             }
             buffer += '\n'
@@ -172,5 +177,19 @@ async function doQuerySqlServer (target, queryText) {
         }
     })
 }
+
+function structFilterA5 (tableName, struct) {
+    return struct
+        .filter(o => o.column_name.slice(0, 3) !== 'mi_')
+        .filter(o => o.data_type.indexOf('json') < 0)
+        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'orderid'))
+        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'orderdtid'))
+        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'emporderid'))
+        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'timesheetid'))
+        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'periodcalcid'))
+        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'periodsalaryid'))
+        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'paymentid'))
+}
+
 
 module.exports = makeFile
