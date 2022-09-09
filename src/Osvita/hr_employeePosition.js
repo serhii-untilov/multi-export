@@ -8,6 +8,7 @@ const dateFormat = require('../helper/dateFormat')
 const { PAYEL001, PAYEL002, PAYEL003, PAYEL025, PAYEL146, PAYEL147, PAYEL246, PAYEL247, PAYEL248, PAYEL249 } = require('./hr_payEl')
 const { ECB1, ECB2 } = require('./hr_dictCategoryECB')
 const path = require('path')
+const { Version } = require('../Config')
 
 const Entity = require('../entity/EmployeePosition')
 const TARGET_FILE_NAME = 'Призначення працівників (hr_employeePosition).csv'
@@ -83,6 +84,11 @@ function setRecord (record, recordNumber) {
     if (dictTarif && dictTarif.dictTarifCoeffID) {
         this.entity.dictTarifCoeffID = dictTarif.dictTarifCoeffID
     }
+    // According to the customer's request
+    if (this.osvitaVersion === Version.TARIFFING) {
+        this.entity.accrualSum = null
+        this.entity.mtCount = null
+    }
     return true
 }
 
@@ -97,6 +103,7 @@ function makeTarget (config, dictionary, sourceFile, index) {
     target.baseDate = new Date(config.osvitaBaseDate || '2022-01-01')
     target.filter = config.filter
     target.mapper = config.mapper
+    target.osvitaVersion = config.osvitaVersion
     return makeFile(target)
 }
 
