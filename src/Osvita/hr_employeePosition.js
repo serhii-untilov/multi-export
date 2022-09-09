@@ -86,8 +86,8 @@ function setRecord (record, recordNumber) {
     }
     // According to the customer's request
     if (this.osvitaVersion === Version.TARIFFING) {
-        this.entity.accrualSum = null
-        this.entity.mtCount = null
+        this.entity.accrualSum = ''
+        this.entity.mtCount = ''
     }
     return true
 }
