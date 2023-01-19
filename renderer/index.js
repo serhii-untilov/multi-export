@@ -25,6 +25,7 @@ const c1Panel = document.getElementById('c1-panel')
 const osvitaPanel = document.getElementById('osvita-panel')
 const apkPanel = document.getElementById('apk-panel')
 const a5Panel = document.getElementById('a5-panel')
+const bosskPanel = document.getElementById('bossk-panel')
 const commonParamsPanel = document.getElementById('common-params-panel')
 const controlPanel = document.getElementById('control-panel')
 const resultPanel = document.getElementById('result-panel')
@@ -62,6 +63,7 @@ const renderPanels = () => {
     setVisible(osvitaPanel, this.config && this.config.source === Config.OSVITA)
     setVisible(apkPanel, this.config && this.config.source === Config.APK)
     setVisible(a5Panel, this.config && this.config.source === Config.A5)
+    setVisible(bosskPanel, this.config && this.config.source === Config.BOSSK)
     setVisible(commonParamsPanel, this.config && this.config.source !== Config.HOME)
     setVisible(controlPanel, this.config && this.config.source !== Config.HOME)
     setVisible(bodyPanel, false)
@@ -82,6 +84,7 @@ const renderMenu = () => {
     setSelected(buttonSelectOsvita, this.config.source === Config.OSVITA)
     setSelected(buttonSelectAPK, this.config.source === Config.APK)
     setSelected(buttonSelectA5, this.config.source === Config.A5)
+    setSelected(buttonSelectBossk, this.config.source === Config.BOSSK)
 }
 
 const selectHome = () => {
@@ -108,6 +111,20 @@ const buttonSelectISPro = document.getElementById('selectISPro')
 buttonSelectISPro.addEventListener('click', selectIspro)
 document.getElementById('homeSelectISPro').addEventListener('click', selectIspro)
 document.getElementById('captionISPro').addEventListener('click', selectIspro)
+
+const selectBossk = () => {
+    if (this.config.source === Config.BOSSK) { return }
+    buttonRunExport.classList.remove('loading')
+    targetList.length = 0
+    this.config.source = Config.BOSSK
+    ipcRenderer.send('set-config', this.config)
+    renderMenu()
+    renderPanels()
+}
+const buttonSelectBossk = document.getElementById('selectBossk')
+buttonSelectBossk.addEventListener('click', selectBossk)
+document.getElementById('homeSelectBossk').addEventListener('click', selectBossk)
+document.getElementById('captionBossk').addEventListener('click', selectBossk)
 
 const selectAfina = () => {
     if (this.config.source === Config.AFINA) { return }
@@ -270,6 +287,48 @@ const codeDep = document.getElementById('code-dep')
 codeDep.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.codeDep = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const bosskDomain = document.getElementById('bk-domain')
+codeDep.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.domain = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const bosskServerName = document.getElementById('bk-server-name')
+bosskServerName.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.server = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const bosskLogin = document.getElementById('bk-login')
+bosskLogin.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.login = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const bosskPassword = document.getElementById('bk-password')
+bosskPassword.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.password = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const bosskSchema = document.getElementById('bk-schema-name')
+bosskSchema.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.schema = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
+const bosskOrgCode = document.getElementById('bk-org-code')
+bosskOrgCode.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.orgCode = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
 
@@ -485,6 +544,12 @@ ipcRenderer.on('config', (event, config) => {
     login.value = config.login || ''
     password.value = config.password || ''
     schema.value = config.schema || ''
+    bosskServerName.value = config.server || ''
+    bosskLogin.value = config.login || ''
+    bosskPassword.value = config.password || ''
+    bosskDomain.value = config.domain || ''
+    bosskSchema.value = config.schema || ''
+    bosskOrgCode.value = config.orgCode || ''
     schemaSys.value = config.schemaSys || ''
     codeSe.value = config.codeSe || ''
     codeDep.value = config.codeDep || ''

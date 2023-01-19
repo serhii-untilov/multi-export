@@ -23,6 +23,7 @@
         <a href="#" class="btn btn-link menu-item" id="selectOsvita">Освіта</a>
         <a href="#" class="btn btn-link menu-item" id="selectAPK">АПК</a>
         <a href="#" class="btn btn-link menu-item" id="selectA5">А5</a>
+        <a href="#" class="btn btn-link menu-item" id="selectBossk">БОСС Кадровик</a>
       </section>
       <section class="navbar-section">
         <a href="#" class="btn btn-link black-white" id="goHomeA5">
@@ -109,6 +110,15 @@
           <p>
             Експорт виконується безпосередньо із бази даних<br />
             Для виконання експорту необхідно <a href="#" id="homeSelectA5">вказати параметри підключення до бази
+              даних</a>
+          </p>
+
+          <a href="#" class="btn btn-link system-caption" id="captionBossk">
+            <h4 class="mt-3 mb-1 bossk">БОСС Кадровик</h4>
+          </a>
+          <p>
+            Експорт виконується безпосередньо із бази даних<br />
+            Для виконання експорту необхідно <a href="#" id="homeSelectBossk">вказати параметри підключення до бази
               даних</a>
           </p>
 
@@ -331,6 +341,47 @@
             <!-- <br /> -->
             <!-- <div class="columns">
             </div>             -->
+          </div>
+
+          <!-- Bossk params panel -->
+
+          <div id="bossk-panel">
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="bk-domain">Домен</label>
+                <input class="form-input" type="text" id="bk-domain" placeholder="ibk-test">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="bk-server-name">Сервер бази даних</label>
+                <input class="form-input" type="text" id="bk-server-name" placeholder="hr">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="bk-schema-name">Схема бази даних</label>
+                <input class="form-input" type="text" id="bk-schema-name" placeholder="TEST">
+              </div>
+            </div>
+            <br />
+            <div class="columns">
+              <div class="column col-4">
+                <label class="form-label" for="bk-login">Логін</label>
+                <input class="form-input" type="text" id="bk-login">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="bk-password">Пароль</label>
+                <input class="form-input" type="password" id="bk-password">
+              </div>
+              <div class="column col-4">
+                <label class="form-label" for="bk-org-code">Організація</label>
+                <input class="form-input" type="text" id="bk-org-code" placeholder="Не обов'язково">
+              </div>
+              <!-- <div class="column col-3">
+                <label class="form-label" for="code-dep">Код підрозділу</label>
+                <input class="form-input" type="text" id="code-dep" placeholder="Не обов'язково">
+              </div> -->
+            </div>
+            <!-- <br />
+            <div class="columns">
+            </div> -->
           </div>
 
           <br />

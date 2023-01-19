@@ -8,6 +8,7 @@ const C7 = 'C7'
 const OSVITA = 'osvita'
 const APK = 'APK'
 const A5 = 'A5'
+const BOSSK = 'BOSSK'
 
 const Version = {
     NO_TARIFFING: 0, // Без тарифікації (для департаменту освіти)
@@ -26,14 +27,18 @@ class Config {
         this.targetPath = ''
         this.isArchive = true
 
-        // ispro DB connect
+        // SQL Server DB connect (ispro, bossk)
+        this.domain = ''
         this.server = ''
         this.login = ''
         this.password = ''
         this.schema = ''
+        // + ispro
         this.schemaSys = ''
         this.codeSe = ''
         this.codeDep = ''
+        // + bossk
+        this.orgCode = ''
 
         // Source DB path
         this.afinaDbPath = ''
@@ -74,5 +79,6 @@ module.exports = {
     OSVITA,
     APK,
     A5,
+    BOSSK,
     DBtype
 }

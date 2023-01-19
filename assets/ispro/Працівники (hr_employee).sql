@@ -22,7 +22,7 @@ select
 	,cast(x1.kpu_tn as varchar) tabNum	
 	,'NEW' state	
 	,case when c1.kpu_cdpol = 1 then 'W' when c1.kpu_cdpol = 2 then 'M' else null end sexType	
-	,cast(cast(c1.kpu_dtroj as date) as varchar) birthDate	
+	,cast(cast(c1.kpu_dtroj as date) as varchar) birthDate
 	,t1.kpu_cdnlp taxCode	
 	,Kpu_TelM phoneMobile	
 	,Kpu_TelS phoneWorking	
