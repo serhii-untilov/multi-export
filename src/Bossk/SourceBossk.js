@@ -52,7 +52,7 @@ class SourceBossk extends Source {
             .then((targetList) => {
                 if (config.isArchive) {
                     let arcFileName
-                    getFirmName(pool)
+                    getFirmName(pool, config.orgCode)
                         .then((firmName) => getFullFileName(config.targetPath, firmName + config.orgCode + '.zip'))
                         .then((fullFileName) => { arcFileName = fullFileName })
                         .then(() => makeArchive(arcFileName, targetList))
@@ -67,20 +67,27 @@ class SourceBossk extends Source {
     }
 }
 
-function getFirmName (pool) {
-    return new Promise((resolve, reject) => {
-        // pool.request()
-        //     .query('select CrtFrm_Nm from CrtFrm1')
-        //     .then(result => {
-        //         let firmName = result.recordset[0].CrtFrm_Nm
-        //         firmName = firmName.replace(/"/g, '_').replace(/'/g, '_').replace(/\./g, '_')
-        //             .replace(/,/g, '_').replace(/ /g, '_').replace(/__/g, '_')
-        //         resolve(firmName)
-        //     })
-        //     .catch(err => reject(err))
-        const currentDate = new Date()
-        resolve(currentDate.toString())
-    })
+function getFirmName (pool, orgCode = '') {
+    const defaultName = 'БОСС Кадровик'
+    if (orgCode.length) {
+        return new Promise((resolve, reject) => {
+            pool.request()
+                .query(`select coalesce(SNAME, NAME) name from HR_FIRM where OKPO = ${orgCode}`)
+                .then(result => {
+                    let name = result && result.recordset.length ? result.recordset[0].name : defaultName
+                    name = name.replace(/"/g, '_').replace(/'/g, '_').replace(/\./g, '_')
+                        .replace(/,/g, '_').replace(/ /g, '_').replace(/__/g, '_')
+                    resolve(name.length ? name : defaultName)
+                })
+                .catch(err => reject(err))
+            const currentDate = new Date()
+            resolve(currentDate.toString())
+        })
+    } else {
+        return new Promise((resolve, reject) => {
+            resolve(defaultName)
+        })
+    }
 }
 
 function getFileList () {

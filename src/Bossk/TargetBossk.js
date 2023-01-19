@@ -10,10 +10,7 @@ const BATCH_SIZE = 10000
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         readQueryFromFile(target.queryFileName)
-            // .then((queryText) => removeHeader(queryText))
-            // .then((queryText) => replace_SYS_SCHEMA(queryText, target.config.schemaSys))
-            // .then((queryText) => replace_SYSSTE_CD(queryText, target.config.codeSe))
-            // .then((queryText) => replace_SPRPDR_CD(queryText, target.config.codeDep))
+            .then((queryText) => replace_OKPO(queryText, target.config.orgCode))
             .then((queryText) => doQuery(target, queryText))
             .then(() => resolve(target))
             .catch((err) => {
@@ -38,41 +35,13 @@ function readQueryFromFile (fileName) {
     })
 }
 
-// function removeHeader (queryText) {
-//     const re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gmi
-//     queryText = queryText.replace(re, '')
-//     return queryText
-// }
-
-// function replace_SYS_SCHEMA (queryText, schemaSys) {
-//     // find /*SYS_SCHEMA*/.sspr
-//     // replace to ${schemaSys}.sspr
-//     const re = /\/\*SYS_SCHEMA\*\/\w+\./gmi
-//     while (re.test(queryText)) {
-//         queryText = queryText.replace(re, schemaSys + '.')
-//     }
-//     return queryText
-// }
-
-// function replace_SYSSTE_CD (queryText, sysste_cd) {
-//     // find /*SYSSTE_CD*/.sspr
-//     // replace to sysste_cd
-//     const re = /\/\*SYSSTE_CD\*\//gmi
-//     while (re.test(queryText)) {
-//         queryText = queryText.replace(re, '\'' + sysste_cd + '\'')
-//     }
-//     return queryText
-// }
-
-// function replace_SPRPDR_CD (queryText, sprpdr_cd) {
-//     // find /*SPRPDR_CD*/.sspr
-//     // replace to sprpdr_cd
-//     const re = /\/\*SPRPDR_CD\*\//gmi
-//     while (re.test(queryText)) {
-//         queryText = queryText.replace(re, '\'' + sprpdr_cd + '\'')
-//     }
-//     return queryText
-// }
+function replace_OKPO (queryText, okpo) {
+    const re = /\/\*OKPO\*\//gmi
+    while (re.test(queryText)) {
+        queryText = queryText.replace(re, '\'' + okpo + '\'')
+    }
+    return queryText
+}
 
 async function doQuery (target, queryText) {
     return new Promise((resolve, reject) => {
