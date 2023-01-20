@@ -9,7 +9,7 @@ select -- c1.Full_Name, p1.Num_Tab, d1.Name_Pay,
 	,payElID = l1.Code_Pay
 --	,baseSum = null
 	,rate = l1."Percent"
-	,paySum = l1.Summa
+	,paySum = round(l1.Summa, 2)
 	,coalesce(t1.days, '') days
 	,coalesce(t1.hours, '') hours
 --	,planHours = null
