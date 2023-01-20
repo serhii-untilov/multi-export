@@ -1,5 +1,5 @@
 declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
-select c1.Full_Name, p1.Num_Tab, d1.Name_Pay, 
+select -- c1.Full_Name, p1.Num_Tab, d1.Name_Pay, 
 	ID = Auto_Lic
 	,periodCalc = cast(DATEADD(month, DATEDIFF(month, 0, dbo.zrp_fn_CMONTHTOD(l1.days, l1.cmonth)), 0) as date)
 	,periodSalary = DATEFROMPARTS(l1.tYear, l1.tMonth, 1)
