@@ -1,6 +1,6 @@
 select 
-    cast(Code_Pay as varchar) ID
-    ,cast(Code_Pay as varchar) code
+    Code_Pay ID
+    ,Code_Pay code
     ,Name_Pay name
 from typ_Pay
 where Code_Pay > 0 

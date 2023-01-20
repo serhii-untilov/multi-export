@@ -1,11 +1,11 @@
 declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
 select 
-	cast(Struct_Code as varchar) ID
-	,cast(Struct_Code as varchar) code
+	Struct_Code ID
+	,Struct_Code code
 	,coalesce(short_name, Struct_Name) name
 	,coalesce(Struct_Name, short_name) fullName
-	,cast(id_Firm as varchar) orgID
-	,cast(Struct_Parent as varchar) parentUnitID
+	,id_Firm orgID
+	,Struct_Parent parentUnitID
 	,state = 'ACTIVE'
 	,cast(cast(s1.date_in as date) as varchar) dateFrom
 	,cast(cast((case when s1.date_out in ('1900-01-01', '2099-01-01') then '9999-12-31' else s1.date_out end) as date) as varchar) dateTo

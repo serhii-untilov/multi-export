@@ -1,6 +1,6 @@
 declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
 select
-    cast(Auto_Card as varchar) ID
+    Auto_Card ID
     ,coalesce(Name, '') lastName
     ,coalesce(Name_i, '') firstName
     ,coalesce(Name_o, '') middleName

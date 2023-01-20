@@ -1,7 +1,7 @@
 declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
 select 
-	cast(p1.Code_appoint as varchar) ID
-	,cast(p1.Code_appoint as varchar) code
+	p1.Code_appoint ID
+	,p1.Code_appoint code
 	,p1.Name_appoint name
 	,p1.Name_appoint_Full fullName
 	,cast(cast(p1.d_from as date) as varchar) dateFrom

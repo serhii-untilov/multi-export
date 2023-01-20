@@ -1,8 +1,8 @@
 declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
 select 
-	cast(p1.pid as varchar) ID
-	,cast(p1.Auto_Card as varchar) employeeID
-	,cast(p1.id_Firm as varchar) orgID
+	p1.pid ID
+	,p1.Auto_Card employeeID
+	,p1.id_Firm orgID
 	,cast(cast(p1.in_date as date) as varchar) dateFrom
 	,cast(cast((case when p1.out_date in ('1900-01-01', '2099-01-01') then '9999-12-31' else p1.out_date end) as date) as varchar) dateTo
 	,coalesce(p1.Num_Tab, '') tabNum
