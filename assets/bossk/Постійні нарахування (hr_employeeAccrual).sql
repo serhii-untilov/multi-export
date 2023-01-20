@@ -15,4 +15,4 @@ from const_pay n1
 inner join people p1 on p1.pID = n1.pID
 inner join Card c1 on c1.Auto_Card = p1.Auto_Card
 where (@orgID is null or @orgID = p1.id_Firm)
-order by 
+order by n1.pID, n1.FromD, n1.Code_Pay

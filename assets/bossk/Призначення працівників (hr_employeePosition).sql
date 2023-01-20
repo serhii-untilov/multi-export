@@ -1,6 +1,4 @@
 declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
--- Призначення
-declare @orgID bigint = (case when '' = '' then null else coalesce((select ID from HR_FIRM where OKPO = ''), -1) end)
 select 
 	p1.prId ID
 	,p1.Auto_Card employeeID
