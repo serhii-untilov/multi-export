@@ -68,7 +68,7 @@ class SourceBossk extends Source {
 }
 
 function getFirmName (pool, orgCode = '') {
-    const defaultName = 'БОСС Кадровик'
+    const defaultName = 'БОСС-Кадровик'
     if (orgCode.length) {
         return new Promise((resolve, reject) => {
             pool.request()
