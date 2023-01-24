@@ -4,7 +4,7 @@ SELECT
 	Code_Regim as code,
 	Name_Regim as name,
 	'FROM_SCHEDULE' as begins,
-	cast(mdate as date) dateFrom
+	cast(cast(mdate as date) as varchar) dateFrom
 from typ_regim
 where Code_Regim in (
 	select distinct p1.Code_Regim workScheduleID
