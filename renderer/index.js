@@ -85,6 +85,11 @@ const renderMenu = () => {
     setSelected(buttonSelectAPK, this.config.source === Config.APK)
     setSelected(buttonSelectA5, this.config.source === Config.A5)
     setSelected(buttonSelectBossk, this.config.source === Config.BOSSK)
+
+    setVisible(buttonSelectAfina, false)
+    setVisible(buttonSelectParus, false)
+    setVisible(partAfina, false)
+    setVisible(partParus, false)
 }
 
 const selectHome = () => {
@@ -139,6 +144,7 @@ const buttonSelectAfina = document.getElementById('selectAfina')
 buttonSelectAfina.addEventListener('click', selectAfina)
 document.getElementById('homeSelectAfina').addEventListener('click', selectAfina)
 document.getElementById('captionAfina').addEventListener('click', selectAfina)
+const partAfina = document.getElementById('partAfina')
 
 const selectParus = () => {
     if (this.config.source === Config.PARUS) { return }
@@ -153,6 +159,7 @@ const buttonSelectParus = document.getElementById('selectParus')
 buttonSelectParus.addEventListener('click', selectParus)
 document.getElementById('homeSelectParus').addEventListener('click', selectParus)
 document.getElementById('captionParus').addEventListener('click', selectParus)
+const partParus = document.getElementById('partParus')
 
 const select1C = () => {
     if (this.config.source === Config.C7) { return }
