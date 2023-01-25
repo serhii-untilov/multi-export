@@ -5,7 +5,7 @@ const fs = require('fs')
 const SQL_FILES_DIR = './assets/ispro'
 
 test('Test readdirSync', () => {
-    let fileList = fs.readdirSync(SQL_FILES_DIR)
+    const fileList = fs.readdirSync(SQL_FILES_DIR)
     expect(fileList.length > 0).toBe(true)
 })
 

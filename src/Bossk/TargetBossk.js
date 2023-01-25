@@ -26,8 +26,9 @@ function readQueryFromFile (fileName) {
         try {
             fs.readFile(fileName, { encoding: null }, (err, queryText) => {
                 if (err) reject(err)
-                const convertedQueryText = iconv.decode(queryText, 'cp1251')
-                resolve(convertedQueryText)
+                // const convertedQueryText = iconv.encode(queryText, 'win1251')
+                // resolve(convertedQueryText)
+                resolve(queryText)
             })
         } catch (err) {
             reject(err)
@@ -49,7 +50,8 @@ async function doQuery (target, queryText) {
 
         const request = target.pool.request() // or: new sql.Request(pool1)
         request.stream = true
-        request.query(queryText)
+        const convertedQueryText = iconv.encode(queryText, 'win1251')
+        request.query(convertedQueryText)
 
         let buffer = ''
 

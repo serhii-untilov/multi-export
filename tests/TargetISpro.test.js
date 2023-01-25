@@ -52,7 +52,7 @@ test('Check environment variables initialized from .env file', () => {
 //   expect(fileName).toBe('X:\\temp\\testFileName.csv')
 // })
 
-test.only('Test replacing sys_schemf', () => {
+test.only('Test replacing sys_schema', () => {
     // find /*SYS_SCHEMA*/.sspr
     // replace to ${schemaSys}.sspr
 
