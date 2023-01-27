@@ -3,7 +3,6 @@
 const fs = require('fs')
 const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
-const iconv = require('iconv-lite')
 
 const BATCH_SIZE = 10000
 
@@ -24,10 +23,8 @@ const makeFile = function (target) {
 function readQueryFromFile (fileName) {
     return new Promise((resolve, reject) => {
         try {
-            fs.readFile(fileName, { encoding: null }, (err, queryText) => {
+            fs.readFile(fileName, { encoding: 'utf8' }, (err, queryText) => {
                 if (err) reject(err)
-                // const convertedQueryText = iconv.encode(queryText, 'win1251')
-                // resolve(convertedQueryText)
                 resolve(queryText)
             })
         } catch (err) {
@@ -50,8 +47,7 @@ async function doQuery (target, queryText) {
 
         const request = target.pool.request() // or: new sql.Request(pool1)
         request.stream = true
-        const convertedQueryText = iconv.encode(queryText, 'win1251')
-        request.query(convertedQueryText)
+        request.query(queryText)
 
         let buffer = ''
 
