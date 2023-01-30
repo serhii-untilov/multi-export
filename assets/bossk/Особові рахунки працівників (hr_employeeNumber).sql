@@ -1,4 +1,4 @@
-declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
+declare @orgID bigint = (case when ''/*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = ''/*OKPO*/), -1) end)
 select 
 	p1.pid ID
 	,p1.Auto_Card employeeID
@@ -8,7 +8,17 @@ select
 	,coalesce(p1.Num_Tab, '') tabNum
 	,coalesce(c1.INN, coalesce(c1.Passp_ser, '') + coalesce(c1.Passp_num, '')) taxCode
 	,coalesce(c1.Full_Name, coalesce(Name, '') + ' ' + coalesce(Name_i, '') + ' ' + coalesce(Name_o, '')) + ' [' + coalesce(p1.Num_Tab, '') + ']' description
+	,personalAccount = coalesce(u2.N_lc, '')
+	,payOutID = case when N_bank is null then '' when N_bank = 0 then '' else cast(N_bank as varchar) end
 from people p1
 inner join Card c1 on c1.Auto_Card = p1.Auto_Card
+left join (
+	select u1.pID employeeNumberID, max(u1.Auto_Const_Uder) payRetentionID
+	from const_uder u1
+	where u1.Code_Pay in (301, 328, 363) -- виплата зарплати
+		and len(rtrim(ltrim(coalesce(N_lc, '')))) > 0
+	group by u1.pID
+) t1 on t1.employeeNumberID = p1.pId
+left join const_uder u2 on u2.Auto_Const_Uder = t1.payRetentionID
 where (@orgID is null or @orgID = p1.id_Firm)
 order by p1.id_Firm, p1.Num_Tab
