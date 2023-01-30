@@ -34,7 +34,8 @@ function readQueryFromFile (fileName) {
 }
 
 function replace_OKPO (queryText, okpo) {
-    const re = /\/\*OKPO\*\//gmi
+    // const re = /\/\*OKPO\*\//gmi
+    const re = /'.*'\s*\/\*OKPO\*\//gmi
     while (re.test(queryText)) {
         queryText = queryText.replace(re, '\'' + okpo + '\'')
     }
