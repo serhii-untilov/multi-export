@@ -13,7 +13,8 @@ select
     ,fullNameDat = coalesce(p1.Name_appoint_Giv, '')
     ,nameOr = coalesce(p1.Name_appoint_Cre, '')
     ,fullNameOr = coalesce(p1.Name_appoint_Cre, '')
-	,dictStaffCatID = coalesce(p1.Work_Categ, '')
+	,dictStaffCatID = case when p1.Work_Categ is null then ''
+		when p1.Work_Categ = 0 then '' else cast(p1.Work_Categ as varchar) end 
 from Appointments p1
 where p1.Code_appoint in (
 	select distinct d1.Code_appoint 

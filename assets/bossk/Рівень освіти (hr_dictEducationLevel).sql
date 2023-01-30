@@ -14,3 +14,8 @@ where "type" in (
 		and people.sovm <> 2
 		and (@orgID is null or @orgID = people.id_Firm)
 )
+union
+select 
+	'0' as ID,
+	'0' as code,
+	'Не визначено' as name

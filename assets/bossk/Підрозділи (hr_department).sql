@@ -26,5 +26,11 @@ select
 	,coalesce(struct_name_P, '') fullNameVoc
 from StructS s1
 where (@orgID is null or @orgID = id_Firm)
-	and Flag_deleted = 0
+	and (Flag_deleted = 0 or Struct_Code in (
+		select distinct p1.Code_struct_name
+		from PR_CURRENT p1
+		inner join Card c1 on c1.Auto_Card = p1.Auto_Card
+		inner join people n1 on n1.Auto_Card = p1.Auto_Card and p1.Date_trans between n1.in_date and n1.out_date
+		where (@orgID is null or @orgID = p1.id_Firm)
+	))
 order by Struct_Code
