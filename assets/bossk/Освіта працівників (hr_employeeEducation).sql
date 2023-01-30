@@ -12,7 +12,7 @@ select
 	left(coalesce(VPR_ED_DEPTS.Firm_Text, ''), 200) docIssuer,
 	case when Certific_Date is not null and Certific_Date > '1900-12-31' then cast(cast(Certific_Date as date) as varchar) else '' end dateIssue,
 	PR_EDUC.Auto_Card employeeDocID,
-	3 dictDocKindID,
+	119 dictDocKindID,
 	coalesce(PR_EDUC.Speciality, '') dictSpecialtyID,
 	left(coalesce(VPR_ED_QUAL.Qualify_Text, ''),200) qualification
 from PR_EDUC 

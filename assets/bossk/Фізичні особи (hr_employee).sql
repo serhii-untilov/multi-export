@@ -1,10 +1,10 @@
 declare @orgID bigint = (case when /*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = /*OKPO*/), -1) end)
 select
     c1.Auto_Card ID
-    ,ltrim(rtrim(coalesce(Name, ''))) lastName
-    ,ltrim(rtrim(coalesce(Name_i, ''))) firstName
-    ,ltrim(rtrim(coalesce(Name_o, ''))) middleName
-    ,ltrim(rtrim(coalesce(Full_Name, ''))) fullFIO
+    ,left(ltrim(rtrim(coalesce(Name, ''))), 30) lastName
+    ,left(ltrim(rtrim(coalesce(Name_i, ''))), 30) firstName
+    ,left(ltrim(rtrim(coalesce(Name_o, ''))), 30) middleName
+    ,left(ltrim(rtrim(coalesce(Full_Name, ''))), 512) fullFIO
     ,case when Sex = 0 then 'M' when Sex = 1 then 'W' else '' end sexType
     ,cast(cast(Date_birth as date) as varchar) birthDate
     ,Citizenship citizenshipID
@@ -17,9 +17,9 @@ select
     ,1 as dictTaxCodeReasonID
     ,ltrim(rtrim(coalesce(EMail, ''))) email
     ,'NEW' state
-    ,coalesce(rab_tel.value, '') phoneMobile
-    ,coalesce(dom_tel.value, '') phoneHome
-    ,coalesce(rab_tel1.value, '') phoneWorking
+    ,left(replace(rtrim(ltrim(coalesce(rab_tel.value, ''))), ' ', ''), 20) phoneMobile
+    ,left(replace(rtrim(ltrim(coalesce(dom_tel.value, ''))), ' ', ''), 20) phoneHome
+    ,left(replace(rtrim(ltrim(coalesce(rab_tel1.value, ''))), ' ', ''), 20) phoneWorking
 from Card c1
 left join (
 	SELECT Auto_Card, value 
