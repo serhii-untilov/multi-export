@@ -117,7 +117,7 @@ function dbConfig (config) {
             acquireTimeoutMillis: ACQUIRE_TIMEOUT
         }
     }
-    if (config.domain.length) {
+    if (isNamedInstance) {
         params.domain = config.domain
     }
     if (!isNamedInstance && config.port.length) {
