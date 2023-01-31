@@ -30,6 +30,7 @@ class Config {
         // SQL Server DB connect (ispro, bossk)
         this.domain = ''
         this.server = ''
+        this.port = ''
         this.login = ''
         this.password = ''
         this.schema = ''

@@ -314,6 +314,14 @@ bosskServerName.addEventListener('change', (evt) => {
     ipcRenderer.send('set-config', this.config)
 })
 
+
+const bosskPort = document.getElementById('bk-port')
+bosskPort.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.port = evt.target.value
+    ipcRenderer.send('set-config', this.config)
+})
+
 const bosskLogin = document.getElementById('bk-login')
 bosskLogin.addEventListener('change', (evt) => {
     evt.preventDefault()
@@ -558,6 +566,7 @@ ipcRenderer.on('config', (event, config) => {
     bosskLogin.value = config.login || ''
     bosskPassword.value = config.password || ''
     bosskDomain.value = config.domain || ''
+    bosskPort.value = config.port || ''
     bosskSchema.value = config.schema || ''
     bosskOrgCode.value = config.orgCode || ''
     schemaSys.value = config.schemaSys || ''
