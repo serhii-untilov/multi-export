@@ -1,4 +1,5 @@
-declare @orgID bigint = (case when ''/*OKPO*/ = '' then null else coalesce((select ID from HR_FIRM where OKPO = ''/*OKPO*/), -1) end)
+declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
+declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
 declare @minDate date = DATEADD(YEAR, DATEDIFF(year, 0, DATEADD(month, -18, DATEADD(month, DATEDIFF(month, 0, getDate()), 0))), 0)
 select -- c1.Full_Name, p1.Num_Tab, d1.Name_Pay, 
 	ID = Auto_Lic

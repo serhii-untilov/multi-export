@@ -5,7 +5,7 @@ const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
 const iconv = require('iconv-lite')
 const QueryStream = require('pg-query-stream')
-const JSONStream = require('JSONStream')
+// const JSONStream = require('JSONStream')
 
 const BATCH_SIZE = 10000
 

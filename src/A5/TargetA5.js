@@ -191,5 +191,4 @@ function structFilterA5 (tableName, struct) {
         .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'paymentid'))
 }
 
-
 module.exports = makeFile
