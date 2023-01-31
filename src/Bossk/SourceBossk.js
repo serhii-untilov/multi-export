@@ -103,11 +103,11 @@ function getFileList () {
 }
 
 function dbConfig (config) {
-    return {
-        domain: config.domain,
+    const params =  {
         user: config.login,
         password: config.password,
         server: config.server,
+        port: Number(config.port),
         database: config.schema,
         connectionTimeout: CONNECTION_TIMEOUT,
         requestTimeout: REQUEST_TIMEOUT,
@@ -117,6 +117,11 @@ function dbConfig (config) {
             acquireTimeoutMillis: ACQUIRE_TIMEOUT
         }
     }
+    if (config.domain.length) {
+        // windows authentification
+        params.domain = config.domain
+    }
+    return params
 }
 
 module.exports = SourceBossk
