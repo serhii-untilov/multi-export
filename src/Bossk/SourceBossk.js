@@ -103,11 +103,11 @@ function getFileList () {
 }
 
 function dbConfig (config) {
+    const isNamedInstance = (String(config.server).indexOf('\\') >= 0)
     const params =  {
         user: config.login,
         password: config.password,
         server: config.server,
-        port: Number(config.port),
         database: config.schema,
         connectionTimeout: CONNECTION_TIMEOUT,
         requestTimeout: REQUEST_TIMEOUT,
@@ -118,8 +118,11 @@ function dbConfig (config) {
         }
     }
     if (config.domain.length) {
-        // windows authentification
         params.domain = config.domain
+    }
+    if (!isNamedInstance && config.port.length) {
+        // Don't set when connecting to named instance
+        params.port = Number(config.port)
     }
     return params
 }
