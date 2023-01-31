@@ -1,11 +1,11 @@
 'use strict'
 
-const fs = require('fs')
-const removeFile = require('../helper/removeFile')
+// const fs = require('fs')
+// const removeFile = require('../helper/removeFile')
 const Target = require('../Target')
-const iconv = require('iconv-lite')
-const QueryStream = require('pg-query-stream')
-const JSONStream = require('JSONStream')
+// const iconv = require('iconv-lite')
+// const QueryStream = require('pg-query-stream')
+// const JSONStream = require('JSONStream')
 
 const queryText = `
 CREATE OR REPLACE FUNCTION base.uuid_bigint(

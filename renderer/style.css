@@ -42,6 +42,10 @@ body {
   color: brown;
  }
 
+ .bossk {
+  color: #ED1C24;
+}
+
   /* make image black and white */ 
   /* -webkit-filter: grayscale(60%);*/
 .black-white {  

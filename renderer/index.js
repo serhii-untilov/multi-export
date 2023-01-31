@@ -86,8 +86,10 @@ const renderMenu = () => {
     setSelected(buttonSelectA5, this.config.source === Config.A5)
     setSelected(buttonSelectBossk, this.config.source === Config.BOSSK)
 
+    setVisible(buttonSelect1C, false)
     setVisible(buttonSelectAfina, false)
     setVisible(buttonSelectParus, false)
+    setVisible(part1C, false)
     setVisible(partAfina, false)
     setVisible(partParus, false)
 }
@@ -174,6 +176,7 @@ const buttonSelect1C = document.getElementById('select1C')
 buttonSelect1C.addEventListener('click', select1C)
 document.getElementById('homeSelect1C').addEventListener('click', select1C)
 document.getElementById('caption1C').addEventListener('click', select1C)
+const part1C = document.getElementById('part1C')
 
 const selectOsvita = () => {
     if (this.config.source === Config.OSVITA) { return }

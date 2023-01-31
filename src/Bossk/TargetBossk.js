@@ -9,7 +9,7 @@ const BATCH_SIZE = 10000
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         readQueryFromFile(target.queryFileName)
-            .then((queryText) => replace_OKPO(queryText, target.config.orgCode))
+            .then((queryText) => replace_orgCode(queryText, target.config.orgCode))
             .then((queryText) => doQuery(target, queryText))
             .then(() => resolve(target))
             .catch((err) => {
@@ -33,11 +33,11 @@ function readQueryFromFile (fileName) {
     })
 }
 
-function replace_OKPO (queryText, okpo) {
-    // const re = /\/\*OKPO\*\//gmi
-    const re = /'.*'\s*\/\*OKPO\*\//gmi
+function replace_orgCode (queryText, orgCode) {
+    // const re = /\/\*orgCode\*\//gmi
+    const re = /'.*'\s*\/\*orgCode\*\//gmi
     while (re.test(queryText)) {
-        queryText = queryText.replace(re, '\'' + okpo + '\'')
+        queryText = queryText.replace(re, '\'' + orgCode + '\'')
     }
     return queryText
 }
