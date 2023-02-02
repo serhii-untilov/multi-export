@@ -63,7 +63,10 @@ class SourceBossk extends Source {
                     sendDone(null)
                 }
             })
-            .catch((err) => sendFailed(err.message))
+            .catch(err => {
+                sendFailed(err.message)
+            })
+
     }
 }
 
@@ -103,7 +106,7 @@ function getFileList () {
 }
 
 function dbConfig (config) {
-    const isNamedInstance = (String(config.server).indexOf('\\') >= 0)
+    const isNamedInstance = (config.server.indexOf('\\') >= 0)
     const params =  {
         user: config.login,
         password: config.password,
