@@ -6,7 +6,7 @@ const Config = require('./Config')
 class DataStore extends Store {
     constructor (settings) {
         super(settings)
-        this.config = this.get('config') || new Config.Config()
+        this.config = Object.assign(new Config.Config(), this.get('config'))
         this.config.source = this.config.source || Config.HOME // default source
     }
 
