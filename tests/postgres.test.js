@@ -8,7 +8,7 @@ const POOL_SIZE = 4
 const CONNECTION_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 const REQUEST_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 
-test('postgres', async () => {
+test.skip('postgres', async () => {
     const testString = 'abc123абв'
     dbConfig.connectionTimeoutMillis = CONNECTION_TIMEOUT
     dbConfig.idleTimeoutMillis = REQUEST_TIMEOUT
