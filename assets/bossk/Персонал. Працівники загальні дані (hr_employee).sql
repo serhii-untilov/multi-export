@@ -1,4 +1,4 @@
-declare @orgCode varchar(16) = ''/*orgCode*/ -- '™ƒ–œŒ”', '' - ÛÒ≥ Ó„‡Ì≥Á‡ˆ≥ø
+declare @orgCode varchar(16) = ''/*orgCode*/ -- '–Ñ–î–†–ü–û–£', '' - —É—Å—ñ –æ—Ä–≥–∞–Ω—ñ–∑–∞—Ü—ñ—ó
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
 select
     c1.Auto_Card ID
@@ -12,7 +12,7 @@ select
     ,case when FamilyStatus is null or FamilyStatus = 0 then '' else cast(FamilyStatus as varchar) end dictMaritalStatusKindID
     ,(case when bAddr_Region is null or rtrim(ltrim(bAddr_Region)) = '' then '' else bAddr_Region end) +
     (case when bAddr_City is null or rtrim(ltrim(bAddr_City)) = '' then '' else ((case when (bAddr_Region is null or rtrim(ltrim(bAddr_Region)) = '') then '' else ', ' end)) + bAddr_City end) +
-    (case when Addr_okrug is null or rtrim(ltrim(Addr_okrug)) = '' then '' else (case when bAddr_City is null or rtrim(ltrim(bAddr_City)) = '' then '' else ', ' end) + Addr_okrug + ' -Ì' end) birthPlace
+    (case when Addr_okrug is null or rtrim(ltrim(Addr_okrug)) = '' then '' else (case when bAddr_City is null or rtrim(ltrim(bAddr_City)) = '' then '' else ', ' end) + Addr_okrug + ' ÔøΩ-ÔøΩ' end) birthPlace
     ,case when INN is not null then 'TAXCODE'  else 'PASSPORT' end empTaxCodeType
     ,ltrim(rtrim(coalesce(INN, coalesce(Passp_ser, '') + coalesce(Passp_num, ''))))  taxCode
     ,1 as dictTaxCodeReasonID

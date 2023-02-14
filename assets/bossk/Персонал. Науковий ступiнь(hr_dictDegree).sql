@@ -1,4 +1,3 @@
---  Науковий стпупiнь
 
 select 
 doc_id as ID,

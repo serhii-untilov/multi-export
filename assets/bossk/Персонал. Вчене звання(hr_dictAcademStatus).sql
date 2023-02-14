@@ -1,4 +1,3 @@
---  Вчене звання
 select 
 doc_id as ID,
 doc_id as code,

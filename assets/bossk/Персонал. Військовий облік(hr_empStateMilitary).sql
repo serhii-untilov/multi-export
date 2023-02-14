@@ -1,4 +1,4 @@
-declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
+declare @orgCode varchar(16) = ''/*orgCode*/ -- 'Р„Р”Р РџРћРЈ', '' - СѓСЃС– РѕСЂРіР°РЅС–Р·Р°С†С–С—
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
 SELECT durty_flg,
 	military.Auto_Military as ID,
@@ -39,7 +39,7 @@ SELECT durty_flg,
 	bilet_N as docNumber,
 	condit as milSpecDescription,
 	case when noarmy_flg=0 then null else noarmy_flg end as dictMilitarySuitableID,
-	case when fromD <> '1900-01-01' then 'дата постановки на облік ' + cast(cast(fromD as date) as varchar)  else '' end as comment
+	case when fromD <> '1900-01-01' then 'РґР°С‚Р° РїРѕСЃС‚Р°РЅРѕРІРєРё РЅР° РѕР±Р»С–Рє ' + cast(cast(fromD as date) as varchar)  else '' end as comment
 	 
 
 FROM military

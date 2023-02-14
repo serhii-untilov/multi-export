@@ -1,5 +1,4 @@
--- табельні 
-declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
+declare @orgCode varchar(16) = ''/*orgCode*/ -- 'Р„Р”Р РџРћРЈ', '' - СѓСЃС– РѕСЂРіР°РЅС–Р·Р°С†С–С—
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
 
 select people.Num_Tab as ID ,

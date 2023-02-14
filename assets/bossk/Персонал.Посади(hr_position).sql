@@ -1,5 +1,4 @@
- -- посади
-declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
+declare @orgCode varchar(16) = ''/*orgCode*/ -- 'Р„Р”Р РџРћРЈ', '' - СѓСЃС– РѕСЂРіР°РЅС–Р·Р°С†С–С—
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
 select PR_CURRENT.pId as ID ,
 Appointments.Code_appoint as code,
@@ -47,4 +46,4 @@ and Appointments.Code_appoint in (
 	where (@orgID is null or @orgID = d1.id_Firm)
    )
 
-order by 6
+

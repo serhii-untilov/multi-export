@@ -1,5 +1,4 @@
---ïðèçíà÷åííÿ
-declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ªÄÐÏÎÓ', '' - óñ³ îðãàí³çàö³¿
+declare @orgCode varchar(16) = ''/*orgCode*/ -- 'Ð„Ð”Ð ÐŸÐžÐ£', '' - ÑƒÑÑ– Ð¾Ñ€Ð³Ð°Ð½Ñ–Ð·Ð°Ñ†Ñ–Ñ—
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
 
 select PR_CURRENT.pId as ID ,
@@ -9,7 +8,6 @@ case when Code_struct_name=43 then 7005446 else Code_struct_name end as departme
 PR_CURRENT.pId as positionID,
 dictid as dictPositionID,
 cast(cast(PR_CURRENT.date_trans as date) as varchar)  as dateFrom,
---CONVERT(nvarchar,PR_CURRENT.date_trans,104) as dateFrom,
 PR_CURRENT.Code_Regim as workScheduleID,
 Number_w as mtCount,
 1 as workerType,
@@ -34,7 +32,7 @@ where PR_CURRENT.Flag_last = '*'
 and Date_depart > =  GETDATE()  
 and people.out_date = '1900-01-01 00:00:00.000'
 and (@orgID is null or @orgID = PR_CURRENT.id_Firm)
-and people.Num_Tab in ( 17689,17428)
+
 
 
 
