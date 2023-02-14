@@ -21,7 +21,8 @@ from (
 				else GETDATE() end
 			as date) as varchar) dateTo
 	FROM PR_WK_TOTALS_I st1
-	inner join people ON people.Auto_Card = st1.Auto_Card 
+	inner join people ON people.Auto_Card = st1.Auto_Card
+	inner join vpr_wk_total d1 on d1.id_tot = st1.vpr_wk_total_id_tot
 	where people.sovm <> 2
 	    and (@orgID is null or @orgID = people.id_Firm)
 ) t1

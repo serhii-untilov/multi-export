@@ -20,7 +20,8 @@ test.skip('postgres', async () => {
     const client = await pool.connect()
     const query1 = `select '${testString}' "testString";`
     let query2 = await (async () => readQueryFromFile('./Test.sql'))()
-    query2 = query2.replace(/\n/g, ' ').trim()
+    query2 = query2.replace(/\n/g, ' ').replace(/\r/g, ' ').replace(/\s{2,}/gm, ' ').trim()
+    query2 = query2.replace(/\r/g, ' ').trim()
     expect(query2).toBe(query1)
     const res = await client.query(query2)
     client.release(true)
