@@ -16,13 +16,13 @@ select
 	,coalesce(short_name, Struct_Name) nameNom
 	,coalesce(struct_name_R, '') nameGen
 	,coalesce(struct_name_V, '') nameAcc
-	,coalesce(struct_name_D, '') nameDat	
+	,coalesce(struct_name_D, '') nameDat
 	,coalesce(struct_name_T, '') nameOr
 	,coalesce(struct_name_P, '') nameVoc
 	,coalesce(short_name, Struct_Name) fullNameNom
 	,coalesce(struct_name_R, '') fullNameGen
 	,coalesce(struct_name_V, '') fullNameAcc
-	,coalesce(struct_name_D, '') fullNameDat	
+	,coalesce(struct_name_D, '') fullNameDat
 	,coalesce(struct_name_T, '') fullNameOr
 	,coalesce(struct_name_P, '') fullNameVoc
 from StructS s1

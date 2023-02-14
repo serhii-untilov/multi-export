@@ -66,7 +66,6 @@ class SourceBossk extends Source {
             .catch(err => {
                 sendFailed(err.message)
             })
-
     }
 }
 
@@ -93,7 +92,7 @@ function getFirmName (pool, orgCode = '') {
     }
 }
 
-function getFileList () {
+function getFileList() {
     return new Promise((resolve, reject) => {
         fs.readdir(SQL_FILES_DIR, { withFileTypes: true }, (err, dirents) => {
             if (err) reject(err)
@@ -105,9 +104,9 @@ function getFileList () {
     })
 }
 
-function dbConfig (config) {
+function dbConfig(config) {
     const isNamedInstance = (config.server.indexOf('\\') >= 0)
-    const params =  {
+    const params = {
         user: config.login,
         password: config.password,
         server: config.server,
