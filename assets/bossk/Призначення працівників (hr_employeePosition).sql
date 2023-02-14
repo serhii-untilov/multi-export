@@ -50,5 +50,5 @@ from PR_CURRENT p1
 inner join Card c1 on c1.Auto_Card = p1.Auto_Card
 inner join people n1 on n1.Auto_Card = p1.Auto_Card and p1.Date_trans between n1.in_date and n1.out_date
 where (@orgID is null or @orgID = p1.id_Firm)
-and n1.sovm <> p1.Work_Code
+	and n1.sovm <> p1.Work_Code
 order by p1.id_Firm, n1.Num_Tab, p1.Date_trans
