@@ -16,7 +16,7 @@ select
     ,case when INN is not null then 'TAXCODE'  else 'PASSPORT' end empTaxCodeType
     ,ltrim(rtrim(coalesce(INN, coalesce(Passp_ser, '') + coalesce(Passp_num, ''))))  taxCode
     ,1 as dictTaxCodeReasonID
-    ,ltrim(rtrim(coalesce(EMail, ''))) email
+    ,left(ltrim(rtrim(coalesce(EMail, ''))), 50) email
     ,'NEW' state
     ,left(replace(rtrim(ltrim(coalesce(rab_tel.value, ''))), ' ', ''), 20) phoneMobile
     ,left(replace(rtrim(ltrim(coalesce(dom_tel.value, ''))), ' ', ''), 20) phoneHome

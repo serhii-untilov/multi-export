@@ -113,7 +113,7 @@ async function doQuery (target, queryText) {
             for (const column in row) {
                 // eslint-disable-next-line no-prototype-builtins
                 if (row.hasOwnProperty(column)) {
-                    const cell = String(row[column]).replace(/\n/, ' ').trim()
+                    const cell = String(row[column]).replace(/\n/g, ' ').replace(/\r/g, ' ').replace(/\s{2,}/gm, ' ').trim()
                     buffer += `${separator}${cell}`
                     separator = ';'
                 }
