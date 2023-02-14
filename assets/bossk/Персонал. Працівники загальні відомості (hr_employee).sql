@@ -12,24 +12,24 @@ select
     ,case when FamilyStatus is null or FamilyStatus = 0 then '' else cast(FamilyStatus as varchar) end dictMaritalStatusKindID
     ,(case when bAddr_Region is null or rtrim(ltrim(bAddr_Region)) = '' then '' else bAddr_Region end) +
     (case when bAddr_City is null or rtrim(ltrim(bAddr_City)) = '' then '' else ((case when (bAddr_Region is null or rtrim(ltrim(bAddr_Region)) = '') then '' else ', ' end)) + bAddr_City end) +
-    (case when Addr_okrug is null or rtrim(ltrim(Addr_okrug)) = '' then '' else (case when bAddr_City is null or rtrim(ltrim(bAddr_City)) = '' then '' else ', ' end) + Addr_okrug + ' р-н' end) birthPlace
+    (case when Addr_okrug is null or rtrim(ltrim(Addr_okrug)) = '' then '' else (case when bAddr_City is null or rtrim(ltrim(bAddr_City)) = '' then '' else ', ' end) + Addr_okrug + ' �-�' end) birthPlace
     ,case when INN is not null then 'TAXCODE'  else 'PASSPORT' end empTaxCodeType
     ,ltrim(rtrim(coalesce(INN, coalesce(Passp_ser, '') + coalesce(Passp_num, ''))))  taxCode
     ,1 as dictTaxCodeReasonID
     ,left(ltrim(rtrim(coalesce(EMail, ''))), 50) email
     ,'NEW' state
-    ,left(replace(rtrim(ltrim(coalesce(rab_tel.value, ''))), ' ', ''), 20) phoneMobile
+    ,left(replace(rtrim(ltrim(coalesce(mob_tel.value, ''))), ' ', ''), 20) phoneMobile
     ,left(replace(rtrim(ltrim(coalesce(dom_tel.value, ''))), ' ', ''), 20) phoneHome
-    ,left(replace(rtrim(ltrim(coalesce(rab_tel1.value, ''))), ' ', ''), 20) phoneWorking
+    ,left(replace(rtrim(ltrim(coalesce(rab_tel.value, ''))), ' ', ''), 20) phoneWorking
 from Card c1
 left join (
 	SELECT Auto_Card, value 
 	FROM phone_types p1, pr_phones p2 
 	where p1.phone_type_code = p2.phone_type_code
-        and p1.phone_type_code = 472  
+        and p1.phone_type_code = 474  
         and tod > GETDATE()
         and IsDefault=1
-) rab_tel ON rab_tel.Auto_Card = c1.Auto_Card 
+) mob_tel ON mob_tel.Auto_Card = c1.Auto_Card 
 left join (
 	SELECT Auto_Card, value FROM phone_types p1, pr_phones p2 
     where p1.phone_type_code = p2.phone_type_code
@@ -38,22 +38,13 @@ left join (
         and IsDefault=1
 ) dom_tel ON dom_tel.Auto_Card = c1.Auto_Card 
 left join (
-	select Auto_Card, value 
-	FROM phone_types p1, pr_phones p2
-    where p1.phone_type_code = p2.phone_type_code
-		and p1.phone_type_code = 472  
+	SELECT Auto_Card, value 
+	FROM phone_types p1, pr_phones p2 
+	where p1.phone_type_code = p2.phone_type_code
+        and p1.phone_type_code = 478
         and tod > GETDATE()
-        and IsDefault=0
-		and id = (
-			SELECT max(p22.id) id 
-			from phone_types p11, pr_phones p22 
-             where p11.phone_type_code = p22.phone_type_code
-				and p11.phone_type_code = 472  
-				and tod > GETDATE()
-				and IsDefault=0 and p22.Auto_Card = p2.Auto_Card
-			 group by Auto_Card
-		)
-) rab_tel1 ON rab_tel1.Auto_Card = c1.Auto_Card
+        and IsDefault=1
+) rab_tel ON rab_tel.Auto_Card = c1.Auto_Card
 left join (
 	SELECT Auto_Card, value 
 	FROM phone_types p1, pr_phones p2 
