@@ -1,6 +1,6 @@
 declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
-select 
+select
 	Struct_Code ID
 	,Struct_Code code
 	,coalesce(short_name, Struct_Name) name
