@@ -16,6 +16,6 @@ and c1.Auto_Card in (
 	select distinct p1.Auto_Card
 	from people p1
 	where (@orgID is null or @orgID = p1.id_Firm)
-	    and people.out_date = '1900-01-01'
-        and people.sovm <> 2
+	    and p1.out_date = '1900-01-01'
+        and p1.sovm <> 2
 )
