@@ -4,8 +4,8 @@ SELECT
 	st.id as ID,
 	st.auto_card as employeeID,
 	st.vpr_wk_total_id_tot as dictExperienceID,
-	CONVERT(nvarchar,dtend - delt,110) as calcDate,
-	CONVERT(nvarchar,case when dtend1=GETDATE() + 10000 then null else dtend1 end,110) as startCalcDate
+	cast(cast((dtend - delt) as date) as varchar) calcDate,
+	case when dtend1 = GETDATE() + 10000 then '' else cast(cast(dtend1 as date) as varchar) end startCalcDate
 FROM (
 	SELECT
 		st1.auto_card,
