@@ -9,14 +9,18 @@ select -- c1.Full_Name, p1.Num_Tab, d1.Name_Pay,
 	,employeeNumberID = l1.pId
 	,payElID = l1.Code_Pay
 --	,baseSum = null
-	,rate = l1."Percent"
-	,paySum = round(l1.Summa, 2)
-	,coalesce(t1.days, '') days
-	,coalesce(t1.hours, '') hours
+	,rate = case when l1."Percent" = 0 then '' when l1."Percent" is null then '' else cast(l1."Percent" as varchar) end
+	,paySum = case when l1.Summa is null then '' when l1.Summa = 0 then '' else cast(round(l1.Summa, 2) as varchar) end
+	,case when t1.days is null or t1.days = 0 then '' else cast(t1.days as varchar) end days
+	,case when t1.hours is null or t1.hours = 0 then '' else cast(t1.hours as varchar) end hours
 --	,planHours = null
 --	,planDays = null
---	,coalesce(cast(t1.D_FROM as date), '') dateFrom
---	,coalesce(cast(t1.D_TO as date), '') dateTo
+	,case when t1.D_FROM = '1900-01-01' then '' 
+		when t1.D_FROM is null then ''
+		else cast(cast(t1.D_FROM as date) as varchar) end dateFrom
+	,case when t1.D_TO = '1900-01-01' then '' 
+		when t1.D_TO is null then ''
+		else cast(cast(t1.D_TO as date) as varchar) end dateTo
 --	,dateFromAvg = null
 --	,dateToAvg = null
 --	,sumAvg = null
