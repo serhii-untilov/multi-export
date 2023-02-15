@@ -8,13 +8,13 @@ select
 	,c1.INN taxCode
 	,cast(cast(n1.FromD as date) as varchar) dateFrom
 	,cast(cast((case when n1.ToD in ('1900-01-01', '2099-01-01') then '9999-12-31' else n1.ToD end) as date) as varchar) dateTo
-	,Summa accrualSum
-	,"Percent" accrualRate
-	,coalesce(N_bank, '') bankID
+	,case when Summa is null or Summa = 0 then '' else cast(Summa as varchar) end accrualSum
+	,case when "Percent" is null or "Percent" = 0 then '' else cast("Percent" as varchar) end accrualRate
+	,case when N_bank is null or N_bank = 0 then '' else cast(N_bank as varchar) end bankID
 	,N_lc bankAccount
 	-- ,ReceiveId contractorID -- !!!
-	,Summa_All debtSum
-	,Summa_r remindSum
+	,case when Summa_All is null or Summa_All = 0 then '' else cast(Summa_All as varchar) end debtSum
+	,case when Summa_r is null or Summa_r = 0 then '' else cast(Summa_r as varchar) end remindSum
 	,sn docNumber
 	,case -- select * from zrp_LST_transfer
 		when n1.t_trans = 1 then '1' -- Перечислениe по исполнительным листам -> Банк
