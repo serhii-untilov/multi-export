@@ -1,16 +1,17 @@
 declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
-select 
+select
 	Struct_Code ID
+	,id_Firm as impOrgID
 	,Struct_Code code
 	,coalesce(short_name, Struct_Name) name
 	,coalesce(Struct_Name, short_name) fullName
 	,id_Firm orgID
-	,Struct_Parent parentUnitID
+	,case when Struct_Parent=(select max(Struct_Code) from StructS where StructS.Struct_Lev = 0 and id_Firm=@orgID) then '' else Struct_Parent end as parentUnitID
 	,state = 'ACTIVE'
 	,cast(cast(s1.date_in as date) as varchar) dateFrom
 	,cast(cast((case when s1.date_out in ('1900-01-01', '2099-01-01') then '9999-12-31' else s1.date_out end) as date) as varchar) dateTo
-	,ord_num idxNum
+	,case when ord_num is null or ord_num = 0 then '' else cast(ord_num as varchar) end idxNum
 	,(cast(Struct_Code as varchar) + ' ' + coalesce(short_name, Struct_Name)) description
 	,(coalesce(short_name, Struct_Name) + ' [' + cast(Struct_Code as varchar) + ']') caption
 	,coalesce(short_name, Struct_Name) nameNom

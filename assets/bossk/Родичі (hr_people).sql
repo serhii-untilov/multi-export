@@ -18,5 +18,5 @@ from PR_RELATIV child
 inner join card empl ON child.Auto_Card = empl.Auto_Card 
 inner join people ON people.Auto_Card = empl.Auto_Card 
 where people.out_date in ('1900-01-01', '2099-01-01')
-and (@orgID is null or @orgID = people.id_Firm)
-and people.sovm <> 2
+	and (@orgID is null or @orgID = people.id_Firm)
+	and people.sovm <> 2

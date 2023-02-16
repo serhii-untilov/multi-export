@@ -40,13 +40,8 @@ SELECT durty_flg,
 	condit as milSpecDescription,
 	case when noarmy_flg=0 then null else noarmy_flg end as dictMilitarySuitableID,
 	case when fromD <> '1900-01-01' then 'дата постановки на облік ' + cast(cast(fromD as date) as varchar)  else '' end as comment
-	 
-
 FROM military
 join people ON people.Auto_Card = military.Auto_Card 
 where people.out_date = '1900-01-01'
 	and people.sovm <> 2
 	and (@orgID is null or @orgID = people.id_Firm)
-
-
-	
