@@ -3,8 +3,8 @@ declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select
 
 select pr_Leave.Auto_Leave as ID,
 people.Auto_Card as employeeNumberID,
-pr_Leave.FromD as dateFrom,
-pr_Leave.ToD as dateTo,
+cast(cast(pr_Leave.FromD as date) as varchar) as dateFrom,
+cast(cast(pr_Leave.ToD as date) as varchar) as dateTo,
 typ_Leave.Name_Leave+' '+pr_Leave.Appl as description
 from pr_Leave
  join people  ON people.pid = pr_Leave.pId
