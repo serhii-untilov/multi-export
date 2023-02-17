@@ -40,7 +40,7 @@ select
 	PR_EDUC.Auto_Card as employeeID,
 	119 as dictDocKindID,
 	'' as docSeries,
-	"Certificate" as docNumber,
+	case when "Certificate" ='' then '-' else "Certificate" end as docNumber,
 	VPR_ED_DEPTS.Firm_Text as docIssued,
 	cast(cast(Certific_Date as date) as varchar) docIssuedDate,
 	1 state
@@ -49,5 +49,4 @@ inner join people  ON people.Auto_Card = PR_EDUC.Auto_Card
 left join VPR_ED_DEPTS on PR_EDUC.Firm_Code = VPR_ED_DEPTS.Firm_Code
 where people.out_date = '1900-01-01'
 	and people.sovm <> 2 
-	and Certificate <> ''
 	and (@orgID is null or @orgID = people.id_Firm)
