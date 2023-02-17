@@ -1,4 +1,5 @@
-SELECT Code_Leave as ID,
-Code_Leave as code,
-Name_Leave as name
+SELECT
+    Code_Leave ID,
+    Code_Leave code,
+    Name_Leave name
 FROM typ_Leave
