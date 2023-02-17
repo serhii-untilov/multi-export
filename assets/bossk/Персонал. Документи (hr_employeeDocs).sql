@@ -18,24 +18,24 @@ where people.out_date = '1900-01-01'
 
 UNION
 
-select 
+select
 	200000 + card.Auto_Card ID,
 	card.Auto_Card employeeID,
-	109 dictDocKindID,  
+	109 dictDocKindID,
 	Seria_CC docSeries,
 	Number_CC docNumber,
 	'' docIssued,
 	'' docIssuedDate,
 	1 state
-from card 
+from card
 inner join people ON people.Auto_Card = card.Auto_Card 
 where people.out_date = '1900-01-01'
-	and people.sovm <> 2 
+	and people.sovm <> 2
 	and (@orgID is null or @orgID = people.id_Firm)
 
 UNION
- 
-select 
+
+select
 	300000 +pr_educ.pr_ed_auto_num ID,
 	PR_EDUC.Auto_Card as employeeID,
 	119 as dictDocKindID,
