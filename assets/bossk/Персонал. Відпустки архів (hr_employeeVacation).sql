@@ -9,7 +9,8 @@ select
     cast(cast(pr_Leave.ToD as date) as varchar) dateTo,
     Workdays_tot dayCount,
     PR_ORDERS.Name orderNumber,
-    cast(cast(PR_ORDERS.Date_Sign as date) as varchar) orderDate
+    cast(cast(PR_ORDERS.Date_Sign as date) as varchar) orderDate,
+    0 as isMoneyHelp
 from pr_Leave
 join people ON people.pid = pr_Leave.pId
 join typ_Leave on pr_Leave.Code_Leave = typ_Leave.Code_Leave

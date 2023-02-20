@@ -9,7 +9,6 @@ select
 	,coalesce(c1.INN, coalesce(c1.Passp_ser, '') + coalesce(c1.Passp_num, '')) taxCode
 	,cast(cast(p1.Date_trans as date) as varchar) dateFrom
 	,cast(cast((case when p1.Date_depart in ('1900-01-01', '2099-01-01') then '9999-12-31' else p1.Date_depart end) as date) as varchar) dateTo
-	-- ,p1.Code_struct_name departmentID0
 	,case when Code_struct_name = (
 			select max(Struct_Code)
 			from StructS
@@ -17,7 +16,7 @@ select
 				and Flag_deleted = 0
 				and (@orgID is null or id_Firm = @orgID)
 			)
-		then ''
+		then null
 		else Code_struct_name 
 		end as departmentID
 	,p1.pId as positionID
@@ -77,6 +76,6 @@ join  (
 	)
 ) grp on Name_appoint = dictname
 where (@orgID is null or @orgID = p1.id_Firm)
--- people.out_date = '1900-01-01'
+ people.out_date = '1900-01-01'  --За цією умовою виключаються не діючі на поточний час призначення. Прошу Сергія не прибирати цю умову.
 -- and n1.sovm <> p1.Work_Code
 order by p1.id_Firm, n1.Num_Tab, p1.Date_trans

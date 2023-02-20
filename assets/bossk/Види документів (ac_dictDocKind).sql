@@ -16,6 +16,16 @@ where people.out_date = '1900-01-01'
 	and (@orgID is null or @orgID = people.id_Firm)
 )
 union
+
+select distinct 
+    100+TypUdost_n as ID, 
+	100+TypUdost_n as code, 
+	TypUdost.name as name,
+	'' docType
+FROM military
+  join TypUdost on rtrim(ltrim(military.TypUdost_n))=rtrim(ltrim(TypUdost.n))
+
+union
 select 109 ID,
 	109 code,
 	'Закордонний паспорт' name,
