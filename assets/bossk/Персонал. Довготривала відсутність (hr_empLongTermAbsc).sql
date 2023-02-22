@@ -1,7 +1,8 @@
 declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
+
 select pr_Leave.Auto_Leave as ID,
-    people.Auto_Card as employeeNumberID,
+    people.Num_Tab as employeeNumberID,
     cast(cast(pr_Leave.FromD as date) as varchar) dateFrom,
     cast(cast(pr_Leave.ToD as date) as varchar) dateTo,
     typ_Leave.Name_Leave + ' ' + pr_Leave.Appl as description
