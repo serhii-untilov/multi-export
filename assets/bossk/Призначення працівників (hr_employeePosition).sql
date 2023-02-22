@@ -3,13 +3,16 @@ declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select
 select 
 	p1.prId ID
 	,p1.Auto_Card employeeID
-	,n1.pid employeeNumberID
+	,n1.Num_Tab employeeNumberID
 	,p1.id_Firm organizationID
 	,n1.Num_Tab tabNum
 	,coalesce(c1.INN, coalesce(c1.Passp_ser, '') + coalesce(c1.Passp_num, '')) taxCode
 	,cast(cast(p1.Date_trans as date) as varchar) dateFrom
-	,cast(cast((case when p1.Date_depart in ('1900-01-01', '2099-01-01') then '9999-12-31' else p1.Date_depart end) as date) as varchar) dateTo
-	,case when Code_struct_name = (
+	,cast(cast((case when p1.Date_depart in ('1900-01-01', '2099-01-01') and n1.out_date = '1900-01-01' then '9999-12-31' 
+		             else case when p1.Date_depart in ('1900-01-01', '2099-01-01') and n1.out_date <> '1900-01-01' then n1.out_date 
+					 else p1.Date_depart end end) as date) as varchar) as dateTo
+	,case when n1.out_date = '1900-01-01' 
+	then case when Code_struct_name = (
 			select max(Struct_Code)
 			from StructS
 			where StructS.Struct_Lev = 0
@@ -18,9 +21,10 @@ select
 			)
 		then null
 		else Code_struct_name 
-		end as departmentID
-	,p1.pId as positionID
-	,dictid as dictPositionID
+		end 
+	else null end as departmentID
+	,case when n1.out_date = '1900-01-01'  then p1.pId else null end as positionID
+	,case when n1.out_date = '1900-01-01'  then dictid else null end as dictPositionID
 	,cast(cast(p1.Wage as numeric(19,2)) as varchar) accrualSum
     ,p1.Code_Regim workScheduleID
 	,workerType = case
@@ -58,7 +62,7 @@ select
 	,'1' as dictCategoryECBID
 from PR_CURRENT p1
 inner join Card c1 on c1.Auto_Card = p1.Auto_Card
-inner join people n1 on n1.Auto_Card = p1.Auto_Card and p1.Date_trans between n1.in_date and n1.out_date
+inner join people n1 on n1.Auto_Card = p1.Auto_Card --and p1.Date_trans between n1.in_date and n1.out_date
 left join StructS s1 on s1.Struct_Code = p1.Code_struct_name
 join Appointments on Appointments.Code_Appoint=p1.Code_Appoint
 join  (
@@ -76,6 +80,5 @@ join  (
 	)
 ) grp on Name_appoint = dictname
 where (@orgID is null or @orgID = p1.id_Firm)
- people.out_date = '1900-01-01'  --За цією умовою виключаються не діючі на поточний час призначення. Прошу Сергія не прибирати цю умову.
--- and n1.sovm <> p1.Work_Code
+   and ( (n1.out_date = '1900-01-01') or ( n1.out_date>='2022-01-01'))
 order by p1.id_Firm, n1.Num_Tab, p1.Date_trans
