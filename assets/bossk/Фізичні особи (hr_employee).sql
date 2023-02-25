@@ -26,7 +26,7 @@ left join (
 	SELECT Auto_Card, value 
 	FROM phone_types p1, pr_phones p2 
 	where p1.phone_type_code = p2.phone_type_code
-        and p1.phone_type_code = 474  
+        and p1.phone_type_code = 474
         and tod > GETDATE()
         and IsDefault=1
 ) mob_tel ON mob_tel.Auto_Card = c1.Auto_Card 
@@ -39,7 +39,7 @@ left join (
 ) dom_tel ON dom_tel.Auto_Card = c1.Auto_Card 
 left join (
 	SELECT Auto_Card, value 
-	FROM phone_types p1, pr_phones p2 
+	FROM phone_types p1, pr_phones p2
 	where p1.phone_type_code = p2.phone_type_code
         and p1.phone_type_code = 478
         and tod > GETDATE()

@@ -33,7 +33,7 @@ where (@orgID is null or @orgID = id_Firm)
 		from PR_CURRENT p1
 		inner join Card c1 on c1.Auto_Card = p1.Auto_Card
 		inner join people n1 on n1.Auto_Card = p1.Auto_Card  --and p1.Date_trans between n1.in_date and n1.out_date
-		and ( (n1.out_date = '1900-01-01') or ( n1.out_date>='2022-01-01'))
+		and (n1.out_date = '1900-01-01' or n1.out_date>='2022-01-01')
 		where (@orgID is null or @orgID = p1.id_Firm)
 	))
 order by Struct_Code
