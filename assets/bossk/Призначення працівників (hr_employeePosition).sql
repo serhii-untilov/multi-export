@@ -3,7 +3,7 @@ declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select
 select 
 	p1.prId ID
 	,p1.Auto_Card employeeID
-	,n1.Num_Tab employeeNumberID
+	,n1.pid employeeNumberID
 	,p1.id_Firm organizationID
 	,n1.Num_Tab tabNum
 	,coalesce(c1.INN, coalesce(c1.Passp_ser, '') + coalesce(c1.Passp_num, '')) taxCode
