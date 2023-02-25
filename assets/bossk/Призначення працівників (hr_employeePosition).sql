@@ -1,6 +1,6 @@
 declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
-select 
+select
 	p1.prId ID
 	,p1.Auto_Card employeeID
 	,n1.pid employeeNumberID
@@ -8,10 +8,10 @@ select
 	,n1.Num_Tab tabNum
 	,coalesce(c1.INN, coalesce(c1.Passp_ser, '') + coalesce(c1.Passp_num, '')) taxCode
 	,cast(cast(p1.Date_trans as date) as varchar) dateFrom
-	,cast(cast((case when p1.Date_depart in ('1900-01-01', '2099-01-01') and n1.out_date = '1900-01-01' then '9999-12-31' 
-		             else case when p1.Date_depart in ('1900-01-01', '2099-01-01') and n1.out_date <> '1900-01-01' then n1.out_date 
-					 else p1.Date_depart end end) as date) as varchar) as dateTo
-	,case when n1.out_date = '1900-01-01' 
+	,cast(cast((case when p1.Date_depart in ('1900-01-01', '2099-01-01') and n1.out_date = '1900-01-01' then '9999-12-31'
+		             else case when p1.Date_depart in ('1900-01-01', '2099-01-01') and n1.out_date <> '1900-01-01' then n1.out_date
+					 else p1.Date_depart end end) as date) as varchar) dateTo
+	,case when n1.out_date = '1900-01-01'
 	then case when Code_struct_name = (
 			select max(Struct_Code)
 			from StructS
@@ -20,11 +20,11 @@ select
 				and (@orgID is null or id_Firm = @orgID)
 			)
 		then null
-		else Code_struct_name 
-		end 
+		else Code_struct_name
+		end
 	else null end as departmentID
-	,case when n1.out_date = '1900-01-01'  then p1.pId else null end as positionID
-	,case when n1.out_date = '1900-01-01'  then dictid else null end as dictPositionID
+	,case when n1.out_date = '1900-01-01' then p1.pId else null end as positionID
+	,case when n1.out_date = '1900-01-01' then dictid else null end as dictPositionID
 	,cast(cast(p1.Wage as numeric(19,2)) as varchar) accrualSum
     ,p1.Code_Regim workScheduleID
 	,workerType = case
@@ -69,16 +69,16 @@ join  (
 	select p11.Code_appoint dictid, p11.Name_appoint dictname
     from Appointments p11
 	join (
-		select max(db_id) id, Name_appoint name 
-		from Appointments 
+		select max(db_id) id, Name_appoint name
+		from Appointments
 		group by Name_appoint
 	) grp1 on db_id = id
     where p11.Code_appoint in (
-		select distinct d1.Code_appoint 
-		from PR_CURRENT d1 
+		select distinct d1.Code_appoint
+		from PR_CURRENT d1
 		where (@orgID is null or @orgID = d1.id_Firm)
 	)
 ) grp on Name_appoint = dictname
 where (@orgID is null or @orgID = p1.id_Firm)
-   and ( (n1.out_date = '1900-01-01') or ( n1.out_date>='2022-01-01'))
+   and (n1.out_date = '1900-01-01' or n1.out_date>='2022-01-01')
 order by p1.id_Firm, n1.Num_Tab, p1.Date_trans
