@@ -4,7 +4,7 @@ select
 	pr_rel_num ID
 	,child.auto_card employeeID
 	,Who_Code dictKinshipKindID
-	,case when ltrim(rtrim(child.name_i)) = '' then '-' else ltrim(rtrim(child.name_i)) end firstName
+	,case when ltrim(rtrim(child.name_i))  = '' then '.' else ltrim(rtrim(child.name_i)) end firstName
 	,case when ltrim(rtrim(child.name)) = '' then ltrim(rtrim(empl.name)) else ltrim(rtrim(child.name)) end lastName
 	,ltrim(rtrim(child.name_o)) middleName
 	,(case when ltrim(rtrim(child.name)) = '' then ltrim(rtrim(empl.name)) else ltrim(rtrim(child.name)) end) + ' ' + ltrim(rtrim(child.name_i)) + ' ' + ltrim(rtrim(child.name_o)) shortFIO
