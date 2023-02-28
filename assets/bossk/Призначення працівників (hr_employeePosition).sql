@@ -106,5 +106,6 @@ left join (
 ) p6 on p6.pid = n1.pid
 where (@orgID is null or @orgID = p1.id_Firm)
    and (n1.out_date = '1900-01-01' or n1.out_date>='2022-01-01')
-   and (n1.out_date = '1900-01-01' or p1.Date_trans <= n1.out_date) -- дата призначення менше дати звільнення
+   and (n1.out_date = '1900-01-01' or p1.Date_trans <= n1.out_date) -- дата призначення менше або дорівнює даті звільнення
+   and (n1.in_date = '1900-01-01' or p1.Date_trans >= n1.in_date) -- дата призначення більше або дорівнює даті прийому
 order by p1.id_Firm, n1.Num_Tab, p1.Date_trans
