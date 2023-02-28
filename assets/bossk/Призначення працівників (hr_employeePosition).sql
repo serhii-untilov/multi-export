@@ -5,7 +5,7 @@ select
 	,p1.Auto_Card employeeID
 	,n1.pid employeeNumberID
 	,p1.id_Firm organizationID
-	,n1.Num_Tab tabNum
+	,coalesce(n1.Num_Tab, '') + (case when overallNum > 1 then '.' + cast(num as varchar) else '' end) tabNum
 	,coalesce(c1.INN, coalesce(c1.Passp_ser, '') + coalesce(c1.Passp_num, '')) taxCode
 	,cast(cast(p1.Date_trans as date) as varchar) dateFrom
 	,cast(cast((case when p1.Date_depart in ('1900-01-01', '2099-01-01') and n1.out_date = '1900-01-01' then '9999-12-31'
@@ -42,6 +42,7 @@ select
 		when p1.Work_Code = 12 then '2' -- за сум.зовн. тимчасово -> Тимчасово [2]
 		else '1' end 
 	,workPlace = case 
+		when coalesce(p6.partTimerNum, 0) > 0 then '2' -- Сумісництво внутрішнє [2]
 		when p1.Work_Code = 1  then '1' -- постійно -> Основне [1]
 		when p1.Work_Code = 2 then '2' -- за сумісництвом внутр. -> Сумісництво внутрішнє [2]
 		when p1.Work_Code = 3  then '3' -- за сумісництвом зовн. -> Сумісництво зовнішнє [3]
@@ -79,6 +80,31 @@ join  (
 		where (@orgID is null or @orgID = d1.id_Firm)
 	)
 ) grp on Name_appoint = dictname
+left join (
+	select p2.pid,
+	(	select count(*) 
+		from people p3
+		where p3.Num_Tab = p2.Num_Tab and p3.pid <= p2.pid
+	) num
+	from people p2
+) p4 on p4.pid = n1.pid
+left join (
+	select p2.pid,
+	(	select count(*) 
+		from people p3
+		where p3.Num_Tab = p2.Num_Tab
+	) overallNum
+	from people p2
+) p5 on p5.pid = n1.pid
+left join (
+	select p2.pid,
+	(	select count(*) 
+		from people p3
+		where p3.Auto_Card = p2.Auto_Card and p3.pid <> p2.pid and p3.out_date >= p2.out_Date and (p3.in_date < p2.in_Date or p3.pid < p2.pid)
+	) partTimerNum
+	from people p2
+) p6 on p6.pid = n1.pid
 where (@orgID is null or @orgID = p1.id_Firm)
    and (n1.out_date = '1900-01-01' or n1.out_date>='2022-01-01')
+   and p1.Date_trans <= n1.out_date -- дата призначення менше дати звільнення
 order by p1.id_Firm, n1.Num_Tab, p1.Date_trans
