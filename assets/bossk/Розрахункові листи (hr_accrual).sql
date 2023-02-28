@@ -30,8 +30,8 @@ select -- c1.Full_Name, p1.Num_Tab, d1.Name_Pay,
 --	,dateFromAvg = null
 --	,dateToAvg = null
 --	,sumAvg = null
-	,l1.*
-	,t1.*
+--	,l1.*
+--	,t1.*
 from Lic l1
 inner join typ_Pay d1 on d1.Code_Pay = l1.Code_Pay
 inner join people p1 on p1.pId = l1.pid
