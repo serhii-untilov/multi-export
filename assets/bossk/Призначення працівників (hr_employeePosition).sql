@@ -66,7 +66,7 @@ inner join Card c1 on c1.Auto_Card = p1.Auto_Card
 inner join people n1 on n1.Auto_Card = p1.Auto_Card --and p1.Date_trans between n1.in_date and n1.out_date
 left join StructS s1 on s1.Struct_Code = p1.Code_struct_name
 join Appointments on Appointments.Code_Appoint=p1.Code_Appoint
-join  (
+left join  (
 	select p11.Code_appoint dictid, p11.Name_appoint dictname
     from Appointments p11
 	join (
