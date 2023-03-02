@@ -28,7 +28,7 @@ select PR_CURRENT.pId as ID,
 from Appointments
 join PR_CURRENT on Appointments.Code_Appoint=PR_CURRENT.Code_Appoint
 Join people on PR_CURRENT.Auto_Card = people.Auto_Card
-join (
+left join (
 	select p11.Code_appoint dictid
 	    	,p11.Name_appoint dictname
     from Appointments p11
