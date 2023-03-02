@@ -24,7 +24,11 @@ select
 		end
 	else '' end as departmentID
 	,case when n1.out_date = '1900-01-01' then cast(p1.pId as varchar) else '' end as positionID
-	,case when dictid is null then '' else cast(coalesce(dictid, p1.code_appoint) as varchar) end dictPositionID
+	,case 
+		when dictid is not null then cast(dictid as varchar) 
+		when p1.code_appoint is not null then cast(p1.code_appoint as varchar)
+		else ''
+		end dictPositionID
 	,cast(cast(p1.Wage as numeric(19,2)) as varchar) accrualSum
     ,p1.Code_Regim workScheduleID
 	,workerType = case
