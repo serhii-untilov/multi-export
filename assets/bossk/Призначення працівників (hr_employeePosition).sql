@@ -1,7 +1,7 @@
 declare @orgCode varchar(16) = ''/*orgCode*/ -- 'ЄДРПОУ', '' - усі організації
 declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select ID from HR_FIRM where OKPO = @orgCode), -1) end)
 select
-	p1.prId ID
+	n1.pid * 10000 + p1.prId ID
 	,p1.Auto_Card employeeID
 	,n1.pid employeeNumberID
 	,p1.id_Firm organizationID
@@ -19,12 +19,16 @@ select
 				and Flag_deleted = 0
 				and (@orgID is null or id_Firm = @orgID)
 			)
-		then null
-		else Code_struct_name
+		then ''
+		else cast(Code_struct_name as varchar)
 		end
-	else null end as departmentID
-	,case when n1.out_date = '1900-01-01' then p1.pId else null end as positionID
-	,case when n1.out_date = '1900-01-01' then dictid else null end as dictPositionID
+	else '' end as departmentID
+	,case when n1.out_date = '1900-01-01' then cast(p1.pId as varchar) else '' end as positionID
+	,case 
+		when dictid is not null then cast(dictid as varchar) 
+		when p1.code_appoint is not null then cast(p1.code_appoint as varchar)
+		else ''
+		end dictPositionID
 	,cast(cast(p1.Wage as numeric(19,2)) as varchar) accrualSum
     ,p1.Code_Regim workScheduleID
 	,workerType = case
@@ -63,9 +67,9 @@ select
 	,'1' as dictCategoryECBID
 from PR_CURRENT p1
 inner join Card c1 on c1.Auto_Card = p1.Auto_Card
-inner join people n1 on n1.Auto_Card = p1.Auto_Card --and p1.Date_trans between n1.in_date and n1.out_date
+inner join people n1 on n1.Auto_Card = p1.Auto_Card and p1.Date_trans between n1.in_date and case when n1.out_date = '1900-01-01' then '9999-12-31' else n1.out_date end
 left join StructS s1 on s1.Struct_Code = p1.Code_struct_name
-join Appointments on Appointments.Code_Appoint=p1.Code_Appoint
+left join Appointments on Appointments.Code_Appoint=p1.Code_Appoint
 left join  (
 	select p11.Code_appoint dictid, p11.Name_appoint dictname
     from Appointments p11

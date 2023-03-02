@@ -22,7 +22,7 @@ select
 		else cast(p1.Work_Categ as varchar)
 		end
 from Appointments p1
-join  (select max(db_id) as id, Name_appoint as  name from Appointments group by Name_appoint) grp on db_id = id
+-- join  (select max(db_id) as id, Name_appoint as  name from Appointments group by Name_appoint) grp on db_id = id
 where p1.Code_appoint in (
 	select distinct d1.Code_appoint 
 	from PR_CURRENT d1

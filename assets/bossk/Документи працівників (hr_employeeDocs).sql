@@ -3,7 +3,7 @@ declare @orgID bigint = (case when @orgCode = '' then null else coalesce((select
 select
 	100000 + card.Auto_Card ID,
 	card.Auto_Card employeeID,
-	coalesce(t1.Code, '') dictDocKindID,
+	case when t1.Code is null or t1.Code = 0 then '' else cast(t1.Code as varchar) end dictDocKindID,
 	Passp_ser docSeries,
 	Passp_num docNumber,
 	Passp_grant docIssued,
@@ -21,7 +21,7 @@ UNION
 select
 	200000 + card.Auto_Card ID,
 	card.Auto_Card employeeID,
-	109 dictDocKindID,
+	'109' dictDocKindID,
 	Seria_CC docSeries,
 	Number_CC docNumber,
 	'' docIssued,
@@ -38,7 +38,7 @@ UNION
 select
 	300000 +pr_educ.pr_ed_auto_num ID,
 	PR_EDUC.Auto_Card as employeeID,
-	119 as dictDocKindID,
+	'119' as dictDocKindID,
 	'' as docSeries,
 	case when "Certificate" ='' then '-' else "Certificate" end as docNumber,
 	VPR_ED_DEPTS.Firm_Text as docIssued,
