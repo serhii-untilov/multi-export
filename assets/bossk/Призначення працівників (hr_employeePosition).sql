@@ -67,7 +67,8 @@ select
 	,'1' as dictCategoryECBID
 from PR_CURRENT p1
 inner join Card c1 on c1.Auto_Card = p1.Auto_Card
-inner join people n1 on n1.Auto_Card = p1.Auto_Card and p1.Date_trans between n1.in_date and case when n1.out_date = '1900-01-01' then '9999-12-31' else n1.out_date end
+inner join people n1 on n1.Auto_Card = p1.Auto_Card 
+	and p1.Date_trans between n1.in_date and case when n1.out_date = '1900-01-01' then '9999-12-31' else n1.out_date end
 left join StructS s1 on s1.Struct_Code = p1.Code_struct_name
 left join Appointments on Appointments.Code_Appoint=p1.Code_Appoint
 left join  (
