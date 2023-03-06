@@ -11,6 +11,7 @@ on:
 
 jobs:
   build_windows:
+    if: ${{ false }}  # disable for now
 
     name: Build for Windows
 
@@ -43,7 +44,7 @@ jobs:
 
   build_ubuntu:
 
-    name: Build for ubuntu
+    name: Build for Ubuntu
 
     runs-on: ubuntu-20.04
 
@@ -59,15 +60,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install packages
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: install # will run `yarn install` command
-    - name: Run tests
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: test # will run `yarn test` command
-    - name: Build executable
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: dist # will run `yarn dist` command
+    - run: npm install
+    - run: npm run test
+    - run: npm run dist
