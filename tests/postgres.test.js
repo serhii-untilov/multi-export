@@ -2,7 +2,6 @@
 
 const fs = require('fs')
 const { Pool } = require('pg')
-const dbConfig = require('./dbConfig.json')
 
 const POOL_SIZE = 4
 const CONNECTION_TIMEOUT = 20 * 60 * 1000 // 20 minutes
@@ -10,6 +9,7 @@ const REQUEST_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 
 test.skip('postgres', async () => {
     const testString = 'abc123абв'
+    const dbConfig = require('./dbConfig.json')
     dbConfig.connectionTimeoutMillis = CONNECTION_TIMEOUT
     dbConfig.idleTimeoutMillis = REQUEST_TIMEOUT
     dbConfig.max = POOL_SIZE

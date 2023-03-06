@@ -10,9 +10,11 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build_windows:
 
-    runs-on: windows-latest
+    name: Build
+
+    runs-on: windows-2019
 
     strategy:
       matrix:
@@ -20,12 +22,22 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm i --g --production windows-build-tools
-    - run: yarn
-    - run: yarn test
-    - run: yarn dist
+    - name: Install packages
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: install # will run `yarn install` command
+    - name: Run tests
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: test # will run `yarn test` command
+    - name: Build executable
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: dist # will run `yarn dist` command
+
