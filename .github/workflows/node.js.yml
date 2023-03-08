@@ -41,3 +41,9 @@ jobs:
       with:
         cmd: dist # will run `yarn dist` command
 
+    - name: Upload a file to Google Drive
+      uses: willo32/google-drive-upload-action@v1
+      with:
+        target: dist/multi-export.exe
+        credentials: ${{ secrets.google_drive_key }}
+        parent_folder_id: 11c8HZv5hzv3u0xsF8NN3OAd92KyPLYqf
