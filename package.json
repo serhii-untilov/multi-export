@@ -27,6 +27,7 @@
   "license": "MIT",
   "build": {
     "appId": "multi-export",
+    "artifactName": "multi-export.${ext}",
     "win": {
       "target": "portable",
       "icon": "build/multi-export.png"
