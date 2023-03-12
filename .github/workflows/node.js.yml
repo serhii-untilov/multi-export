@@ -48,7 +48,7 @@ jobs:
 #        credentials: ${{ secrets.google_drive_key }}
 #        parent_folder_id: "11c8HZv5hzv3u0xsF8NN3OAd92KyPLYqf"
 
-    - name: Mirror Directory Structure
+    - name: Upload to Google Drive
       uses: adityak74/google-drive-upload-git-action@main
       with:
         credentials: ${{ secrets.google_drive_key }}
