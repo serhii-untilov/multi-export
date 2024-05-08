@@ -1,6 +1,6 @@
 MultiExport
 ============
-The MultiExport application prepares files for importing into the 'A5 Systems' database.
+The MultiExport application exports data from accounting systems databases and prepares files for importing into the 'A5 Systems' database.
 
 Preview
 -------
