@@ -17,13 +17,16 @@
     "lint": "standard",
     "scss": "sass .\\multi-export.scss .\\multi-export.css"
   },
-  "repository": "https://github.com/serhii-untilov/multi-export",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/serhii-untilov/multi-export"
+  },
   "keywords": [
     "Electron",
     "export",
     "A5"
   ],
-  "author": "Serhii Untilov",
+  "author": "Serhii Untilov <s.untilov@gmail.com> (https://untilov.com.ua/)",
   "license": "MIT",
   "build": {
     "appId": "multi-export",
