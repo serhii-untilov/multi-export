@@ -221,15 +221,15 @@ document.getElementById('homeSelectA5').addEventListener('click', selectA5)
 document.getElementById('captionA5').addEventListener('click', selectA5)
 
 document.getElementById('linkHomeA5').addEventListener('click', () => {
-    shell.openExternal('https://a5buh.com')
+    shell.openExternal('https://a5erp.solutions/')
 })
 
 document.getElementById('goHomeA5').addEventListener('click', () => {
-    shell.openExternal('https://a5buh.com')
+    shell.openExternal('https://a5erp.solutions/')
 })
 
 document.getElementById('goGitHub').addEventListener('click', () => {
-    shell.openExternal('https://github.com/sergey-untilov/multi-export')
+    shell.openExternal('https://github.com/serhii-untilov/multi-export')
 })
 
 const buttonRunExport = document.getElementById('run-export')
