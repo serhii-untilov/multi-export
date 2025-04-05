@@ -138,15 +138,22 @@
 
           <div id="ispro-panel">
             <div class="columns">
-              <div class="column col-4">
+              <div class="column col-3">
+                <label class="form-label" for="db-type">СУБД:</label>
+                <select class="form-select" id="db-type">
+                  <option>SQL Server</option>
+                  <option>Oracle</option>
+                </select>
+              </div>
+              <div class="column col-3">
                 <label class="form-label" for="server-name">Сервер</label>
                 <input class="form-input" type="text" id="server-name" placeholder="localhost:1433">
               </div>
-              <div class="column col-4">
+              <div class="column col-3">
                 <label class="form-label" for="login">Логін</label>
                 <input class="form-input" type="text" id="login" placeholder="sa">
               </div>
-              <div class="column col-4">
+              <div class="column col-3">
                 <label class="form-label" for="password">Пароль</label>
                 <input class="form-input" type="password" id="password" placeholder="system">
               </div>

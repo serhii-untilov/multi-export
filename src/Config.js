@@ -27,7 +27,7 @@ class Config {
         this.targetPath = ''
         this.isArchive = true
 
-        // SQL Server DB connect (ispro, bossk)
+        // DB connect (ispro, bossk)
         this.domain = ''
         this.server = ''
         this.port = ''
@@ -38,6 +38,7 @@ class Config {
         this.schemaSys = ''
         this.codeSe = ''
         this.codeDep = ''
+        this.dbType = ''
         // + bossk
         this.orgCode = ''
 

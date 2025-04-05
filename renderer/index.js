@@ -320,6 +320,13 @@ codeDep.addEventListener('change', (evt) => {
     ipcRenderer.send('set-config', this.config)
 })
 
+const dbType = document.getElementById('db-type')
+dbType.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.dbType = evt.target.selectedIndex // value
+    ipcRenderer.send('set-config', this.config)
+})
+
 const bosskDomain = document.getElementById('bk-domain')
 codeDep.addEventListener('change', (evt) => {
     evt.preventDefault()
@@ -591,6 +598,7 @@ ipcRenderer.on('config', (event, config) => {
     schemaSys.value = config.schemaSys || ''
     codeSe.value = config.codeSe || ''
     codeDep.value = config.codeDep || ''
+    dbType.selectedIndex = config.dbType || ''
     targetPath.value = config.targetPath || ''
     afinaDbPath.value = config.afinaDbPath || ''
     parusDbPath.value = config.parusDbPath || ''

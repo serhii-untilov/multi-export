@@ -6,5 +6,7 @@
         "source.fixAll.eslint": true
     },
     "eslint.validate": ["javascript"],
-    "prettier.requireConfig": true
+    "prettier.requireConfig": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true
 }
