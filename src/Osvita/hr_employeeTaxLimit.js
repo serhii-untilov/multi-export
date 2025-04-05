@@ -8,10 +8,12 @@ const dateFormat = require('../helper/dateFormat')
 const Entity = require('../entity/EmployeeTaxLimit')
 const TARGET_FILE_NAME = 'Пільги ПДФО працівників (hr_employeeTaxLimit).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
-    if (!record.KOD_PIL || !Number(record.KOD_PIL)) { return false }
+    if (!record.KOD_PIL || !Number(record.KOD_PIL)) {
+        return false
+    }
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     this.entity.ID = ID
     this.entity.tabNum = record.TAB
@@ -25,7 +27,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

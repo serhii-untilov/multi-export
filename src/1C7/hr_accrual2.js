@@ -10,7 +10,7 @@ const Entity = require('../entity/Accrual')
 const SOURCE_FILE_NAME = 'RL_Dogl.DBF'
 const TARGET_FILE_NAME = 'Розрахункові листи працівників (hr_accrual).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     this.entity.ID = this.dictionary.getCommonID()
     this.entity.periodCalc = dateFormat(record.UP)
     this.entity.periodSalary = dateFormat(record.RP)
@@ -28,7 +28,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

@@ -3,7 +3,7 @@
 const Entity = require('./Entity')
 
 class PayOut extends Entity {
-    constructor () {
+    constructor() {
         super()
         this.ID = ''
         this.code = ''

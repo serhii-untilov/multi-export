@@ -7,12 +7,14 @@ const makeFile = require('./TargetOsvita')
 const Entity = require('../entity/Department')
 const TARGET_FILE_NAME = 'Підрозділи (hr_department).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     this.entity.ID = record.BOL
     this.entity.code = record.BOL
-    if (this.dictionary.getDepartmentID(this.entity.code)) { return false }
+    if (this.dictionary.getDepartmentID(this.entity.code)) {
+        return false
+    }
     this.entity.orgID = record.BOL
     this.entity.name = record.BOL
     this.entity.fullName = record.BOL
@@ -21,7 +23,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

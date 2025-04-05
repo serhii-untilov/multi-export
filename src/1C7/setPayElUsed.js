@@ -4,7 +4,7 @@ const fs = require('fs')
 const YADBF = require('yadbf')
 const getFullFileName = require('../helper/getFullFileName')
 
-function setPayElUsed (config, dictionary) {
+function setPayElUsed(config, dictionary) {
     const fileList = ['RL.DBF', 'RL_Dogl.DBF', 'RL_Lik_F.DBF', 'RL_Lik_P.DBF']
     return Promise.all(
         fileList.map((fileName) => {
@@ -14,7 +14,7 @@ function setPayElUsed (config, dictionary) {
                     if (!err) {
                         fs.createReadStream(fullFileName)
                             .pipe(new YADBF({ encoding: 'cp1251' }))
-                            .on('data', record => {
+                            .on('data', (record) => {
                                 if (!record.deleted) {
                                     dictionary.setPayElUsed(record.CD)
                                 }
@@ -22,7 +22,7 @@ function setPayElUsed (config, dictionary) {
                             .on('end', () => {
                                 resolve(true)
                             })
-                            .on('error', err => {
+                            .on('error', (err) => {
                                 console.error(`an error was thrown: ${err}`)
                                 reject(err)
                             })

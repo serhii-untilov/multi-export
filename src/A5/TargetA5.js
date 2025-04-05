@@ -9,19 +9,28 @@ const { getTableStruct, makeQuery } = require('../helper/db')
 
 const BATCH_SIZE = 10000
 
-async function makeFile (target) {
+async function makeFile(target) {
     try {
-        const tableStruct = structFilterA5(target.table.name, await getTableStruct(target.config.a5dbType, target.client, target.table.name))
-        const queryText = await makeQuery(target.config.a5dbType, target.config.a5Database, target.table, tableStruct, target.orgID)
+        const tableStruct = structFilterA5(
+            target.table.name,
+            await getTableStruct(target.config.a5dbType, target.client, target.table.name)
+        )
+        const queryText = await makeQuery(
+            target.config.a5dbType,
+            target.config.a5Database,
+            target.table,
+            tableStruct,
+            target.orgID
+        )
         switch (target.config.a5dbType) {
-        case DBtype.POSTGRES:
-            await doQueryPostgres(target, queryText)
-            break
-        case DBtype.MSSQL:
-            await doQuerySqlServer(target, queryText)
-            break
-        default:
-            throw (new Error(`Unknown dbType (${target.config.a5dbType}).`))
+            case DBtype.POSTGRES:
+                await doQueryPostgres(target, queryText)
+                break
+            case DBtype.MSSQL:
+                await doQuerySqlServer(target, queryText)
+                break
+            default:
+                throw new Error(`Unknown dbType (${target.config.a5dbType}).`)
         }
         return target
     } catch (err) {
@@ -31,7 +40,7 @@ async function makeFile (target) {
     }
 }
 
-async function doQueryPostgres (target, queryText) {
+async function doQueryPostgres(target, queryText) {
     return new Promise((resolve, reject) => {
         removeFile(target.fullFileName)
         let buffer = ''
@@ -65,7 +74,7 @@ async function doQueryPostgres (target, queryText) {
                 fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) {
                         reject(err)
-                    };
+                    }
                 })
                 buffer = ''
                 target.state = Target.FILE_CREATED
@@ -75,7 +84,7 @@ async function doQueryPostgres (target, queryText) {
             resolve(target)
         })
 
-        function writeHeader (row) {
+        function writeHeader(row) {
             let columnNumber = 0
             for (const column in row) {
                 if (columnNumber > 0) buffer += ';'
@@ -85,7 +94,7 @@ async function doQueryPostgres (target, queryText) {
             buffer += '\n'
         }
 
-        function writeRow (row) {
+        function writeRow(row) {
             let separator = ''
             for (const column in row) {
                 // buffer += `${separator}${row[column] ? row[column] : ''}`
@@ -98,7 +107,7 @@ async function doQueryPostgres (target, queryText) {
     })
 }
 
-async function doQuerySqlServer (target, queryText) {
+async function doQuerySqlServer(target, queryText) {
     return new Promise((resolve, reject) => {
         removeFile(target.fullFileName)
 
@@ -109,13 +118,13 @@ async function doQuerySqlServer (target, queryText) {
         let buffer = ''
 
         // Emitted once for each recordset in a query
-        request.on('recordset', columns => {
+        request.on('recordset', (columns) => {
             buffer = ''
             writeHeader(columns)
         })
 
         // Emited for each row in a recordset
-        request.on('row', row => {
+        request.on('row', (row) => {
             writeRow(row)
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE === 0) {
@@ -129,18 +138,18 @@ async function doQuerySqlServer (target, queryText) {
         })
 
         // May be emitted multiple times
-        request.on('error', err => {
+        request.on('error', (err) => {
             reject(err)
         })
 
         // Always emitted as the last one
-        request.on('done', result => {
+        request.on('done', (result) => {
             if (target.recordsCount) {
                 // request.pause();
                 fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) {
                         reject(err)
-                    };
+                    }
                 })
                 buffer = ''
                 target.state = Target.FILE_CREATED
@@ -151,7 +160,7 @@ async function doQuerySqlServer (target, queryText) {
             resolve(target)
         })
 
-        function writeHeader (columns) {
+        function writeHeader(columns) {
             let columnNumber = 0
             for (const column in columns) {
                 // eslint-disable-next-line no-prototype-builtins
@@ -164,7 +173,7 @@ async function doQuerySqlServer (target, queryText) {
             buffer += '\n'
         }
 
-        function writeRow (row) {
+        function writeRow(row) {
             let separator = ''
             for (const column in row) {
                 // eslint-disable-next-line no-prototype-builtins
@@ -178,17 +187,25 @@ async function doQuerySqlServer (target, queryText) {
     })
 }
 
-function structFilterA5 (tableName, struct) {
+function structFilterA5(tableName, struct) {
     return struct
-        .filter(o => o.column_name.slice(0, 3) !== 'mi_')
-        .filter(o => o.data_type.indexOf('json') < 0)
-        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'orderid'))
-        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'orderdtid'))
-        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'emporderid'))
-        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'timesheetid'))
-        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'periodcalcid'))
-        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'periodsalaryid'))
-        .filter(o => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'paymentid'))
+        .filter((o) => o.column_name.slice(0, 3) !== 'mi_')
+        .filter((o) => o.data_type.indexOf('json') < 0)
+        .filter((o) => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'orderid'))
+        .filter((o) => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'orderdtid'))
+        .filter(
+            (o) => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'emporderid')
+        )
+        .filter(
+            (o) => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'timesheetid')
+        )
+        .filter(
+            (o) => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'periodcalcid')
+        )
+        .filter(
+            (o) => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'periodsalaryid')
+        )
+        .filter((o) => !(tableName === 'hr_accrual' && o.column_name.toLowerCase() === 'paymentid'))
 }
 
 module.exports = makeFile

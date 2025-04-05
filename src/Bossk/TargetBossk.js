@@ -20,7 +20,7 @@ const makeFile = function (target) {
     })
 }
 
-function readQueryFromFile (fileName) {
+function readQueryFromFile(fileName) {
     return new Promise((resolve, reject) => {
         try {
             fs.readFile(fileName, { encoding: 'utf8' }, (err, queryText) => {
@@ -33,16 +33,16 @@ function readQueryFromFile (fileName) {
     })
 }
 
-function replace_orgCode (queryText, orgCode) {
+function replace_orgCode(queryText, orgCode) {
     // const re = /\/\*orgCode\*\//gmi
-    const re = /'.*'\s*\/\*orgCode\*\//gmi
+    const re = /'.*'\s*\/\*orgCode\*\//gim
     while (re.test(queryText)) {
-        queryText = queryText.replace(re, '\'' + orgCode + '\'')
+        queryText = queryText.replace(re, "'" + orgCode + "'")
     }
     return queryText
 }
 
-async function doQuery (target, queryText) {
+async function doQuery(target, queryText) {
     return new Promise((resolve, reject) => {
         removeFile(target.fullFileName)
 
@@ -53,13 +53,13 @@ async function doQuery (target, queryText) {
         let buffer = ''
 
         // Emitted once for each recordset in a query
-        request.on('recordset', columns => {
+        request.on('recordset', (columns) => {
             buffer = ''
             writeHeader(columns)
         })
 
         // Emited for each row in a recordset
-        request.on('row', row => {
+        request.on('row', (row) => {
             writeRow(row)
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE === 0) {
@@ -73,18 +73,18 @@ async function doQuery (target, queryText) {
         })
 
         // May be emitted multiple times
-        request.on('error', err => {
+        request.on('error', (err) => {
             reject(err)
         })
 
         // Always emitted as the last one
-        request.on('done', result => {
+        request.on('done', (result) => {
             if (target.recordsCount) {
                 // request.pause();
                 fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) {
                         reject(err)
-                    };
+                    }
                 })
                 buffer = ''
                 target.state = Target.FILE_CREATED
@@ -95,7 +95,7 @@ async function doQuery (target, queryText) {
             resolve(target)
         })
 
-        function writeHeader (columns) {
+        function writeHeader(columns) {
             let columnNumber = 0
             for (const column in columns) {
                 // eslint-disable-next-line no-prototype-builtins
@@ -108,12 +108,16 @@ async function doQuery (target, queryText) {
             buffer += '\n'
         }
 
-        function writeRow (row) {
+        function writeRow(row) {
             let separator = ''
             for (const column in row) {
                 // eslint-disable-next-line no-prototype-builtins
                 if (row.hasOwnProperty(column)) {
-                    const cell = String(row[column]).replace(/\n/g, ' ').replace(/\r/g, ' ').replace(/\s{2,}/gm, ' ').trim()
+                    const cell = String(row[column])
+                        .replace(/\n/g, ' ')
+                        .replace(/\r/g, ' ')
+                        .replace(/\s{2,}/gm, ' ')
+                        .trim()
                     buffer += `${separator}${cell}`
                     separator = ';'
                 }

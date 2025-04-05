@@ -14,7 +14,7 @@ const ECB32 = 32 // Держслужбовець - інвалід
 const Entity = require('../entity/DictCategoryECB')
 const TARGET_FILE_NAME = 'Категорії застрахованих осіб ЄСВ (hr_dictCategoryECB).csv'
 
-function setRecord (record) {
+function setRecord(record) {
     this.entity.ID = record.id
     this.entity.code = record.code
     this.entity.name = record.name
@@ -23,7 +23,7 @@ function setRecord (record) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.dictionary = dictionary
@@ -35,7 +35,9 @@ function makeTarget (config, dictionary) {
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append) { removeFile(target.fullFileName) }
+            if (!target.append) {
+                removeFile(target.fullFileName)
+            }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
                 { id: ECB1, code: '1', name: 'Наймані працівники на загальних підставах' },

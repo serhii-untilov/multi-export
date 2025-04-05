@@ -5,7 +5,18 @@ const Target = require('../Target')
 const makeFile = require('./TargetOsvita')
 const dateFormat = require('../helper/dateFormat')
 // const makePositionID = require('../helper/makePositionID')
-const { PAYEL001, PAYEL002, PAYEL003, PAYEL025, PAYEL146, PAYEL147, PAYEL246, PAYEL247, PAYEL248, PAYEL249 } = require('./hr_payEl')
+const {
+    PAYEL001,
+    PAYEL002,
+    PAYEL003,
+    PAYEL025,
+    PAYEL146,
+    PAYEL147,
+    PAYEL246,
+    PAYEL247,
+    PAYEL248,
+    PAYEL249
+} = require('./hr_payEl')
 const { ECB1, ECB2 } = require('./hr_dictCategoryECB')
 const path = require('path')
 const { Version } = require('../Config')
@@ -13,7 +24,7 @@ const { Version } = require('../Config')
 const Entity = require('../entity/EmployeePosition')
 const TARGET_FILE_NAME = 'Призначення працівників (hr_employeePosition).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
@@ -26,7 +37,11 @@ function setRecord (record, recordNumber) {
 
     this.entity.orgID = record.BOL
     this.entity.departmentID = this.dictionary.getDepartmentID(record.BOL)
-    this.entity.dictPositionID = this.dictionary.getDictPositionIDbyPath(record.B_DOL, path.dirname(this.sourceFullFileName)) || ''
+    this.entity.dictPositionID =
+        this.dictionary.getDictPositionIDbyPath(
+            record.B_DOL,
+            path.dirname(this.sourceFullFileName)
+        ) || ''
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
     this.entity.mtCount = 1 // record.VKLSTAV
@@ -36,9 +51,17 @@ function setRecord (record, recordNumber) {
     this.entity.workScheduleID = record.REGIM || ''
 
     const fullName = this.dictionary.getEmployeeFullName(this.entity.employeeID)
-    const positionName = this.dictionary.getDictPositionNamebyPath(record.B_DOL, path.dirname(this.sourceFullFileName)) || ''
+    const positionName =
+        this.dictionary.getDictPositionNamebyPath(
+            record.B_DOL,
+            path.dirname(this.sourceFullFileName)
+        ) || ''
     this.entity.description = `${this.entity.tabNum} ${fullName} ${positionName}`
-    this.entity.dictStaffCatID = this.dictionary.getDictStaffCatIDbyPath(record.KAT, path.dirname(this.sourceFullFileName)) || ''
+    this.entity.dictStaffCatID =
+        this.dictionary.getDictStaffCatIDbyPath(
+            record.KAT,
+            path.dirname(this.sourceFullFileName)
+        ) || ''
     this.entity.dictFundSourceID = record.FOND || ''
     this.entity.dictCategoryECBID = record.INVALID ? ECB2 : ECB1
     const dictProgClass = this.dictionary.getDictProgClass(record.KPK)
@@ -92,7 +115,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile
@@ -107,9 +130,11 @@ function makeTarget (config, dictionary, sourceFile, index) {
     return makeFile(target)
 }
 
-function getPayEl (record) {
+function getPayEl(record) {
     let VOPL = record.VOPL || 1
-    if (VOPL > 2) { VOPL = 1 }
+    if (VOPL > 2) {
+        VOPL = 1
+    }
 
     if (VOPL === 1 && record.VS === 26) {
         return PAYEL003

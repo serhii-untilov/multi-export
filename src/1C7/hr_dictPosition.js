@@ -8,7 +8,7 @@ const Entity = require('../entity/SimpleEntity')
 const SOURCE_FILE_NAME = 'DOL.DBF'
 const TARGET_FILE_NAME = 'Довідник посад (не штатних позицій) (hr_dictPosition).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     this.entity.ID = record.CD
     this.entity.code = record.CD
     this.entity.name = record.NM
@@ -17,7 +17,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

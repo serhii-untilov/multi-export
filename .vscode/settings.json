@@ -1,3 +1,10 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": ["javascript"],
+    "prettier.requireConfig": true
 }

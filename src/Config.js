@@ -21,7 +21,7 @@ const DBtype = {
 }
 
 class Config {
-    constructor () {
+    constructor() {
         // Params for targeted files
         this.source = this.HOME // default source
         this.targetPath = ''

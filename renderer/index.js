@@ -11,7 +11,7 @@ const electron = require('electron')
 const remote = electron.remote
 const mainProcess = remote.require('./main')
 
-const config = null
+this.config = null
 
 let targetList = []
 
@@ -76,7 +76,9 @@ const renderPanels = () => {
 }
 
 const renderMenu = () => {
-    if (!this.config) { return }
+    if (!this.config) {
+        return
+    }
     setSelected(buttonSelectISPro, this.config.source === Config.ISPRO)
     setSelected(buttonSelectAfina, this.config.source === Config.AFINA)
     setSelected(buttonSelectParus, this.config.source === Config.PARUS)
@@ -95,7 +97,9 @@ const renderMenu = () => {
 }
 
 const selectHome = () => {
-    if (this.config.source === Config.HOME) { return }
+    if (this.config.source === Config.HOME) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.HOME
@@ -106,7 +110,9 @@ const selectHome = () => {
 document.getElementById('selectHome').addEventListener('click', selectHome)
 
 const selectIspro = () => {
-    if (this.config.source === Config.ISPRO) { return }
+    if (this.config.source === Config.ISPRO) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.ISPRO
@@ -120,7 +126,9 @@ document.getElementById('homeSelectISPro').addEventListener('click', selectIspro
 document.getElementById('captionISPro').addEventListener('click', selectIspro)
 
 const selectBossk = () => {
-    if (this.config.source === Config.BOSSK) { return }
+    if (this.config.source === Config.BOSSK) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.BOSSK
@@ -134,7 +142,9 @@ document.getElementById('homeSelectBossk').addEventListener('click', selectBossk
 document.getElementById('captionBossk').addEventListener('click', selectBossk)
 
 const selectAfina = () => {
-    if (this.config.source === Config.AFINA) { return }
+    if (this.config.source === Config.AFINA) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.AFINA
@@ -149,7 +159,9 @@ document.getElementById('captionAfina').addEventListener('click', selectAfina)
 const partAfina = document.getElementById('partAfina')
 
 const selectParus = () => {
-    if (this.config.source === Config.PARUS) { return }
+    if (this.config.source === Config.PARUS) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.PARUS
@@ -164,7 +176,9 @@ document.getElementById('captionParus').addEventListener('click', selectParus)
 const partParus = document.getElementById('partParus')
 
 const select1C = () => {
-    if (this.config.source === Config.C7) { return }
+    if (this.config.source === Config.C7) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.C7
@@ -179,7 +193,9 @@ document.getElementById('caption1C').addEventListener('click', select1C)
 const part1C = document.getElementById('part1C')
 
 const selectOsvita = () => {
-    if (this.config.source === Config.OSVITA) { return }
+    if (this.config.source === Config.OSVITA) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.OSVITA
@@ -193,7 +209,9 @@ document.getElementById('homeSelectOsvita').addEventListener('click', selectOsvi
 document.getElementById('captionOsvita').addEventListener('click', selectOsvita)
 
 const selectAPK = () => {
-    if (this.config.source === Config.APK) { return }
+    if (this.config.source === Config.APK) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.APK
@@ -207,7 +225,9 @@ document.getElementById('homeSelectAPK').addEventListener('click', selectAPK)
 document.getElementById('captionAPK').addEventListener('click', selectAPK)
 
 const selectA5 = () => {
-    if (this.config.source === Config.A5) { return }
+    if (this.config.source === Config.A5) {
+        return
+    }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
     this.config.source = Config.A5
@@ -229,7 +249,7 @@ document.getElementById('goHomeA5').addEventListener('click', () => {
 })
 
 document.getElementById('goGitHub').addEventListener('click', () => {
-    shell.openExternal('https://github.com/serhii-untilov/multi-export')
+    shell.openExternal('https://www.untilov.com.ua/')
 })
 
 const buttonRunExport = document.getElementById('run-export')
@@ -313,7 +333,6 @@ bosskServerName.addEventListener('change', (evt) => {
     this.config.server = evt.target.value
     ipcRenderer.send('set-config', this.config)
 })
-
 
 const bosskPort = document.getElementById('bk-port')
 bosskPort.addEventListener('change', (evt) => {
@@ -612,7 +631,10 @@ const countErrors = (targetList) => {
 }
 
 const countCreated = (targetList) => {
-    return targetList.reduce((a, b) => a + (b.state === Target.FILE_CREATED && !b.append ? 1 : 0), 0)
+    return targetList.reduce(
+        (a, b) => a + (b.state === Target.FILE_CREATED && !b.append ? 1 : 0),
+        0
+    )
 }
 
 const pad = (num, size) => {
@@ -637,8 +659,8 @@ const stateText = (created, errors, arcFileName) => {
     const timeFinish = new Date()
     const diff = timeFinish.getTime() - timeStart.getTime()
     const hours = pad(Math.round(diff / (1000 * 3600)), 2)
-    const minutes = pad(Math.round(diff / (1000 * 60) % 60), 2)
-    const seconds = pad(Math.round(diff / (1000) % 60), 2)
+    const minutes = pad(Math.round((diff / (1000 * 60)) % 60), 2)
+    const seconds = pad(Math.round((diff / 1000) % 60), 2)
     text += `<br />Час виконання: ${hours}:${minutes}:${seconds}.`
 
     return text
@@ -651,7 +673,11 @@ ipcRenderer.on('done', (event, arcFileName) => {
     resultToast.classList.remove('toast-warning')
     resultToast.classList.remove('toast-success')
     resultToast.classList.add('toast-success')
-    resultToast.innerHTML = stateText(countCreated(targetList), countErrors(targetList), arcFileName)
+    resultToast.innerHTML = stateText(
+        countCreated(targetList),
+        countErrors(targetList),
+        arcFileName
+    )
     setVisible(resultPanel, true)
 })
 
@@ -670,25 +696,25 @@ ipcRenderer.on('failed', (event, err) => {
 
 const getStateText = (target) => {
     switch (target.state) {
-    case Target.FILE_CREATED: {
-        const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
-        if (source) {
-            return target.append ? `Доповнено із ${source}` : `Створено із ${source}`
+        case Target.FILE_CREATED: {
+            const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
+            if (source) {
+                return target.append ? `Доповнено із ${source}` : `Створено із ${source}`
+            }
+            return target.append ? 'Файл доповнено' : 'Файл створено'
         }
-        return target.append ? 'Файл доповнено' : 'Файл створено'
-    }
-    case Target.FILE_EMPTY: {
-        const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
-        if (target.append && source) {
-            return target.append ? `Доповнено із ${source}` : `Створено із ${source}`
+        case Target.FILE_EMPTY: {
+            const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
+            if (target.append && source) {
+                return target.append ? `Доповнено із ${source}` : `Створено із ${source}`
+            }
+            return 'Відсутні дані для експорту'
         }
-        return 'Відсутні дані для експорту'
-    }
-    case Target.FILE_ERROR:
-        console.log(target)
-        return `Помилка. ${target.err}`
-    default:
-        return 'Невідома помилка'
+        case Target.FILE_ERROR:
+            console.log(target)
+            return `Помилка. ${target.err}`
+        default:
+            return 'Невідома помилка'
     }
 }
 

@@ -8,8 +8,10 @@ const Entity = require('../entity/TaxLimit')
 const SOURCE_FILE_NAME = 'SPLG.DBF'
 const TARGET_FILE_NAME = 'Пільги ПДФО (hr_taxLimit).csv'
 
-function setRecord (record, recordNumber) {
-    if (!this.dictionary.isTaxLimitUsed(record.CD)) { return false }
+function setRecord(record, recordNumber) {
+    if (!this.dictionary.isTaxLimitUsed(record.CD)) {
+        return false
+    }
     this.entity.ID = recordNumber
     this.entity.code = record.CD
     this.entity.name = record.NM
@@ -18,7 +20,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

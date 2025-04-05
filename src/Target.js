@@ -5,7 +5,7 @@ const FILE_ERROR = 'error'
 const FILE_EMPTY = 'empty'
 
 class Target {
-    constructor () {
+    constructor() {
         this.fullFileName = null
         this.state = null
         this.err = null

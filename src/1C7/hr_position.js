@@ -9,10 +9,12 @@ const Entity = require('../entity/Position')
 const SOURCE_FILE_NAME = 'PRK.DBF'
 const TARGET_FILE_NAME = 'Посади (штатні позиції) (hr_position).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     // Join the same positions using the Dictionary class.
     const departmentID = this.dictionary.getDepartmentID(record.PDR)
-    if (!departmentID || !record.DOL) { return false }
+    if (!departmentID || !record.DOL) {
+        return false
+    }
     const positionID = makePositionID(departmentID, record.DOL)
     if (this.dictionary.getPositionID(positionID)) {
         return false // already present
@@ -28,7 +30,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

@@ -12,16 +12,19 @@ const TARGET_FILE_NAME = 'Архів розрахункових листів п�
 const currentDate = new Date()
 const minDate = new Date(currentDate.setMonth(currentDate.getMonth() - 14))
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     this.entity = []
 
     const year = Number(('' + record.PERIOD).substring(0, 4))
     const month = Number(('' + record.PERIOD).substring(4, 6))
-    const periodCalc = ('' + record.PERIOD).substring(0, 4) + '-' + ('' + record.PERIOD).substring(4, 6) + '-01'
+    const periodCalc =
+        ('' + record.PERIOD).substring(0, 4) + '-' + ('' + record.PERIOD).substring(4, 6) + '-01'
 
-    if (new Date(periodCalc) < minDate) { return false }
+    if (new Date(periodCalc) < minDate) {
+        return false
+    }
 
     const daysInMonth = new Date(year, month, 0).getDate()
     const employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000
@@ -35,7 +38,12 @@ function setRecord (record, recordNumber) {
     entity0.periodSalary = periodCalc
     entity0.tabNum = record.TAB
     entity0.employeeNumberID = employeeNumberID
-    entity0.paySum = (record.VIBBOL || 0) + (record.OTPSUM || 0) + (record.OTCHS || 0) + (record.OFMP || 0) + (record.ODOPS || 0)
+    entity0.paySum =
+        (record.VIBBOL || 0) +
+        (record.OTPSUM || 0) +
+        (record.OTCHS || 0) +
+        (record.OFMP || 0) +
+        (record.ODOPS || 0)
     entity0.days = daysInMonth
     entity0.flagsRec = 8 // | (record.STOR > 0 ? 512 : 0) // 8 - import, 512 - storno
     entity0.dictProgClassID = this.dictionary.getDictProgClassID(entity0.employeeNumberID)
@@ -85,7 +93,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

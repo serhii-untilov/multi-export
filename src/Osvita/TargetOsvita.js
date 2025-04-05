@@ -8,16 +8,20 @@ const Target = require('../Target')
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append) { removeFile(target.fullFileName) }
+            if (!target.append) {
+                removeFile(target.fullFileName)
+            }
             fs.access(target.sourceFullFileName, fs.OK, (err) => {
                 if (!err) {
                     let buffer = target.append ? '' : target.entity.getHeader()
                     let id = 1
                     fs.createReadStream(target.sourceFullFileName)
-                        .pipe(new YADBF({
-                            encoding: 'cp866' // 'cp1251'
-                        }))
-                        .on('data', record => {
+                        .pipe(
+                            new YADBF({
+                                encoding: 'cp866' // 'cp1251'
+                            })
+                        )
+                        .on('data', (record) => {
                             if (!record.deleted) {
                                 if (target.setRecord(record, id)) {
                                     if (Array.isArray(target.entity)) {
@@ -43,11 +47,15 @@ const makeFile = function (target) {
                                 fs.appendFileSync(target.fullFileName, buffer)
                                 buffer = ''
                             }
-                            target.state = target.recordsCount ? Target.FILE_CREATED : Target.FILE_EMPTY
+                            target.state = target.recordsCount
+                                ? Target.FILE_CREATED
+                                : Target.FILE_EMPTY
                             resolve(target)
                         })
-                        .on('error', err => {
-                            console.error(`an error was thrown: ${target.sourceFullFileName}: ${err}`)
+                        .on('error', (err) => {
+                            console.error(
+                                `an error was thrown: ${target.sourceFullFileName}: ${err}`
+                            )
                             target.state = Target.FILE_ERROR
                             target.err = `${target.sourceFullFileName}: ${err.message}`
                             resolve(target)

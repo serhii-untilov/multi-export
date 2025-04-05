@@ -9,7 +9,7 @@ const dateFormat = require('../helper/dateFormat')
 const Entity = require('../entity/EmployeeNumber')
 const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
@@ -20,7 +20,8 @@ function setRecord (record, recordNumber) {
     this.entity.tabNum = record.TAB
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
-    this.entity.description = record.FAM + ' ' + record.IM + ' ' + record.OT + ' (' + record.TAB + ')'
+    this.entity.description =
+        record.FAM + ' ' + record.IM + ' ' + record.OT + ' (' + record.TAB + ')'
     this.entity.payOutID = record.STEPEN1 ? Number(record.STEPEN1) + Number(record.BOL) * 10000 : ''
     // this.entity.payOutID = ''
     // if (record.STEPEN1) {
@@ -38,7 +39,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

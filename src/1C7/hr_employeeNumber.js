@@ -9,7 +9,7 @@ const Entity = require('../entity/EmployeeNumber')
 const SOURCE_FILE_NAME = 'LS.DBF'
 const TARGET_FILE_NAME = 'Особові рахунки працівників (hr_employeeNumber).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     this.entity.ID = record.TN // record.ID
     this.entity.employeeID = record.TN
     this.entity.taxCode = record.NLP
@@ -23,7 +23,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

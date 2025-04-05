@@ -33,27 +33,79 @@ const hr_employeeTaxLimit = require('./hr_employeeTaxLimit')
 const ARC_FILE_NAME = '1Cv7.zip'
 
 class Source1C7 extends Source {
-    async read (config, sendFile, sendDone, sendFailed) {
+    async read(config, sendFile, sendDone, sendFailed) {
         try {
             const targetList = []
             const dictionary = new Dictionary(config)
 
             makeDir(config.targetPath)
-                .then(() => hr_dictPosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_department(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictStaffCat(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_dictPosition(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_department(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_workSchedule(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_dictStaffCat(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
                 .then(() => setPayElUsed(config, dictionary))
-                .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_position(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_payEl(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_position(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
                 .then(() => setTaxLimitUsed(config, dictionary))
-                .then(() => hr_taxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_employee(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_employeeNumber(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_employeePosition(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_employeeTaxLimit(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_employeeAccrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_accrual(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_taxLimit(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_employee(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_employeeNumber(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_employeePosition(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_employeeTaxLimit(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_employeeAccrual(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_accrual(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
                 .then(() => hr_accrual2(config, dictionary)) // .then((target) => { targetList.push(target); sendFile(target) }) - append mode
                 .then(() => hr_accrual3(config, dictionary)) // .then((target) => { targetList.push(target); sendFile(target) }) - append mode
                 .then(() => hr_accrual4(config, dictionary)) // .then((target) => { targetList.push(target); sendFile(target) }) - append mode

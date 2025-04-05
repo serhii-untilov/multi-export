@@ -3,7 +3,7 @@
 const Entity = require('./Entity')
 
 class Accrual extends Entity {
-    constructor () {
+    constructor() {
         super()
         this.ID = ''
         this.periodCalc = ''

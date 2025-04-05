@@ -1,7 +1,7 @@
 'use strict'
 
 class Entity {
-    getHeader () {
+    getHeader() {
         let header = ''
         let separator = ''
         for (const prop in this) {
@@ -12,7 +12,7 @@ class Entity {
         return header
     }
 
-    getRecord () {
+    getRecord() {
         let record = ''
         let separator = ''
         for (const prop in this) {

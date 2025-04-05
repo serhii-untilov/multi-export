@@ -24,7 +24,7 @@ const makeFile = function (target) {
     })
 }
 
-function readQueryFromFile (fileName) {
+function readQueryFromFile(fileName) {
     return new Promise((resolve, reject) => {
         try {
             fs.readFile(fileName, { encoding: null }, (err, queryText) => {
@@ -38,43 +38,43 @@ function readQueryFromFile (fileName) {
     })
 }
 
-function removeHeader (queryText) {
-    const re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gmi
+function removeHeader(queryText) {
+    const re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gim
     queryText = queryText.replace(re, '')
     return queryText
 }
 
-function replace_SYS_SCHEMA (queryText, schemaSys) {
+function replace_SYS_SCHEMA(queryText, schemaSys) {
     // find /*SYS_SCHEMA*/.sspr
     // replace to ${schemaSys}.sspr
-    const re = /\/\*SYS_SCHEMA\*\/\w+\./gmi
+    const re = /\/\*SYS_SCHEMA\*\/\w+\./gim
     while (re.test(queryText)) {
         queryText = queryText.replace(re, schemaSys + '.')
     }
     return queryText
 }
 
-function replace_SYSSTE_CD (queryText, sysste_cd) {
+function replace_SYSSTE_CD(queryText, sysste_cd) {
     // find /*SYSSTE_CD*/.sspr
     // replace to sysste_cd
-    const re = /\/\*SYSSTE_CD\*\//gmi
+    const re = /\/\*SYSSTE_CD\*\//gim
     while (re.test(queryText)) {
-        queryText = queryText.replace(re, '\'' + sysste_cd + '\'')
+        queryText = queryText.replace(re, "'" + sysste_cd + "'")
     }
     return queryText
 }
 
-function replace_SPRPDR_CD (queryText, sprpdr_cd) {
+function replace_SPRPDR_CD(queryText, sprpdr_cd) {
     // find /*SPRPDR_CD*/.sspr
     // replace to sprpdr_cd
-    const re = /\/\*SPRPDR_CD\*\//gmi
+    const re = /\/\*SPRPDR_CD\*\//gim
     while (re.test(queryText)) {
-        queryText = queryText.replace(re, '\'' + sprpdr_cd + '\'')
+        queryText = queryText.replace(re, "'" + sprpdr_cd + "'")
     }
     return queryText
 }
 
-async function doQuery (target, queryText) {
+async function doQuery(target, queryText) {
     return new Promise((resolve, reject) => {
         removeFile(target.fullFileName)
 
@@ -85,13 +85,13 @@ async function doQuery (target, queryText) {
         let buffer = ''
 
         // Emitted once for each recordset in a query
-        request.on('recordset', columns => {
+        request.on('recordset', (columns) => {
             buffer = ''
             writeHeader(columns)
         })
 
         // Emited for each row in a recordset
-        request.on('row', row => {
+        request.on('row', (row) => {
             writeRow(row)
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE === 0) {
@@ -105,18 +105,18 @@ async function doQuery (target, queryText) {
         })
 
         // May be emitted multiple times
-        request.on('error', err => {
+        request.on('error', (err) => {
             reject(err)
         })
 
         // Always emitted as the last one
-        request.on('done', result => {
+        request.on('done', (result) => {
             if (target.recordsCount) {
                 // request.pause();
                 fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) {
                         reject(err)
-                    };
+                    }
                 })
                 buffer = ''
                 target.state = Target.FILE_CREATED
@@ -127,7 +127,7 @@ async function doQuery (target, queryText) {
             resolve(target)
         })
 
-        function writeHeader (columns) {
+        function writeHeader(columns) {
             let columnNumber = 0
             for (const column in columns) {
                 // eslint-disable-next-line no-prototype-builtins
@@ -140,7 +140,7 @@ async function doQuery (target, queryText) {
             buffer += '\n'
         }
 
-        function writeRow (row) {
+        function writeRow(row) {
             let separator = ''
             for (const column in row) {
                 // eslint-disable-next-line no-prototype-builtins

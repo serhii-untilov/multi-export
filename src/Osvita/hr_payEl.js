@@ -30,7 +30,7 @@ const PAYEL029 = 29 // Аванс
 const Entity = require('../entity/PayEl')
 const TARGET_FILE_NAME = 'Види оплати (hr_payEl).csv'
 
-function setRecord (record) {
+function setRecord(record) {
     this.entity.ID = record.id
     this.entity.code = record.code
     this.entity.name = record.name
@@ -42,7 +42,7 @@ function setRecord (record) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.dictionary = dictionary
@@ -54,7 +54,9 @@ function makeTarget (config, dictionary) {
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append) { removeFile(target.fullFileName) }
+            if (!target.append) {
+                removeFile(target.fullFileName)
+            }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
                 { id: PAYEL001, code: '001', name: 'Нормовано в днях' },
@@ -63,7 +65,11 @@ const makeFile = function (target) {
                 { id: PAYEL025, code: '025', name: 'Посадовий оклад' },
                 { id: PAYEL146, code: '146', name: 'Педагогічна зарплата' },
                 { id: PAYEL147, code: '147', name: 'Адміністративна зарплата' },
-                { id: PAYEL178, code: '178', name: 'Відпустка для догляду за дитиною до 3-х років' },
+                {
+                    id: PAYEL178,
+                    code: '178',
+                    name: 'Відпустка для догляду за дитиною до 3-х років'
+                },
                 { id: PAYEL246, code: '246', name: 'Зарплата вихователя' },
                 { id: PAYEL247, code: '247', name: 'Інша зарплата' },
                 { id: PAYEL248, code: '248', name: 'Зарплата спеціаліста' },
@@ -71,7 +77,11 @@ const makeFile = function (target) {
                 { id: PAYEL301, code: '301', name: 'Профспілковий внесок' },
                 { id: PAYEL401, code: '401', name: 'Заробіток для розрахунку лікарняного' },
                 { id: PAYEL402, code: '402', name: 'Заробіток для розрахунку відпустки' },
-                { id: PAYEL403, code: '403', name: 'Заробіток для розрахунку середнього заробітку' },
+                {
+                    id: PAYEL403,
+                    code: '403',
+                    name: 'Заробіток для розрахунку середнього заробітку'
+                },
 
                 { id: PAYEL006, code: '006', name: 'Надбавка до окладу' },
                 { id: PAYEL011, code: '011', name: 'Надбавка за ранг' },

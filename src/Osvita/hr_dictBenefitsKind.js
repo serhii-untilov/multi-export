@@ -8,7 +8,7 @@ const Target = require('../Target')
 const Entity = require('../entity/SimpleEntity')
 const TARGET_FILE_NAME = 'Вид пільги (hr_dictBenefitsKind).csv'
 
-function setRecord (record) {
+function setRecord(record) {
     this.entity.ID = record.id
     this.entity.code = record.code
     this.entity.name = record.name
@@ -16,7 +16,7 @@ function setRecord (record) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.dictionary = dictionary
@@ -28,13 +28,31 @@ function makeTarget (config, dictionary) {
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append) { removeFile(target.fullFileName) }
+            if (!target.append) {
+                removeFile(target.fullFileName)
+            }
             let buffer = target.append ? '' : target.entity.getHeader()
             const source = [
-                { id: 1, code: '1', name: '(ЧАЕС) Категорія 1 - інваліди з числа учасників ліквідації аварії на ЧАЕС' },
-                { id: 2, code: '2', name: '(ЧАЕС) Категорія 2 - учасники ліквідації аварії на ЧАЕС' },
-                { id: 3, code: '3', name: '(ЧАЕС) Категорія 3 - діти‚ учасники ліквідації‚ потерпілі від аварії на ЧАЕС' },
-                { id: 4, code: '4', name: '(ЧАЕС) Категорія 4 - особи‚ які постійно проживають або постійно працюють на території зони посиленого радіоекологічного контролю' }
+                {
+                    id: 1,
+                    code: '1',
+                    name: '(ЧАЕС) Категорія 1 - інваліди з числа учасників ліквідації аварії на ЧАЕС'
+                },
+                {
+                    id: 2,
+                    code: '2',
+                    name: '(ЧАЕС) Категорія 2 - учасники ліквідації аварії на ЧАЕС'
+                },
+                {
+                    id: 3,
+                    code: '3',
+                    name: '(ЧАЕС) Категорія 3 - діти‚ учасники ліквідації‚ потерпілі від аварії на ЧАЕС'
+                },
+                {
+                    id: 4,
+                    code: '4',
+                    name: '(ЧАЕС) Категорія 4 - особи‚ які постійно проживають або постійно працюють на території зони посиленого радіоекологічного контролю'
+                }
             ]
             for (let i = 0; i < source.length; i++) {
                 if (target.setRecord(source[i])) {

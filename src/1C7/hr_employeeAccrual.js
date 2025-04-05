@@ -9,7 +9,7 @@ const Entity = require('../entity/EmployeeAccrual')
 const SOURCE_FILE_NAME = 'NCH.DBF'
 const TARGET_FILE_NAME = 'Постійні нарахування працівника (hr_employeeAccrual).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     this.entity.ID = recordNumber
     this.entity.employeeID = record.TN
     this.entity.tabNum = record.TN
@@ -25,7 +25,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

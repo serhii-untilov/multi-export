@@ -22,7 +22,12 @@ const tableList = [
         name: 'ac_address',
         description: 'Адреси працівників',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'ownerID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'ownerID',
+                orgID: 'organizationID'
+            }
         ]
     },
     { name: 'ac_bank', description: 'Банки' },
@@ -39,16 +44,12 @@ const tableList = [
     {
         name: 'hr_accrualDt',
         description: 'Деталізація записів Розрахункового листа',
-        join: [
-            { name: 'hr_accrual', masterField: 'ID', detailField: 'accrualID', orgID: 'orgID' }
-        ]
+        join: [{ name: 'hr_accrual', masterField: 'ID', detailField: 'accrualID', orgID: 'orgID' }]
     },
     {
         name: 'hr_taxIndividAcc',
         description: 'ПДФО за видами доходу розрахункового листа',
-        join: [
-            { name: 'hr_accrual', masterField: 'ID', detailField: 'accrualID', orgID: 'orgID' }
-        ]
+        join: [{ name: 'hr_accrual', masterField: 'ID', detailField: 'accrualID', orgID: 'orgID' }]
     },
     { name: 'hr_department', description: 'Підрозділи' },
     { name: 'hr_dictBenefitsKind', description: 'Види пільг' },
@@ -85,7 +86,10 @@ const tableList = [
     { name: 'hr_dictMilitaryRank', description: 'Військові звання' },
     { name: 'hr_dictMilitarySpeciality', description: 'Військово-облікові спеціальності' },
     { name: 'hr_dictMilitaryProfile', description: 'Профілі підготовки офіцерів запасу' },
-    { name: 'hr_dictProfCompDevelopForm', description: 'Форма підвищення рівня професійної компетентності' },
+    {
+        name: 'hr_dictProfCompDevelopForm',
+        description: 'Форма підвищення рівня професійної компетентності'
+    },
     { name: 'hr_dictProfCompetency', description: 'Професійні компетенції' },
     { name: 'hr_dictTrainingTopic', description: 'Орієнтовні тематики професійного навчання' },
     { name: 'hr_dictTrainingKind', description: 'Види професійної підготовки' },
@@ -101,168 +105,288 @@ const tableList = [
         name: 'hr_employee',
         description: 'Фізичні особи',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'employeeID', detailField: 'ID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'employeeID',
+                detailField: 'ID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
         name: 'hr_employeeLanguage',
         description: 'Володіння мовами',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empAcademStatus',
         description: 'Вчені звання працівника',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empRangeScience',
         description: 'Науковий ступінь',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeVacation',
         description: 'Відпустка працівника (архів)',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empStateMilitary',
         description: 'Військовий облік',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeAccrual',
         description: 'Постійні нарахування працівників',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
         name: 'hr_employeeBenefits',
         description: 'Право на пільги',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empVacationPeriod',
         description: 'Право на відпустку',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeDocs',
         description: 'Документи працівника',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeEducation',
         description: 'Освіта працівників',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empCertificatnUp',
         description: 'Підвищення кваліфікації',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empCertificationAcc',
         description: 'Атестація працівників',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empAddInform',
         description: 'Додаткова інформація',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeDisability',
         description: 'Інвалідність працівників',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeBonus',
         description: 'Нагороди',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeContact',
         description: 'Інші контакти',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_empLongTermAbsc',
         description: 'Довготривала відсутність',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
         name: 'hr_employeeExperience',
         description: 'Стаж роботи працівників',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
         name: 'hr_employeePenalty',
         description: 'Стягнення працівників',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeDocAudit',
         description: 'Спецперевірки',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeWorkbook',
         description: 'Трудова книжка',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_people',
         description: 'Фізичні особи',
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     {
         name: 'hr_employeeFamily',
-        description: 'Члени сім\'ї',
+        description: "Члени сім'ї",
         join: [
-            { name: 'hr_employee', masterField: 'ID', detailField: 'employeeID', orgID: 'organizationID' }
+            {
+                name: 'hr_employee',
+                masterField: 'ID',
+                detailField: 'employeeID',
+                orgID: 'organizationID'
+            }
         ]
     },
     { name: 'hr_employeeNumber', description: 'Працівники (Особові рахунки)' },
@@ -270,14 +394,24 @@ const tableList = [
         name: 'hr_employeePosition',
         description: 'Призначення працівників',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
         name: 'hr_accrualBalance',
         description: 'Сальдо по місяцям',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
@@ -289,14 +423,24 @@ const tableList = [
         name: 'hr_accrualFundDt',
         description: 'Деталізація записів нарахувань на зарплату',
         join: [
-            { name: 'hr_accrualFund', masterField: 'ID', detailField: 'accrualFundID', orgID: 'orgID' }
+            {
+                name: 'hr_accrualFund',
+                masterField: 'ID',
+                detailField: 'accrualFundID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
         name: 'hr_payCalcDateFrom',
         description: 'Дата початку перерахунку зарплати працівників',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
@@ -304,14 +448,24 @@ const tableList = [
         description: 'Деталізація записів призначення працівників',
         join: [
             { name: 'hr_employeePosition', masterField: 'ID', detailField: 'employeePositionID' },
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     {
         name: 'hr_employeeTaxLimit',
         description: 'Пільги ПДФО працівників',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     { name: 'hr_organization', orgID: 'orgID', description: 'Організації' },
@@ -323,15 +477,26 @@ const tableList = [
     { name: 'hr_payOut', description: 'Шаблони виплати' },
     { name: 'hr_payFundMethod', description: 'Методи розрахунку нарахувань на зарплату' },
     { name: 'hr_payFund', description: 'Нарахування на зарплату' },
-    { name: 'hr_payFundBase', description: 'Таблиця входження видів оплати у нарахування на зарплату' },
+    {
+        name: 'hr_payFundBase',
+        description: 'Таблиця входження видів оплати у нарахування на зарплату'
+    },
     { name: 'hr_payPerm', description: 'Постійні нарахування і утримання по організації' },
     { name: 'hr_dictTaxIndivid', description: 'Види доходу ПДФО' },
-    { name: 'hr_payElTaxIndivid', description: 'Таблиця входження видів оплати у види доходу ПДФО' },
+    {
+        name: 'hr_payElTaxIndivid',
+        description: 'Таблиця входження видів оплати у види доходу ПДФО'
+    },
     {
         name: 'hr_payRetention',
         description: 'Постійні утримання працівників',
         join: [
-            { name: 'hr_employeeNumber', masterField: 'ID', detailField: 'employeeNumberID', orgID: 'orgID' }
+            {
+                name: 'hr_employeeNumber',
+                masterField: 'ID',
+                detailField: 'employeeNumberID',
+                orgID: 'orgID'
+            }
         ]
     },
     { name: 'hr_taxLimit', description: 'Довідник пільг ПДФО' },
@@ -340,7 +505,7 @@ const tableList = [
 ]
 
 class SourceA5 extends Source {
-    async read (config, sendFile, sendDone, sendFailed) {
+    async read(config, sendFile, sendDone, sendFailed) {
         try {
             const pool = getConnectionPool(config.a5dbType, dbConfig(config))
             pool.on('error', (err) => {
@@ -350,33 +515,41 @@ class SourceA5 extends Source {
             await makeDir(config.targetPath)
             const orgID = await getOrgID(config.a5dbType, config.a5Database, config.a5orgCode, pool)
             const orgName = await getOrgName(config.a5dbType, config.a5Database, orgID, pool)
-            Promise.all(tableList.map((table) => {
-                return new Promise((resolve, reject) => {
-                    pool.connect()
-                        .then(client => {
-                            const target = new Target.Target()
-                            target.table = table
-                            target.fullFileName = getFullFileName(config.targetPath, `${table.description} (${table.name}).csv`)
-                            target.config = config
-                            target.client = client
-                            target.orgID = orgID
-                            return target
-                        })
-                        .then(target => makeFile(target))
-                        .then(target => {
-                            sendFile(target)
-                            target.client.release(true)
-                            resolve(target)
-                        })
-                        .catch(err => reject(err))
+            Promise.all(
+                tableList.map((table) => {
+                    return new Promise((resolve, reject) => {
+                        pool.connect()
+                            .then((client) => {
+                                const target = new Target.Target()
+                                target.table = table
+                                target.fullFileName = getFullFileName(
+                                    config.targetPath,
+                                    `${table.description} (${table.name}).csv`
+                                )
+                                target.config = config
+                                target.client = client
+                                target.orgID = orgID
+                                return target
+                            })
+                            .then((target) => makeFile(target))
+                            .then((target) => {
+                                sendFile(target)
+                                target.client.release(true)
+                                resolve(target)
+                            })
+                            .catch((err) => reject(err))
+                    })
                 })
-            })).then((targetList) => {
+            ).then((targetList) => {
                 if (config.isArchive) {
-                    const arcFileName = getFullFileName(config.targetPath, orgName ? `${orgName}.zip` : FILE_NAME)
+                    const arcFileName = getFullFileName(
+                        config.targetPath,
+                        orgName ? `${orgName}.zip` : FILE_NAME
+                    )
                     makeArchive(arcFileName, targetList)
                         .then(() => removeTargetFiles(targetList))
                         .then(() => sendDone(arcFileName))
-                        .catch(err => {
+                        .catch((err) => {
                             sendFailed(err.message)
                         })
                 } else {
@@ -389,76 +562,82 @@ class SourceA5 extends Source {
     }
 }
 
-function dbConfig (config) {
+function dbConfig(config) {
     switch (config.a5dbType) {
-    case DBtype.POSTGRES:
-        return {
-            host: config.a5Host,
-            port: config.a5Port,
-            user: config.a5Login,
-            password: config.a5Password,
-            database: config.a5Database,
-            connectionTimeoutMillis: CONNECTION_TIMEOUT,
-            idleTimeoutMillis: REQUEST_TIMEOUT,
-            max: POOL_SIZE
-        }
-    case DBtype.MSSQL:
-        return {
-            user: config.a5Login,
-            password: config.a5Password,
-            server: config.a5Host,
-            database: config.a5Database,
-            port: Number(config.a5Port),
-            connectionTimeout: CONNECTION_TIMEOUT,
-            requestTimeout: REQUEST_TIMEOUT,
-            pool: {
-                max: POOL_SIZE,
-                min: 0,
-                acquireTimeoutMillis: ACQUIRE_TIMEOUT
+        case DBtype.POSTGRES:
+            return {
+                host: config.a5Host,
+                port: config.a5Port,
+                user: config.a5Login,
+                password: config.a5Password,
+                database: config.a5Database,
+                connectionTimeoutMillis: CONNECTION_TIMEOUT,
+                idleTimeoutMillis: REQUEST_TIMEOUT,
+                max: POOL_SIZE
             }
-        }
-    default:
-        throw (new Error(`Unknown dbType (${config.a5dbType}).`))
+        case DBtype.MSSQL:
+            return {
+                user: config.a5Login,
+                password: config.a5Password,
+                server: config.a5Host,
+                database: config.a5Database,
+                port: Number(config.a5Port),
+                connectionTimeout: CONNECTION_TIMEOUT,
+                requestTimeout: REQUEST_TIMEOUT,
+                pool: {
+                    max: POOL_SIZE,
+                    min: 0,
+                    acquireTimeoutMillis: ACQUIRE_TIMEOUT
+                }
+            }
+        default:
+            throw new Error(`Unknown dbType (${config.a5dbType}).`)
     }
 }
 
-async function getOrgID (dbType, dbName, orgCode, pool) {
+async function getOrgID(dbType, dbName, orgCode, pool) {
     if (!orgCode) return null
     switch (dbType) {
-    case DBtype.POSTGRES: {
-        const client = await pool.connect()
-        const res = await client.query(`select max(ID) ID from ${dbName}.ac_organization where (code = '${orgCode}' or okpocode = '${orgCode}') and mi_deleteDate >= '9999-12-31';`)
-        client.release(true)
-        return res.rows.length ? res.rows[0].id : null
-    }
-    case DBtype.MSSQL: {
-        const client = await pool.connect()
-        const request = await client.request() // or: new sql.Request(pool1)
-        const res = await request.query(`select max(ID) ID from ac_organization where (code = '${orgCode}' or okpocode = '${orgCode}') and mi_deleteDate >= '9999-12-31'`)
-        return res.recordset.length ? res.recordset[0].ID : null
-    }
-    default:
-        throw new Error(`Unknown dbType (${dbType}).`)
+        case DBtype.POSTGRES: {
+            const client = await pool.connect()
+            const res = await client.query(
+                `select max(ID) ID from ${dbName}.ac_organization where (code = '${orgCode}' or okpocode = '${orgCode}') and mi_deleteDate >= '9999-12-31';`
+            )
+            client.release(true)
+            return res.rows.length ? res.rows[0].id : null
+        }
+        case DBtype.MSSQL: {
+            const client = await pool.connect()
+            const request = await client.request() // or: new sql.Request(pool1)
+            const res = await request.query(
+                `select max(ID) ID from ac_organization where (code = '${orgCode}' or okpocode = '${orgCode}') and mi_deleteDate >= '9999-12-31'`
+            )
+            return res.recordset.length ? res.recordset[0].ID : null
+        }
+        default:
+            throw new Error(`Unknown dbType (${dbType}).`)
     }
 }
 
-async function getOrgName (dbType, dbName, orgID, pool) {
+async function getOrgName(dbType, dbName, orgID, pool) {
     if (!orgID) return null
     switch (dbType) {
-    case DBtype.POSTGRES: {
-        const client = await pool.connect()
-        const res = await client.query(`select name from ${dbName}.ac_organization where id = ${orgID};`)
-        client.release(true)
-        return res.rows.length ? res.rows[0].name : null
-    }
-    case DBtype.MSSQL: {
-        const client = await pool.connect()
-        const request = await client.request() // or: new sql.Request(pool1)
-        const res = await request.query(`select name from ac_organization where id = ${orgID}`)
-        return res.recordset.length ? res.recordset[0].name : null
-    }
-    default:
-        throw new Error(`Unknown dbType (${dbType}).`)
+        case DBtype.POSTGRES: {
+            const client = await pool.connect()
+            const res = await client.query(
+                `select name from ${dbName}.ac_organization where id = ${orgID};`
+            )
+            client.release(true)
+            return res.rows.length ? res.rows[0].name : null
+        }
+        case DBtype.MSSQL: {
+            const client = await pool.connect()
+            const request = await client.request() // or: new sql.Request(pool1)
+            const res = await request.query(`select name from ac_organization where id = ${orgID}`)
+            return res.recordset.length ? res.recordset[0].name : null
+        }
+        default:
+            throw new Error(`Unknown dbType (${dbType}).`)
     }
 }
 

@@ -13,7 +13,7 @@ const fs = require('fs')
 //     })
 // }
 
-function removeFileSync (fileName) {
+function removeFileSync(fileName) {
     if (fs.existsSync(fileName)) {
         fs.unlinkSync(fileName)
     }

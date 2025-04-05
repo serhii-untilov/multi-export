@@ -8,13 +8,13 @@ const makeSource = require('./src/sourceFactory')
 require('electron-reload')(__dirname)
 const dataStore = new DataStore({ name: 'multi-export-config' })
 
-function main () {
+function main() {
     const mainWindow = new Window({
         _file: path.join('renderer', 'index.html'),
-        get file () {
+        get file() {
             return this._file
         },
-        set file (value) {
+        set file(value) {
             this._file = value
         }
     })
@@ -62,7 +62,7 @@ app.on('window-all-closed', function () {
     app.quit()
 })
 
-async function selectDirectory (defaultPath) {
+async function selectDirectory(defaultPath) {
     const options = {
         title: 'Виберіть каталог',
         defaultPath: defaultPath,

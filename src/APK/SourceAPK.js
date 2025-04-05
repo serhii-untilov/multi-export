@@ -21,7 +21,7 @@ const CONNECTION_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 const REQUEST_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 
 class SourceAPK extends Source {
-    async read (config, sendFile, sendDone, sendFailed) {
+    async read(config, sendFile, sendDone, sendFailed) {
         const pool = new Pool(dbConfig(config))
         pool.on('error', (err) => {
             console.log(err)
@@ -31,32 +31,41 @@ class SourceAPK extends Source {
         let client
         makeDir(config.targetPath)
             .then(() => getFileList())
-            .then((result) => {fileList = result})
+            .then((result) => {
+                fileList = result
+            })
             .then(() => pool.connect())
-            .then((result) => { client = result })
+            .then((result) => {
+                client = result
+            })
             .then(() => {
                 const target = new Target.Target()
                 target.config = config
                 target.client = client
                 return initDB(target)
             })
-            .then(() => { return dictDocKind(config)})
+            .then(() => {
+                return dictDocKind(config)
+            })
             .then(() => {
                 return Promise.all(
                     fileList.map((queryFileName) => {
                         return new Promise((resolve, reject) => {
                             const target = new Target.Target()
                             const fileName = path.parse(queryFileName).name
-                            target.fullFileName = getFullFileName(config.targetPath, fileName + '.csv')
+                            target.fullFileName = getFullFileName(
+                                config.targetPath,
+                                fileName + '.csv'
+                            )
                             target.queryFileName = getFullFileName(SQL_FILES_DIR, queryFileName)
                             target.config = config
                             target.client = client
                             makeFile(target)
-                                .then(target => {
+                                .then((target) => {
                                     sendFile(target)
                                     resolve(target)
                                 })
-                                .catch(err => reject(err))
+                                .catch((err) => reject(err))
                         })
                     })
                 )
@@ -76,19 +85,23 @@ class SourceAPK extends Source {
     }
 }
 
-function getFileList () {
+function getFileList() {
     return new Promise((resolve, reject) => {
         fs.readdir(SQL_FILES_DIR, { withFileTypes: true }, (err, dirents) => {
             if (err) reject(err)
             const fileList = dirents
-                .filter((el) => { return !el.isDirectory() && path.extname(el.name).toLowerCase() === '.sql' })
-                .map((el) => { return el.name })
+                .filter((el) => {
+                    return !el.isDirectory() && path.extname(el.name).toLowerCase() === '.sql'
+                })
+                .map((el) => {
+                    return el.name
+                })
             resolve(fileList)
         })
     })
 }
 
-function dbConfig (config) {
+function dbConfig(config) {
     return {
         host: config.apkHost,
         port: config.apkPort,

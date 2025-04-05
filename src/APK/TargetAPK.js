@@ -22,7 +22,7 @@ const makeFile = function (target) {
     })
 }
 
-function readQueryFromFile (fileName) {
+function readQueryFromFile(fileName) {
     return new Promise((resolve, reject) => {
         try {
             fs.readFile(fileName, { encoding: null }, (err, queryText) => {
@@ -36,14 +36,16 @@ function readQueryFromFile (fileName) {
     })
 }
 
-async function doQuery (target, queryText) {
+async function doQuery(target, queryText) {
     return new Promise((resolve, reject) => {
         removeFile(target.fullFileName)
         let buffer = ''
         let printHeader = true
         const query = new QueryStream(queryText)
         const stream = target.client.query(query)
-        stream.on('error', (err) => { reject(err) })
+        stream.on('error', (err) => {
+            reject(err)
+        })
         stream.on('data', (row) => {
             if (printHeader) {
                 printHeader = false
@@ -65,7 +67,7 @@ async function doQuery (target, queryText) {
                 fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) {
                         reject(err)
-                    };
+                    }
                 })
                 buffer = ''
                 target.state = Target.FILE_CREATED
@@ -75,7 +77,7 @@ async function doQuery (target, queryText) {
             resolve(target)
         })
 
-        function writeHeader (row) {
+        function writeHeader(row) {
             let columnNumber = 0
             for (const column in row) {
                 if (columnNumber > 0) buffer += ';'
@@ -85,7 +87,7 @@ async function doQuery (target, queryText) {
             buffer += '\n'
         }
 
-        function writeRow (row) {
+        function writeRow(row) {
             let separator = ''
             for (const column in row) {
                 buffer += `${separator}${row[column]}`

@@ -56,7 +56,7 @@ test.only('Test replacing sys_schema', () => {
     // find /*SYS_SCHEMA*/.sspr
     // replace to ${schemaSys}.sspr
 
-    const re = /\/\*SYS_SCHEMA\*\/\w+\./gmi
+    const re = /\/\*SYS_SCHEMA\*\/\w+\./gim
     const schemaSys = 'replaced'
     let queryText = '/*SYS_SCHEMA*/i711_sys.dbo.payvo1'
     queryText = queryText.replace(re, `${schemaSys}.`)

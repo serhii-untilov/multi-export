@@ -8,7 +8,7 @@ const dateFormat = require('../helper/dateFormat')
 const Entity = require('../entity/EmployeeExperience')
 const TARGET_FILE_NAME = 'Стаж роботи працівників (hr_employeeExperience).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     this.entity = []
@@ -50,7 +50,7 @@ function setRecord (record, recordNumber) {
     return false
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

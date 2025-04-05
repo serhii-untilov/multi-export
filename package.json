@@ -1,73 +1,74 @@
 {
-  "name": "multi-export",
-  "version": "2.0.0",
-  "description": "Multi export for import into A5 [ERP, HRMIS] databases",
-  "main": "main.js",
-  "scripts": {
-    "postinstall": "install-app-deps",
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "run-script-os",
-    "dist:win32": "electron-builder -w --ia32",
-    "dist:linux": "electron-builder -l --x64",
-    "rmad": "run-script-os",
-    "rmad:win32": "rm -f -r %APPDATA%/multi-export",
-    "rmad:linux": "rm -f -r ~/.config/multi-export",
-    "test": "jest",
-    "lint": "standard",
-    "scss": "sass .\\multi-export.scss .\\multi-export.css"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/serhii-untilov/multi-export"
-  },
-  "keywords": [
-    "Electron",
-    "export",
-    "A5"
-  ],
-  "author": "Serhii Untilov <s.untilov@gmail.com> (https://untilov.com.ua/)",
-  "license": "MIT",
-  "build": {
-    "appId": "multi-export",
-    "win": {
-      "target": "portable",
-      "icon": "build/multi-export.png"
+    "name": "multi-export",
+    "version": "2.0.0",
+    "description": "Multi export for import into A5 [ERP, HRMIS] databases",
+    "main": "main.js",
+    "scripts": {
+        "postinstall": "install-app-deps",
+        "start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "run-script-os",
+        "dist:win32": "electron-builder -w --ia32",
+        "dist:linux": "electron-builder -l --x64",
+        "rmad": "run-script-os",
+        "rmad:win32": "rm -f -r %APPDATA%/multi-export",
+        "rmad:linux": "rm -f -r ~/.config/multi-export",
+        "test": "jest",
+        "lint": "standard",
+        "scss": "sass .\\multi-export.scss .\\multi-export.css"
     },
-    "directories": {
-      "buildResources": "build"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/serhii-untilov/multi-export"
     },
-    "extraFiles": [
-      {
-        "from": "assets",
-        "to": "assets"
-      }
-    ]
-  },
-  "devDependencies": {
-    "dotenv": "^8.2.0",
-    "electron": "^9.4.0",
-    "electron-builder": "^22.2.0",
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "jest": "^24.9.0",
-    "run-script-os": "^1.1.6",
-    "standard": "^14.3.1"
-  },
-  "dependencies": {
-    "archiver": "^3.1.1",
-    "dbffile": "^1.4.3",
-    "electron-reload": "^1.5.0",
-    "electron-store": "^5.1.0",
-    "iconv-lite": "^0.5.2",
-    "mssql": "^6.0.1",
-    "pg": "^8.7.1",
-    "pg-query-stream": "^4.2.1",
-    "sass": "^1.24.0",
-    "spectre.css": "^0.5.8",
-    "yadbf": "^3.2.3"
-  }
+    "keywords": [
+        "Electron",
+        "export",
+        "A5"
+    ],
+    "author": "Serhii Untilov <s.untilov@gmail.com> (https://untilov.com.ua/)",
+    "license": "MIT",
+    "build": {
+        "appId": "multi-export",
+        "win": {
+            "target": "portable",
+            "icon": "build/multi-export.png"
+        },
+        "directories": {
+            "buildResources": "build"
+        },
+        "extraFiles": [
+            {
+                "from": "assets",
+                "to": "assets"
+            }
+        ]
+    },
+    "devDependencies": {
+        "dotenv": "^8.2.0",
+        "electron": "^9.4.0",
+        "electron-builder": "^22.2.0",
+        "eslint": "^7.32.0",
+        "eslint-config-prettier": "^10.1.1",
+        "eslint-plugin-import": "^2.24.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^5.2.6",
+        "eslint-plugin-promise": "^5.1.0",
+        "jest": "^24.9.0",
+        "prettier": "^3.5.3",
+        "run-script-os": "^1.1.6"
+    },
+    "dependencies": {
+        "archiver": "^3.1.1",
+        "dbffile": "^1.4.3",
+        "electron-reload": "^1.5.0",
+        "electron-store": "^5.1.0",
+        "iconv-lite": "^0.5.2",
+        "mssql": "^6.0.1",
+        "pg": "^8.7.1",
+        "pg-query-stream": "^4.2.1",
+        "sass": "^1.24.0",
+        "spectre.css": "^0.5.8",
+        "yadbf": "^3.2.3"
+    }
 }

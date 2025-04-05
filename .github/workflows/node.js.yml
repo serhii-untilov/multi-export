@@ -4,40 +4,39 @@
 name: Node.js CI
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
 
 jobs:
-  build_windows:
+    build_windows:
+        name: Build
 
-    name: Build
+        runs-on: windows-2019
 
-    runs-on: windows-2019
+        strategy:
+            matrix:
+                node-version: [14.17.6]
+                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    strategy:
-      matrix:
-        node-version: [14.17.6]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install packages
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: install # will run `yarn install` command
-    - name: Run tests
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: test # will run `yarn test` command
-    - name: Build executable
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: dist # will run `yarn dist` command
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Install packages
+              uses: borales/actions-yarn@v4
+              with:
+                  cmd: install # will run `yarn install` command
+            - name: Run tests
+              uses: borales/actions-yarn@v4
+              with:
+                  cmd: test # will run `yarn test` command
+            - name: Build executable
+              uses: borales/actions-yarn@v4
+              with:
+                  cmd: dist # will run `yarn dist` command
 

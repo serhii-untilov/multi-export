@@ -10,7 +10,7 @@ const Entity = require('../entity/EmployeePosition')
 const SOURCE_FILE_NAME = 'PRK.DBF'
 const TARGET_FILE_NAME = 'Призначення працівників (hr_employeePosition).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     const inheritance = record.TN === this.entity.tabNum
 
     this.entity.ID = recordNumber
@@ -55,7 +55,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

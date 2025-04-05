@@ -8,7 +8,7 @@ const dateFormat = require('../helper/dateFormat')
 const Entity = require('../entity/EmployeeDocs')
 const TARGET_FILE_NAME = 'Документи працівників (hr_employeeDocs).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
@@ -28,7 +28,7 @@ function setRecord (record, recordNumber) {
     return !!(this.entity.docNumber || this.entity.docSeries)
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

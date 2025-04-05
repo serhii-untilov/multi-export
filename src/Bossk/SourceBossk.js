@@ -19,7 +19,7 @@ const REQUEST_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 const ACQUIRE_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 
 class SourceBossk extends Source {
-    async read (config, sendFile, sendDone, sendFailed) {
+    async read(config, sendFile, sendDone, sendFailed) {
         const pool = new sql.ConnectionPool(dbConfig(config))
         pool.on('error', (err) => {
             console.log(err)
@@ -35,16 +35,19 @@ class SourceBossk extends Source {
                         return new Promise((resolve, reject) => {
                             const target = new Target.Target()
                             const fileName = path.parse(queryFileName).name
-                            target.fullFileName = getFullFileName(config.targetPath, fileName + '.csv')
+                            target.fullFileName = getFullFileName(
+                                config.targetPath,
+                                fileName + '.csv'
+                            )
                             target.queryFileName = getFullFileName(SQL_FILES_DIR, queryFileName)
                             target.config = config
                             target.pool = pool
                             makeFile(target)
-                                .then(target => {
+                                .then((target) => {
                                     sendFile(target)
                                     resolve(target)
                                 })
-                                .catch(err => reject(err))
+                                .catch((err) => reject(err))
                         })
                     })
                 )
@@ -53,8 +56,12 @@ class SourceBossk extends Source {
                 if (config.isArchive) {
                     let arcFileName
                     getFirmName(pool, config.orgCode)
-                        .then((firmName) => getFullFileName(config.targetPath, firmName + config.orgCode + '.zip'))
-                        .then((fullFileName) => { arcFileName = fullFileName })
+                        .then((firmName) =>
+                            getFullFileName(config.targetPath, firmName + config.orgCode + '.zip')
+                        )
+                        .then((fullFileName) => {
+                            arcFileName = fullFileName
+                        })
                         .then(() => makeArchive(arcFileName, targetList))
                         .then(() => removeTargetFiles(targetList))
                         .then(() => sendDone(arcFileName))
@@ -63,25 +70,31 @@ class SourceBossk extends Source {
                     sendDone(null)
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 sendFailed(err.message)
             })
     }
 }
 
-function getFirmName (pool, orgCode = '') {
+function getFirmName(pool, orgCode = '') {
     const defaultName = 'БОСС-Кадровик'
     if (orgCode.length) {
         return new Promise((resolve, reject) => {
             pool.request()
                 .query(`select coalesce(SNAME, NAME) name from HR_FIRM where OKPO = ${orgCode}`)
-                .then(result => {
-                    let name = result && result.recordset.length ? result.recordset[0].name : defaultName
-                    name = name.replace(/"/g, '_').replace(/'/g, '_').replace(/\./g, '_')
-                        .replace(/,/g, '_').replace(/ /g, '_').replace(/__/g, '_')
+                .then((result) => {
+                    let name =
+                        result && result.recordset.length ? result.recordset[0].name : defaultName
+                    name = name
+                        .replace(/"/g, '_')
+                        .replace(/'/g, '_')
+                        .replace(/\./g, '_')
+                        .replace(/,/g, '_')
+                        .replace(/ /g, '_')
+                        .replace(/__/g, '_')
                     resolve(name.length ? name : defaultName)
                 })
-                .catch(err => reject(err))
+                .catch((err) => reject(err))
             const currentDate = new Date()
             resolve(currentDate.toString())
         })
@@ -97,15 +110,19 @@ function getFileList() {
         fs.readdir(SQL_FILES_DIR, { withFileTypes: true }, (err, dirents) => {
             if (err) reject(err)
             const fileList = dirents
-                .filter((el) => { return !el.isDirectory() && path.extname(el.name).toLowerCase() === '.sql' })
-                .map((el) => { return el.name })
+                .filter((el) => {
+                    return !el.isDirectory() && path.extname(el.name).toLowerCase() === '.sql'
+                })
+                .map((el) => {
+                    return el.name
+                })
             resolve(fileList)
         })
     })
 }
 
 function dbConfig(config) {
-    const isNamedInstance = (config.server.indexOf('\\') >= 0)
+    const isNamedInstance = config.server.indexOf('\\') >= 0
     const params = {
         user: config.login,
         password: config.password,

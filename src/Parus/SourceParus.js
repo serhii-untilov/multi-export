@@ -11,12 +11,16 @@ const hr_payEl = require('./hr_payEl')
 const ARC_FILE_NAME = 'Parus.zip'
 
 class SourceParus extends Source {
-    async read (config, sendFile, sendDone, sendFailed) {
+    async read(config, sendFile, sendDone, sendFailed) {
         try {
             const targetList = []
             const dictionary = new Dictionary(config)
             makeDir(config.targetPath)
-                .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_payEl(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
                 .then(() => {
                     if (config.isArchive) {
                         const arcFileName = getFullFileName(config.targetPath, ARC_FILE_NAME)

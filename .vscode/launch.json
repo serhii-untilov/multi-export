@@ -14,25 +14,21 @@
             "console": "integratedTerminal",
             "disableOptimisticBPs": true,
             "windows": {
-              "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest"
             }
-          },
+        },
         {
             "type": "node",
             "request": "attach",
             "name": "Attach by Process ID",
             "processId": "${command:PickProcess}",
-            "skipFiles": [
-                "<node_internals>/**"
-            ]
+            "skipFiles": ["<node_internals>/**"]
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
+            "skipFiles": ["<node_internals>/**"],
             "program": "${workspaceFolder}\\main.js"
         },
         {
@@ -44,9 +40,7 @@
             "windows": {
                 "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
             },
-            "args": [
-                "."
-            ],
+            "args": ["."],
             "outputCapture": "std"
         }
     ]

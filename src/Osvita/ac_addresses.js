@@ -7,7 +7,7 @@ const makeFile = require('./TargetOsvita')
 const Entity = require('../entity/Addresses')
 const TARGET_FILE_NAME = 'Адреси працівників (ac_address).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
@@ -17,17 +17,18 @@ function setRecord (record, recordNumber) {
 
     this.entity.addressType = '1'
     this.entity.postIndex = ''
-    this.entity.address = record.ADRG +
-        ((record.ADRG && record.ADRR) ? ', ' : '') +
+    this.entity.address =
+        record.ADRG +
+        (record.ADRG && record.ADRR ? ', ' : '') +
         record.ADRR +
         ((record.ADRG || record.ADRR) && record.ADRO ? ', ' : '') +
         record.ADRO
     this.entity.countryID = 804
 
-    return !!(this.entity.address)
+    return !!this.entity.address
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

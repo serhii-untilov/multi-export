@@ -8,7 +8,7 @@ const dateFormat = require('../helper/dateFormat')
 const Entity = require('../entity/EmployeeEducation')
 const TARGET_FILE_NAME = 'Освіта (hr_employeeEducation).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
     const ID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
@@ -18,7 +18,11 @@ function setRecord (record, recordNumber) {
     this.entity.taxCode = record.IKOD ? record.IKOD : ''
     this.entity.dateFrom = record.DATPOST ? dateFormat(record.DATPOST) : ''
     this.entity.dateTo = record.DATZ ? dateFormat(record.DATZ) : '9999-12-31'
-    const education = this.dictionary.getDictEducationLevelIDbyName(record.FAM, record.IM, record.OT)
+    const education = this.dictionary.getDictEducationLevelIDbyName(
+        record.FAM,
+        record.IM,
+        record.OT
+    )
     if (education && !this.entity.dateTo) {
         this.entity.dictEducationLevelID = education.dictEducationLevelID
         return true
@@ -26,7 +30,7 @@ function setRecord (record, recordNumber) {
     return false
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

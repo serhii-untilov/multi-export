@@ -5,23 +5,35 @@ const makeFile = require('./TargetOsvita')
 
 const Entity = require('../entity/SimpleEntity')
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (record.RAZTAR) {
         this.dictionary.setDictTarifCoeffIDbyName(record.FAM, record.IM, record.OT, record.RAZTAR)
     }
     if (record.OBRAZ) {
         const dictEducationLevelID = getEducationLevelID(record.OBRAZ)
         if (dictEducationLevelID) {
-            this.dictionary.setDictEducationLevelIDbyName(record.FAM, record.IM, record.OT, dictEducationLevelID)
+            this.dictionary.setDictEducationLevelIDbyName(
+                record.FAM,
+                record.IM,
+                record.OT,
+                dictEducationLevelID
+            )
         }
     }
     if (record.STYEAR || record.STMONTH || record.STDAY) {
-        this.dictionary.setExperienceByName(record.FAM, record.IM, record.OT, record.STYEAR, record.STMONTH, record.STDAY)
+        this.dictionary.setExperienceByName(
+            record.FAM,
+            record.IM,
+            record.OT,
+            record.STYEAR,
+            record.STMONTH,
+            record.STDAY
+        )
     }
     return false
 }
 
-function makeTarget (config, dictionary, sourceFullFileName, index) {
+function makeTarget(config, dictionary, sourceFullFileName, index) {
     const target = new Target.Target()
     target.fullFileName = null
     target.sourceFullFileName = sourceFullFileName
@@ -32,13 +44,18 @@ function makeTarget (config, dictionary, sourceFullFileName, index) {
     return makeFile(target)
 }
 
-function getEducationLevelID (OBRAZ) {
+function getEducationLevelID(OBRAZ) {
     switch (OBRAZ) {
-    case 'Вища': return 7
-    case 'Спец': return 3
-    case 'Н/вища': return 5
-    case 'Серед': return 2
-    default: return null
+        case 'Вища':
+            return 7
+        case 'Спец':
+            return 3
+        case 'Н/вища':
+            return 5
+        case 'Серед':
+            return 2
+        default:
+            return null
     }
 }
 

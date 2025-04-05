@@ -8,7 +8,9 @@ const Target = require('../Target')
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append) { removeFile(target.fullFileName) }
+            if (!target.append) {
+                removeFile(target.fullFileName)
+            }
             console.log('target.sourceFullFileName', target.sourceFullFileName)
             fs.access(target.sourceFullFileName, fs.OK, async (err) => {
                 if (!err) {
@@ -17,7 +19,7 @@ const makeFile = function (target) {
 
                     const dbf = await DBFFile.open(target.sourceFullFileName)
                     console.log(`DBF file contains ${dbf.recordCount} records.`)
-                    console.log(`Field names: ${dbf.fields.map(f => f.name).join(', ')}`)
+                    console.log(`Field names: ${dbf.fields.map((f) => f.name).join(', ')}`)
                     const records = await dbf.readRecords(100)
                     for (const record of records) {
                         console.log(record)

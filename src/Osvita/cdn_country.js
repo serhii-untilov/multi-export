@@ -8,7 +8,7 @@ const Target = require('../Target')
 const Entity = require('../entity/SimpleEntity')
 const TARGET_FILE_NAME = 'Країни світу (cdn_country).csv'
 
-function setRecord (record) {
+function setRecord(record) {
     this.entity.ID = record.id
     this.entity.code = record.code
     this.entity.name = record.name
@@ -16,7 +16,7 @@ function setRecord (record) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.dictionary = dictionary
@@ -28,11 +28,11 @@ function makeTarget (config, dictionary) {
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
         try {
-            if (!target.append) { removeFile(target.fullFileName) }
+            if (!target.append) {
+                removeFile(target.fullFileName)
+            }
             let buffer = target.append ? '' : target.entity.getHeader()
-            const source = [
-                { id: 804, code: 'UKR', name: 'Україна' }
-            ]
+            const source = [{ id: 804, code: 'UKR', name: 'Україна' }]
             for (let i = 0; i < source.length; i++) {
                 if (target.setRecord(source[i])) {
                     target.recordsCount++

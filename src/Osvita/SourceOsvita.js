@@ -48,10 +48,8 @@ const ARC_FILE_NAME = 'Osvita.zip'
 const MARGIN_DATE = new Date(new Date().getFullYear(), 0, 1)
 
 class SourceOsvita extends Source {
-    async read (config, sendFile, sendDone, sendFailed) {
-        const fieldsMap = [
-            { DATUWOL: 'DATZ' }
-        ]
+    async read(config, sendFile, sendDone, sendFailed) {
+        const fieldsMap = [{ DATUWOL: 'DATZ' }]
         if (config.osvitaVersion === Version.NO_TARIFFING) {
             config.mapper = (record) => {
                 fieldsMap.forEach((o) => {
@@ -64,10 +62,12 @@ class SourceOsvita extends Source {
             }
         }
         config.filter = (record) => {
-            if (config.osvitaVersion === Version.NO_TARIFFING &&
+            if (
+                config.osvitaVersion === Version.NO_TARIFFING &&
                 config.osvitaDepartment.length &&
                 'OTD' in record &&
-                record.OTD.toString() !== config.osvitaDepartment) {
+                record.OTD.toString() !== config.osvitaDepartment
+            ) {
                 return false
             }
             if (record.DATZ && record.DATZ < MARGIN_DATE) {
@@ -79,16 +79,56 @@ class SourceOsvita extends Source {
             const targetList = []
             const dictionary = new Dictionary(config)
             makeDir(config.targetPath)
-                .then(() => hr_payEl(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictEducationLevel(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => ac_fundSource(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictCategoryECB(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_workSchedule(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => ac_dictdockind(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictBenefitsKind(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictExperience(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => cdn_country(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
-                .then(() => hr_dictTarifCoeff(config, dictionary)).then((target) => { targetList.push(target); sendFile(target) })
+                .then(() => hr_payEl(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_dictEducationLevel(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => ac_fundSource(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_dictCategoryECB(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_workSchedule(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => ac_dictdockind(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_dictBenefitsKind(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_dictExperience(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => cdn_country(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
+                .then(() => hr_dictTarifCoeff(config, dictionary))
+                .then((target) => {
+                    targetList.push(target)
+                    sendFile(target)
+                })
                 .then(() => getAllFiles(config.osvitaDbPath, /^S[0-9]+\.DBF/i))
                 .then(async (fileList) => {
                     for (let j = 0; j < fileList.length; j++) {
@@ -157,7 +197,12 @@ class SourceOsvita extends Source {
                     ]
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
-                            if (config.osvitaVersion === Version.NO_TARIFFING && config.osvitaOrganization.length && organizationNumber(fileList[j]) !== config.osvitaOrganization) continue
+                            if (
+                                config.osvitaVersion === Version.NO_TARIFFING &&
+                                config.osvitaOrganization.length &&
+                                organizationNumber(fileList[j]) !== config.osvitaOrganization
+                            )
+                                continue
                             const target = await sourceList[i](config, dictionary, fileList[j], j)
                             pushTarget(targetList, target)
                             await sendFile(target)
@@ -166,9 +211,7 @@ class SourceOsvita extends Source {
                 })
                 .then(() => getAllFiles(config.osvitaDbPath, /^D[0-9]+\.DBF/i))
                 .then(async (fileList) => {
-                    const sourceList = [
-                        hr_accrual
-                    ]
+                    const sourceList = [hr_accrual]
                     for (let i = 0; i < sourceList.length; i++) {
                         for (let j = 0; j < fileList.length; j++) {
                             const target = await sourceList[i](config, dictionary, fileList[j], j)
@@ -196,8 +239,8 @@ class SourceOsvita extends Source {
     }
 }
 
-function pushTarget (targetList, target) {
-    const update = targetList.find(o => o.fullFileName === target.fullFileName)
+function pushTarget(targetList, target) {
+    const update = targetList.find((o) => o.fullFileName === target.fullFileName)
     if (update) {
         update.recordsCount += target.recordsCount
         if (update.recordsCount) {
@@ -208,7 +251,7 @@ function pushTarget (targetList, target) {
     }
 }
 
-function organizationNumber (fileName) {
+function organizationNumber(fileName) {
     const name = path.parse(fileName).name
     return name[name.length - 1]
 }

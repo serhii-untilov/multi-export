@@ -9,12 +9,15 @@ const { PAYEL301, PAYEL029 } = require('./hr_payEl')
 const Entity = require('../entity/PayRetention')
 const TARGET_FILE_NAME = 'Постійні утримання працівників (hr_payRetention).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
-    if (record.DATZ && record.DATZ < this.baseDate) { return false }
+    if (record.DATZ && record.DATZ < this.baseDate) {
+        return false
+    }
     this.entity = []
-    const employeeNumberID = Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
+    const employeeNumberID =
+        Number(record.TAB) + Number(record.BOL) * 10000 * Math.pow(100, record.UWOL || 0)
     const taxCode = record.IKOD ? record.IKOD : ''
 
     if (record.PROF === 1) {
@@ -49,7 +52,7 @@ function setRecord (record, recordNumber) {
     return !!this.entity.length
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile

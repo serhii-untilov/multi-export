@@ -17,7 +17,7 @@ const makeFile = function (target) {
                     let id = 1
                     fs.createReadStream(target.sourceFullFileName)
                         .pipe(new YADBF({ encoding: 'cp1251' }))
-                        .on('data', record => {
+                        .on('data', (record) => {
                             if (!record.deleted) {
                                 if (target.setRecord(record, id)) {
                                     target.recordsCount++
@@ -31,10 +31,12 @@ const makeFile = function (target) {
                             }
                         })
                         .on('end', () => {
-                            target.state = target.recordsCount ? Target.FILE_CREATED : Target.FILE_EMPTY
+                            target.state = target.recordsCount
+                                ? Target.FILE_CREATED
+                                : Target.FILE_EMPTY
                             resolve(target)
                         })
-                        .on('error', err => {
+                        .on('error', (err) => {
                             console.error(`an error was thrown: ${err}`)
                             target.state = Target.FILE_ERROR
                             target.err = err.message

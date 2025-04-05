@@ -9,11 +9,13 @@ const Entity = require('../entity/Department')
 const SOURCE_FILE_NAME = 'PDR.DBF'
 const TARGET_FILE_NAME = 'Підрозділи (hr_department).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     this.entity.ID = recordNumber
     this.entity.code = record.ID
     this.entity.name = record.NM
-    this.entity.parentUnitID = record.ID_PARENT ? this.dictionary.getDepartmentID(record.ID_PARENT) : ''
+    this.entity.parentUnitID = record.ID_PARENT
+        ? this.dictionary.getDepartmentID(record.ID_PARENT)
+        : ''
     this.entity.fullName = record.NMF
     this.entity.description = this.entity.name + ' (' + this.entity.code + ')'
     this.entity.dateFrom = dateFormat(record.BEG)
@@ -22,7 +24,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary) {
+function makeTarget(config, dictionary) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)

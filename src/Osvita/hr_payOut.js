@@ -8,15 +8,22 @@ const path = require('path')
 const Entity = require('../entity/PayOut')
 const TARGET_FILE_NAME = 'Шаблони виплати (hr_payOut).csv'
 
-function setRecord (record, recordNumber) {
+function setRecord(record, recordNumber) {
     if (this.mapper) this.mapper(record)
     if (this.filter && !this.filter(record)) return false
-    if (!record.STEPEN1) { return false }
+    if (!record.STEPEN1) {
+        return false
+    }
     this.entity.ID = Number(record.STEPEN1) + Number(record.BOL) * 10000
     this.entity.code = record.STEPEN1
-    const payOut = this.dictionary.getPayOut(this.entity.code, path.dirname(this.sourceFullFileName))
+    const payOut = this.dictionary.getPayOut(
+        this.entity.code,
+        path.dirname(this.sourceFullFileName)
+    )
     // this.entity.ID = payOut.ID
-    if (this.dictionary.getPayOutID(this.entity.ID)) { return false }
+    if (this.dictionary.getPayOutID(this.entity.ID)) {
+        return false
+    }
     this.entity.name = payOut.name + ' (' + record.BOL + ')'
     this.entity.description = this.entity.name
     this.dictionary.setPayOutID(this.entity.ID, this.entity.ID)
@@ -24,7 +31,7 @@ function setRecord (record, recordNumber) {
     return true
 }
 
-function makeTarget (config, dictionary, sourceFile, index) {
+function makeTarget(config, dictionary, sourceFile, index) {
     const target = new Target.Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile
