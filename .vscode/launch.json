@@ -22,14 +22,15 @@
             "request": "attach",
             "name": "Attach by Process ID",
             "processId": "${command:PickProcess}",
-            "skipFiles": ["<node_internals>/**"]
+            "skipFiles": ["<node_internals>/**"],
+            "runtimeExecutable": "C:/Users/sunti/AppData/Local/fnm_multishells/8560_1744294041907/node.exe"
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}\\main.js"
+            "program": "${workspaceFolder}/main.js"
         },
         {
             "name": "Debug Main Process",

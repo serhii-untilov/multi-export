@@ -65,6 +65,7 @@
         "electron-store": "^5.1.0",
         "iconv-lite": "^0.5.2",
         "mssql": "^6.0.1",
+        "oracledb": "^6.8.0",
         "pg": "^8.7.1",
         "pg-query-stream": "^4.2.1",
         "sass": "^1.24.0",

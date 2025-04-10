@@ -4952,6 +4952,11 @@ optionator@^0.9.1:
     type-check "^0.4.0"
     word-wrap "^1.2.5"
 
+oracledb@^6.8.0:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/oracledb/-/oracledb-6.8.0.tgz#696c5ba7ee5a1de3947ff4c05a126236acd6651b"
+  integrity sha512-A4ds4n4xtjPTzk1gwrHWuMeWsEcrScF0GFgVebGrhNpHSAzn6eDwMKcSbakZODKfFcI099iqhmqWsgko8D+7Ww==
+
 own-keys@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/own-keys/-/own-keys-1.0.1.tgz#e4006910a2bf913585289676eebd6f390cf51358"

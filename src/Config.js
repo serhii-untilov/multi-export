@@ -16,8 +16,9 @@ const Version = {
 }
 
 const DBtype = {
-    POSTGRES: 0,
-    MSSQL: 1
+    POSTGRES: 'Postgres',
+    MSSQL: 'SQL Server',
+    ORACLE: 'Oracle'
 }
 
 class Config {
