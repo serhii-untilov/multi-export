@@ -8,8 +8,8 @@ The MultiExport application, which prepares files for importing into the "A5 Sys
 
 ## Download
 
-<a href="https://drive.google.com/open?id=11c8HZv5hzv3u0xsF8NN3OAd92KyPLYqf" 
-    download 
+<a href="https://drive.google.com/drive/folders/1UUKxbe4Ku08w6Qs2olWQVxBRxIJOcRia?usp=sharing"
+    download
     target="_blank"
     >Download Multi-Export.exe
 </a>
@@ -59,8 +59,8 @@ Configure SQL Server access protocols:
 - Find SQL Server Network Configuration\Protocol for [Your Server Name]
 - In the right pane turn on Status Enabled for TCP/IP and Shared Memory protocols
 - Then make double click on the TCP/IP protocol and in the opened dialog box find the IPAll section:
-    - Write 0 in TCP Dynamic ports
-    - Write 1433 in TCP Port
+  - Write 0 in TCP Dynamic ports
+  - Write 1433 in TCP Port
 
 ## PostgreSQL convert UUID into bigint
 
@@ -70,14 +70,14 @@ Configure SQL Server access protocols:
 -- DROP FUNCTION base.uuid_bigint(character varying);
 
 CREATE OR REPLACE FUNCTION base.uuid_bigint(
-	hexval character varying)
+ hexval character varying)
 RETURNS bigint
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE
 AS $BODY$
 declare
-	result bigint;
+ result bigint;
 BEGIN
    select substring((select replace(hexval,'-','')) from 1 for 16) into hexval;
    EXECUTE 'SELECT x''' || hexval || '''::bigint' INTO result;
