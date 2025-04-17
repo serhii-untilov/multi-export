@@ -1,6 +1,6 @@
 'use strict'
 
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeFile = require('./TargetOsvita')
 
 const Entity = require('../entity/Organization')
@@ -24,7 +24,7 @@ function setRecord(record, recordNumber) {
 }
 
 function makeTarget(config, dictionary, sourceFile, index) {
-    const target = new Target.Target()
+    const target = new Target()
     target.fullFileName = null
     target.sourceFullFileName = sourceFile
     target.dictionary = dictionary

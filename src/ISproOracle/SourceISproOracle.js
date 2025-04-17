@@ -3,15 +3,16 @@
 const fs = require('fs')
 const path = require('path')
 const Source = require('../Source')
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeDir = require('../helper/makeDir')
 const makeFile = require('./TargetISproOracle')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
 const { getConnectionPool } = require('../helper/oracleConnectionPool')
+const { replace_FIRM_SCHEMA } = require('../helper/queryTuner')
 
-const SQL_FILES_DIR = './assets/ispro/oracle/'
+const SQL_FILES_DIR = '.\\assets\\ispro-oracle\\'
 
 const POOL_SIZE = 4
 const CONNECTION_TIMEOUT = 20 * 60 * 1000 // 20 minutes
@@ -22,7 +23,7 @@ class SourceISpro extends Source {
     async read(config, sendFile, sendDone, sendFailed) {
         let pool
         try {
-            pool = getConnectionPool(dbConfig(config))
+            pool = await getConnectionPool(dbConfig(config))
         } catch (err) {
             console.log(err)
             sendFailed(err.message)
@@ -34,7 +35,7 @@ class SourceISpro extends Source {
                 return Promise.all(
                     fileList.map((queryFileName) => {
                         return new Promise((resolve, reject) => {
-                            const target = new Target.Target()
+                            const target = new Target()
                             const fileName = path.parse(queryFileName).name
                             target.fullFileName = getFullFileName(
                                 config.targetPath,
@@ -56,7 +57,7 @@ class SourceISpro extends Source {
             .then((targetList) => {
                 if (config.isArchive) {
                     let arcFileName
-                    getFirmName(pool)
+                    getFirmName(config, pool)
                         .then((firmName) =>
                             getFullFileName(
                                 config.targetPath,
@@ -78,12 +79,14 @@ class SourceISpro extends Source {
     }
 }
 
-function getFirmName(pool) {
+async function getFirmName(config, pool) {
+    const connection = await pool.getConnection()
     return new Promise((resolve, reject) => {
-        pool.request()
-            .query('select CrtFrm_Nm from CrtFrm1')
+        const rawQuery = 'select CrtFrm_Nm from /*FIRM_SCHEMA*/dfirm001.CrtFrm1'
+        const query = replace_FIRM_SCHEMA(rawQuery, config.schema)
+        connection.execute(query)
             .then((result) => {
-                let firmName = result.recordset[0].CrtFrm_Nm
+                let firmName = result.rows[0][0]
                 firmName = firmName
                     .replace(/"/g, '_')
                     .replace(/'/g, '_')
@@ -122,7 +125,8 @@ function dbConfig(config) {
         poolTimeout: CONNECTION_TIMEOUT,
         queueTimeout: REQUEST_TIMEOUT,
         poolMax: POOL_SIZE,
-        poolMin: 0
+        poolMin: 0,
+        oracleClient: config.oracleClient
         // acquireTimeoutMillis: ACQUIRE_TIMEOUT
     }
 }

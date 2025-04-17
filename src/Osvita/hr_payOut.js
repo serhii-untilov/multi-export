@@ -1,7 +1,7 @@
 'use strict'
 
 const getFullFileName = require('../helper/getFullFileName')
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeFile = require('./TargetOsvita')
 const path = require('path')
 
@@ -32,7 +32,7 @@ function setRecord(record, recordNumber) {
 }
 
 function makeTarget(config, dictionary, sourceFile, index) {
-    const target = new Target.Target()
+    const target = new Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFile
     target.dictionary = dictionary

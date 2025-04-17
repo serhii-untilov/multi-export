@@ -1,13 +1,13 @@
 'use strict'
 
 const Store = require('electron-store')
-const Config = require('./Config')
+const { Config, Part } = require('./Config')
 
 class DataStore extends Store {
     constructor(settings) {
         super(settings)
-        this.config = Object.assign(new Config.Config(), this.get('config'))
-        this.config.source = this.config.source || Config.HOME // default source
+        this.config = Object.assign(new Config(), this.get('config'))
+        this.config.source = this.config.source || Part.HOME // default source
     }
 
     saveConfig() {

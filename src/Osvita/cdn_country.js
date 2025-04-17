@@ -3,7 +3,7 @@
 const fs = require('fs')
 const removeFile = require('../helper/removeFile')
 const getFullFileName = require('../helper/getFullFileName')
-const Target = require('../Target')
+const { Target, Result } = require('../Target')
 
 const Entity = require('../entity/SimpleEntity')
 const TARGET_FILE_NAME = 'Країни світу (cdn_country).csv'
@@ -17,7 +17,7 @@ function setRecord(record) {
 }
 
 function makeTarget(config, dictionary) {
-    const target = new Target.Target()
+    const target = new Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.dictionary = dictionary
     target.entity = new Entity()
@@ -43,7 +43,7 @@ const makeFile = function (target) {
                     buffer = ''
                 }
             }
-            target.state = target.recordsCount ? Target.FILE_CREATED : Target.FILE_EMPTY
+            target.state = target.recordsCount ? Result.FILE_CREATED : Result.FILE_EMPTY
             resolve(target)
         } catch (err) {
             console.error(err)

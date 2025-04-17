@@ -1,14 +1,16 @@
 'use strict'
 
-const HOME = 'home'
-const ISPRO = 'ispro'
-const AFINA = 'afina'
-const PARUS = 'parus'
-const C7 = 'C7'
-const OSVITA = 'osvita'
-const APK = 'APK'
-const A5 = 'A5'
-const BOSSK = 'BOSSK'
+const Part = {
+    HOME: 'home',
+    ISPRO: 'ispro',
+    AFINA: 'afina',
+    PARUS: 'parus',
+    C7: 'C7',
+    OSVITA: 'osvita',
+    APK: 'APK',
+    A5: 'A5',
+    BOSSK: 'BOSSK',
+}
 
 const Version = {
     NO_TARIFFING: 0, // Без тарифікації (для департаменту освіти)
@@ -24,7 +26,7 @@ const DBtype = {
 class Config {
     constructor() {
         // Params for targeted files
-        this.source = this.HOME // default source
+        this.source = Part.HOME // default source
         this.targetPath = ''
         this.isArchive = true
 
@@ -42,7 +44,7 @@ class Config {
         // + bossk
         this.orgCode = ''
         // + oracle
-        this.dbType = '' // SQL Server, Postgres, Oracle
+        this.dbType = 'SQL Server' // SQL Server, Postgres, Oracle
         this.oracleClient = '' // Oracle thick client lib local directory
 
         // Source DB path
@@ -63,7 +65,7 @@ class Config {
         this.apkDatabase = 'test'
 
         // A5 DB connect
-        this.a5dbType = ''
+        this.a5dbType = 'Postgres'
         this.a5Host = 'localhost'
         this.a5Port = '5433'
         this.a5Login = ''
@@ -75,15 +77,7 @@ class Config {
 
 module.exports = {
     Config,
+    Part,
     Version,
-    HOME,
-    ISPRO,
-    AFINA,
-    PARUS,
-    C7,
-    OSVITA,
-    APK,
-    A5,
-    BOSSK,
     DBtype
 }

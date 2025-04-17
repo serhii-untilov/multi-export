@@ -2,9 +2,10 @@
 
 const fs = require('fs')
 const removeFile = require('../helper/removeFile')
-const Target = require('../Target')
+const { Result } = require('../Target')
 const iconv = require('iconv-lite')
-const { doQueryStream } = require('../helper/oracleConnectionPool')
+const { removeHeader, replace_SYS_SCHEMA, replace_FIRM_SCHEMA, replace_SYSSTE_CD, replace_SPRPDR_CD, remove_SYSSTE } = require('../helper/queryTuner')
+const { convertName } = require('../helper/convertName')
 
 const BATCH_SIZE = 10000
 
@@ -13,12 +14,14 @@ const makeFile = function (target) {
         readQueryFromFile(target.queryFileName)
             .then((queryText) => removeHeader(queryText))
             .then((queryText) => replace_SYS_SCHEMA(queryText, target.config.schemaSys))
+            .then((queryText) => replace_FIRM_SCHEMA(queryText, target.config.schema))
+            .then((queryText) => target.config.codeSe ? queryText : remove_SYSSTE(queryText))
             .then((queryText) => replace_SYSSTE_CD(queryText, target.config.codeSe))
             .then((queryText) => replace_SPRPDR_CD(queryText, target.config.codeDep))
             .then((queryText) => doQuery(target, queryText))
             .then(() => resolve(target))
             .catch((err) => {
-                target.state = Target.FILE_ERROR
+                target.state = Result.FILE_ERROR
                 target.err = err.message
                 resolve(target)
             })
@@ -39,76 +42,42 @@ function readQueryFromFile(fileName) {
     })
 }
 
-function removeHeader(queryText) {
-    const re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gim
-    queryText = queryText.replace(re, '')
-    return queryText
-}
-
-function replace_SYS_SCHEMA(queryText, schemaSys) {
-    // find /*SYS_SCHEMA*/.sspr
-    // replace to ${schemaSys}.sspr
-    const re = /\/\*SYS_SCHEMA\*\/\w+\./gim
-    while (re.test(queryText)) {
-        queryText = queryText.replace(re, schemaSys + '.')
-    }
-    return queryText
-}
-
-function replace_SYSSTE_CD(queryText, sysste_cd) {
-    // find /*SYSSTE_CD*/.sspr
-    // replace to sysste_cd
-    const re = /\/\*SYSSTE_CD\*\//gim
-    while (re.test(queryText)) {
-        queryText = queryText.replace(re, "'" + sysste_cd + "'")
-    }
-    return queryText
-}
-
-function replace_SPRPDR_CD(queryText, sprpdr_cd) {
-    // find /*SPRPDR_CD*/.sspr
-    // replace to sprpdr_cd
-    const re = /\/\*SPRPDR_CD\*\//gim
-    while (re.test(queryText)) {
-        queryText = queryText.replace(re, "'" + sprpdr_cd + "'")
-    }
-    return queryText
-}
 
 async function doQuery(target, queryText) {
+    const connection = await target.pool.getConnection()
     return new Promise((resolve, reject) => {
         removeFile(target.fullFileName)
 
-        const request = doQueryStream(queryText)
+        const stream = connection.queryStream(queryText)
         let buffer = ''
 
         // Emitted once for each recordset in a query
-        request.on('metadata', (columns) => {
+        stream.on('metadata', (columns) => {
             buffer = ''
             writeHeader(columns)
         })
 
         // Emited for each row in a recordset
-        request.on('data', (row) => {
+        stream.on('data', (row) => {
             writeRow(row)
             target.recordsCount++
             if (target.recordsCount % BATCH_SIZE === 0) {
-                request.pause()
+                stream.pause()
                 fs.appendFile(target.fullFileName, buffer, (err) => {
                     if (err) throw err
                 })
                 buffer = ''
-                request.resume()
+                stream.resume()
             }
         })
 
         // May be emitted multiple times
-        request.on('error', (err) => {
+        stream.on('error', (err) => {
             reject(err)
         })
 
         // Always emitted as the last one
-        request.on('end', (result) => {
+        stream.on('end', (result) => {
             if (target.recordsCount) {
                 // request.pause();
                 fs.appendFile(target.fullFileName, buffer, (err) => {
@@ -117,10 +86,10 @@ async function doQuery(target, queryText) {
                     }
                 })
                 buffer = ''
-                target.state = Target.FILE_CREATED
+                target.state = Result.FILE_CREATED
                 // request.resume();
             } else {
-                target.state = Target.FILE_EMPTY
+                target.state = Result.FILE_EMPTY
             }
             resolve(target)
         })
@@ -132,7 +101,8 @@ async function doQuery(target, queryText) {
                 if (columns.hasOwnProperty(column)) {
                     if (columnNumber > 0) buffer += ';'
                     columnNumber++
-                    buffer += `${column}`
+                    const name = convertName(columns[column].name)
+                    buffer += `${name}`
                 }
             }
             buffer += '\n'

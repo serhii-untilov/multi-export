@@ -1,15 +1,16 @@
 'use strict'
 
 const path = require('path')
-const { app, ipcMain, dialog } = require('electron')
+const { app, ipcMain } = require('electron/main')
 const Window = require('./src/Window')
 const DataStore = require('./src/DataStore')
 const makeSource = require('./src/sourceFactory')
+const { selectDirectory } = require('./src/select-directory')
 require('electron-reload')(__dirname)
 const dataStore = new DataStore({ name: 'multi-export-config' })
 
-function main() {
-    const mainWindow = new Window({
+function createWindow() {
+    const win = new Window({
         _file: path.join('renderer', 'index.html'),
         get file() {
             return this._file
@@ -19,14 +20,26 @@ function main() {
         }
     })
 
-    mainWindow.once('show', () => {
+    win.loadFile('renderer/index.html')
+
+    win.once('show', () => {
         const config = dataStore.getConfig()
         config.version = require('./package.json').version
-        mainWindow.webContents.send('config', config)
+        win.webContents.send('config', config)
     })
 
     ipcMain.on('set-config', (event, config) => {
         dataStore.setConfig(config)
+    })
+
+    ipcMain.on('select-directory', async (event, pathName) => {
+        const config = dataStore.getConfig()
+        const dialogResult = await selectDirectory(config[pathName])
+        if (!dialogResult.canceled) {
+            config[pathName] = dialogResult.filePaths[0]
+            dataStore.setConfig(config)
+            win.webContents.send('config', config)
+        }
     })
 
     const targetList = []
@@ -34,15 +47,15 @@ function main() {
     const sendFile = (target) => {
         const { fullFileName, state, err, recordsCount, append, sourceFullFileName } = target
         targetList.push({ fullFileName, state, err, recordsCount, append, sourceFullFileName })
-        mainWindow.send('push-file', targetList)
+        win.send('push-file', targetList)
     }
 
     const sendDone = (archiveName) => {
-        mainWindow.send('done', archiveName)
+        win.send('done', archiveName)
     }
 
     const sendFailed = (err) => {
-        mainWindow.send('failed', err)
+        win.send('failed', err)
     }
 
     ipcMain.on('run-export', (event, config) => {
@@ -51,26 +64,24 @@ function main() {
             const source = makeSource(config)
             source.read(config, sendFile, sendDone, sendFailed)
         } catch (err) {
-            mainWindow.send('failed', err)
+            win.send('failed', err)
         }
     })
 }
 
-app.on('ready', main)
+// app.on('ready', main)
+app.whenReady().then(() => {
+    createWindow()
 
-app.on('window-all-closed', function () {
-    app.quit()
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow()
+        }
+    })
 })
 
-async function selectDirectory(defaultPath) {
-    const options = {
-        title: 'Виберіть каталог',
-        defaultPath: defaultPath,
-        buttonLabel: 'Вибрати',
-        properties: ['openDirectory', 'promptToCreate']
+app.on('window-all-closed', function () {
+    if (process.platform !== 'darwin') {
+        app.quit()
     }
-    // return await dialog.showOpenDialog(mainWindow, options) !!! Doesn't select a directory, only file
-    return await dialog.showOpenDialog(options)
-}
-
-module.exports = { selectDirectory }
+})

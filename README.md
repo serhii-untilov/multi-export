@@ -8,25 +8,30 @@ The MultiExport application, which prepares files for importing into the "A5 Sys
 
 ## Download
 
-<a href="https://drive.google.com/drive/folders/1UUKxbe4Ku08w6Qs2olWQVxBRxIJOcRia?usp=sharing"
+<a href="https://drive.google.com/open?id=11c8HZv5hzv3u0xsF8NN3OAd92KyPLYqf"
     download
     target="_blank"
     >Download Multi-Export.exe
 </a>
 
+```
+
 ## Afrer clone from repository
 
 ```
-yarn
-yarn test
-yarn start
+
+npm i
+npm start
+
 ```
 
 ## To make executable file
 
 ```
-yarn
-yarn run dist
+
+npm ci
+npm run dist
+
 ```
 
 Then you can find the executable file in the .\dist subdirectory.
@@ -38,9 +43,11 @@ Then you can find the executable file in the .\dist subdirectory.
 Create .env file, put into it the next content and fill fields
 
 ```
+
 NODE_ENV=development
 
 # Set your database connection information here
+
 SERVER=
 LOGIN=
 PASSWORD=
@@ -65,6 +72,7 @@ Configure SQL Server access protocols:
 ## PostgreSQL convert UUID into bigint
 
 ```
+
 -- FUNCTION: base.uuid_bigint(character varying)
 
 -- DROP FUNCTION base.uuid_bigint(character varying);
@@ -88,9 +96,14 @@ $BODY$;
 
 ALTER FUNCTION base.uuid_bigint(character varying)
     OWNER TO test;
-```
 
 ```
+
+
+``` sh
+
 -- Test
+
 select base.uuid_bigint(id::text), * from base.department;
+
 ```

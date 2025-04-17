@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const removeFile = require('../helper/removeFile')
-const Target = require('../Target')
+const { Result } = require('../Target')
 const iconv = require('iconv-lite')
 const QueryStream = require('pg-query-stream')
 // const JSONStream = require('JSONStream')
@@ -15,7 +15,7 @@ const makeFile = function (target) {
             .then((queryText) => doQuery(target, queryText))
             .then(() => resolve(target))
             .catch((err) => {
-                target.state = Target.FILE_ERROR
+                target.state = Result.FILE_ERROR
                 target.err = err.message
                 resolve(target)
             })
@@ -70,9 +70,9 @@ async function doQuery(target, queryText) {
                     }
                 })
                 buffer = ''
-                target.state = Target.FILE_CREATED
+                target.state = Result.FILE_CREATED
             } else {
-                target.state = Target.FILE_EMPTY
+                target.state = Result.FILE_EMPTY
             }
             resolve(target)
         })

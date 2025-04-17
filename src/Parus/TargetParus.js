@@ -3,7 +3,7 @@
 const fs = require('fs')
 const { DBFFile } = require('dbffile')
 const removeFile = require('../helper/removeFile')
-const Target = require('../Target')
+const { Result } = require('../Target')
 
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ const makeFile = function (target) {
                         }
                     }
                 } else {
-                    target.state = Target.FILE_EMPTY
+                    target.state = Result.FILE_EMPTY
                     resolve(target)
                 }
             })

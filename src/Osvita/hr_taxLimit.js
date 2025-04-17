@@ -1,7 +1,7 @@
 'use strict'
 
 const getFullFileName = require('../helper/getFullFileName')
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeFile = require('./TargetOsvita')
 
 const Entity = require('../entity/TaxLimit')
@@ -21,7 +21,7 @@ function setRecord(record, recordNumber) {
 }
 
 async function makeTarget(config, dictionary, sourceFullFileName, index) {
-    const target = new Target.Target()
+    const target = new Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = sourceFullFileName
     target.dictionary = dictionary

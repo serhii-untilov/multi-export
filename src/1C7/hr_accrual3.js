@@ -1,7 +1,7 @@
 'use strict'
 
 const getFullFileName = require('../helper/getFullFileName')
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeFile = require('./Target1C7')
 const dateFormat = require('../helper/dateFormat')
 
@@ -28,7 +28,7 @@ function setRecord(record, recordNumber) {
 }
 
 function makeTarget(config, dictionary) {
-    const target = new Target.Target()
+    const target = new Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.c1DbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary

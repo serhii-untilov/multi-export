@@ -1,5 +1,3 @@
-'use strict'
-
 const dateFormat = require('../src/helper/dateFormat')
 
 test('Test dateFormat', () => {

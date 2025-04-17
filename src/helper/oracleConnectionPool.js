@@ -6,7 +6,7 @@ const oracledb = require('oracledb')
 
 function initOracleClient(dbConfig) {
     const libDir = dbConfig.oracleClient || ''
-    const mode = libDir ? 'thin' : 'thick'
+    const mode = libDir ? 'thick' : 'thin'
     // This example runs in both node-oracledb Thin and Thick modes.
     //
     // Optionally run in node-oracledb Thick mode
@@ -30,8 +30,8 @@ function initOracleClient(dbConfig) {
 }
 
 function getConnectString(dbConfig) {
-    const port = dbConfig.port || 1521
-    const server = dbConfig.server || 'localhost'
+    const port = dbConfig.server.search(':') >= 0 ? dbConfig.server.slice(dbConfig.server.search(':') + 1) : '' // 1521
+    const server = (dbConfig.server.search(':') > 0 ? dbConfig.server.slice(0, dbConfig.server.search(':')) : dbConfig.server) || 'localhost'
     const schema = dbConfig.schema || 'ISPRO'
     return `(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=${server})(PORT=${port}))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=${schema})))`
 }
@@ -117,6 +117,9 @@ async function doQuery(sql) {
     }
 }
 
+
+
+// https://node-oracledb.readthedocs.io/en/latest/user_guide/sql_execution.html#query-streaming
 async function doQueryStream(sql) {
     let connection
     try {
@@ -131,6 +134,7 @@ async function doQueryStream(sql) {
         return result
     } catch (err) {
         console.error(err)
+        throw new Error(err)
     } finally {
         if (connection) {
             try {
@@ -161,11 +165,10 @@ async function closePool() {
 }
 
 async function getConnectionPool(dbConfig) {
-    initOracleClient()
+    initOracleClient(dbConfig)
     process.once('SIGTERM', closePool).once('SIGINT', closePool)
     await init(dbConfig)
-    // await oracledb.getConnection()
-    return oracledb
+    return oracledb.getPool()
 }
 
 module.exports = {

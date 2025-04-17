@@ -2,7 +2,7 @@
 
 // const fs = require('fs')
 // const removeFile = require('../helper/removeFile')
-const Target = require('../Target')
+const { Target, Result } = require('../Target')
 // const iconv = require('iconv-lite')
 // const QueryStream = require('pg-query-stream')
 // const JSONStream = require('JSONStream')
@@ -31,10 +31,10 @@ ALTER FUNCTION base.uuid_bigint(character varying)
 
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
-        target.state = Target.FILE_EMPTY
+        target.state = Result.FILE_EMPTY
         target.client.query(queryText, (err, res) => {
             if (err) {
-                target.state = Target.FILE_ERROR
+                target.state = Result.FILE_ERROR
                 target.err = err.message
                 reject(target)
             } else {

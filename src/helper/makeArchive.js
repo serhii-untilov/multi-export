@@ -3,7 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const archiver = require('archiver')
-const Target = require('../Target')
+const { Result } = require('../Target')
 
 const makeArchive = (fullFileName, targetList) => {
     return new Promise((resolve, reject) => {
@@ -49,7 +49,7 @@ const makeArchive = (fullFileName, targetList) => {
         // console.log('makeArchive', targetList.length)
         for (let i = 0; i < targetList.length; i++) {
             // append a file
-            if (targetList[i].state === Target.FILE_CREATED) {
+            if (targetList[i].state === Result.FILE_CREATED) {
                 const fileName = path.basename(targetList[i].fullFileName)
                 archive.append(fs.createReadStream(targetList[i].fullFileName), { name: fileName })
             }

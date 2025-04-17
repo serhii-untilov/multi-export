@@ -1,20 +1,27 @@
 {
     "name": "multi-export",
-    "version": "2.0.0",
+    "version": "2.1.4",
     "description": "Multi export for import into A5 [ERP, HRMIS] databases",
+    "type": "commonjs",
     "main": "main.js",
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
+    },
     "scripts": {
+        "prebuild": "engine-version",
         "postinstall": "install-app-deps",
         "start": "electron .",
         "pack": "electron-builder --dir",
         "dist": "run-script-os",
-        "dist:win32": "electron-builder -w --ia32",
+        "dist:win32": "electron-builder -w nsis:x64",
         "dist:linux": "electron-builder -l --x64",
         "rmad": "run-script-os",
         "rmad:win32": "rm -f -r %APPDATA%/multi-export",
         "rmad:linux": "rm -f -r ~/.config/multi-export",
         "test": "jest",
-        "lint": "standard",
+        "format": "prettier-eslint --eslint-config-path ./.eslintrc.js --write '**/*.js'",
+        "lint": "eslint . --ext .js",
         "scss": "sass .\\multi-export.scss .\\multi-export.css"
     },
     "repository": {
@@ -45,31 +52,33 @@
         ]
     },
     "devDependencies": {
-        "dotenv": "^8.2.0",
-        "electron": "^12.2.0",
-        "electron-builder": "^22.2.0",
-        "eslint": "^7.32.0",
-        "eslint-config-prettier": "^10.1.1",
-        "eslint-plugin-import": "^2.24.2",
+        "electron": "^35.1.5",
+        "electron-builder": "^26.0.12",
+        "engine-version": "^1.0.2",
+        "eslint": "^9.24.0",
+        "eslint-config-prettier": "^10.1.2",
+        "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-prettier": "^5.2.6",
-        "eslint-plugin-promise": "^5.1.0",
-        "jest": "^24.9.0",
+        "eslint-plugin-promise": "^7.2.1",
+        "jest": "^29.7.0",
         "prettier": "^3.5.3",
+        "prettier-eslint": "^16.3.0",
+        "prettier-eslint-cli": "^8.0.1",
         "run-script-os": "^1.1.6"
     },
     "dependencies": {
-        "archiver": "^3.1.1",
-        "dbffile": "^1.4.3",
-        "electron-reload": "^1.5.0",
-        "electron-store": "^5.1.0",
-        "iconv-lite": "^0.5.2",
-        "mssql": "^6.0.1",
+        "archiver": "^7.0.1",
+        "dbffile": "^1.12.0",
+        "electron-reload": "^2.0.0-alpha.1",
+        "electron-store": "^7.0.3",
+        "iconv-lite": "^0.6.3",
+        "mssql": "^11.0.1",
         "oracledb": "^6.8.0",
-        "pg": "^8.7.1",
-        "pg-query-stream": "^4.2.1",
-        "sass": "^1.24.0",
-        "spectre.css": "^0.5.8",
-        "yadbf": "^3.2.3"
+        "pg": "^8.14.1",
+        "pg-query-stream": "^4.8.1",
+        "sass": "^1.86.3",
+        "spectre.css": "^0.5.9",
+        "yadbf": "^3.3.0"
     }
 }

@@ -2,7 +2,7 @@
 
 const { Version } = require('../Config')
 const Source = require('../Source')
-const Target = require('../Target')
+const { Result } = require('../Target')
 const Dictionary = require('../entity/Dictionary')
 const makeDir = require('../helper/makeDir')
 const getFullFileName = require('../helper/getFullFileName')
@@ -244,7 +244,7 @@ function pushTarget(targetList, target) {
     if (update) {
         update.recordsCount += target.recordsCount
         if (update.recordsCount) {
-            update.state = Target.FILE_CREATED
+            update.state = Result.FILE_CREATED
         }
     } else {
         targetList.push(target)

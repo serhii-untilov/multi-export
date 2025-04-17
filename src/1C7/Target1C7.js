@@ -3,7 +3,7 @@
 const fs = require('fs')
 const YADBF = require('yadbf')
 const removeFile = require('../helper/removeFile')
-const Target = require('../Target')
+const { Result } = require('../Target')
 
 const makeFile = function (target) {
     return new Promise((resolve, reject) => {
@@ -32,18 +32,18 @@ const makeFile = function (target) {
                         })
                         .on('end', () => {
                             target.state = target.recordsCount
-                                ? Target.FILE_CREATED
-                                : Target.FILE_EMPTY
+                                ? Result.FILE_CREATED
+                                : Result.FILE_EMPTY
                             resolve(target)
                         })
                         .on('error', (err) => {
                             console.error(`an error was thrown: ${err}`)
-                            target.state = Target.FILE_ERROR
+                            target.state = Result.FILE_ERROR
                             target.err = err.message
                             resolve(target)
                         })
                 } else {
-                    target.state = Target.FILE_EMPTY
+                    target.state = Result.FILE_EMPTY
                     resolve(target)
                 }
             })

@@ -2,8 +2,9 @@
 
 const fs = require('fs')
 const removeFile = require('../helper/removeFile')
-const Target = require('../Target')
+const { Result } = require('../Target')
 const iconv = require('iconv-lite')
+const { removeHeader, replace_SYS_SCHEMA, replace_SYSSTE_CD, replace_SPRPDR_CD } = require('../helper/queryTuner')
 
 const BATCH_SIZE = 10000
 
@@ -17,7 +18,7 @@ const makeFile = function (target) {
             .then((queryText) => doQuery(target, queryText))
             .then(() => resolve(target))
             .catch((err) => {
-                target.state = Target.FILE_ERROR
+                target.state = Result.FILE_ERROR
                 target.err = err.message
                 resolve(target)
             })
@@ -38,41 +39,6 @@ function readQueryFromFile(fileName) {
     })
 }
 
-function removeHeader(queryText) {
-    const re = /\/\*BEGIN-OF-HEAD\*\/[.\s\W\n\r\w]*\/\*END-OF-HEAD\*\//gim
-    queryText = queryText.replace(re, '')
-    return queryText
-}
-
-function replace_SYS_SCHEMA(queryText, schemaSys) {
-    // find /*SYS_SCHEMA*/.sspr
-    // replace to ${schemaSys}.sspr
-    const re = /\/\*SYS_SCHEMA\*\/\w+\./gim
-    while (re.test(queryText)) {
-        queryText = queryText.replace(re, schemaSys + '.')
-    }
-    return queryText
-}
-
-function replace_SYSSTE_CD(queryText, sysste_cd) {
-    // find /*SYSSTE_CD*/.sspr
-    // replace to sysste_cd
-    const re = /\/\*SYSSTE_CD\*\//gim
-    while (re.test(queryText)) {
-        queryText = queryText.replace(re, "'" + sysste_cd + "'")
-    }
-    return queryText
-}
-
-function replace_SPRPDR_CD(queryText, sprpdr_cd) {
-    // find /*SPRPDR_CD*/.sspr
-    // replace to sprpdr_cd
-    const re = /\/\*SPRPDR_CD\*\//gim
-    while (re.test(queryText)) {
-        queryText = queryText.replace(re, "'" + sprpdr_cd + "'")
-    }
-    return queryText
-}
 
 async function doQuery(target, queryText) {
     return new Promise((resolve, reject) => {
@@ -119,10 +85,10 @@ async function doQuery(target, queryText) {
                     }
                 })
                 buffer = ''
-                target.state = Target.FILE_CREATED
+                target.state = Result.FILE_CREATED
                 // request.resume();
             } else {
-                target.state = Target.FILE_EMPTY
+                target.state = Result.FILE_EMPTY
             }
             resolve(target)
         })

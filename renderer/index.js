@@ -1,15 +1,13 @@
-'use strict'
-
-const { ipcRenderer } = require('electron')
-const { shell } = require('electron')
-const path = require('path')
-const Config = require('../src/Config')
-const Target = require('../src/Target')
+// const { ipcRenderer } = require('electron')
+// const { shell } = require('electron')
+// const path = require('path')
+// const Config = require('../src/Config')
+// const Target = require('../src/Target')
 
 // For selectDirectory
-const electron = require('electron')
-const remote = electron.remote
-const mainProcess = remote.require('./main')
+// const electron = require('electron')
+// const remote = electron.remote
+// const mainProcess = remote.require('./main')
 
 this.config = null
 
@@ -33,6 +31,7 @@ const resultToast = document.getElementById('result-toast')
 const resultTable = document.getElementById('result-table')
 const bodyPanel = document.getElementById('body-panel')
 const footerPanel = document.getElementById('footer-panel')
+const oracleClientPanel = document.getElementById('oracle-client-panel')
 
 const setVisible = (element, visible) => {
     const hide = 'd-hide'
@@ -55,19 +54,20 @@ const setSelected = (element, selected) => {
 }
 
 const renderPanels = () => {
-    setVisible(homePanel, !this.config || this.config.source === Config.HOME)
-    setVisible(isproPanel, this.config && this.config.source === Config.ISPRO)
-    setVisible(afinaPanel, this.config && this.config.source === Config.AFINA)
-    setVisible(parusPanel, this.config && this.config.source === Config.PARUS)
-    setVisible(c1Panel, this.config && this.config.source === Config.C7)
-    setVisible(osvitaPanel, this.config && this.config.source === Config.OSVITA)
-    setVisible(apkPanel, this.config && this.config.source === Config.APK)
-    setVisible(a5Panel, this.config && this.config.source === Config.A5)
-    setVisible(bosskPanel, this.config && this.config.source === Config.BOSSK)
-    setVisible(commonParamsPanel, this.config && this.config.source !== Config.HOME)
-    setVisible(controlPanel, this.config && this.config.source !== Config.HOME)
+    setVisible(homePanel, !this.config || this.config.source === window.electronAPI.part.HOME)
+    setVisible(isproPanel, this.config && this.config.source === window.electronAPI.part.ISPRO)
+    setVisible(afinaPanel, this.config && this.config.source === window.electronAPI.part.AFINA)
+    setVisible(oracleClientPanel, this.config && this.config.source === window.electronAPI.part.ISPRO && this.config.dbType === 'Oracle')
+    setVisible(parusPanel, this.config && this.config.source === window.electronAPI.part.PARUS)
+    setVisible(c1Panel, this.config && this.config.source === window.electronAPI.part.C7)
+    setVisible(osvitaPanel, this.config && this.config.source === window.electronAPI.part.OSVITA)
+    setVisible(apkPanel, this.config && this.config.source === window.electronAPI.part.APK)
+    setVisible(a5Panel, this.config && this.config.source === window.electronAPI.part.A5)
+    setVisible(bosskPanel, this.config && this.config.source === window.electronAPI.part.BOSSK)
+    setVisible(commonParamsPanel, this.config && this.config.source !== window.electronAPI.part.HOME)
+    setVisible(controlPanel, this.config && this.config.source !== window.electronAPI.part.HOME)
     setVisible(bodyPanel, false)
-    setVisible(footerPanel, this.config && this.config.source === Config.HOME)
+    setVisible(footerPanel, this.config && this.config.source === window.electronAPI.part.HOME)
     setVisible(resultPanel, false)
     setVisible(osvitaOrganization, osvitaVersion.selectedIndex === 0)
     setVisible(osvitaOrganizationLabel, osvitaVersion.selectedIndex === 0)
@@ -79,14 +79,14 @@ const renderMenu = () => {
     if (!this.config) {
         return
     }
-    setSelected(buttonSelectISPro, this.config.source === Config.ISPRO)
-    setSelected(buttonSelectAfina, this.config.source === Config.AFINA)
-    setSelected(buttonSelectParus, this.config.source === Config.PARUS)
-    setSelected(buttonSelect1C, this.config.source === Config.C7)
-    setSelected(buttonSelectOsvita, this.config.source === Config.OSVITA)
-    setSelected(buttonSelectAPK, this.config.source === Config.APK)
-    setSelected(buttonSelectA5, this.config.source === Config.A5)
-    setSelected(buttonSelectBossk, this.config.source === Config.BOSSK)
+    setSelected(buttonSelectISPro, this.config.source === window.electronAPI.part.ISPRO)
+    setSelected(buttonSelectAfina, this.config.source === window.electronAPI.part.AFINA)
+    setSelected(buttonSelectParus, this.config.source === window.electronAPI.part.PARUS)
+    setSelected(buttonSelect1C, this.config.source === window.electronAPI.part.C7)
+    setSelected(buttonSelectOsvita, this.config.source === window.electronAPI.part.OSVITA)
+    setSelected(buttonSelectAPK, this.config.source === window.electronAPI.part.APK)
+    setSelected(buttonSelectA5, this.config.source === window.electronAPI.part.A5)
+    setSelected(buttonSelectBossk, this.config.source === window.electronAPI.part.BOSSK)
 
     setVisible(buttonSelect1C, false)
     setVisible(buttonSelectAfina, false)
@@ -97,26 +97,28 @@ const renderMenu = () => {
 }
 
 const selectHome = () => {
-    if (this.config.source === Config.HOME) {
+    if (this.config.source === window.electronAPI.part.HOME) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.HOME
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.HOME
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
 document.getElementById('selectHome').addEventListener('click', selectHome)
 
 const selectIspro = () => {
-    if (this.config.source === Config.ISPRO) {
+    if (this.config.source === window.electronAPI.part.ISPRO) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.ISPRO
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.ISPRO
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -125,14 +127,35 @@ buttonSelectISPro.addEventListener('click', selectIspro)
 document.getElementById('homeSelectISPro').addEventListener('click', selectIspro)
 document.getElementById('captionISPro').addEventListener('click', selectIspro)
 
+const oracleClient = document.getElementById('oracle-client')
+oracleClient.addEventListener('change', (evt) => {
+    evt.preventDefault()
+    this.config.oracleClient = evt.target.value
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
+})
+
+document.getElementById('select-oracle-client').addEventListener('click', async () => {
+    // const dialogResult = await mainProcess.selectDirectory(this.config.oracleClient)
+    // const dialogResult = await window.electronAPI.selectDirectory(this.config.oracleClient)
+    // if (!dialogResult.canceled) {
+    //     oracleClient.value = dialogResult.filePaths[0]
+    //     this.config.oracleClient = oracleClient.value
+    //     // ipcRenderer.send('set-config', this.config)
+    //     window.electronAPI.setConfig(this.config)
+    // }
+    window.electronAPI.selectDirectory('oracleClient')
+})
+
 const selectBossk = () => {
-    if (this.config.source === Config.BOSSK) {
+    if (this.config.source === window.electronAPI.part.BOSSK) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.BOSSK
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.BOSSK
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -142,13 +165,14 @@ document.getElementById('homeSelectBossk').addEventListener('click', selectBossk
 document.getElementById('captionBossk').addEventListener('click', selectBossk)
 
 const selectAfina = () => {
-    if (this.config.source === Config.AFINA) {
+    if (this.config.source === window.electronAPI.part.AFINA) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.AFINA
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.AFINA
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -159,13 +183,14 @@ document.getElementById('captionAfina').addEventListener('click', selectAfina)
 const partAfina = document.getElementById('partAfina')
 
 const selectParus = () => {
-    if (this.config.source === Config.PARUS) {
+    if (this.config.source === window.electronAPI.part.PARUS) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.PARUS
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.PARUS
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -176,13 +201,14 @@ document.getElementById('captionParus').addEventListener('click', selectParus)
 const partParus = document.getElementById('partParus')
 
 const select1C = () => {
-    if (this.config.source === Config.C7) {
+    if (this.config.source === window.electronAPI.part.C7) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.C7
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.C7
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -193,13 +219,14 @@ document.getElementById('caption1C').addEventListener('click', select1C)
 const part1C = document.getElementById('part1C')
 
 const selectOsvita = () => {
-    if (this.config.source === Config.OSVITA) {
+    if (this.config.source === window.electronAPI.part.OSVITA) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.OSVITA
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.OSVITA
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -209,13 +236,14 @@ document.getElementById('homeSelectOsvita').addEventListener('click', selectOsvi
 document.getElementById('captionOsvita').addEventListener('click', selectOsvita)
 
 const selectAPK = () => {
-    if (this.config.source === Config.APK) {
+    if (this.config.source === window.electronAPI.part.APK) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.APK
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.APK
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -225,13 +253,14 @@ document.getElementById('homeSelectAPK').addEventListener('click', selectAPK)
 document.getElementById('captionAPK').addEventListener('click', selectAPK)
 
 const selectA5 = () => {
-    if (this.config.source === Config.A5) {
+    if (this.config.source === window.electronAPI.part.A5) {
         return
     }
     buttonRunExport.classList.remove('loading')
     targetList.length = 0
-    this.config.source = Config.A5
-    ipcRenderer.send('set-config', this.config)
+    this.config.source = window.electronAPI.part.A5
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     renderMenu()
     renderPanels()
 }
@@ -241,15 +270,18 @@ document.getElementById('homeSelectA5').addEventListener('click', selectA5)
 document.getElementById('captionA5').addEventListener('click', selectA5)
 
 document.getElementById('linkHomeA5').addEventListener('click', () => {
-    shell.openExternal('https://a5erp.solutions/')
+    // shell.openExternal('https://a5erp.solutions/')
+    window.electronAPI.openExternal('https://a5erp.solutions/')
 })
 
 document.getElementById('goHomeA5').addEventListener('click', () => {
-    shell.openExternal('https://a5erp.solutions/')
+    // shell.openExternal('https://a5erp.solutions/')
+    window.electronAPI.openExternal('https://a5erp.solutions/')
 })
 
 document.getElementById('goGitHub').addEventListener('click', () => {
-    shell.openExternal('https://www.untilov.com.ua/')
+    // shell.openExternal('https://www.untilov.com.ua/')
+    window.electronAPI.openExternal('https://www.untilov.com.ua/')
 })
 
 const buttonRunExport = document.getElementById('run-export')
@@ -261,7 +293,8 @@ buttonRunExport.addEventListener('click', () => {
 
     setVisible(bodyPanel, true)
     targetList.length = 0
-    ipcRenderer.send('run-export', this.config)
+    // ipcRenderer.send('run-export', this.config)
+    window.electronAPI.runExport(this.config)
 
     resultToast.classList.remove('toast-error')
     resultToast.classList.remove('toast-warning')
@@ -275,260 +308,305 @@ const serverName = document.getElementById('server-name')
 serverName.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.server = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const login = document.getElementById('login')
 login.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.login = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const password = document.getElementById('password')
 password.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.password = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const schema = document.getElementById('org-schema-name')
 schema.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.schema = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const schemaSys = document.getElementById('sys-schema-name')
 schemaSys.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.schemaSys = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const codeSe = document.getElementById('code-se')
 codeSe.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.codeSe = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
-const codeDep = document.getElementById('code-dep')
-codeDep.addEventListener('change', (evt) => {
-    evt.preventDefault()
-    this.config.codeDep = evt.target.value
-    ipcRenderer.send('set-config', this.config)
-})
+// const codeDep = document.getElementById('code-dep')
+// codeDep.addEventListener('change', (evt) => {
+//     evt.preventDefault()
+//     this.config.codeDep = evt.target.value
+//     // ipcRenderer.send('set-config', this.config)
+//     window.electronAPI.setConfig(this.config)
+// })
 
 const dbType = document.getElementById('db-type')
 dbType.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.dbType = evt.target.value // selectedIndex // value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
+    setVisible(oracleClientPanel, this.config.dbType === 'Oracle')
 })
 
 const bosskDomain = document.getElementById('bk-domain')
-codeDep.addEventListener('change', (evt) => {
+bosskDomain.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.domain = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const bosskServerName = document.getElementById('bk-server-name')
 bosskServerName.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.server = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const bosskPort = document.getElementById('bk-port')
 bosskPort.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.port = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const bosskLogin = document.getElementById('bk-login')
 bosskLogin.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.login = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const bosskPassword = document.getElementById('bk-password')
 bosskPassword.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.password = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const bosskSchema = document.getElementById('bk-schema-name')
 bosskSchema.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.schema = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const bosskOrgCode = document.getElementById('bk-org-code')
 bosskOrgCode.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.orgCode = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const apkHost = document.getElementById('apk-host')
 apkHost.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.apkHost = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const apkLogin = document.getElementById('apk-login')
 apkLogin.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.apkLogin = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const apkPassword = document.getElementById('apk-password')
 apkPassword.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.apkPassword = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const apkDatabase = document.getElementById('apk-database')
 apkDatabase.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.apkDatabase = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const apkPort = document.getElementById('apk-port')
 apkPort.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.apkPort = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const a5dbType = document.getElementById('a5-db-type')
 a5dbType.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.a5dbType = evt.target.value // selectedIndex // value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const a5Host = document.getElementById('a5-host')
 a5Host.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.a5Host = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const a5Login = document.getElementById('a5-login')
 a5Login.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.a5Login = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const a5Password = document.getElementById('a5-password')
 a5Password.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.a5Password = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const a5Database = document.getElementById('a5-database')
 a5Database.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.a5Database = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const a5orgCode = document.getElementById('a5-org-code')
 a5orgCode.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.a5orgCode = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const a5Port = document.getElementById('a5-port')
 a5Port.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.a5Port = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const afinaDbPath = document.getElementById('afina-db-path')
 afinaDbPath.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.afinaDbPath = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 document.getElementById('select-afina-path').addEventListener('click', async () => {
-    const dialogResult = await mainProcess.selectDirectory(this.config.afinaDbPath)
-    if (!dialogResult.canceled) {
-        afinaDbPath.value = dialogResult.filePaths[0]
-        this.config.afinaDbPath = afinaDbPath.value
-        ipcRenderer.send('set-config', this.config)
-    }
+    // const dialogResult = await mainProcess.selectDirectory(this.config.afinaDbPath)
+    // const dialogResult = await window.electronAPI.selectDirectory(this.config.afinaDbPath)
+    // if (!dialogResult.canceled) {
+    //     afinaDbPath.value = dialogResult.filePaths[0]
+    //     this.config.afinaDbPath = afinaDbPath.value
+    //     // ipcRenderer.send('set-config', this.config)
+    //     window.electronAPI.setConfig(this.config)
+    // }
+    window.electronAPI.selectDirectory('afinaDbPath')
 })
 
 const parusDbPath = document.getElementById('parus-db-path')
 parusDbPath.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.parusDbPath = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 document.getElementById('select-parus-path').addEventListener('click', async () => {
-    const dialogResult = await mainProcess.selectDirectory(this.config.parusDbPath)
-    if (!dialogResult.canceled) {
-        parusDbPath.value = dialogResult.filePaths[0]
-        this.config.parusDbPath = parusDbPath.value
-        ipcRenderer.send('set-config', this.config)
-    }
+    // const dialogResult = await mainProcess.selectDirectory(this.config.parusDbPath)
+    // const dialogResult = await window.electronAPI.selectDirectory(this.config.parusDbPath)
+    // if (!dialogResult.canceled) {
+    //     parusDbPath.value = dialogResult.filePaths[0]
+    //     this.config.parusDbPath = parusDbPath.value
+    //     // ipcRenderer.send('set-config', this.config)
+    //     window.electronAPI.setConfig(this.config)
+    // }
+    window.electronAPI.selectDirectory('parusDbPath')
 })
 
 const c1DbPath = document.getElementById('c1-db-path')
 c1DbPath.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.c1DbPath = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 document.getElementById('select-c1-path').addEventListener('click', async () => {
-    const dialogResult = await mainProcess.selectDirectory(this.config.c1DbPath)
-    if (!dialogResult.canceled) {
-        c1DbPath.value = dialogResult.filePaths[0]
-        this.config.c1DbPath = c1DbPath.value
-        ipcRenderer.send('set-config', this.config)
-    }
+    // const dialogResult = await mainProcess.selectDirectory(this.config.c1DbPath)
+    // const dialogResult = await window.electronAPI.selectDirectory(this.config.c1DbPath)
+    // if (!dialogResult.canceled) {
+    //     c1DbPath.value = dialogResult.filePaths[0]
+    //     this.config.c1DbPath = c1DbPath.value
+    //     // ipcRenderer.send('set-config', this.config)
+    //     window.electronAPI.setConfig(this.config)
+    // }
+    window.electronAPI.selectDirectory('c1DbPath')
 })
 
 const osvitaDbPath = document.getElementById('osvita-db-path')
 osvitaDbPath.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.osvitaDbPath = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 document.getElementById('select-osvita-path').addEventListener('click', async () => {
-    const dialogResult = await mainProcess.selectDirectory(this.config.osvitaDbPath)
-    if (!dialogResult.canceled) {
-        osvitaDbPath.value = dialogResult.filePaths[0]
-        this.config.osvitaDbPath = osvitaDbPath.value
-        ipcRenderer.send('set-config', this.config)
-    }
+    // const dialogResult = await mainProcess.selectDirectory(this.config.osvitaDbPath)
+    // const dialogResult = await window.electronAPI.selectDirectory(this.config.osvitaDbPath)
+    // if (!dialogResult.canceled) {
+    //     osvitaDbPath.value = dialogResult.filePaths[0]
+    //     this.config.osvitaDbPath = osvitaDbPath.value
+    //     // ipcRenderer.send('set-config', this.config)
+    //     window.electronAPI.setConfig(this.config)
+    // }
+    window.electronAPI.selectDirectory('osvitaDbPath')
 })
 
 const osvitaBaseDate = document.getElementById('osvita-base-date')
 osvitaBaseDate.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.osvitaBaseDate = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const osvitaOrganizationLabel = document.getElementById('osvita-organization-label')
@@ -536,7 +614,8 @@ const osvitaOrganization = document.getElementById('osvita-organization')
 osvitaOrganization.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.osvitaOrganization = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const osvitaDepartmentLabel = document.getElementById('osvita-department-label')
@@ -544,14 +623,16 @@ const osvitaDepartment = document.getElementById('osvita-department')
 osvitaDepartment.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.osvitaDepartment = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 const osvitaVersion = document.getElementById('osvita-version')
 osvitaVersion.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.osvitaVersion = evt.target.selectedIndex // value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
     setVisible(osvitaOrganization, osvitaVersion.selectedIndex === 0)
     setVisible(osvitaOrganizationLabel, osvitaVersion.selectedIndex === 0)
     setVisible(osvitaDepartment, osvitaVersion.selectedIndex === 0)
@@ -562,32 +643,39 @@ const targetPath = document.getElementById('target-path')
 targetPath.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.targetPath = evt.target.value
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
 document.getElementById('select-target-path').addEventListener('click', async () => {
-    const dialogResult = await mainProcess.selectDirectory(this.config.targetPath)
-    if (!dialogResult.canceled) {
-        targetPath.value = dialogResult.filePaths[0]
-        this.config.targetPath = targetPath.value
-        ipcRenderer.send('set-config', this.config)
-    }
+    // const dialogResult = await mainProcess.selectDirectory(this.config.targetPath)
+    // const dialogResult = await window.electronAPI.selectDirectory(this.config.targetPath)
+    // if (!dialogResult.canceled) {
+    //     targetPath.value = dialogResult.filePaths[0]
+    //     this.config.targetPath = targetPath.value
+    //     // ipcRenderer.send('set-config', this.config)
+    //     window.electronAPI.setConfig(this.config)
+    // }
+    window.electronAPI.selectDirectory('targetPath')
 })
 
 const isArchive = document.getElementById('isArchive')
 isArchive.addEventListener('change', (evt) => {
     evt.preventDefault()
     this.config.isArchive = evt.target.checked
-    ipcRenderer.send('set-config', this.config)
+    // ipcRenderer.send('set-config', this.config)
+    window.electronAPI.setConfig(this.config)
 })
 
-ipcRenderer.on('config', (event, config) => {
+// ipcRenderer.on('config', (event, config) => {
+window.electronAPI.onConfig((config) => {
     this.config = config || {}
 
     serverName.value = config.server || ''
     login.value = config.login || ''
     password.value = config.password || ''
     schema.value = config.schema || ''
+    oracleClient.value = config.oracleClient || ''
     bosskServerName.value = config.server || ''
     bosskLogin.value = config.login || ''
     bosskPassword.value = config.password || ''
@@ -597,8 +685,8 @@ ipcRenderer.on('config', (event, config) => {
     bosskOrgCode.value = config.orgCode || ''
     schemaSys.value = config.schemaSys || ''
     codeSe.value = config.codeSe || ''
-    codeDep.value = config.codeDep || ''
-    dbType.selectedIndex = config.dbType || ''
+    // codeDep.value = config.codeDep || ''
+    dbType.value = config.dbType || ''
     targetPath.value = config.targetPath || ''
     afinaDbPath.value = config.afinaDbPath || ''
     parusDbPath.value = config.parusDbPath || ''
@@ -615,7 +703,7 @@ ipcRenderer.on('config', (event, config) => {
     apkPassword.value = config.apkPassword || ''
     apkDatabase.value = config.apkDatabase || ''
 
-    a5dbType.selectedIndex = config.a5dbType || ''
+    a5dbType.value = config.a5dbType || ''
     a5Host.value = config.a5Host || ''
     a5Port.value = config.a5Port || ''
     a5Login.value = config.a5Login || ''
@@ -640,7 +728,7 @@ const countErrors = (targetList) => {
 
 const countCreated = (targetList) => {
     return targetList.reduce(
-        (a, b) => a + (b.state === Target.FILE_CREATED && !b.append ? 1 : 0),
+        (a, b) => a + (b.state === window.electronAPI.result.FILE_CREATED && !b.append ? 1 : 0),
         0
     )
 }
@@ -660,7 +748,8 @@ const stateText = (created, errors, arcFileName) => {
     }
 
     if (arcFileName) {
-        const fileName = path.basename(arcFileName)
+        // const fileName = path.basename(arcFileName)
+        const fileName = window.electronAPI.basename(arcFileName)
         text += `<br />Запаковано у архівний файл "${fileName}".`
     }
 
@@ -674,7 +763,8 @@ const stateText = (created, errors, arcFileName) => {
     return text
 }
 
-ipcRenderer.on('done', (event, arcFileName) => {
+// ipcRenderer.on('done', (event, arcFileName) => {
+window.electronAPI.onDone((arcFileName) => {
     buttonRunExport.classList.remove('loading')
 
     resultToast.classList.remove('toast-error')
@@ -689,7 +779,8 @@ ipcRenderer.on('done', (event, arcFileName) => {
     setVisible(resultPanel, true)
 })
 
-ipcRenderer.on('failed', (event, err) => {
+// ipcRenderer.on('failed', (event, err) => {
+window.electronAPI.onFailed((err) => {
     buttonRunExport.classList.remove('loading')
 
     resultToast.classList.remove('toast-success')
@@ -704,21 +795,23 @@ ipcRenderer.on('failed', (event, err) => {
 
 const getStateText = (target) => {
     switch (target.state) {
-        case Target.FILE_CREATED: {
-            const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
+        case window.electronAPI.result.FILE_CREATED: {
+            // const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
+            const source = target.sourceFullFileName ? window.electronAPI.basename(target.sourceFullFileName) : ''
             if (source) {
                 return target.append ? `Доповнено із ${source}` : `Створено із ${source}`
             }
             return target.append ? 'Файл доповнено' : 'Файл створено'
         }
-        case Target.FILE_EMPTY: {
-            const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
+        case window.electronAPI.result.FILE_EMPTY: {
+            // const source = target.sourceFullFileName ? path.basename(target.sourceFullFileName) : ''
+            const source = target.sourceFullFileName ? window.electronAPI.basename(target.sourceFullFileName) : ''
             if (target.append && source) {
                 return target.append ? `Доповнено із ${source}` : `Створено із ${source}`
             }
             return 'Відсутні дані для експорту'
         }
-        case Target.FILE_ERROR:
+        case window.electronAPI.result.FILE_ERROR:
             console.log(target)
             return `Помилка. ${target.err}`
         default:
@@ -730,13 +823,15 @@ const renderGrid = () => {
     let html = ''
     for (let i = 0; i < targetList.length; i++) {
         const stateText = getStateText(targetList[i])
-        const fileName = path.basename(targetList[i].fullFileName)
+        // const fileName = path.basename(targetList[i].fullFileName)
+        const fileName = window.electronAPI.basename(targetList[i].fullFileName)
         html += `<tr><td>${fileName}</td><td>${stateText}</td></tr>`
     }
     resultTable.innerHTML = html
 }
 
-ipcRenderer.on('push-file', (event, _targetList) => {
+// ipcRenderer.on('push-file', (event, _targetList) => {
+window.electronAPI.onPushFile((_targetList) => {
     targetList = _targetList.slice(0)
     renderGrid()
 })
