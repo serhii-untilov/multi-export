@@ -2,32 +2,34 @@
 
 const fs = require('fs')
 const path = require('path')
-const sql = require('mssql')
 const Source = require('../Source')
 const { Target } = require('../Target')
 const makeDir = require('../helper/makeDir')
-const makeFile = require('./TargetBossk')
+const makeFile = require('./TargetISproOracle')
 const getFullFileName = require('../helper/getFullFileName')
 const makeArchive = require('../helper/makeArchive')
 const removeTargetFiles = require('../helper/removeTargetFiles')
+const { getConnectionPool } = require('../helper/oracleConnectionPool')
+const { replace_FIRM_SCHEMA } = require('../helper/queryTuner')
 
-const SQL_FILES_DIR = './assets/bossk/'
+const SQL_FILES_DIR = '.\\assets\\ispro-oracle\\'
 
 const POOL_SIZE = 4
 const CONNECTION_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 const REQUEST_TIMEOUT = 20 * 60 * 1000 // 20 minutes
-const ACQUIRE_TIMEOUT = 20 * 60 * 1000 // 20 minutes
+// const ACQUIRE_TIMEOUT = 20 * 60 * 1000 // 20 minutes
 
-class SourceBossk extends Source {
+class SourceISpro extends Source {
     async read(config, sendFile, sendDone, sendFailed) {
-        const pool = new sql.ConnectionPool(dbConfig(config))
-        pool.on('error', (err) => {
+        let pool
+        try {
+            pool = await getConnectionPool(dbConfig(config))
+        } catch (err) {
             console.log(err)
             sendFailed(err.message)
-        })
+        }
 
-        pool.connect()
-            .then(() => makeDir(config.targetPath))
+        makeDir(config.targetPath)
             .then(() => getFileList())
             .then((fileList) => {
                 return Promise.all(
@@ -55,9 +57,12 @@ class SourceBossk extends Source {
             .then((targetList) => {
                 if (config.isArchive) {
                     let arcFileName
-                    getFirmName(pool, config.orgCode)
+                    getFirmName(config, pool)
                         .then((firmName) =>
-                            getFullFileName(config.targetPath, firmName + config.orgCode + '.zip')
+                            getFullFileName(
+                                config.targetPath,
+                                firmName + config.codeSe + config.codeDep + '.zip'
+                            )
                         )
                         .then((fullFileName) => {
                             arcFileName = fullFileName
@@ -70,39 +75,29 @@ class SourceBossk extends Source {
                     sendDone(null)
                 }
             })
-            .catch((err) => {
-                sendFailed(err.message)
-            })
+            .catch((err) => sendFailed(err.message))
     }
 }
 
-function getFirmName(pool, orgCode = '') {
-    const defaultName = 'БОСС-Кадровик'
-    if (orgCode.length) {
-        return new Promise((resolve, reject) => {
-            pool.request()
-                .query(`select coalesce(SNAME, NAME) name from HR_FIRM where OKPO = ${orgCode}`)
-                .then((result) => {
-                    let name =
-                        result && result.recordset.length ? result.recordset[0].name : defaultName
-                    name = name
-                        .replace(/"/g, '_')
-                        .replace(/'/g, '_')
-                        .replace(/\./g, '_')
-                        .replace(/,/g, '_')
-                        .replace(/ /g, '_')
-                        .replace(/__/g, '_')
-                    resolve(name.length ? name : defaultName)
-                })
-                .catch((err) => reject(err))
-            const currentDate = new Date()
-            resolve(currentDate.toString())
-        })
-    } else {
-        return new Promise((resolve, reject) => {
-            resolve(defaultName)
-        })
-    }
+async function getFirmName(config, pool) {
+    const connection = await pool.getConnection()
+    return new Promise((resolve, reject) => {
+        const rawQuery = 'select CrtFrm_Nm from /*FIRM_SCHEMA*/dfirm001.CrtFrm1'
+        const query = replace_FIRM_SCHEMA(rawQuery, config.schema)
+        connection.execute(query)
+            .then((result) => {
+                let firmName = result.rows[0][0]
+                firmName = firmName
+                    .replace(/"/g, '_')
+                    .replace(/'/g, '_')
+                    .replace(/\./g, '_')
+                    .replace(/,/g, '_')
+                    .replace(/ /g, '_')
+                    .replace(/__/g, '_')
+                resolve(firmName)
+            })
+            .catch((err) => reject(err))
+    })
 }
 
 function getFileList() {
@@ -122,28 +117,18 @@ function getFileList() {
 }
 
 function dbConfig(config) {
-    const isNamedInstance = config.server.indexOf('\\') >= 0
-    const params = {
+    return {
         user: config.login,
         password: config.password,
         server: config.server,
         database: config.schema,
-        connectionTimeout: CONNECTION_TIMEOUT,
-        requestTimeout: REQUEST_TIMEOUT,
-        pool: {
-            max: POOL_SIZE,
-            min: 0,
-            acquireTimeoutMillis: ACQUIRE_TIMEOUT
-        }
+        poolTimeout: CONNECTION_TIMEOUT,
+        queueTimeout: REQUEST_TIMEOUT,
+        poolMax: POOL_SIZE,
+        poolMin: 0,
+        oracleClient: config.oracleClient
+        // acquireTimeoutMillis: ACQUIRE_TIMEOUT
     }
-    if (isNamedInstance) {
-        params.domain = config.domain
-    }
-    if (!isNamedInstance && config.port.length) {
-        // Don't set when connecting to named instance
-        params.port = Number(config.port)
-    }
-    return params
 }
 
-module.exports = SourceBossk
+module.exports = SourceISpro

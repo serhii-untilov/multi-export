@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { Pool } = require('pg')
 const Source = require('../Source')
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeDir = require('../helper/makeDir')
 const makeFile = require('./TargetAPK')
 const getFullFileName = require('../helper/getFullFileName')
@@ -39,7 +39,7 @@ class SourceAPK extends Source {
                 client = result
             })
             .then(() => {
-                const target = new Target.Target()
+                const target = new Target()
                 target.config = config
                 target.client = client
                 return initDB(target)
@@ -51,7 +51,7 @@ class SourceAPK extends Source {
                 return Promise.all(
                     fileList.map((queryFileName) => {
                         return new Promise((resolve, reject) => {
-                            const target = new Target.Target()
+                            const target = new Target()
                             const fileName = path.parse(queryFileName).name
                             target.fullFileName = getFullFileName(
                                 config.targetPath,

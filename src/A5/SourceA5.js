@@ -1,7 +1,7 @@
 'use strict'
 
 const Source = require('../Source')
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeDir = require('../helper/makeDir')
 const makeFile = require('./TargetA5')
 const getFullFileName = require('../helper/getFullFileName')
@@ -520,7 +520,7 @@ class SourceA5 extends Source {
                     return new Promise((resolve, reject) => {
                         pool.connect()
                             .then((client) => {
-                                const target = new Target.Target()
+                                const target = new Target()
                                 target.table = table
                                 target.fullFileName = getFullFileName(
                                     config.targetPath,

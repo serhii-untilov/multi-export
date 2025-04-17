@@ -1,8 +1,10 @@
 'use strict'
 
-const FILE_CREATED = 'created'
-const FILE_ERROR = 'error'
-const FILE_EMPTY = 'empty'
+const Result = {
+    FILE_CREATED: 'created',
+    FILE_ERROR: 'error',
+    FILE_EMPTY: 'empty'
+}
 
 class Target {
     constructor() {
@@ -17,7 +19,5 @@ class Target {
 
 module.exports = {
     Target,
-    FILE_CREATED,
-    FILE_ERROR,
-    FILE_EMPTY
+    Result
 }

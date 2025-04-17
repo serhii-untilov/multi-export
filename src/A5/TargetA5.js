@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const removeFile = require('../helper/removeFile')
-const Target = require('../Target')
+const { Result } = require('../Target')
 const QueryStream = require('pg-query-stream')
 const { DBtype } = require('../Config')
 const { getTableStruct, makeQuery } = require('../helper/db')
@@ -34,7 +34,7 @@ async function makeFile(target) {
         }
         return target
     } catch (err) {
-        target.state = Target.FILE_ERROR
+        target.state = Result.FILE_ERROR
         target.err = err.message
         return target
     }
@@ -77,9 +77,9 @@ async function doQueryPostgres(target, queryText) {
                     }
                 })
                 buffer = ''
-                target.state = Target.FILE_CREATED
+                target.state = Result.FILE_CREATED
             } else {
-                target.state = Target.FILE_EMPTY
+                target.state = Result.FILE_EMPTY
             }
             resolve(target)
         })
@@ -152,10 +152,10 @@ async function doQuerySqlServer(target, queryText) {
                     }
                 })
                 buffer = ''
-                target.state = Target.FILE_CREATED
+                target.state = Result.FILE_CREATED
                 // request.resume();
             } else {
-                target.state = Target.FILE_EMPTY
+                target.state = Result.FILE_EMPTY
             }
             resolve(target)
         })

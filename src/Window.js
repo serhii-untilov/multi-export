@@ -1,16 +1,23 @@
 'use strict'
 
-const { BrowserWindow, Menu } = require('electron')
+const { BrowserWindow, Menu } = require('electron/main')
+const path = require('path')
 
 // default window settings
 const defaultProps = {
     width: 840,
-    height: 680,
+    height: 740,
     show: false,
 
     // update for electron V5+
     webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        // update for electron V12+
+        // contextIsolation: true,
+        // enableRemoteModule: true,
+        // nodeIntegrationInWorker: true,
+        // webviewTag: true
+        preload: path.join(__dirname, 'preload.js')
     }
 }
 
@@ -32,4 +39,4 @@ class Window extends BrowserWindow {
     }
 }
 
-module.exports = Window
+module.exports = Window;

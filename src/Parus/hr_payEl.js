@@ -1,7 +1,7 @@
 'use strict'
 
 const getFullFileName = require('../helper/getFullFileName')
-const Target = require('../Target')
+const { Target } = require('../Target')
 const makeFile = require('./TargetParus')
 
 const Entity = require('../entity/PayEl')
@@ -36,7 +36,7 @@ function setRecord(record, recordNumber) {
 }
 
 function makeTarget(config, dictionary) {
-    const target = new Target.Target()
+    const target = new Target()
     target.fullFileName = getFullFileName(config.targetPath, TARGET_FILE_NAME)
     target.sourceFullFileName = getFullFileName(config.parusDbPath, SOURCE_FILE_NAME)
     target.dictionary = dictionary
