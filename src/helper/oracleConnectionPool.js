@@ -4,11 +4,13 @@ Error.stackTraceLimit = 50
 
 const oracledb = require('oracledb')
 
-function initOracleClient() {
+function initOracleClient(dbConfig) {
+    const libDir = dbConfig.oracleClient || ''
+    const mode = libDir ? 'thin' : 'thick'
     // This example runs in both node-oracledb Thin and Thick modes.
     //
     // Optionally run in node-oracledb Thick mode
-    if (process.env.NODE_ORACLEDB_DRIVER_MODE === 'thick') {
+    if (mode === 'thick') {
         // Thick mode requires Oracle Client or Oracle Instant Client libraries.
         // On Windows and macOS you can specify the directory containing the
         // libraries at runtime or before Node.js starts.  On other platforms (where
@@ -20,11 +22,18 @@ function initOracleClient() {
         // On Windows and macOS platforms, set the environment variable
         // NODE_ORACLEDB_CLIENT_LIB_DIR to the Oracle Client library path
         if (process.platform === 'win32' || process.platform === 'darwin') {
-            clientOpts = { libDir: process.env.NODE_ORACLEDB_CLIENT_LIB_DIR }
+            clientOpts = { libDir }
         }
         oracledb.initOracleClient(clientOpts) // enable node-oracledb Thick mode
     }
     console.log(oracledb.thin ? 'Running in thin mode' : 'Running in thick mode')
+}
+
+function getConnectString(dbConfig) {
+    const port = dbConfig.port || 1521
+    const server = dbConfig.server || 'localhost'
+    const schema = dbConfig.schema || 'ISPRO'
+    return `(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=${server})(PORT=${port}))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=${schema})))`
 }
 
 async function init(dbConfig) {
@@ -32,21 +41,21 @@ async function init(dbConfig) {
         // Create a connection pool which will later be accessed via the
         // pool cache as the 'default' pool.
         await oracledb.createPool({
-            user: dbConfig.user,
-            password: dbConfig.password,
-            connectString: dbConfig.connectString
+            user: dbConfig.user || 'system',
+            password: dbConfig.password || 'oracle',
+            connectString: getConnectString(dbConfig),
             // edition: 'ORA$BASE', // used for Edition Based Redefintion
             // events: false, // whether to handle Oracle Database FAN and RLB events or support CQN
             // externalAuth: false, // whether connections should be established using External Authentication
             // homogeneous: true, // all connections in the pool have the same credentials
             // poolAlias: 'default', // set an alias to allow access to the pool via a name.
             // poolIncrement: 1, // only grow the pool by one connection at a time
-            // poolMax: 4, // maximum size of the pool. (Note: Increase UV_THREADPOOL_SIZE if you increase poolMax in Thick mode)
-            // poolMin: 0, // start with no connections; let the pool shrink completely
+            poolMax: dbConfig.poolMax || 4, // maximum size of the pool. (Note: Increase UV_THREADPOOL_SIZE if you increase poolMax in Thick mode)
+            poolMin: dbConfig.poolMin || 0, // start with no connections; let the pool shrink completely
             // poolPingInterval: 60, // check aliveness of connection if idle in the pool for 60 seconds
-            // poolTimeout: 60, // terminate connections that are idle in the pool for 60 seconds
+            poolTimeout: dbConfig.poolTimeout || 60, // terminate connections that are idle in the pool for 60 seconds
             // queueMax: 500, // don't allow more than 500 unsatisfied getConnection() calls in the pool queue
-            // queueTimeout: 60000, // terminate getConnection() calls queued for longer than 60000 milliseconds
+            queueTimeout: dbConfig.queueTimeout || 60000 // terminate getConnection() calls queued for longer than 60000 milliseconds
             // sessionCallback: myFunction, // function invoked for brand new connections or by a connection tag mismatch
             // sodaMetaDataCache: false, // Set true to improve SODA collection access performance
             // stmtCacheSize: 30, // number of statements that are cached in the statement cache of each connection
@@ -58,7 +67,7 @@ async function init(dbConfig) {
     }
 }
 
-async function dostuff() {
+async function testQuery() {
     let connection
     try {
         // Get a connection from the default pool
@@ -83,7 +92,58 @@ async function dostuff() {
     }
 }
 
-async function closePoolAndExit() {
+async function doQuery(sql) {
+    let connection
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection()
+        const binds = []
+        const options = { outFormat: oracledb.OUT_FORMAT_ARRAY }
+        const result = await connection.execute(sql, binds, options)
+        // console.log(result)
+        // oracledb.getPool().logStatistics(); // show pool statistics.  pool.enableStatistics must be true
+        return result
+    } catch (err) {
+        console.error(err)
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close()
+            } catch (err) {
+                console.error(err)
+            }
+        }
+    }
+}
+
+async function doQueryStream(sql) {
+    let connection
+    try {
+        // Get a connection from the default pool
+        connection = await oracledb.getConnection()
+        // const binds = []
+        // const options = { outFormat: oracledb.OUT_FORMAT_ARRAY }
+        // const result = await connection.execute(sql, binds, options)
+        const result = await connection.queryStream(sql)
+        // console.log(result)
+        // oracledb.getPool().logStatistics(); // show pool statistics.  pool.enableStatistics must be true
+        return result
+    } catch (err) {
+        console.error(err)
+    } finally {
+        if (connection) {
+            try {
+                // Put the connection back in the pool
+                await connection.close()
+            } catch (err) {
+                console.error(err)
+            }
+        }
+    }
+}
+
+async function closePool() {
     console.log('\nTerminating')
     try {
         // Get the pool from the pool cache and close it when no
@@ -93,22 +153,25 @@ async function closePoolAndExit() {
         // Database are 19c (or later).
         await oracledb.getPool().close(10)
         console.log('Pool closed')
-        process.exit(0)
+        // process.exit(0)
     } catch (err) {
         console.error(err.message)
-        process.exit(1)
+        // process.exit(1)
     }
 }
 
-function getOracleConnectionPool(dbConfig) {
+async function getConnectionPool(dbConfig) {
     initOracleClient()
-    process.once('SIGTERM', closePoolAndExit).once('SIGINT', closePoolAndExit)
-    init(dbConfig)
-    connection = await oracledb.getConnection()
-    return connection
+    process.once('SIGTERM', closePool).once('SIGINT', closePool)
+    await init(dbConfig)
+    // await oracledb.getConnection()
+    return oracledb
 }
 
 module.exports = {
-    getOracleConnectionPool,
-    closePoolAndExit
+    getConnectionPool,
+    closePool,
+    testQuery,
+    doQuery,
+    doQueryStream
 }
