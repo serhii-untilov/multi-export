@@ -323,7 +323,7 @@ codeDep.addEventListener('change', (evt) => {
 const dbType = document.getElementById('db-type')
 dbType.addEventListener('change', (evt) => {
     evt.preventDefault()
-    this.config.dbType = evt.target.selectedIndex // value
+    this.config.dbType = evt.target.value // selectedIndex // value
     ipcRenderer.send('set-config', this.config)
 })
 
@@ -414,7 +414,7 @@ apkPort.addEventListener('change', (evt) => {
 const a5dbType = document.getElementById('a5-db-type')
 a5dbType.addEventListener('change', (evt) => {
     evt.preventDefault()
-    this.config.a5dbType = evt.target.selectedIndex // value
+    this.config.a5dbType = evt.target.value // selectedIndex // value
     ipcRenderer.send('set-config', this.config)
 })
 

@@ -16,8 +16,9 @@ const Version = {
 }
 
 const DBtype = {
-    POSTGRES: 0,
-    MSSQL: 1
+    POSTGRES: 'Postgres',
+    MSSQL: 'SQL Server',
+    ORACLE: 'Oracle'
 }
 
 class Config {
@@ -38,9 +39,11 @@ class Config {
         this.schemaSys = ''
         this.codeSe = ''
         this.codeDep = ''
-        this.dbType = ''
         // + bossk
         this.orgCode = ''
+        // + oracle
+        this.dbType = '' // SQL Server, Postgres, Oracle
+        this.oracleClient = '' // Oracle thick client lib local directory
 
         // Source DB path
         this.afinaDbPath = ''

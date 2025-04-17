@@ -3,6 +3,7 @@ const { Pool } = require('pg')
 const sql = require('mssql')
 const { DBtype } = require('../Config')
 // const QueryStream = require('pg-query-stream')
+// const oracledb = require('oracledb')
 
 function makeQuery(dbType, dbName, table, tableStruct, orgID) {
     return new Promise((resolve, reject) => {
@@ -146,6 +147,8 @@ function getConnectionPool(dbType, dbConfig) {
         case DBtype.POSTGRES:
             return new Pool(dbConfig)
         case DBtype.MSSQL:
+            return new sql.ConnectionPool(dbConfig)
+        case DBtype.Oracle:
             return new sql.ConnectionPool(dbConfig)
         default:
             throw new Error(`Unknown dbType (${dbType}).`)

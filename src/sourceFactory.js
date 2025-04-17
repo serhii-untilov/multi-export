@@ -2,6 +2,7 @@
 
 const Config = require('./Config')
 const IsproSource = require('./ISpro/SourceISpro')
+const IsproSourceOracle = require('./ISproOracle/SourceISproOracle')
 const Source1C7 = require('./1C7/Source1C7')
 const SourceParus = require('./Parus/SourceParus')
 const SourceOsvita = require('./Osvita/SourceOsvita')
@@ -11,6 +12,9 @@ const SourceBossk = require('./Bossk/SourceBossk')
 
 const makeSource = (config) => {
     if (config.source === Config.ISPRO) {
+        if (config.dbType === 'Oracle') {
+            return new IsproSourceOracle()
+        }
         return new IsproSource()
     } else if (config.source === Config.C7) {
         return new Source1C7()
