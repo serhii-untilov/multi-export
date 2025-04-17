@@ -46,8 +46,8 @@
     },
     "devDependencies": {
         "dotenv": "^8.2.0",
-        "electron": "^12.2.0",
-        "electron-builder": "^22.2.0",
+        "electron": "^35.1.5",
+        "electron-builder": "^26.0.12",
         "eslint": "^7.32.0",
         "eslint-config-prettier": "^10.1.1",
         "eslint-plugin-import": "^2.24.2",
