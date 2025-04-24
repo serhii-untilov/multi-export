@@ -5,7 +5,7 @@ function removeHeader(queryText) {
 }
 
 function replace_SYS_SCHEMA(queryText, schemaSys) {
-    // find /*SYS_SCHEMA*/.sspr
+    // find /*SYS_SCHEMA*/schema.sspr
     // replace to ${schemaSys}.sspr
     const re = /\/\*SYS_SCHEMA\*\/\w+\./gim
     while (re.test(queryText)) {
