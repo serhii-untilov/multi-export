@@ -1,4 +1,4 @@
--- Категорії персоналу (hr_dictStaffCat)
+п»ї-- РљР°С‚РµРіРѕСЂС–С— РїРµСЂСЃРѕРЅР°Р»Сѓ (hr_dictStaffCat)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID,	'code' code, 'name' name, 'description' description, 'accCategory' accCategory
 union all

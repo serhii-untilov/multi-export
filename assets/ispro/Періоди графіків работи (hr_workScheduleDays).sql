@@ -1,4 +1,4 @@
--- Период графика работы (hr_workScheduleDays)
+п»ї-- РџРµСЂРёРѕРґ РіСЂР°С„РёРєР° СЂР°Р±РѕС‚С‹ (hr_workScheduleDays)
 /*BEGIN-OF-HEAD*/
 select
 	'ID' ID

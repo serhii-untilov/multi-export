@@ -1,4 +1,4 @@
--- Види стажу (hr_dictExperience)
+п»ї-- Р’РёРґРё СЃС‚Р°Р¶Сѓ (hr_dictExperience)
 -- ID;code;name;methodExpID;dateFrom;dateTo
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'code' code, 'name' name, 'methodExpID' methodExpID, 'dateFrom' dateFrom, 'dateTo' dateTo
@@ -7,7 +7,7 @@ union all
 select
 	'1' ID
 	,'1' code
-	,'Загальний стаж' name
+	,'Р—Р°РіР°Р»СЊРЅРёР№ СЃС‚Р°Р¶' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo
@@ -16,7 +16,7 @@ union all
 select
 	'2' ID
 	,'2' code
-	,'Безперервний стаж' name
+	,'Р‘РµР·РїРµСЂРµСЂРІРЅРёР№ СЃС‚Р°Р¶' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo
@@ -25,7 +25,7 @@ union all
 select
 	'3' ID
 	,'3' code
-	,'Стаж на підприємстві' name
+	,'РЎС‚Р°Р¶ РЅР° РїС–РґРїСЂРёС”РјСЃС‚РІС–' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo
@@ -34,7 +34,7 @@ union all
 select
 	'4' ID
 	,'4' code
-	,'Страховий стаж' name
+	,'РЎС‚СЂР°С…РѕРІРёР№ СЃС‚Р°Р¶' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo
@@ -43,7 +43,7 @@ union all
 select
 	'5' ID
 	,'5' code
-	,'Галузевий стаж' name
+	,'Р“Р°Р»СѓР·РµРІРёР№ СЃС‚Р°Р¶' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo
@@ -52,7 +52,7 @@ union all
 select
 	'6' ID
 	,'6' code
-	,'Стаж держслужбовця' name
+	,'РЎС‚Р°Р¶ РґРµСЂР¶СЃР»СѓР¶Р±РѕРІС†СЏ' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo
@@ -61,7 +61,7 @@ union all
 select
 	'7' ID
 	,'7' code
-	,'Безперервний стаж держслужбовця' name
+	,'Р‘РµР·РїРµСЂРµСЂРІРЅРёР№ СЃС‚Р°Р¶ РґРµСЂР¶СЃР»СѓР¶Р±РѕРІС†СЏ' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo	

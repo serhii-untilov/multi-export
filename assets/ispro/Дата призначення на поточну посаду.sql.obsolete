@@ -1,5 +1,5 @@
--- Дата призначення на поточну посаду
--- 06/05/2020 Перенесено у hr_employeeNumber.appointmentDate
+п»ї-- Р”Р°С‚Р° РїСЂРёР·РЅР°С‡РµРЅРЅСЏ РЅР° РїРѕС‚РѕС‡РЅСѓ РїРѕСЃР°РґСѓ
+-- 06/05/2020 РџРµСЂРµРЅРµСЃРµРЅРѕ Сѓ hr_employeeNumber.appointmentDate
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @dateTo date = getdate()
 select 	
@@ -28,24 +28,24 @@ select
 		,cast(cast(case when p1.kpuprkz_dtv <= '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) as varchar) dateFrom	
 		,cast(cast(case when p1.KpuPrkz_DtNzE <= '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo	
 		,cast(p1.KpuPrkz_RejWr as varchar) workScheduleID
-		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- Тимчасово
-			  when ASCII(spst.SPR_NMSHORT) = 4 then 4 -- Контракт
-			  else 1 -- Постійно
+		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- РўРёРјС‡Р°СЃРѕРІРѕ
+			  when ASCII(spst.SPR_NMSHORT) = 4 then 4 -- РљРѕРЅС‚СЂР°РєС‚
+			  else 1 -- РџРѕСЃС‚С–Р№РЅРѕ
 			  end as varchar) workerType	
 		,cast(p1.KpuPrkz_QtStv as varchar) mtCount	
 		,cast(x1.kpu_tn as varchar) + ' ' + c1.kpu_fio + ' ' + coalesce(sprdol.sprd_nmim, '') description	
-		,'' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- В Охматдет Ранг используется не по назначению. В организациях с рангами расскомментировать
+		,'' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- Р’ РћС…РјР°С‚РґРµС‚ Р Р°РЅРі РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РЅРµ РїРѕ РЅР°Р·РЅР°С‡РµРЅРёСЋ. Р’ РѕСЂРіР°РЅРёР·Р°С†РёСЏС… СЃ СЂР°РЅРіР°РјРё СЂР°СЃСЃРєРѕРјРјРµРЅС‚РёСЂРѕРІР°С‚СЊ
 		,cast(p1.KpuPrkz_Kat as varchar) dictStaffCatID
 		,cast(p1.KpuPrkz_SysOp as varchar) payElID
 		,cast(cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) as varchar) accrualSum
 		,'1' isActive	
-		,cast(case when x1.kpu_tnosn <> 0 then 2 -- Сумісництво внутрішнє
-			  when ASCII(spst.SPR_NMSHORT) in (2, 6) then 3 -- Сумісництво зовнішнє
-			  when ASCII(spst.SPR_NMSHORT) = 3 then 4 -- Поза штатом
-			  else 1 -- Основне
+		,cast(case when x1.kpu_tnosn <> 0 then 2 -- РЎСѓРјС–СЃРЅРёС†С‚РІРѕ РІРЅСѓС‚СЂС–С€РЅС”
+			  when ASCII(spst.SPR_NMSHORT) in (2, 6) then 3 -- РЎСѓРјС–СЃРЅРёС†С‚РІРѕ Р·РѕРІРЅС–С€РЅС”
+			  when ASCII(spst.SPR_NMSHORT) = 3 then 4 -- РџРѕР·Р° С€С‚Р°С‚РѕРј
+			  else 1 -- РћСЃРЅРѕРІРЅРµ
 			  end as varchar) workPlace	
 		,case when p1.KpuPrkz_SF = 0 then '' else cast(p1.KpuPrkz_SF as varchar) end dictFundSourceID	
-		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- Для науковців
+		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- Р”Р»СЏ РЅР°СѓРєРѕРІС†С–РІ
 			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID	
 		,cast(p1.KpuPrkz_Sch as varchar) accountID	
 		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID

@@ -1,4 +1,4 @@
--- Нарахування на зарплату (hr_payFund)
+п»ї-- РќР°СЂР°С…СѓРІР°РЅРЅСЏ РЅР° Р·Р°СЂРїР»Р°С‚Сѓ (hr_payFund)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'code' code, 'name' name, 'dateFrom' dateFrom, 'dateTo' dateTo, 'calcPeriod' calcPeriod, 'sequence' sequence, 'isAutoCalc' isAutoCalc, 

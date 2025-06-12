@@ -1,4 +1,4 @@
--- Довідник Тарифних розрядів (hr_dictTarifCoeff)
+п»ї-- Р”РѕРІС–РґРЅРёРє РўР°СЂРёС„РЅРёС… СЂРѕР·СЂСЏРґС–РІ (hr_dictTarifCoeff)
 select cast(raz as varchar) ID
 	,cast(raz as varchar)code
 	,cast(raz as varchar) name

@@ -1,4 +1,4 @@
--- Методи розрахунку (hr_method)
+п»ї-- РњРµС‚РѕРґРё СЂРѕР·СЂР°С…СѓРЅРєСѓ (hr_method)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
 select 'ID', 'code', 'name'

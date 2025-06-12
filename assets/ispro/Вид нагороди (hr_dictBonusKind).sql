@@ -1,4 +1,4 @@
--- Вид нагороди (hr_dictBonusKind)
+п»ї-- Р’РёРґ РЅР°РіРѕСЂРѕРґРё (hr_dictBonusKind)
 select 
   spr_cd code 
   ,spr_nmlong name

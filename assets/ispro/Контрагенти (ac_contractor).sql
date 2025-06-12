@@ -1,4 +1,4 @@
--- Контрагенты (ac_contractor)
+п»ї-- РљРѕРЅС‚СЂР°РіРµРЅС‚С‹ (ac_contractor)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'code' code, 'OKPOCode' OKPOCode, 'taxCode' taxCode, 'vatCode' vatCode, 'name' name, 'fullName' fullName, 
 	'nameGen' nameGen, 'nameDat' nameDat, 'fullNameGen' fullNameGen, 'fullNameDat' fullNameDat, 'description' description, 'contrType' contrType

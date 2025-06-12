@@ -1,4 +1,4 @@
--- Довідник Рівень освіти (hr_dictDegree)
+п»ї-- Р”РѕРІС–РґРЅРёРє Р С–РІРµРЅСЊ РѕСЃРІС–С‚Рё (hr_dictDegree)
 select 
 	cast(spr_cd as varchar) ID
 	,cast(spr_cd as varchar) code

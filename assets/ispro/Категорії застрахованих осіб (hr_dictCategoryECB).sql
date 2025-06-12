@@ -1,4 +1,4 @@
--- Категорії застрахованих осіб (hr_dictCategoryECB)
+п»ї-- РљР°С‚РµРіРѕСЂС–С— Р·Р°СЃС‚СЂР°С…РѕРІР°РЅРёС… РѕСЃС–Р± (hr_dictCategoryECB)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID,	'code' code, 'name' name, 'dictTypeTaxECBID' dictTypeTaxECBID, 'description' description
 union all

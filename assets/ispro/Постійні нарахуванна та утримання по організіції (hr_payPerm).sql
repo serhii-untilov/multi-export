@@ -1,4 +1,4 @@
--- Постійні нарахуванна та утримання по організіції (hr_payPerm)
+п»ї-- РџРѕСЃС‚С–Р№РЅС– РЅР°СЂР°С…СѓРІР°РЅРЅР° С‚Р° СѓС‚СЂРёРјР°РЅРЅСЏ РїРѕ РѕСЂРіР°РЅС–Р·С–С†С–С— (hr_payPerm)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'payType' payType, 'payElID' payElID, 'dateFrom' dateFrom, 'dateTo' dateTo, 'paySum' paySum, 'rate' rate, 

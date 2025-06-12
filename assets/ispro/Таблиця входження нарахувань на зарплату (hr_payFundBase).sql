@@ -1,4 +1,4 @@
--- Таблиця входження нарахувань на зарплату (hr_payFundBase)
+п»ї-- РўР°Р±Р»РёС†СЏ РІС…РѕРґР¶РµРЅРЅСЏ РЅР°СЂР°С…СѓРІР°РЅСЊ РЅР° Р·Р°СЂРїР»Р°С‚Сѓ (hr_payFundBase)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)));
 with 
 	payTvDat (PayTV_Part, PayTV_Cd, PayTV_Nmr, PayTV_CdT, PayTV_Dat)
