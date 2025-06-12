@@ -1,4 +1,4 @@
--- Причина стягнення (hr_dictPenaltyReason)
+п»ї-- РџСЂРёС‡РёРЅР° СЃС‚СЏРіРЅРµРЅРЅСЏ (hr_dictPenaltyReason)
 select 
 	s1.spr_cd ID	
 	,s1.spr_cd code	

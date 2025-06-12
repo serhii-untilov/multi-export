@@ -1,4 +1,4 @@
--- Види обліку робочого часу (hr_dictTimeCost)
+п»ї-- Р’РёРґРё РѕР±Р»С–РєСѓ СЂРѕР±РѕС‡РѕРіРѕ С‡Р°СЃСѓ (hr_dictTimeCost)
 /*BEGIN-OF-HEAD*/
 select
 	'ID' ID
@@ -15,25 +15,25 @@ union all
 /*END-OF-HEAD*/
 select
 	'1' ID
-	,'РбДн' code
-	,'Години роботи, передбачені Правилами внутрішнього трудового розпорядку' name	
-	,'Р' nameShort	
+	,'Р Р±Р”РЅ' code
+	,'Р“РѕРґРёРЅРё СЂРѕР±РѕС‚Рё, РїРµСЂРµРґР±Р°С‡РµРЅС– РџСЂР°РІРёР»Р°РјРё РІРЅСѓС‚СЂС–С€РЅСЊРѕРіРѕ С‚СЂСѓРґРѕРІРѕРіРѕ СЂРѕР·РїРѕСЂСЏРґРєСѓ' name	
+	,'Р ' nameShort	
 	,'WORK' timeCostType	
 	,null orderClassID	
 	,'0' isClose	
-	,'РбДн Години роботи, передбачені Правилами внутрішнього трудового розпорядку Р' description	
-	,'Робочий' nameSmall	
+	,'Р Р±Р”РЅ Р“РѕРґРёРЅРё СЂРѕР±РѕС‚Рё, РїРµСЂРµРґР±Р°С‡РµРЅС– РџСЂР°РІРёР»Р°РјРё РІРЅСѓС‚СЂС–С€РЅСЊРѕРіРѕ С‚СЂСѓРґРѕРІРѕРіРѕ СЂРѕР·РїРѕСЂСЏРґРєСѓ Р ' description	
+	,'Р РѕР±РѕС‡РёР№' nameSmall	
 	,null dictTimePrintID
 union all
 select
 	'2' ID
-	,'Вих' code
-	,'Вихідний' name	
-	,'Вих' nameShort	
+	,'Р’РёС…' code
+	,'Р’РёС…С–РґРЅРёР№' name	
+	,'Р’РёС…' nameShort	
 	,'FREE' timeCostType	
 	,null orderClassID	
 	,'0' isClose	
-	,'Вих Вихідний Вих' description	
-	,'Вихідний' nameSmall	
+	,'Р’РёС… Р’РёС…С–РґРЅРёР№ Р’РёС…' description	
+	,'Р’РёС…С–РґРЅРёР№' nameSmall	
 	,null dictTimePrintID
 

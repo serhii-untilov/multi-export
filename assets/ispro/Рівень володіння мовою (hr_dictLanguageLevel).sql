@@ -1,4 +1,4 @@
--- Рівень володіння мовою (hr_dictLanguageLevel)
+п»ї-- Р С–РІРµРЅСЊ РІРѕР»РѕРґС–РЅРЅСЏ РјРѕРІРѕСЋ (hr_dictLanguageLevel)
 select spr_cd code 
 ,spr_nmlong name
 from pspr 

@@ -1,22 +1,22 @@
--- Типи контактних відомостей (cdn_contacttype)
+п»ї-- РўРёРїРё РєРѕРЅС‚Р°РєС‚РЅРёС… РІС–РґРѕРјРѕСЃС‚РµР№ (cdn_contacttype)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'code' code, 'name' name
 union all
 /*END-OF-HEAD*/
-select '1' ID, 'email' code, 'Електронна адреса' name
+select '1' ID, 'email' code, 'Р•Р»РµРєС‚СЂРѕРЅРЅР° Р°РґСЂРµСЃР°' name
 union all
-select '2' ID, 'legalAddr' code, 'Адреса реєстрації' name
+select '2' ID, 'legalAddr' code, 'РђРґСЂРµСЃР° СЂРµС”СЃС‚СЂР°С†С–С—' name
 union all
-select '3' ID, 'actualAddr' code, 'Адреса фактичного проживання' name
+select '3' ID, 'actualAddr' code, 'РђРґСЂРµСЃР° С„Р°РєС‚РёС‡РЅРѕРіРѕ РїСЂРѕР¶РёРІР°РЅРЅСЏ' name
 union all
-select '4' ID, 'phone' code, 'Телефон' name
+select '4' ID, 'phone' code, 'РўРµР»РµС„РѕРЅ' name
 union all
-select '5' ID, 'mobPhone' code, 'Мобільний телефон' name
+select '5' ID, 'mobPhone' code, 'РњРѕР±С–Р»СЊРЅРёР№ С‚РµР»РµС„РѕРЅ' name
 union all
-select '6' ID, 'filName' code, 'Номер філії' name
+select '6' ID, 'filName' code, 'РќРѕРјРµСЂ С„С–Р»С–С—' name
 union all
-select '7' ID, 'postAddr' code, 'Поштова адреса' name
+select '7' ID, 'postAddr' code, 'РџРѕС€С‚РѕРІР° Р°РґСЂРµСЃР°' name
 union all
-select '8' ID, 'fax' code, 'Факс' name
+select '8' ID, 'fax' code, 'Р¤Р°РєСЃ' name
 union all
-select '9' ID, 'other' code, 'Інший' name
+select '9' ID, 'other' code, 'Р†РЅС€РёР№' name

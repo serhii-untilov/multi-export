@@ -1,4 +1,4 @@
--- Види оплати (hr_payEl)
+п»ї-- Р’РёРґРё РѕРїР»Р°С‚Рё (hr_payEl)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'code' code, 'name' name, 'methodID' methodID
@@ -38,21 +38,21 @@ select
 		else null 
 		end as varchar) calcProportion	
 	,cast(case 
-		when vo_grp = 1 then 'PLAN' -- СО
-		when vo_met = 8 then 'PLAN' -- доплата за замещение
-		when vo_met = 9 then 'PLAN' -- доплата за вечерние
-		when vo_met = 10 then 'PLAN' -- доплата за ночные
-		when vo_met = 11 then 'PLAN' -- доплата за работу сверхурочно
-		when vo_met = 12 then 'PLAN' -- доплата за работу в праздничные
-		when vo_met = 13 then 'PLAN' -- доплата за работу в выходной
-		when vo_met = 14 then 'PLAN' -- льготные подросткам
-		when vo_met = 37 then 'PLAN' -- надбавка за ранг
-		when vo_met = 109 then 'FACT' -- ндбавка от среднего заработка
-		when vo_met = 110 then 'FACT' -- доплата до среднего заработка
-		when vo_met = 216 then 'PLAN' -- доплата за совмещение
-		when vo_met = 266 then 'FACT' -- доплата до МЗ
-		when vo_grp = 2 and (vo_prz & 512) <> 0 then 'FACT' -- надбавки от факт заработка
-		when vo_grp = 2 and (vo_prz & 512) = 0 then 'PLAN' -- надбавки от план заработка
+		when vo_grp = 1 then 'PLAN' -- РЎРћ
+		when vo_met = 8 then 'PLAN' -- РґРѕРїР»Р°С‚Р° Р·Р° Р·Р°РјРµС‰РµРЅРёРµ
+		when vo_met = 9 then 'PLAN' -- РґРѕРїР»Р°С‚Р° Р·Р° РІРµС‡РµСЂРЅРёРµ
+		when vo_met = 10 then 'PLAN' -- РґРѕРїР»Р°С‚Р° Р·Р° РЅРѕС‡РЅС‹Рµ
+		when vo_met = 11 then 'PLAN' -- РґРѕРїР»Р°С‚Р° Р·Р° СЂР°Р±РѕС‚Сѓ СЃРІРµСЂС…СѓСЂРѕС‡РЅРѕ
+		when vo_met = 12 then 'PLAN' -- РґРѕРїР»Р°С‚Р° Р·Р° СЂР°Р±РѕС‚Сѓ РІ РїСЂР°Р·РґРЅРёС‡РЅС‹Рµ
+		when vo_met = 13 then 'PLAN' -- РґРѕРїР»Р°С‚Р° Р·Р° СЂР°Р±РѕС‚Сѓ РІ РІС‹С…РѕРґРЅРѕР№
+		when vo_met = 14 then 'PLAN' -- Р»СЊРіРѕС‚РЅС‹Рµ РїРѕРґСЂРѕСЃС‚РєР°Рј
+		when vo_met = 37 then 'PLAN' -- РЅР°РґР±Р°РІРєР° Р·Р° СЂР°РЅРі
+		when vo_met = 109 then 'FACT' -- РЅРґР±Р°РІРєР° РѕС‚ СЃСЂРµРґРЅРµРіРѕ Р·Р°СЂР°Р±РѕС‚РєР°
+		when vo_met = 110 then 'FACT' -- РґРѕРїР»Р°С‚Р° РґРѕ СЃСЂРµРґРЅРµРіРѕ Р·Р°СЂР°Р±РѕС‚РєР°
+		when vo_met = 216 then 'PLAN' -- РґРѕРїР»Р°С‚Р° Р·Р° СЃРѕРІРјРµС‰РµРЅРёРµ
+		when vo_met = 266 then 'FACT' -- РґРѕРїР»Р°С‚Р° РґРѕ РњР—
+		when vo_grp = 2 and (vo_prz & 512) <> 0 then 'FACT' -- РЅР°РґР±Р°РІРєРё РѕС‚ С„Р°РєС‚ Р·Р°СЂР°Р±РѕС‚РєР°
+		when vo_grp = 2 and (vo_prz & 512) = 0 then 'PLAN' -- РЅР°РґР±Р°РІРєРё РѕС‚ РїР»Р°РЅ Р·Р°СЂР°Р±РѕС‚РєР°
 		when Vo_PlZr = 0 then 'FACT' 
 		else 'PLAN' 
 		end as varchar) calcSumType	

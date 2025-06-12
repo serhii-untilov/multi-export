@@ -1,4 +1,4 @@
--- Довідник Види робочого часу (hr_dictTimeCost)
+п»ї-- Р”РѕРІС–РґРЅРёРє Р’РёРґРё СЂРѕР±РѕС‡РѕРіРѕ С‡Р°СЃСѓ (hr_dictTimeCost)
 /*BEGIN-OF-HEAD*/
 select 
 	'ID' ID	
@@ -9,12 +9,12 @@ union all
 /*END-OF-HEAD*/
 select 
 	'1' ID	
-	,'Вих' code	
-	,'Вихідний' name	
+	,'Р’РёС…' code	
+	,'Р’РёС…С–РґРЅРёР№' name	
 	,'FREE' timeCostType
 union all	
 select 
 	'2' ID	
-	,'РбДн' code	
-	,'Робочий' name	
+	,'Р Р±Р”РЅ' code	
+	,'Р РѕР±РѕС‡РёР№' name	
 	,'WORK' timeCostType

@@ -1,4 +1,4 @@
--- Рівень освіти (hr_dictEducationLevel)
+п»ї-- Р С–РІРµРЅСЊ РѕСЃРІС–С‚Рё (hr_dictEducationLevel)
 /*BEGIN-OF-HEAD*/
 select 'ID' id, 'code' code, 'name' name
 union all
@@ -13,7 +13,7 @@ union all
 select
 	'0' ID
 	,'0' code
-	,'<не визначено>' name
+	,'<РЅРµ РІРёР·РЅР°С‡РµРЅРѕ>' name
 where not exists (
 	select null
 	from /*SYS_SCHEMA*/i711_sys.dbo.sspr

@@ -1,4 +1,4 @@
--- Види документiв (ac_dictdockind)
+п»ї-- Р’РёРґРё РґРѕРєСѓРјРµРЅС‚iРІ (ac_dictdockind)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'code' code, 'name' name
 union all
@@ -10,7 +10,7 @@ select
 from pspr 
 where sprspr_cd = 513
 union all
--- Тип документа про освіту
+-- РўРёРї РґРѕРєСѓРјРµРЅС‚Р° РїСЂРѕ РѕСЃРІС–С‚Сѓ
 select 
 	cast(spr_cd + 1000 as varchar) ID
 	,cast(spr_cd + 1000 as varchar) code

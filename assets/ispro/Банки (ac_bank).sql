@@ -1,4 +1,4 @@
--- Банки (ac_bank)
+п»ї-- Р‘Р°РЅРєРё (ac_bank)
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'MFO' MFO, 'code' code, 'name' name, 'fullName' fullName, 'phones' phones, 'description' description
 union all

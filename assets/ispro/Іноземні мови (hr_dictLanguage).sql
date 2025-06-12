@@ -1,4 +1,4 @@
--- Іноземні мови (hr_dictLanguage)
+п»ї-- Р†РЅРѕР·РµРјРЅС– РјРѕРІРё (hr_dictLanguage)
 select spr_cd code 
 ,spr_nmlong name
 from pspr 

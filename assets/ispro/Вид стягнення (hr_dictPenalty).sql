@@ -1,4 +1,4 @@
--- Вид стягнення (hr_dictPenalty)
+п»ї-- Р’РёРґ СЃС‚СЏРіРЅРµРЅРЅСЏ (hr_dictPenalty)
 select 
 	s1.spr_cd ID	
 	,s1.spr_cd code	

@@ -1,4 +1,4 @@
--- Таблиця входження видiв оплати (hr_payElEntry)
+п»ї-- РўР°Р±Р»РёС†СЏ РІС…РѕРґР¶РµРЅРЅСЏ РІРёРґiРІ РѕРїР»Р°С‚Рё (hr_payElEntry)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)));
 with 
 	payTvDat (PayTV_Part, PayTV_Cd, PayTV_Nmr, PayTV_CdT, PayTV_Dat)

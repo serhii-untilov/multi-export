@@ -1,4 +1,4 @@
--- Володіння мовами (hr_employeeLanguage)
+п»ї-- Р’РѕР»РѕРґС–РЅРЅСЏ РјРѕРІР°РјРё (hr_employeeLanguage)
 select 
 	l1.KpuLng_Rcd ID	
 	,c1.kpu_rcd employeeID	
@@ -20,5 +20,3 @@ from KpuLng1 l1
 inner join kpuc1 c1 on c1.kpu_rcd = l1.kpu_rcd
 inner join pspr s1 on s1.sprspr_cd = 680965 and s1.spr_cd = l1.KpuLng_Cd
 left join pspr s2 on s2.sprspr_cd = 680966 and s2.spr_cd = l1.KpuLng_StV
-
-

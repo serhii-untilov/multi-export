@@ -1,4 +1,4 @@
--- Види доходу ПДФО (hr_dictTaxIndivid)
+п»ї-- Р’РёРґРё РґРѕС…РѕРґСѓ РџР”Р¤Рћ (hr_dictTaxIndivid)
 /*BEGIN-OF-HEAD*/
 select 
 	'ID' ID

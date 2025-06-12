@@ -1,4 +1,4 @@
--- Довідник Спеціальність за освітою (hr_dictSpecialty)
+п»ї-- Р”РѕРІС–РґРЅРёРє РЎРїРµС†С–Р°Р»СЊРЅС–СЃС‚СЊ Р·Р° РѕСЃРІС–С‚РѕСЋ (hr_dictSpecialty)
 select 
 	cast(spr_cd as varchar) ID
 	,cast(spr_cd as varchar) code

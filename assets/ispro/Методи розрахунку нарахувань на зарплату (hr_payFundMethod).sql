@@ -1,4 +1,4 @@
--- Методы расчёта фондов (hr_payFundMethod)
+п»ї-- РњРµС‚РѕРґС‹ СЂР°СЃС‡С‘С‚Р° С„РѕРЅРґРѕРІ (hr_payFundMethod)
 /*BEGIN-OF-HEAD*/
 select 'ID', 'code', 'name'
 union all
