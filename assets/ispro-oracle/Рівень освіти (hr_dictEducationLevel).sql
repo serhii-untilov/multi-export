@@ -1,4 +1,4 @@
--- Рівень освіти (hr_dictEducationLevel)
+-- Р С–РІРµРЅСЊ РѕСЃРІС–С‚Рё (hr_dictEducationLevel)
 select TO_CHAR(spr_cd) "ID"
 	,TO_CHAR(spr_cd) "code"
 	,spr_nm "name"
@@ -9,7 +9,7 @@ union all
 select
 	'0' "ID"
 	,'0' "code"
-	,'<не визначено>' "name"
+	,'<РЅРµ РІРёР·РЅР°С‡РµРЅРѕ>' "name"
 from dual
 where not exists (
 	select null
