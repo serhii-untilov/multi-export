@@ -1,4 +1,4 @@
--- Організації (hr_organization)
+-- РћСЂРіР°РЅС–Р·Р°С†С–С— (hr_organization)
 select
 	SysSte_Rcd "ID",
 	SysSte_Cd "code",

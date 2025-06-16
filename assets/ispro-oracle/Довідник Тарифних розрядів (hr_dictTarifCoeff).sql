@@ -1,9 +1,12 @@
--- Довідник Тарифних розрядів (hr_dictTarifCoeff)
-select raz "ID"
-	,raz "code"
-	,raz "name"
-from (
-	select distinct kpuprkz_raz raz
-	from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuprk1
-	where kpuprkz_raz <> 0
-) t1
+-- Р”РѕРІС–РґРЅРёРє РўР°СЂРёС„РЅРёС… СЂРѕР·СЂСЏРґС–РІ (hr_dictTarifCoeff)
+select
+	raz "ID",
+	raz "code",
+	raz "name"
+from
+	(
+		select distinct
+			kpuprkz_raz raz
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuprk1
+		where kpuprkz_raz <> 0
+	) t1

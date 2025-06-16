@@ -1,82 +1,130 @@
--- Âèäè ñòàæó (hr_dictExperience)
+-- Ð’Ð¸Ð´Ð¸ ÑÑ‚Ð°Ð¶Ñƒ (hr_dictExperience)
 -- ID;code;name;methodExpID;dateFrom;dateTo
 select
-	'1' "ID"
-	,'1' "code"
-	,'Çàãàëüíèé ñòàæ' "name"
-	,'' "methodExpID" -- !!!
-	,'1876-12-31' "dateFrom"
-	,'9999-12-31' "dateTo"
-from dual
-where exists (select null from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 where Kpu_DtObSt > TO_DATE('1876-12-31', 'YYYY-MM-DD'))	
+	'1' "ID",
+	'1' "code",
+	'Ð—Ð°Ð³Ð°Ð»ÑŒÐ½Ð¸Ð¹ ÑÑ‚Ð°Ð¶' "name",
+	'null' "methodExpID" -- !!!
+,
+	'1876-12-31' "dateFrom",
+	'9999-12-31' "dateTo"
+from
+	dual
+where exists
+(
+		select null
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
+		where Kpu_DtObSt > TO_DATE('1876-12-31', 'YYYY-MM-DD')
+)
 union all
 select
-	'2' "ID"
-	,'2' "code"
-	,'Áåçïåðåðâíèé ñòàæ' "name"
-	,'' "methodExpID" -- !!!
-	,'1876-12-31' "dateFrom"
-	,'9999-12-31' "dateTo"
-from dual
-where exists (select null from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 where Kpu_DtNpSt > TO_DATE('1876-12-31', 'YYYY-MM-DD'))
+	'2' "ID",
+	'2' "code",
+	'Ð‘ÐµÐ·Ð¿ÐµÑ€ÐµÑ€Ð²Ð½Ð¸Ð¹ ÑÑ‚Ð°Ð¶' "name",
+	'null' "methodExpID" -- !!!
+,
+	'1876-12-31' "dateFrom",
+	'9999-12-31' "dateTo"
+from
+	dual
+where exists
+(
+		select null
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
+		where Kpu_DtNpSt > TO_DATE ('1876-12-31', 'YYYY-MM-DD')
+)
 union all
 select
-	'3' "ID"
-	,'3' "code"
-	,'Ñòàæ íà ï³äïðèºìñòâ³' "name"
-	,'' "methodExpID" -- !!!
-	,'1876-12-31' "dateFrom"
-	,'9999-12-31' "dateTo"
+	'3' "ID",
+	'3' "code",
+	'Ð¡Ñ‚Ð°Ð¶ Ð½Ð° Ð¿Ñ–Ð´Ð¿Ñ€Ð¸Ñ”Ð¼ÑÑ‚Ð²Ñ–' "name",
+	'null' "methodExpID" -- !!!
+,
+	'1876-12-31' "dateFrom",
+	'9999-12-31' "dateTo"
 from dual
-where exists (select null from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 where Kpu_DtOrgSt > TO_DATE('1876-12-31', 'YYYY-MM-DD'))
+where exists
+(
+		select null
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
+		where Kpu_DtOrgSt > TO_DATE('1876-12-31', 'YYYY-MM-DD')
+)
 union all
 select
-	'4' "ID"
-	,'4' "code"
-	,'Ñòðàõîâèé ñòàæ' "name"
-	,'' methodExpID -- !!!
-	,'1876-12-31' "dateFrom"
-	,'9999-12-31' "dateTo"
+	'4' "ID",
+	'4' "code",
+	'Ð¡Ñ‚Ñ€Ð°Ñ…Ð¾Ð²Ð¸Ð¹ ÑÑ‚Ð°Ð¶' "name",
+	'null' methodExpID -- !!!
+,
+	'1876-12-31' "dateFrom",
+	'9999-12-31' "dateTo"
 from dual
-where exists (select null from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 where Kpu_DtSrSt > TO_DATE('1876-12-31', 'YYYY-MM-DD'))
+where exists
+(
+		select null
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
+		where Kpu_DtSrSt > TO_DATE('1876-12-31', 'YYYY-MM-DD')
+)
 union all
 select
-	'5' "ID"
-	,'5' "code"
-	,'Ãàëóçåâèé ñòàæ' "name"
-	,'' "methodExpID" -- !!!
-	,'1876-12-31' "dateFrom"
-	,'9999-12-31' "dateTo"
+	'5' "ID",
+	'5' "code",
+	'Ð“Ð°Ð»ÑƒÐ·ÐµÐ²Ð¸Ð¹ ÑÑ‚Ð°Ð¶' "name",
+	'null' "methodExpID" -- !!!
+,
+	'1876-12-31' "dateFrom",
+	'9999-12-31' "dateTo"
 from dual
-where exists (select null from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 where Kpu_DtOtrSt > TO_DATE('1876-12-31', 'YYYY-MM-DD'))
+where exists
+(
+		select null
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
+		where Kpu_DtOtrSt > TO_DATE ('1876-12-31', 'YYYY-MM-DD')
+)
 union all
 select
-	'6' "ID"
-	,'6' "code"
-	,'Ñòàæ äåðæñëóæáîâöÿ' "name"
-	,'' "methodExpID" -- !!!
-	,'1876-12-31' "dateFrom"
-	,'9999-12-31' "dateTo"
+	'6' "ID",
+	'6' "code",
+	'Ð¡Ñ‚Ð°Ð¶ Ð´ÐµÑ€Ð¶ÑÐ»ÑƒÐ¶Ð±Ð¾Ð²Ñ†Ñ' "name",
+	'null' "methodExpID" -- !!!
+,
+	'1876-12-31' "dateFrom",
+	'9999-12-31' "dateTo"
 from dual
-where exists (select null from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 where Kpu_DtGS > TO_DATE('1876-12-31', 'YYYY-MM-DD'))
+where exists
+(
+		select null
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
+		where Kpu_DtGS > TO_DATE ('1876-12-31', 'YYYY-MM-DD')
+)
 union all
 select
-	'7' "ID"
-	,'7' "code"
-	,'Áåçïåðåðâíèé ñòàæ äåðæñëóæáîâöÿ' "name"
-	,'' "methodExpID" -- !!!
-	,'1876-12-31' "dateFrom"
-	,'9999-12-31' "dateTo"
+	'7' "ID",
+	'7' "code",
+	'Ð‘ÐµÐ·Ð¿ÐµÑ€ÐµÑ€Ð²Ð½Ð¸Ð¹ ÑÑ‚Ð°Ð¶ Ð´ÐµÑ€Ð¶ÑÐ»ÑƒÐ¶Ð±Ð¾Ð²Ñ†Ñ' "name",
+	'null' "methodExpID" -- !!!
+,
+	'1876-12-31' "dateFrom",
+	'9999-12-31' "dateTo"
 from dual
-where exists (select null from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 where Kpu_DtGSNp > TO_DATE('1876-12-31', 'YYYY-MM-DD'))
-union all	
+where exists
+(
+		select null
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
+		where Kpu_DtGSNp > TO_DATE ('1876-12-31', 'YYYY-MM-DD')
+	)
+union all
 select
-	TO_CHAR(paystg_cd + 10) "ID"
-	,TO_CHAR(paystg_cd + 10) "code"
-	,pspr.spr_nm "name"
-	,'' "methodExpID" -- !!!
-	,TO_CHAR(paystg_datn, 'YYYY-MM-DD') dateFrom
-	,case when paystg_datk <= TO_DATE('1876-12-31', 'YYYY-MM-DD') then '9999-12-31' else TO_CHAR(paystg_datk, 'YYYY-MM-DD') end "dateTo"
+	TO_CHAR (paystg_cd + 10) "ID",
+	TO_CHAR (paystg_cd + 10) "code",
+	pspr.spr_nm "name",
+	'null' "methodExpID" -- !!!
+,
+	TO_CHAR (paystg_datn, 'YYYY-MM-DD') dateFrom,
+	case
+		when paystg_datk <= TO_DATE ('1876-12-31', 'YYYY-MM-DD') then '9999-12-31'
+		else TO_CHAR (paystg_datk, 'YYYY-MM-DD')
+	end "dateTo"
 from /*FIRM_SCHEMA*/ISPRO_8_PROD.PAYSTG
-inner join /*FIRM_SCHEMA*/ISPRO_8_PROD.PSPR on pspr.SprSpr_Cd = 680984 
+inner join /*FIRM_SCHEMA*/ISPRO_8_PROD.PSPR on pspr.SprSpr_Cd = 680984
 	and pspr.Spr_Cd = paystg.paystg_cd
