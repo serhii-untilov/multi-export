@@ -2,6 +2,7 @@
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
+declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 declare @minDateRaiseSalary date = '2016-01-01'; -- ���� ̳����������� �� 14.06.2016 �. � 263/10/136-16
 /*BEGIN-OF-HEAD*/
 select 'ID' ID
@@ -42,11 +43,11 @@ select ID
 	,orderNumber
 	,orderDate
 	,staffingTableID
-	,dictTarifCoeffID	
-from (	
+	,dictTarifCoeffID
+from (
 	select
-		cast(p1.bookmark as varchar) ID	
-		,cast(p1.kpu_rcd as varchar) employeeID	
+		cast(p1.bookmark as varchar) ID
+		,cast(p1.kpu_rcd as varchar) employeeID
 		,case when len(c1.kpu_cdnlp) <> 0 then c1.kpu_cdnlp
 			when len(c2.kpu_cdnlp) <> 0 then c2.kpu_cdnlp
 			when len(psp.KpuPsp_Ser) <> 0 or len(psp.KpuPsp_Nmr) <> 0 then psp.KpuPsp_Ser + ' ' + psp.KpuPsp_Nmr
@@ -58,50 +59,50 @@ from (
 					cast(day(c1.kpu_dtroj) as varchar) +
 					cast(month(c1.kpu_dtroj) as varchar) +
 					cast((year(c1.kpu_dtroj) % 100) as varchar)
-			 end taxCode	
-		,cast(x1.kpu_tn as varchar) tabNum	 
-		,cast(p1.kpu_rcd as varchar) employeeNumberID	
+			 end taxCode
+		,cast(x1.kpu_tn as varchar) tabNum
+		,cast(p1.kpu_rcd as varchar) employeeNumberID
 		,cast(c1.kpu_dtpst as date) employeeNumberDateFrom
 		,cast(case when c1.kpu_dtuvl <= '1876-12-31' then '9999-12-31' else c1.kpu_dtuvl end as date) employeeNumberDateTo
-		,cast(p1.KpuPrkz_PdRcd as varchar) departmentID	
-		--,cast(p1.kpuprkz_dol as varchar) positionID	
+		,cast(p1.KpuPrkz_PdRcd as varchar) departmentID
+		--,cast(p1.kpuprkz_dol as varchar) positionID
 		,cast(case when sprdol.sprd_cd is null then null else p1.kpuprkz_pdrcd * 10000 + p1.kpuprkz_dol end as varchar) positionID
-		,cast(case when p1.kpuprkz_dtv <= '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) dateFrom	
-		,cast(case when p2.kpuprkz_dtv is null OR p2.kpuprkz_dtv <= '1876-12-31' then '9999-12-31' else p2.kpuprkz_dtv - 1 end as date) dateTo	
-		,cast(cast(case when p1.KpuPrkz_DtNzE <= '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo	
+		,cast(case when p1.kpuprkz_dtv <= '1876-12-31' then c1.kpu_dtpst else p1.kpuprkz_dtv end as date) dateFrom
+		,cast(case when p2.kpuprkz_dtv is null OR p2.kpuprkz_dtv <= '1876-12-31' then '9999-12-31' else p2.kpuprkz_dtv - 1 end as date) dateTo
+		,cast(cast(case when p1.KpuPrkz_DtNzE <= '1876-12-31' then null else p1.KpuPrkz_DtNzE end as date) as varchar) changeDateTo
 		,cast(p1.KpuPrkz_RejWr as varchar) workScheduleID
 		,cast(case when ASCII(spst.SPR_NMSHORT) = 7 then 2 -- ���������
 			  when ASCII(spst.SPR_NMSHORT) = 4 then 4 -- ��������
 			  else 1 -- �������
-			  end as varchar) workerType	
-		,cast(p1.KpuPrkz_QtStv as varchar) mtCount	
-		,cast(x1.kpu_tn as varchar) + ' ' + c1.kpu_fio + ' ' + coalesce(sprdol.sprd_nmim, '') description	
+			  end as varchar) workerType
+		,cast(p1.KpuPrkz_QtStv as varchar) mtCount
+		,cast(x1.kpu_tn as varchar) + ' ' + c1.kpu_fio + ' ' + coalesce(sprdol.sprd_nmim, '') description
 		,'' dictRankID -- ,p1.KpuPrkz_Rn dictRankID -- � �������� ���� ������������ �� �� ����������. � ������������ � ������� ������������������
 		,cast(p1.KpuPrkz_Kat as varchar) dictStaffCatID
 		,cast(p1.KpuPrkz_SysOp as varchar) payElID
 		,cast(cast(( { fn CONVERT( p1.KpuPrkz_Okl, SQL_DOUBLE ) } / { fn POWER( 10, p1.KpuPrkz_KfcMT ) } ) as numeric(19,2)) as varchar) accrualSum
 		,cast(cast(
-				case 
+				case
 				when p1.KpuPrkz_IdxBsd > '1876-12-31' then p1.KpuPrkz_IdxBsd
 				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and lastIdxBase.kpuprkz_dtv is not null and lastIdxBase.kpuprkz_dtv >= @minDateRaiseSalary then lastIdxBase.kpuprkz_dtv
 				WHEN p1.KpuPrkz_IdxBsd <= '1876-12-31' and { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 2, 0 ) }, 2 ) } <> 0 and p1.kpuprkz_dtv >= @minDateRaiseSalary then p1.kpuprkz_dtv
 				--when dateRaiseSalary.kpuprkz_dtv is not null then p1.kpuprkz_dtv
-				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and idxBase.kpuprkz_dtv is not null and idxBase.kpuprkz_dtv >= @minDateRaiseSalary then idxBase.kpuprkz_dtv			
+				when p1.KpuPrkz_IdxBsd <= '1876-12-31' and idxBase.kpuprkz_dtv is not null and idxBase.kpuprkz_dtv >= @minDateRaiseSalary then idxBase.kpuprkz_dtv
 				--when p1.KpuPrkz_IdxBsd < c1.kpu_dtpst and c1.kpu_dtpst >= @minDateRaiseSalary then c1.kpu_dtpst
 				when p1.KpuPrkz_IdxBsd <= '1876-12-31' then null
 				else p1.KpuPrkz_IdxBsd end
 			as date) as varchar) raiseSalary
 		,cast(CASE WHEN { fn MOD( { fn TRUNCATE( p1.KpuPrkz_Prz / 1, 0 ) }, 2 ) } <> 0 then 1 else 0 end as varchar) isIndex
-		,'1' isActive	
+		,'1' isActive
 		,cast(case when x1.kpu_tnosn <> 0 then 2 -- ���������� ��������
 			  when ASCII(spst.SPR_NMSHORT) in (2, 6) then 3 -- ���������� ��������
 			  when ASCII(spst.SPR_NMSHORT) = 3 then 4 -- ���� ������
 			  else 1 -- �������
-			  end as varchar) workPlace	
-		,case when p1.KpuPrkz_SF = 0 then '' else cast(p1.KpuPrkz_SF as varchar) end dictFundSourceID	
+			  end as varchar) workPlace
+		,case when p1.KpuPrkz_SF = 0 then '' else cast(p1.KpuPrkz_SF as varchar) end dictFundSourceID
 		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- ��� ���������
-			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID	
-		,cast(p1.KpuPrkz_Sch as varchar) accountID	
+			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID
+		,cast(p1.KpuPrkz_Sch as varchar) accountID
 		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID
 		,case when p1.kpuprkz_rcd = 0 then '' else cast(p1.kpuprkz_rcd as varchar) end orderID
 		,p1.kpuprkz_cd orderNumber
@@ -114,7 +115,7 @@ from (
 
 	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
 		select max(pdr2.bookmark)
-		from kpuprk1 pdr2 
+		from kpuprk1 pdr2
 		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
 			select max(pdr3.kpuprkz_dtv)
 			from kpuprk1 pdr3
@@ -129,11 +130,11 @@ from (
 		group by kpu_rcd
 	) minDatePrk on minDatePrk.kpu_rcd = p1.kpu_rcd
 	left join sprdol on sprd_cd = p1.kpuprkz_dol
-	left join pspr spst on spst.sprspr_cd = 547 and spst.spr_cd = p1.kpuprkz_spst -- ASCII( SPR_NMSHORT ) 
+	left join pspr spst on spst.sprspr_cd = 547 and spst.spr_cd = p1.kpuprkz_spst -- ASCII( SPR_NMSHORT )
 	left join KPUPRK1 p2 on p2.Kpu_Rcd = p1.Kpu_Rcd and p2.bookmark =
 	(
 		SELECT min(p3.bookmark)
-		from KPUPRK1 p3 
+		from KPUPRK1 p3
 		where p3.Kpu_Rcd = p1.kpu_rcd
 		and p3.kpuprkz_dtv =
 		(
@@ -146,7 +147,7 @@ from (
 	left join KPUPRK1 idxBase on idxBase.Kpu_Rcd = p1.Kpu_Rcd and idxBase.bookmark =
 	(
 		SELECT MAX(p3.bookmark)
-		from KPUPRK1 p3 
+		from KPUPRK1 p3
 		where p3.Kpu_Rcd = p1.kpu_rcd
 		and p3.kpuprkz_dtv =
 		(
@@ -160,7 +161,7 @@ from (
 	left join KPUPRK1 lastIdxBase on lastIdxBase.Kpu_Rcd = p1.Kpu_Rcd and lastIdxBase.bookmark =
 	(
 		SELECT MAX(p3.bookmark)
-		from KPUPRK1 p3 
+		from KPUPRK1 p3
 		where p3.Kpu_Rcd = p1.kpu_rcd
 		and KpuPrkz_IdxBsd > '1876-12-31'
 		and p3.kpuprkz_dtv =
@@ -175,7 +176,7 @@ from (
 	--left join KPUPRK1 dateRaiseSalary on dateRaiseSalary.Kpu_Rcd = p1.Kpu_Rcd and dateRaiseSalary.bookmark =
 	--(
 	--	SELECT max(p3.bookmark)
-	--	from KPUPRK1 p3 
+	--	from KPUPRK1 p3
 	--	where p3.Kpu_Rcd = p1.kpu_rcd
 	--	and p3.kpuprkz_dtv =
 	--	(
@@ -191,7 +192,7 @@ from (
 	left join kpux x2 on x2.kpu_tn = x1.kpu_tnosn
 	left join kpupsp1 psp2 on psp2.kpu_rcd = x2.kpu_rcd and psp2.KpuPsp_Add = 0
 	left join kpuc1 c2 on c2.kpu_rcd = x2.kpu_rcd
-	where 
+	where
 	(	p1.KpuPrkz_DtV >= c1.kpu_dtpst or not exists
 		(
 			SELECT null
@@ -201,17 +202,18 @@ from (
 		)
 	)
 	and (c1.kpu_flg & 2) = 0
-	and (p1.kpuprkz_dtv >= @dateFrom 
+	and (p1.kpuprkz_dtv >= @dateFrom
 			or p1.kpuprkz_dtv <= c1.kpu_dtpst
-			or (minDatePrk.kpuprkz_dtv is not null 
+			or (minDatePrk.kpuprkz_dtv is not null
 				and p1.kpuprkz_dtv = minDatePrk.kpuprkz_dtv))
 	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+	and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
 ) t1
 inner join (
 	-- ����������� ������������ �� ���
 	select max(kpu_rcd) kpu_rcd, taxCode
 	from (
-		select 
+		select
 			x1.kpu_rcd
 			,case when len(c1.kpu_cdnlp) <> 0 then c1.kpu_cdnlp
 				when len(p1.KpuPsp_Ser) <> 0 or len(p1.KpuPsp_Nmr) <> 0 then p1.KpuPsp_Ser + ' ' + p1.KpuPsp_Nmr
@@ -232,6 +234,7 @@ inner join (
 			and (Kpu_Flg & 2) = 0	-- ����� � ��������
 			and x1.kpu_tnosn = 0
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+		and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
 	) t1
 	group by taxCode
 ) t2 on t2.taxCode = t1.taxCode

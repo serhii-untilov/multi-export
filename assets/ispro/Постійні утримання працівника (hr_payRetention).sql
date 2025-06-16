@@ -2,6 +2,7 @@
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
+declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
 select 'ID' ID
 	,'tabNum' tabNum
@@ -59,3 +60,4 @@ left join PtnRk k1 on k1.Ptn_Rcd = u1.kpuudr_cdplc
 where (c1.kpu_flg & 2) = 0
 	and (kpuudr_datk <= '1876-12-31' or kpuudr_datk >= @dateFrom)
 	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+	and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
