@@ -1,6 +1,7 @@
 -- ����������� (hr_employeeDisability)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
+declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
 select
 	'ID' ID
@@ -22,7 +23,7 @@ select
 	,'description' description
 union all
 /*END-OF-HEAD*/
-select 
+select
 	cast(i1.bookmark as varchar) ID
 	,cast(c1.kpu_rcd as varchar) employeeID --cast(i1.kpu_rcd as varchar) employeeID
 	,cast(KpuInv_VIn as varchar) disabilityID
@@ -38,14 +39,14 @@ select
 	,left(REPLACE(REPLACE(KpuInv_NmrIPR, CHAR(13), ''), CHAR(10), ''), 10) programNumber
 	,cast(cast(case when KpuInv_DtIPR <= '1876-12-31' then null else KpuInv_DtIPR end as date) as varchar) programDate
 	,REPLACE(REPLACE(KpuInv_WhoIPR, CHAR(13), ''), CHAR(10), '') programIssuer
-	,null employeeDocID	
+	,null employeeDocID
 	,coalesce(spr_nm, '')
 		+ case when spr_nm is not null and len(spr_nm) > 0 then ', ' else '' end + case when KpuInv_Grp > 0 then cast(KpuInv_Grp as varchar) else '' end + case when KpuInv_Grp > 0 then ' �����' else '' end
-		+ case when KpuInv_DtN > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0) then ', ' else '' end 
-			+ case when (spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 then ' � ' else '' end 
+		+ case when KpuInv_DtN > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0) then ', ' else '' end
+			+ case when (spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 then ' � ' else '' end
 				+ case when KpuInv_DtN > '1876-12-31' then convert(varchar, KpuInv_DtN, 104) else '' end
-		--+ case when KpuInv_DtK > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 or KpuInv_DtN > '1876-12-31') then ', ' else '' end 
-			+ case when KpuInv_DtK > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 or KpuInv_DtN > '1876-12-31') then ' �� ' else '' end 
+		--+ case when KpuInv_DtK > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 or KpuInv_DtN > '1876-12-31') then ', ' else '' end
+			+ case when KpuInv_DtK > '1876-12-31' and ((spr_nm is not null and len(spr_nm) > 0) or KpuInv_Grp > 0 or KpuInv_DtN > '1876-12-31') then ' �� ' else '' end
 				+ case when KpuInv_DtK > '1876-12-31' then convert(varchar, KpuInv_DtK, 104) else '' end
 		description
 from kpuinv i1
@@ -53,7 +54,7 @@ inner join kpuc1 c1 on c1.kpu_rcd = i1.kpu_rcd
 
 inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
 	select max(pdr2.bookmark)
-	from kpuprk1 pdr2 
+	from kpuprk1 pdr2
 	where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
 		select max(pdr3.kpuprkz_dtv)
 		from kpuprk1 pdr3
@@ -65,7 +66,7 @@ inner join (
 	-- ����������� ������������ �� ���
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
-		select 
+		select
 			x1.kpu_rcd
 			,case when len(c1.kpu_cdnlp) <> 0 then c1.kpu_cdnlp
 				when len(p1.KpuPsp_Ser) <> 0 or len(p1.KpuPsp_Nmr) <> 0 then p1.KpuPsp_Ser + ' ' + p1.KpuPsp_Nmr
@@ -86,9 +87,11 @@ inner join (
 			and (Kpu_Flg & 2) = 0	-- ����� � ��������
 			and x1.kpu_tnosn = 0
 			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+			and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
 	) t1
 	group by kpu_cdnlp
 ) t1 on t1.kpu_rcd = c1.kpu_rcd
 left join /*SYS_SCHEMA*/i711_sys.dbo.sspr on sprspr_cd = 681037 and spr_cdlng = 2 and spr_cd = KpuInv_VIn
 where (c1.Kpu_Flg & 2) = 0	-- ����� � ��������
 	and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+	and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)

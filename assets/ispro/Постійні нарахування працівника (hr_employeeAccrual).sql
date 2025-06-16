@@ -2,8 +2,9 @@
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
+declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
-select 
+select
 	'ID' ID
 	,'employeeID' employeeID
 	,'tabNum' tabNum
@@ -18,9 +19,9 @@ select
 	,'taxCode' taxCode
 union all
 /*END-OF-HEAD*/
-select 
+select
 	ID
-	,cast(t4.kpu_rcd as varchar) employeeID	
+	,cast(t4.kpu_rcd as varchar) employeeID
 	,tabNum
 	,employeeNumberID
 	,payElID
@@ -32,7 +33,7 @@ select
 	,orderDatefrom
 	,taxCode
 from (
-	select 
+	select
 		ID
 		,tabNum
 		,employeeNumberID
@@ -54,25 +55,25 @@ from (
 					cast((year(c2.kpu_dtroj) % 100) as varchar)
 			 end taxCode
 	from (
-		select 
-			cast(n1.KpuNch_Id as varchar) ID	
+		select
+			cast(n1.KpuNch_Id as varchar) ID
 			,cast(x1.kpu_tn as varchar) tabNum
-			,cast(n1.kpu_rcd as varchar) employeeNumberID		
-			,cast(n1.kpunch_cd as varchar) payElID	
-			,cast(case when n1.kpuNch_datn <= '1876-12-31' then null else CAST(n1.kpuNch_datn as DATE) end as varchar) dateFrom	
-			,cast(case when n1.kpuNch_datk <= '1876-12-31' then '9999-12-31' else CAST(n1.kpuNch_datk as DATE) end as varchar) dateTo	
-			,cast(case 
+			,cast(n1.kpu_rcd as varchar) employeeNumberID
+			,cast(n1.kpunch_cd as varchar) payElID
+			,cast(case when n1.kpuNch_datn <= '1876-12-31' then null else CAST(n1.kpuNch_datn as DATE) end as varchar) dateFrom
+			,cast(case when n1.kpuNch_datk <= '1876-12-31' then '9999-12-31' else CAST(n1.kpuNch_datk as DATE) end as varchar) dateTo
+			,cast(case
 					when vo_grp = 1 then { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) }
-					when (KpuNch_Prz & 1) <> 0 then null 
-					else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } 
-					end as varchar) accrualSum	
-			,cast(case 
+					when (KpuNch_Prz & 1) <> 0 then null
+					else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) }
+					end as varchar) accrualSum
+			,cast(case
 					when vo_grp = 1 then null
-					when (KpuNch_Prz & 1) = 0 then null 
-					else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) } 
-					end as varchar) accrualRate	
-			,n1.KpuNch_CdPr orderNumber	
-			,cast(case when n1.KpuNch_DtPr <= '1876-12-31' then null else cast(n1.KpuNch_DtPr as DATE) end as varchar) orderDatefrom 
+					when (KpuNch_Prz & 1) = 0 then null
+					else { fn CONVERT( n1.KpuNch_Sm, SQL_DOUBLE ) } / { fn POWER( 10, n1.KpuNch_MT ) }
+					end as varchar) accrualRate
+			,n1.KpuNch_CdPr orderNumber
+			,cast(case when n1.KpuNch_DtPr <= '1876-12-31' then null else cast(n1.KpuNch_DtPr as DATE) end as varchar) orderDatefrom
 			,coalesce(x2.kpu_rcd, x1.kpu_rcd) kpu_rcdOsn
 		from kpunch1 n1
 		inner join payvo1 v1 on v1.vo_cd = n1.kpunch_cd
@@ -81,7 +82,7 @@ from (
 
 		inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
 			select max(pdr2.bookmark)
-			from kpuprk1 pdr2 
+			from kpuprk1 pdr2
 			where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
 				select max(pdr3.kpuprkz_dtv)
 				from kpuprk1 pdr3
@@ -93,15 +94,16 @@ from (
 		where (c1.Kpu_Flg & 2) = 0	-- ����� � ��������
 			and (kpunch_datk <= '1876-12-31' or kpunch_datk >= @dateFrom)
 			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
-	) t1	
+			and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
+	) t1
 	inner join kpuc1 c2 on c2.kpu_rcd = t1.kpu_rcdOsn
 	left join kpupsp1 p2 on p2.kpu_rcd = t1.kpu_rcdOsn and KpuPsp_Add = 0
-) t2 	
+) t2
 inner join (
 	-- ����������� ������������ �� ���
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
-		select 
+		select
 			x1.kpu_rcd
 			,case when len(c1.kpu_cdnlp) <> 0 then c1.kpu_cdnlp
 				when len(p1.KpuPsp_Ser) <> 0 or len(p1.KpuPsp_Nmr) <> 0 then p1.KpuPsp_Ser + ' ' + p1.KpuPsp_Nmr
@@ -122,6 +124,7 @@ inner join (
 			and (Kpu_Flg & 2) = 0	-- ����� � ��������
 			and x1.kpu_tnosn = 0
 			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+			and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
 	) t3
 	group by kpu_cdnlp
 ) t4 on t4.kpu_cdnlp = t2.taxCode

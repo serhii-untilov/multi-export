@@ -1,6 +1,7 @@
 -- �������� ���� (hr_employeeFamily)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
+declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 /*BEGIN-OF-HEAD*/
 select 'ID' ID, 'employeeID' employeeID, 'peopleID' peopleID, 'description' description
 union all
@@ -10,9 +11,9 @@ from (
 	select
 		cast(u1.kpuudr_ID as varchar) ID -- ����� ����� ��������� �������
 		,cast(u1.kpu_rcd as varchar) employeeID
-		,cast(u1.kpuudr_ID as varchar) peopleID	
+		,cast(u1.kpuudr_ID as varchar) peopleID
 		--,cast(cast(KpuUdr_DatRR as date) as varchar) birthDate -- see hr_people.birthDate
-		,cast(cast(KpuUdr_DatRR as date) as varchar) + ' ĳ�� ' + KpuUdr_DatRRFio description	
+		,cast(cast(KpuUdr_DatRR as date) as varchar) + ' ĳ�� ' + KpuUdr_DatRRFio description
 	from KPUUDR1 u1
 	inner join kpuc1 c1 on c1.kpu_rcd = u1.kpu_rcd
 	inner join payvo1 v1 on v1.vo_cd = u1.kpuudr_cd
@@ -20,19 +21,20 @@ from (
 	where v1.vo_met = 19 and len(KpuUdr_DatRRFio) > 0
 		and (c1.kpu_flg & 2) = 0
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+		and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
 	union all
-	select 
+	select
 		cast(s1.kpusem_rcd as varchar) ID -- ����� ����� ��������� �������
 		,cast(s1.kpu_rcd as varchar) employeeID
-		,cast(s1.kpusem_rcd as varchar) peopleID	
+		,cast(s1.kpusem_rcd as varchar) peopleID
 		--,cast(cast(KpuUdr_DatRR as date) as varchar) birthDate -- see hr_people.birthDate
-		,cast(cast(KpuSem_Dt as date) as varchar) + coalesce(pspr.spr_nm, ' ') + KpuSem_Fio description	
+		,cast(cast(KpuSem_Dt as date) as varchar) + coalesce(pspr.spr_nm, ' ') + KpuSem_Fio description
 	from kpusem1 s1
 	inner join kpuc1 c1 on c1.kpu_rcd = s1.kpu_rcd
 
 	inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
 		select max(pdr2.bookmark)
-		from kpuprk1 pdr2 
+		from kpuprk1 pdr2
 		where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
 			select max(pdr3.kpuprkz_dtv)
 			from kpuprk1 pdr3
@@ -43,12 +45,13 @@ from (
 	left join pspr on pspr.sprspr_cd = 680980 and spr_cd = KpuSem_Cd
 	where (c1.kpu_flg & 2) = 0
 		and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+		and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
 ) t1
 inner join (
 	-- ����������� ������������ �� ���
 	select max(kpu_rcd) kpu_rcd, kpu_cdnlp
 	from (
-		select 
+		select
 			x1.kpu_rcd
 			,case when len(c1.kpu_cdnlp) <> 0 then c1.kpu_cdnlp
 				when len(p1.KpuPsp_Ser) <> 0 or len(p1.KpuPsp_Nmr) <> 0 then p1.KpuPsp_Ser + ' ' + p1.KpuPsp_Nmr
@@ -69,6 +72,7 @@ inner join (
 			and (Kpu_Flg & 2) = 0	-- ����� � ��������
 			and x1.kpu_tnosn = 0
 			and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+			and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
 	) t1
 	group by kpu_cdnlp
 ) t2 on t2.kpu_rcd = t1.employeeID

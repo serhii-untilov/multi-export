@@ -1,38 +1,39 @@
 -- ������ ���������� (ac_address)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
+declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 
-select 
-	cast(a1.bookmark as varchar) ID	
+select
+	cast(a1.bookmark as varchar) ID
 	,cast(a1.kpu_rcd as varchar) employeeID
 	,cast(a1.kpu_rcd as varchar) employeeNumberID
 	,cast(x1.kpu_tn as varchar) tabNum
 	,c1.kpu_cdnlp taxCode
 	,c1.kpu_fio fullFIO
-	,case when c1.kpu_dtroj <= '1876-12-31' then '' else cast(cast(c1.kpu_dtroj as date) as varchar) end birthDate 
-	,case when kpuadr_add = 0 then cast(a1.kpuadr_cd as varchar) 
+	,case when c1.kpu_dtroj <= '1876-12-31' then '' else cast(cast(c1.kpu_dtroj as date) as varchar) end birthDate
+	,case when kpuadr_add = 0 then cast(a1.kpuadr_cd as varchar)
 		else 'NULL' end addressType -- (1-������.,2-������.,3-����.)
-	,a1.KpuAdr_Index postIndex	
+	,a1.KpuAdr_Index postIndex
 	,cast(a1.KpuAdr_Cnt as varchar) countryID
 	,SprAdrCnt.SAdrCnt_Cd countryCode
 	,(CASE WHEN (KpuAdr_CntNm IS NULL OR KpuAdr_CntNm = '') THEN SprAdrCnt.SAdrCnt_Nm ELSE KpuAdr_CntNm END) countryName
-	,cast(a1.KpuAdr_Reg as varchar) regionID	
+	,cast(a1.KpuAdr_Reg as varchar) regionID
 	,SprAdrReg.SAdrReg_Cd regionCode
 	,(CASE WHEN (KpuAdr_RegNm IS NULL OR KpuAdr_RegNm = '') THEN SprAdrReg.SAdrReg_Nm ELSE KpuAdr_RegNm END) regionName
 	,cast(a1.KpuAdr_Zone as varchar) districtID
 	,SprAdrRai.SAdrRai_Cd districtCode
 	,(CASE WHEN (KpuAdr_ZoneN IS NULL OR KpuAdr_ZoneN = '') THEN SprAdrRai.SAdrRai_Nm ELSE KpuAdr_ZoneN END) districtName
-	,cast(a1.KpuAdr_Town as varchar) cityID	
+	,cast(a1.KpuAdr_Town as varchar) cityID
 	,SprAdrTow.SAdrTow_Cd cityCode
 	,(CASE WHEN (KpuAdr_TownN IS NULL OR KpuAdr_TownN = '') THEN SprAdrTow.SAdrTow_Nm ELSE KpuAdr_TownN END) cityName
 	,cast(KpuAdr_Plac as varchar) cityDistrictID
 	,SprAdrNas.SAdrNas_Cd cityDistrictCode
 	,(CASE WHEN (KpuAdr_PlacN IS NULL OR KpuAdr_PlacN = '') THEN SprAdrNas.SAdrNas_Nm ELSE KpuAdr_PlacN END) cityDistrictName
 	,cast(a1.KpuAdr_Str as varchar) streetID
-	,a1.KpuAdr_StrN street	
-	,a1.KpuAdr_House house	
-	,a1.KpuAdr_Korp section	
-	,a1.KpuAdr_Flat apartment	
+	,a1.KpuAdr_StrN street
+	,a1.KpuAdr_House house
+	,a1.KpuAdr_Korp section
+	,a1.KpuAdr_Flat apartment
 	,'' streetType
 	,case when len(KpuAdr_S) > 0 then KpuAdr_S else (
 		case when KpuAdr_Index is not null then KpuAdr_Index + ',' else '' end +
@@ -54,7 +55,7 @@ inner join kpux x1 on x1.kpu_rcd = c1.kpu_rcd and x1.kpu_tnosn = 0
 
 inner join kpuprk1 pdr1 on pdr1.kpu_rcd = c1.kpu_rcd and pdr1.bookmark = (
 	select max(pdr2.bookmark)
-	from kpuprk1 pdr2 
+	from kpuprk1 pdr2
 	where pdr2.kpu_rcd = c1.kpu_rcd and pdr2.kpuprkz_dtv = (
 		select max(pdr3.kpuprkz_dtv)
 		from kpuprk1 pdr3
@@ -74,3 +75,4 @@ where (kpuadr_add = 0 -- �������������� ����
 		or kpuadr_add = 2 and u1.kpuudr_id is not null
 )
 and (@sysste_rcd is null or c1.kpuc_se = @sysste_rcd)
+and (c1.kpu_dtuvl <= '1876-12-31' or c1.kpu_dtuvl >= @employeeDateFrom)
