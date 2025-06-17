@@ -93,3 +93,15 @@ ALTER FUNCTION base.uuid_bigint(character varying)
 -- Test
 select base.uuid_bigint(id::text), * from base.department;
 ```
+
+## Oracle DB
+
+package.json
+
+``` JSON
+"dependencies": {
+  ...
+  "oracledb": "<https://github.com/oracle/node-oracledb/releases/download/v6.8.0/oracledb-src-6.8.0.tgz>",
+  ...
+}
+```
