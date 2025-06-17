@@ -14,6 +14,11 @@ Export from IS-Pro Oracle DB - [Download IsproOracleExport.exe](https://drive.go
 
 Export from Kartka-Web Oracle DB - [Download KartkaExport.exe](https://drive.google.com/drive/folders/1RG1sIIPiWTLgNlVmzgqmt-dvI0YppmIb?usp=sharing)
 
+##
+
+node -v
+v20.19.2
+
 ## Afrer clone from repository
 
 ``` sh
@@ -23,8 +28,8 @@ npm start
 
 ## To make executable file
 
-``` sh
-npm ci
+``` powershell
+scripts\install.ps1
 npm run dist
 ```
 
