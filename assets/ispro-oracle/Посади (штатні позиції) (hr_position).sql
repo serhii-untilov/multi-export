@@ -9,9 +9,9 @@ with
 /*SYSSTE_END*/
 	t1 as (
 		select /*+ MATERIALIZE */
-		distinct kpuprk1.kpuprkz_pdrcd * 10000 + kpuprk1.kpuprkz_dol positionID, kpuprk1.kpuprkz_pdrcd departmentID, kpuprk1.kpuprkz_dol dictPositionID
-		from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuprk1
-		inner join /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuc1 c1 on c1.kpu_rcd = kpuprk1.kpu_rcd
+		distinct p1.kpuprkz_pdrcd * 10000 + p1.kpuprkz_dol positionID, p1.kpuprkz_pdrcd departmentID, p1.kpuprkz_dol dictPositionID
+		from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuprk1 p1
+		inner join /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuc1 c1 on c1.kpu_rcd = p1.kpu_rcd
 		/*SYSSTE_BEGIN*/
 		inner join /*FIRM_SCHEMA*/ISPRO_8_PROD.sysste ste2 on ste2.sysste_rcd = c1.kpuc_se
 		where sysste_cd = /*SYSSTE_CD*/'1500'
@@ -62,10 +62,10 @@ where
 	-- sprd_prz = 0 or
 	exists (
 	select null
-	from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuprk1
-	inner join /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuc1 c1 on c1.kpu_rcd = kpuprk1.kpu_rcd
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuprk1 p2
+	inner join /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuc1 c1 on c1.kpu_rcd = p2.kpu_rcd
 	/*SYSSTE_BEGIN*/
 	inner join ste1 on ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
-	where kpuprkz_dol = SprD_Cd
+	where p2.kpuprkz_dol = SprD_Cd
 )
