@@ -1,6 +1,6 @@
 {
     "name": "multi-export",
-    "version": "2.1.5",
+    "version": "2.1.7",
     "description": "Multi export for import into A5 [ERP, HRMIS] databases",
     "type": "commonjs",
     "main": "main.js",
@@ -74,6 +74,7 @@
         "electron-store": "^7.0.3",
         "iconv-lite": "^0.6.3",
         "mssql": "^11.0.1",
+        "oracledb": "^6.8.0",
         "pg": "^8.14.1",
         "pg-query-stream": "^4.8.1",
         "sass": "^1.86.3",

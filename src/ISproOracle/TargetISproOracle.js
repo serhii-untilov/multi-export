@@ -31,9 +31,13 @@ const makeFile = function (target) {
 function readQueryFromFile(fileName) {
     return new Promise((resolve, reject) => {
         try {
-            fs.readFile(fileName, { encoding: null }, (err, queryText) => {
+            fs.readFile(fileName, { encoding: 'utf8' }, (err, queryText) => {
                 if (err) reject(err)
-                const convertedQueryText = iconv.decode(queryText, 'cp1251')
+                // Remove BOM if present
+                if (queryText.charCodeAt(0) === 0xFEFF) {
+                    queryText = queryText.slice(1);
+                }
+                const convertedQueryText = queryText // iconv.decode(queryText, 'cp1251')
                 resolve(convertedQueryText)
             })
         } catch (err) {
@@ -93,6 +97,11 @@ async function doQuery(target, queryText) {
             }
             resolve(target)
         })
+
+        stream.on('close', async function () {
+            // can now close connection...  (Note: do not close connections on 'end')
+            await connection.close()
+        });
 
         function writeHeader(columns) {
             let columnNumber = 0

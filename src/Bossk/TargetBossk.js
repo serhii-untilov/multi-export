@@ -25,6 +25,10 @@ function readQueryFromFile(fileName) {
         try {
             fs.readFile(fileName, { encoding: 'utf8' }, (err, queryText) => {
                 if (err) reject(err)
+                // Remove BOM if present
+                if (queryText.charCodeAt(0) === 0xFEFF) {
+                    queryText = queryText.slice(1);
+                }
                 resolve(queryText)
             })
         } catch (err) {

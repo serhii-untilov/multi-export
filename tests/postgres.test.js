@@ -40,6 +40,10 @@ function readQueryFromFile(fileName) {
                 if (err) reject(err)
                 // const convertedQueryText = iconv.encode(queryText, 'win1251')
                 // resolve(convertedQueryText)
+                // Remove BOM if present
+                if (queryText.charCodeAt(0) === 0xFEFF) {
+                    queryText = queryText.slice(1);
+                }
                 resolve(queryText)
             })
         } catch (err) {
