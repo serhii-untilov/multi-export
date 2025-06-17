@@ -124,6 +124,10 @@ function dbConfig(config) {
             max: POOL_SIZE,
             min: 0,
             acquireTimeoutMillis: ACQUIRE_TIMEOUT
+        },
+        options: {
+            encrypt: false, // <-- ВИМКНУТИ SSL
+            trustServerCertificate: true, // <-- дозволити self-signed сертифікати, якщо потрібно
         }
     }
 }
