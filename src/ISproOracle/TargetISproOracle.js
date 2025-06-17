@@ -98,6 +98,11 @@ async function doQuery(target, queryText) {
             resolve(target)
         })
 
+        stream.on('close', async function () {
+            // can now close connection...  (Note: do not close connections on 'end')
+            await connection.close()
+        });
+
         function writeHeader(columns) {
             let columnNumber = 0
             for (const column in columns) {
