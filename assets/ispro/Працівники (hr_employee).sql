@@ -2,13 +2,6 @@
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select 'ID' ID, 'lastName' lastName, 'firstName' firstName, 'middleName' middleName, 'shortFIO' shortFIO, 'fullFIO' fullFIO, 'genName' genName, 'datName' datName,
-	'accusativeName' accusativeName, 'insName' insName, 'tabNum' tabNum, 'state' state, 'sexType' sexType, 'birthDate' birthDate, 'taxCode' taxCode,
-	'phoneMobile' phoneMobile, 'phoneWorking' phoneWorking, 'phoneHome' phoneHome, 'email' email, 'description' description,
-	'locName' locName, 'dayBirthDate' dayBirthDate, 'monthBirthDate' monthBirthDate, 'yearBirthDate' yearBirthDate
-union all
-/*END-OF-HEAD*/
 select
 	cast(x1.kpu_rcd as varchar) ID
 	,dbo.fnKdrSegregateFio(c1.kpu_fio, 1) lastName
@@ -31,9 +24,9 @@ select
 	,left(REPLACE(REPLACE(Kpu_EMail, CHAR(13), ''), CHAR(10), ''), 50) email
 	,c1.kpu_fio description
 	,c1. kpu_fio locName
-	,cast(day(c1.kpu_dtroj) as varchar) dayBirthDate
-	,cast(month(c1.kpu_dtroj) as varchar) monthBirthDate
-	,cast(year(c1.kpu_dtroj) as varchar) yearBirthDate
+	-- ,cast(day(c1.kpu_dtroj) as varchar) dayBirthDate
+	-- ,cast(month(c1.kpu_dtroj) as varchar) monthBirthDate
+	-- ,cast(year(c1.kpu_dtroj) as varchar) yearBirthDate
 from kpux x1
 inner join KPUC1 c1 on c1.Kpu_Rcd = x1.kpu_rcd
 inner join KPUK1 k1 on k1.Kpu_Rcd = x1.kpu_rcd

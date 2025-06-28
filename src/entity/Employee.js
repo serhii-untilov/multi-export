@@ -21,9 +21,9 @@ class Employee extends Entity {
         this.email = ''
         this.description = ''
         this.locName = ''
-        this.dayBirthDate = ''
-        this.monthBirthDate = ''
-        this.yearBirthDate = ''
+        // this.dayBirthDate = ''
+        // this.monthBirthDate = ''
+        // this.yearBirthDate = ''
         this.organizationID = ''
         this.citizenshipID = ''
     }

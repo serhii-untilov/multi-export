@@ -22,10 +22,10 @@ SELECT
     NVL(Kpu_Tel, '') AS "phoneHome",
     NVL(Kpu_EMail, '') AS "email",
     NVL(c1.kpu_fio, '') AS "description",
-    NVL(c1.kpu_fio, '') AS "locName",
-    CASE WHEN c1.kpu_dtroj <= TO_DATE('1876-12-31', 'yyyy-mm-dd') THEN '' ELSE TO_CHAR(c1.kpu_dtroj, 'DD') END AS "dayBirthDate",
-    CASE WHEN c1.kpu_dtroj <= TO_DATE('1876-12-31', 'yyyy-mm-dd') THEN '' ELSE TO_CHAR(c1.kpu_dtroj, 'MM') END AS "monthBirthDate",
-    CASE WHEN c1.kpu_dtroj <= TO_DATE('1876-12-31', 'yyyy-mm-dd') THEN '' ELSE TO_CHAR(c1.kpu_dtroj, 'YYYY') END AS "yearBirthDate"
+    NVL(c1.kpu_fio, '') AS "locName" -- ,
+    -- CASE WHEN c1.kpu_dtroj <= TO_DATE('1876-12-31', 'yyyy-mm-dd') THEN '' ELSE TO_CHAR(c1.kpu_dtroj, 'DD') END AS "dayBirthDate",
+    -- CASE WHEN c1.kpu_dtroj <= TO_DATE('1876-12-31', 'yyyy-mm-dd') THEN '' ELSE TO_CHAR(c1.kpu_dtroj, 'MM') END AS "monthBirthDate",
+    -- CASE WHEN c1.kpu_dtroj <= TO_DATE('1876-12-31', 'yyyy-mm-dd') THEN '' ELSE TO_CHAR(c1.kpu_dtroj, 'YYYY') END AS "yearBirthDate"
 FROM /*FIRM_SCHEMA*/ISPRO_8_PROD.kpux x1
 JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 c1 ON c1.Kpu_Rcd = x1.kpu_rcd
 JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUK1 k1 ON k1.Kpu_Rcd = x1.kpu_rcd
