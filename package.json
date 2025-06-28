@@ -1,6 +1,6 @@
 {
     "name": "multi-export",
-    "version": "2.1.7",
+    "version": "2.1.8",
     "description": "Multi export for import into A5 [ERP, HRMIS] databases",
     "type": "commonjs",
     "main": "main.js",

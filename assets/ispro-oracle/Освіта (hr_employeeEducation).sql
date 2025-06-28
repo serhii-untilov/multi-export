@@ -10,11 +10,13 @@ select
 	,k1.Ptn_Nm "educationName"
 	,case
 		when o1.KpuObr_Pst is null then 'null'
-		else TO_CHAR(o1.KpuObr_Pst) || '-09-01'
+		when LENGTH(TO_CHAR(o1.KpuObr_Pst)) = 4 then TO_CHAR(o1.KpuObr_Pst) || '-09-01'
+		else 'null'
 		end "dateFrom"
 	,case
 		when o1.KpuObr_End is null then 'null'
-		else TO_CHAR(o1.KpuObr_End) || '-05-01'
+		when LENGTH(TO_CHAR(o1.KpuObr_End)) = 4 then TO_CHAR(o1.KpuObr_End) || '-05-01'
+		else 'null'
 		end "dateTo"
 	,s1.spr_nm "educationForm"
 	,o1.KpuObr_SpcCd "dictSpecialtyID"
