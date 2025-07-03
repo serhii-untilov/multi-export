@@ -58,11 +58,11 @@ SELECT
             WHEN BITAND(r1.kpurl_prz, 8) = 0 THEN r1.kpurlPl_Sm
             ELSE -r1.kpurlPl_Sm
         END / POWER(10, r1.KpuRlPl_SmMT)
-    , 'FM9990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "baseSum",
+    , 'FM99999990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "baseSum",
 
-    TO_CHAR(r1.kpurlPl_Prc / POWER(10, r1.KpuRlPl_PrcMT), 'FM9990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "rate",
+    TO_CHAR(r1.kpurlPl_Prc / POWER(10, r1.KpuRlPl_PrcMT), 'FM99999990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "rate",
 
-    TO_CHAR(r1.kpurl_Sm / 100, 'FM9990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "paySum",
+    TO_CHAR(r1.kpurl_Sm / 100, 'FM99999990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "paySum",
 
     CASE
         WHEN BITAND(r1.kpurl_prz, 8) = 0 THEN r1.kpurl_days
@@ -158,7 +158,7 @@ SELECT
         WHEN r1.KpuRlPrZr_Dk <= TO_DATE('1876-12-31', 'YYYY-MM-DD') THEN ''
         ELSE TO_CHAR(r1.KpuRlPrZr_Dk, 'YYYY-MM-DD')
     END AS "dateToAvg",
-    TO_CHAR(KpuRlPl_SrZ, 'FM9990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "sumAvg",
+    TO_CHAR(KpuRlPl_SrZ, 'FM99999990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') AS "sumAvg",
     CASE
         WHEN r1.KpuRlSvm_Tn = 0 THEN ''
         ELSE TO_CHAR(svm.Kpu_Rcd)
