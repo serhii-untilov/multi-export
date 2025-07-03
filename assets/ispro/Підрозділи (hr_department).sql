@@ -13,7 +13,9 @@ select
 	left(REPLACE(REPLACE(sprpdr_datPd, CHAR(13), ''), CHAR(10), ''), 128) nameDat,
 	left(REPLACE(REPLACE(sprpdr_rodPd, CHAR(13), ''), CHAR(10), ''), 128) nameOr,
 	REPLACE(REPLACE(SprPdr_NmFull, CHAR(13), ''), CHAR(10), '') fullNameGen,
-	REPLACE(REPLACE(sprpdr_datPd, CHAR(13), ''), CHAR(10), '') fullNameDat
+	REPLACE(REPLACE(sprpdr_datPd, CHAR(13), ''), CHAR(10), '') fullNameDat,
+	cast(cast(SprPdr_DatN as date) as varchar) dateFrom,
+	case when SprPdr_DatK <= '1876-12-31' then '9999-12-31' else cast(cast(SprPdr_DatK as date) as varchar) end dateTo
 from sprpdr
 where SprPdr_Rcd <> 0
 	and
