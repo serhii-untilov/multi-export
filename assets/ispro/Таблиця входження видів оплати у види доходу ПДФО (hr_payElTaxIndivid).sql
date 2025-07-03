@@ -1,12 +1,5 @@
 ﻿-- Таблиця входження видів оплати у види доходу ПДФО (hr_payElTaxIndivid)
-/*BEGIN-OF-HEAD*/
-select 
-	'ID' ID
-	,'taxIndividID' taxIndividID
-	,'payElID' payElID
-union all
-/*END-OF-HEAD*/
-select 
+select
 	cast(paytv.bookmark as varchar) ID
 	,cast(paytv_cdt as varchar) taxIndividID
 	,cast(paytv_cdv as varchar) payElID

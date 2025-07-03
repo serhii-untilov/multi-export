@@ -1,4 +1,4 @@
--- (hr_accrualFundDt)
+-- Нарахування на зарплату працівників за джерелами фінансування (hr_accrualFundDt)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))

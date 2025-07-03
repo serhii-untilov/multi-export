@@ -1,17 +1,6 @@
--- ������� ����� (������� �������) (hr_position)
+-- Посади (штатні позиції) (hr_position)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID, 'code' code, 'name' name, 'fullName' fullName, 'parentUnitID' parentUnitID, 'state' state, 'psCategory' psCategory, 'positionType' positionType,
-	'dictProfessionID' dictProfessionID, 'dictWagePayID' dictWagePayID, 'description' description, 'nameGen' nameGen, 'nameDat' nameDat, 'fullNameGen' fullNameGen,
-	'fullNameDat' fullNameDat, 'nameOr' nameOr, 'fullNameOr' fullNameOr, 'quantity' quantity, 'personalType' personalType, 'positionCategory' positionCategory,
-	'dictStatePayID' dictStatePayID, 'accrualSum' accrualSum, 'payElID' payElID, 'dictStaffCatID' dictStaffCatID, 'dictFundSourceID' dictFundSourceID, 'nameAcc' nameAcc,
-	'fullNameAcc' fullNameAcc, 'entryOrderID' entryOrderID, 'nameLoc' nameLoc, 'fullNameLoc' fullNameLoc, 'nameNom' nameNom, 'nameVoc' nameVoc, 'fullNameNom' fullNameNom,
-	'fullNameVoc' fullNameVoc, 'liquidate' liquidate,
-	'dictPositionID' dictPositionID
-union all
-/*END-OF-HEAD*/
 select
 	--cast(SprD_Cd as varchar) ID,
 	cast(positionID as varchar) ID,

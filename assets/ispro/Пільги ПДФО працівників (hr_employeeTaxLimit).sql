@@ -1,14 +1,7 @@
--- ϳ���� ���� ���������� (hr_employeeTaxLimit)
+-- Пільги ПДФО працівників (hr_employeeTaxLimit)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select 'ID' ID
-	,'tabNum' tabNum
-	,'employeeNumberID' employeeNumberID
-	,'dateFrom' dateFrom, 'dateTo' dateTo, 'taxLimitID' taxLimitID, 'amountChild' amountChild
-union all
-/*END-OF-HEAD*/
 select
 	cast(l1.bookmark as varchar) ID
 	,cast(x1.kpu_tn as varchar) tabNum

@@ -1,4 +1,4 @@
--- ���� ������� ����������� �������� (hr_payCalcDateFrom)
+-- Дати початку перерахунку зарплати (hr_payCalcDateFrom)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
@@ -10,15 +10,6 @@ declare @currentPeriod date = (
 	and crtParm_id = 'Period_DatOpen'
 	and (@sysste_rcd is null or CrtFrm_Rcd = @sysste_rcd)
 )
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'employeeNumberID' employeeNumberID
-	,'tabNum'
-	,'periodCalc' periodCalc
-	,'periodSalary' periodSalary
-union all
-/*END-OF-HEAD*/
 select
 	cast(x1.kpu_rcd as varchar) ID
 	,cast(x1.kpu_rcd as varchar) employeeNumberID

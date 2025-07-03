@@ -1,4 +1,4 @@
--- ���� �� ������ ������ (hr_taxIndividAcc)
+-- ПДФО за видами доходу (hr_taxIndividAcc)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @currentPeriod date = (
@@ -10,24 +10,6 @@ declare @currentPeriod date = (
 )
 declare @dateFrom date = dateadd(month, -6, @currentPeriod)
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'accrualID' accrualID
-	,'taxIndividID' taxIndividID
-	,'taxSum' taxSum
-	,'incomeSum' incomeSum
-	,'privilegeSum' privilegeSum
-	,'taxLimitID1' taxLimitID1
-	,'taxLimitID2' taxLimitID2
-	,'taxLimitID3' taxLimitID3
-	,'tabNum' tabNum
-	,'periodCalc' periodCalc
-	,'periodSalary' periodSalary
---
-union all
---
-/*END-OF-HEAD*/
 select
 	cast(p1.bookmark as varchar) ID
 	,cast(r1.bookmark as varchar) accrualID

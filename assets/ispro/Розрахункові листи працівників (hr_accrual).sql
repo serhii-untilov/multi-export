@@ -1,4 +1,4 @@
--- ����������� ����� ���������� (hr_accrual)
+-- Розрахункові листи працівників (hr_accrual)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
@@ -10,36 +10,6 @@ declare @currentPeriod date = (
 	and crtParm_id = 'Period_DatOpen'
 	and (@sysste_rcd is null or CrtFrm_Rcd = @sysste_rcd)
 )
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'periodCalc' periodCalc
-	,'periodSalary' periodSalary
-	,'tabNum' tabNum
-	,'employeeNumberID'	employeeNumberID
-	,'payElID' payElID
-	,'baseSum' baseSum
-	,'rate' rate
-	,'paySum' paySum
-	,'days' days
-	,'hours' hours
-	,'calculateDate' calculateDate
-	,'mask' mask
-	,'flagsRec' flagsRec
-	,'flagsFix' flagsFix
-	,'planHours' planHours
-	,'planDays' planDays
-	,'maskAdd' maskAdd
-	,'dateFrom' dateFrom
-	,'dateTo' dateTo
-	,'source' source
-	,'sourceID' sourceID
-	,'dateFromAvg' dateFromAvg
-	,'dateToAvg' dateToAvg
-	,'sumAvg' sumAvg
-	,'employeeNumberPartID' employeeNumberPartID
-union all
-/*END-OF-HEAD*/
 select
 	cast(r1.bookmark as varchar) ID
 	,cast(cast(r1.kpurl_datUp as DATE) as varchar) periodCalc

@@ -1,13 +1,8 @@
--- ���� ������ (hr_employeeExperience)
+-- Стаж роботи (hr_employeeExperience)
 declare @dateTo date = GETDATE()
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select 'ID' ID, 'employeeID' employeeID, 'dictExperienceID' dictExperienceID, 'calcDate' calcDate, 'startCalcDate' startCalcDate, 'comment' comment, 'impEmployeeID' impEmployeeID, 'importInfo' importInfo
-,'employeeNumberID' employeeNumberID
-union all
-/*END-OF-HEAD*/
 select
 	cast(ROW_NUMBER() OVER(ORDER BY employeeID, dictExperienceID ASC) as varchar) AS ID
 	,cast(employeeID as varchar) employeeID

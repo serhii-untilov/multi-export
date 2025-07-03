@@ -1,24 +1,7 @@
--- ��������� (hr_employeeDocs)
+-- Документи (hr_employeeDocs)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'employeeID' employeeID
-	,'dictDocKindID' dictDocKindID
-	,'docSeries' docSeries
-	,'docNumber' docNumber
-	,'docIssued' docIssued
-	,'docIssuedDate' docIssuedDate
-	,'docValidUntil' docValidUntil
-	,'state' state
-	,'comment' comment
-	,'description' description
-	,'orderID' orderID
-	,'paraID' paraID
-union all
-/*END-OF-HEAD*/
 select
 	cast(d1.bookmark as varchar) ID
 	,cast(d1.kpu_rcd as varchar) employeeID

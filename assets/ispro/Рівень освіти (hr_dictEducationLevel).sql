@@ -1,8 +1,4 @@
 ﻿-- Рівень освіти (hr_dictEducationLevel)
-/*BEGIN-OF-HEAD*/
-select 'ID' id, 'code' code, 'name' name
-union all
-/*END-OF-HEAD*/
 select cast(spr_cd as varchar) ID
 	,cast(spr_cd as varchar) code
 	,spr_nm name

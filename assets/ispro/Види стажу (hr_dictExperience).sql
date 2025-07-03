@@ -1,9 +1,5 @@
 ﻿-- Види стажу (hr_dictExperience)
 -- ID;code;name;methodExpID;dateFrom;dateTo
-/*BEGIN-OF-HEAD*/
-select 'ID' ID, 'code' code, 'name' name, 'methodExpID' methodExpID, 'dateFrom' dateFrom, 'dateTo' dateTo
-union all
-/*END-OF-HEAD*/
 select
 	'1' ID
 	,'1' code
@@ -11,7 +7,7 @@ select
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
 	,'9999-12-31' dateTo
-where exists (select null from KPUC1 where Kpu_DtObSt > '1876-12-31')	
+where exists (select null from KPUC1 where Kpu_DtObSt > '1876-12-31')
 union all
 select
 	'2' ID
@@ -64,9 +60,9 @@ select
 	,'Безперервний стаж держслужбовця' name
 	,null methodExpID -- !!!
 	,'1876-12-31' dateFrom
-	,'9999-12-31' dateTo	
+	,'9999-12-31' dateTo
 where exists (select null from KPUC1 where Kpu_DtGSNp > '1876-12-31')
-union all	
+union all
 select
 	cast(paystg_cd + 10 as varchar) ID
 	,cast(paystg_cd + 10 as varchar) code

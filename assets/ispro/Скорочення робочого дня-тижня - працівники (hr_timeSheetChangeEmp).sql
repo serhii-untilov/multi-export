@@ -1,16 +1,9 @@
--- ���������� �������� ���-����� - ���������� (hr_timeSheetChangeEmp)
+-- Скорочення робочого дня-тижня - працівники (hr_timeSheetChangeEmp)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 declare @shiftID bigint = 100000
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'timeSheetChangeID' timeSheetChangeID
-	,'employeeNumberID' employeeNumberID
-union all
-/*END-OF-HEAD*/
 select
 	cast(g1.bookmark + @shiftID as varchar) ID
 	,cast(g1.bookmark + @shiftID as varchar) timeSheetChangeID

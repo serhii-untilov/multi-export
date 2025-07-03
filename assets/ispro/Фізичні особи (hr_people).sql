@@ -1,12 +1,7 @@
--- Գ����� ����� (hr_people)
+-- Фізичні особи (родичі) (hr_people)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select 'ID' ID, 'firstName' firstName, 'lastName' lastName, 'middleName' middleName, 'shortFIO' shortFIO, 'fullFIO' fullFIO, 'birthDate' birthDate,
-	'description' description, 'employeeID' employeeID
-union all
-/*END-OF-HEAD*/
 select ID, firstName, lastName, middleName, shortFIO, fullFIO, birthDate,
 	description,
 	cast(t2.kpu_rcd as varchar) employeeID

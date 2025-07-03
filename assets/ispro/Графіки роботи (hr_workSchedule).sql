@@ -1,15 +1,9 @@
 ﻿-- Графіки роботи (hr_workSchedule)
-/*BEGIN-OF-HEAD*/
-select 'ID' ID, 'code' code, 'name' name, 'dateFrom' dateFrom, 'dateTo' dateTo, 'dictStandartTimeID' dictStandartTimeID, 'begins' begins,
-	'organizationID' organizationID, 'isPayDayOff' isPayDayOff, 'isPayHoliday' isPayHoliday, 'isCalendar' isCalendar, 'isHoliday' isHoliday,
-	'isLastHoliday' isLastHoliday, 'isChangeDay' isChangeDay
-union all	
-/*END-OF-HEAD*/
-select 
+select
 	cast(grf_cd as varchar) ID
 	,cast(grf_cd as varchar) code
-	,case when grf_cd = 0 and len(grf_nm) = 0 then '40 годин на тиждень' 
-		when len(grf_nm) = 0 then 'Графік роботи без назви' 
+	,case when grf_cd = 0 and len(grf_nm) = 0 then '40 годин на тиждень'
+		when len(grf_nm) = 0 then 'Графік роботи без назви'
 		else Grf_Nm end name
 	,cast(cast(Grf_DtBs as date) as varchar) dateFrom
 	,'9999-12-31' dateTo

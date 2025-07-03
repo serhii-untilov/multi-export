@@ -1,28 +1,7 @@
--- ����������� (hr_employeeDisability)
+-- Інвалідність (hr_employeeDisability)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'employeeID' employeeID
-	,'disabilityID' disabilityID
-	,'disabilityGroup' disabilityGroup
-	,'dateFrom' dateFrom
-	,'dateTo' dateTo
-	,'docNumber' docNumber
-	,'docSeries' docSeries
-	,'docIssuer' docIssuer
-	,'dateIssue' dateIssue
-	,'workReference' workReference
-	,'programDescription' programDescription
-	,'programNumber' programNumber
-	,'programDate' programDate
-	,'programIssuer' programIssuer
-	,'employeeDocID' employeeDocID
-	,'description' description
-union all
-/*END-OF-HEAD*/
 select
 	cast(i1.bookmark as varchar) ID
 	,cast(c1.kpu_rcd as varchar) employeeID --cast(i1.kpu_rcd as varchar) employeeID

@@ -1,24 +1,8 @@
--- ������� ����������� ���������� (hr_employeeAccrual)
+-- Постійні нарахування працівника (hr_employeeAccrual)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'employeeID' employeeID
-	,'tabNum' tabNum
-	,'employeeNumberID' employeeNumberID
-	,'payElID' payElID
-	,'dateFrom' dateFrom
-	,'dateTo' dateTo
-	,'accrualSum' accrualSum
-	,'accrualRate' accrualRate
-	,'orderNumber' orderNumber
-	,'orderDatefrom' orderDatefrom
-	,'taxCode' taxCode
-union all
-/*END-OF-HEAD*/
 select
 	ID
 	,cast(t4.kpu_rcd as varchar) employeeID

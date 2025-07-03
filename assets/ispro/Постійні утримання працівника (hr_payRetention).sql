@@ -3,15 +3,6 @@ declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select 'ID' ID
-	,'tabNum' tabNum
-	,'employeeNumberID' employeeNumberID
-	,'dateFrom' dateFrom, 'dateTo' dateTo, 'payElID' payElID, 'baseSum' baseSum, 'rate' rate, 'paymentMethod' paymentMethod,
-	'bankID' bankID, 'employeeFamilyID' employeeFamilyID, 'debtSum' debtSum, 'remindSum' remindSum, 'dateIdxFrom' dateIdxFrom, 'docDate' docDate, 'docNumber' docNumber,
-	'contractorID' contractorID, 'contrAccountID' contrAccountID, 'personalAccount' personalAccount
-union all
-/*END-OF-HEAD*/
 select
 	cast(u1.KpuUdr_Id as varchar) ID
 	,cast(x1.kpu_tn as varchar) tabNum

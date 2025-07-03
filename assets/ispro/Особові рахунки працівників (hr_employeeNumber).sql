@@ -5,23 +5,6 @@ declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getda
 declare @dateTo date = getdate()
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
-
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'employeeID' employeeID
-	,'taxCode' taxCode
-	,'tabNum' tabNum
-	,'dateFrom' dateFrom
-	,'dateTo' dateTo
-	,'description' description
-	,'payOutID' payOutID
-	,'personalAccount' personalAccount
-	,'appointmentDate' appointmentDate -- ���� ����������� �� ������� ������
-	,'appointmentOrderDate' appointmentOrderDate
-	,'appointmentOrderNumber' appointmentOrderNumber
-union all
-/*END-OF-HEAD*/
 select
 	ID
 	,cast(t4.kpu_rcd as varchar) employeeID

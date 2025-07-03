@@ -1,8 +1,7 @@
--- ������ ���������� (ac_address)
+-- Адреси працівників (ac_address)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
-
 select
 	cast(a1.bookmark as varchar) ID
 	,cast(a1.kpu_rcd as varchar) employeeID

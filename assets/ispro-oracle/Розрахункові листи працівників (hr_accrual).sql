@@ -49,6 +49,7 @@ SELECT
     TO_CHAR(r1.kpurl_datUp, 'YYYY-MM-DD') AS "periodCalc",
     TO_CHAR(r1.kpurl_datRp, 'YYYY-MM-DD') AS "periodSalary",
     x1.kpu_tn AS "tabNum",
+    x1.kpu_rcd AS "employeeID",
     x1.kpu_rcd AS "employeeNumberID",
     r1.kpurl_cdvo AS "payElID",
 

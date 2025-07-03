@@ -1,31 +1,10 @@
--- ����������� ���������� (hr_employeePosition)
+-- Призначення працівників (hr_employeePosition)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 declare @minDateRaiseSalary date = '2016-01-01'; -- ���� ̳����������� �� 14.06.2016 �. � 263/10/136-16
-/*BEGIN-OF-HEAD*/
-select 'ID' ID
-	,'employeeID' employeeID
-	,'taxCode' taxCode
-	,'tabNum' tabNum
-	,'employeeNumberID' employeeNumberID
-	,'employeeNumberDateFrom' employeeNumberDateFrom
-	,'employeeNumberDateTo' employeeNumberDateTo
-	,'departmentID' departmentID, 'positionID' positionID, 'dateFrom' dateFrom
-	,'dateTo' dateTo, 'changeDateTo' changeDateTo, 'workScheduleID' workScheduleID, 'workerType' workerType, 'mtCount' mtCount, 'description' description
-	,'dictRankID' dictRankID, 'dictStaffCatID' dictStaffCatID, 'payElID' payElID, 'accrualSum' accrualSum, 'raiseSalary' raiseSalary, 'isIndex' isIndex
-	,'isActive' isActive, 'workPlace' workPlace, 'dictFundSourceID' dictFundSourceID, 'dictCategoryECBID' dictCategoryECBID, 'accountID' accountID
-	,'dictPositionID' dictPositionID
-	,'orderID' orderID
-	,'orderNumber' orderNumber
-	,'orderDate' orderDate
-	,'staffingTableID' staffingTableID
-	,'dictTarifCoeffID' dictTarifCoeffID
-union all
-/*END-OF-HEAD*/
 select ID
---	,@dateFrom
 	,cast(t2.kpu_rcd as varchar) employeeID
 	,t1.taxCode
 	,tabNum

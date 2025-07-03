@@ -1,16 +1,17 @@
 -- Нарахування на зарплату працівників (hr_accrualFund)
 select
-	min(f1.bookmark) "ID"	
+	min(f1.bookmark) "ID"
 	,TO_CHAR(f1.kpuf_datup, 'YYYY-MM-DD') "periodCalc"
 	,TO_CHAR(f1.kpuf_datrp, 'YYYY-MM-DD') "periodSalary"
 	,f1.kpuf_tn "tabNum"
-	,x1.kpu_rcd "employeeNumberID"	
+	,x1.kpu_rcd "employeeID"
+	,x1.kpu_rcd "employeeNumberID"
 	,f1.kpuf_cdfnd "payFundID"
 	,sum(f1.kpuf_smsrc) "sourceSum"
 	-- 04-11-2020,cast(sum(case when (kpuf_prz & 128) = 0 then kpuf_smclc else 0 end) as varchar) baseSum
 	,sum(f1.kpuf_smclc) "baseSum" -- 04-11-2020
 	,f1.kpuf_prc "rate"
-	,sum(f1.kpuf_sm) "paySum"	
+	,sum(f1.kpuf_sm) "paySum"
 	,sum(case when BITAND(f1.kpuf_prz, 128) <> 0 then kpuf_smclc else 0 end) "addMinSum"
 from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpufa1 f1
 join /*FIRM_SCHEMA*/ISPRO_8_PROD.kpux x1 on x1.kpu_tn = f1.kpuf_tn

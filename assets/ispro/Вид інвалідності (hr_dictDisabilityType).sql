@@ -1,8 +1,4 @@
 ﻿-- Вид інвалідності (hr_dictDisabilityType)
-/*BEGIN-OF-HEAD*/
-select 'ID' id, 'code' code, 'name' name
-union all
-/*END-OF-HEAD*/
 select cast(spr_cd as varchar) ID
 	,cast(spr_cd as varchar) code
 	,spr_nm name
@@ -21,7 +17,7 @@ where not exists (
 	and spr_cdlng = 2
 	and spr_cd = 0
 	and exists (
-		select null 
+		select null
 		from kpuinv
 		where KpuInv_VIn = 0
 	)

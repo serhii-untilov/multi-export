@@ -1,4 +1,4 @@
--- ��������� (hr_employeePenalty)
+-- Стягнення (hr_employeePenalty)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateTo date = GETDATE()

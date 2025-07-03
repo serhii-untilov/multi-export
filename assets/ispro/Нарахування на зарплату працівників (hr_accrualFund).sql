@@ -1,4 +1,4 @@
--- ����� ���������� ���������� �� �������� (hr_accrualFund)
+-- Нарахування на зарплату працівників (hr_accrualFund)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
@@ -10,21 +10,6 @@ declare @currentPeriod date = (
 	and crtParm_id = 'Period_DatOpen'
 	and (@sysste_rcd is null or CrtFrm_Rcd = @sysste_rcd)
 )
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'periodCalc' periodCalc
-	,'periodSalary' periodSalary
-	,'tabNum' tabNum
-	,'employeeNumberID' employeeNumberID
-	,'payFundID' payFundID
-	,'sourceSum' sourceSum
-	,'baseSum' baseSum
-	,'rate' rate
-	,'paySum' paySum
-	,'addMinSum' addMinSum
-union all
-/*END-OF-HEAD*/
 select
 	cast(min(kpufa1.bookmark) as varchar) ID
 	,cast(cast(kpuf_datup as date) as varchar) periodCalc

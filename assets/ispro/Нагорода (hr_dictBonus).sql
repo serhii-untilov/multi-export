@@ -1,20 +1,20 @@
--- �������� (hr_dictBonus)
-select 
+-- Нагорода (hr_dictBonus)
+select
 	code ID
 	,code
-	,vid.spr_nmlong name	
-	,'NULL' abbr	
-	,vid.spr_nmlong preamble	
-	,bonusKindID	
-	,bonusTypeID	
-	,'1' isActive	
-	,'GEN' caseType	
+	,vid.spr_nmlong name
+	,'NULL' abbr
+	,vid.spr_nmlong preamble
+	,bonusKindID
+	,bonusTypeID
+	,'1' isActive
+	,'GEN' caseType
 	,'0' isEnc
 from (
-	select 
-		cast(row_number() over(partition BY kdrrew_vid, kdrrew_type ORDER BY kdrrew_vid, kdrrew_type) as varchar) code	
-		,kdrrew_vid bonusKindID	
-		,kdrrew_type bonusTypeID	
+	select
+		cast(row_number() over(partition BY kdrrew_vid, kdrrew_type ORDER BY kdrrew_vid, kdrrew_type) as varchar) code
+		,kdrrew_vid bonusKindID
+		,kdrrew_type bonusTypeID
 	from KdrRew
 	group by kdrrew_vid, kdrrew_type
 ) KdrRew

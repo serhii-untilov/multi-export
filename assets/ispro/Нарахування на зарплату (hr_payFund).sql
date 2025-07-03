@@ -1,10 +1,5 @@
 ﻿-- Нарахування на зарплату (hr_payFund)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select 'ID' ID, 'code' code, 'name' name, 'dateFrom' dateFrom, 'dateTo' dateTo, 'calcPeriod' calcPeriod, 'sequence' sequence, 'isAutoCalc' isAutoCalc, 
-	'isRecalculate' isRecalculate, 'payFundMethodID ' payFundMethodID , 'typeTaxECBID' typeTaxECBID, 'description' description, 'entryOperationID' entryOperationID
-union all
-/*END-OF-HEAD*/
 select
 	cast(payfnd_rcd as varchar) ID
 	,payfnd_cd code
@@ -21,7 +16,7 @@ select
 	,null entryOperationID
 from PayFnd f1
 inner join PSPR on pspr.SprSpr_Cd = 133644 and pspr.Spr_Cd = f1.payfnd_rcd
-where PayFnd_Del = 0 
+where PayFnd_Del = 0
 --	or exists (
 --		select null
 --		from KPUFA1 k1

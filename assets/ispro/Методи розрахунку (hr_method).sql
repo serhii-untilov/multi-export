@@ -1,9 +1,5 @@
 ﻿-- Методи розрахунку (hr_method)
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
-/*BEGIN-OF-HEAD*/
-select 'ID', 'code', 'name'
-union all
-/*END-OF-HEAD*/
 select cast(spr_cd as varchar) ID, cast(spr_cd as varchar) code, replace(spr_nm, ';', ' ') name
 from /*SYS_SCHEMA*/i711_sys.dbo.sspr
 where sprspr_cd = 131842
@@ -14,7 +10,7 @@ and spr_cd in (
 	where vo_cd in  (
 		select distinct KpuPrkz_SysOp
 		from kpuprk1
-		union 
+		union
 		select distinct pdnch_cd
 		from pdnch
 		where pdnch_datk <= '1876-12-31' or pdnch_datk >= @dateFrom

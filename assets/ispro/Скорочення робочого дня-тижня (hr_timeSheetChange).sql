@@ -1,30 +1,9 @@
--- ���������� �������� ���-����� (hr_timeSheetChange)
+-- Скорочення робочого дня-тижня (hr_timeSheetChange)
 declare @sysste_rcd bigint = (select max(sysste_rcd) from sysste where sysste_cd = /*SYSSTE_CD*/)
 declare @sprpdr_cd nvarchar(20) = /*SPRPDR_CD*/
 declare @dateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 1) * 10000 + 101 as varchar(10)) as date)))
 declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getdate()) - 0) * 10000 + 101 as varchar(10)) as date)))
 declare @shiftID bigint = 100000
-/*BEGIN-OF-HEAD*/
-select
-	'ID' ID
-	,'orderNumber' orderNumber
-	,'orderDate' orderDate
-	,'orderState' orderState
-	,'empOrderType' empOrderType
-	,'typeSheetChange' typeSheetChange
-	,'description' description
-	,'dateFrom' dateFrom
-	,'dateTo' dateTo
-	,'comment' comment
-	,'orderID' orderID
-	,'changeOrderID' changeOrderID
-	,'paraID' paraID
-	,'reduceHours' reduceHours
-	,'scheduleSize' scheduleSize
-	,'workPayElID' workPayElID
-	,'freePayElID' freePayElID
-union all
-/*END-OF-HEAD*/
 select
 	cast(PayIgp_Rcd as varchar) ID
 	,PayIgp_PrkCd orderNumber

@@ -1,8 +1,4 @@
 ﻿-- Типи контактних відомостей (cdn_contacttype)
-/*BEGIN-OF-HEAD*/
-select 'ID' ID, 'code' code, 'name' name
-union all
-/*END-OF-HEAD*/
 select '1' ID, 'email' code, 'Електронна адреса' name
 union all
 select '2' ID, 'legalAddr' code, 'Адреса реєстрації' name
