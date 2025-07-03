@@ -9,7 +9,7 @@ select
 	,case when Per_Hrs = 0 then '2' else '1' end "dictTimeCostID"
 
 	-- ,Per_Hrs "hoursWork"
-	,TO_CHAR(Per_Hrs, 'FM9990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') "hoursWork"
+	,TO_CHAR(Per_Hrs, 'FM99999990.99', 'NLS_NUMERIC_CHARACTERS = ''.,''') "hoursWork"
 
 	,'0' "hoursWorkNight"
 	,'0' "hoursWorkEvening"
