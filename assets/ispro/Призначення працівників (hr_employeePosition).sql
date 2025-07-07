@@ -100,7 +100,7 @@ from (
 			  else 1 -- �������
 			  end as varchar) workPlace
 		,case when p1.KpuPrkz_SF = 0 then '' else cast(p1.KpuPrkz_SF as varchar) end dictFundSourceID
-		,cast(case when p1.KpuPrkz_Rn <> 0 then 3 -- ��� ���������
+		,cast(case when p1.KpuPrkz_Rn <> 0 then 25 -- ��� ���������
 			when p1.KpuPrkz_CdSZ = 0 then 1 else p1.KpuPrkz_CdSZ end as varchar) dictCategoryECBID
 		,cast(p1.KpuPrkz_Sch as varchar) accountID
 		,case when p1.kpuprkz_dol = 0 then '' else cast(p1.kpuprkz_dol as varchar) end dictPositionID
