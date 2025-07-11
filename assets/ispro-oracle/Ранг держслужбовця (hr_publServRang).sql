@@ -1,7 +1,16 @@
 ﻿-- Ранг держслужбовця (hr_publServRang)
+WITH 
+-- Забезпечення унікальності РНОКПП {
+employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 SELECT
     p1.bookmark "ID",
-    p1.kpu_rcd "employeeID",
+    CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE p1.kpu_rcd END "employeeID",
     c1.kpu_cdnlp "taxCode",
     x1.kpu_tn "tabNum",
     p1.kpu_rcd "employeeNumberID",
@@ -42,6 +51,9 @@ JOIN (
 /*SYSSTE_END*/
 LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.sprdol ON sprd_cd = p1.kpuprkz_dol
 LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.pspr spst ON spst.sprspr_cd = 547 AND spst.spr_cd = p1.kpuprkz_spst
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 WHERE 
     x1.kpu_tn < 4000000000
     AND MOD(TRUNC(kpu_flg / 64), 2) = 0

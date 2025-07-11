@@ -1,9 +1,9 @@
 -- Сальдо по місяцям (hr_accrualBalance)
 WITH currentPeriod AS (
     SELECT /*+ MATERIALIZE */
-        CASE
-            WHEN LENGTH(TRIM(v1.CrtParm_Val)) = 8 THEN TO_DATE(v1.CrtParm_Val, 'DD/MM/RR')
-            ELSE TO_DATE(v1.CrtParm_Val, 'DD/MM/YYYY')
+        CASE 
+            WHEN LENGTH(TRIM(v1.CrtParm_Val)) = 8 THEN TO_DATE(v1.CrtParm_Val, 'DD/MM/RR') 
+            ELSE TO_DATE(v1.CrtParm_Val, 'DD/MM/YYYY') 
         END AS dateFrom
     FROM /*FIRM_SCHEMA*/ISPRO_8_PROD.vwCrtParm v1
     /*SYSSTE_BEGIN*/
@@ -13,17 +13,26 @@ WITH currentPeriod AS (
         WHERE sysste_cd = /*SYSSTE_CD*/'1500'
     ) ste1 ON ste1.sysste_rcd = v1.CrtFrm_Rcd
     /*SYSSTE_END*/
-    WHERE v1.crtParm_cdBpr = 2
+    WHERE v1.crtParm_cdBpr = 2 
       AND v1.crtParm_id = 'Period_DatOpen'
 )
-SELECT
+-- Забезпечення унікальності РНОКПП {
+,employee AS (
+	SELECT /*+ MATERIALIZE */ 
+	max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
+SELECT 
     s1.bookmark "ID",
-    x1.kpu_rcd "employeeID",
+    CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE x1.kpu_rcd end "employeeID",
     x1.kpu_rcd "employeeNumberID",
     TO_CHAR(s1.kpurl_datUp, 'YYYY-MM-DD') "periodCalc",
-    CASE
-        WHEN s1.kpurl_sf = 0 THEN ''
-        ELSE TO_CHAR(s1.kpurl_sf)
+    CASE 
+        WHEN s1.kpurl_sf = 0 THEN '' 
+        ELSE TO_CHAR(s1.kpurl_sf) 
     END "dictFundSourceID",
     s1.kpurl_sin / 100 "sumFrom",
     s1.kpurl_nch / 100 "sumPlus",
@@ -41,8 +50,11 @@ JOIN (
 ) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 /*SYSSTE_END*/
 CROSS JOIN currentPeriod cp
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 LEFT JOIN (
-    SELECT
+    SELECT 
         r1.kpu_tn,
         r1.kpurl_datup,
         0 kpurl_sf,
@@ -68,7 +80,7 @@ LEFT JOIN (
 
     UNION ALL
 
-    SELECT
+    SELECT 
         r1.kpu_tn,
         r1.kpurl_datup,
         r1.kpurl_sf,
@@ -82,7 +94,7 @@ LEFT JOIN (
         FROM /*FIRM_SCHEMA*/ISPRO_8_PROD.sysste
         WHERE sysste_cd = /*SYSSTE_CD*/'1500'
     ) ste1 ON ste1.sysste_rcd = c2.kpuc_se
-    /*SYSSTE_END*/
+    /*SYSSTE_END*/		
     INNER JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.payvo1 v1 ON v1.vo_cd = r1.kpurl_cdvo
     CROSS JOIN currentPeriod cp
     WHERE r1.KpuRl_CdVo <> 0
@@ -92,9 +104,9 @@ LEFT JOIN (
       AND (r1.KpuRl_DatUp < cp.dateFrom OR BITAND(KpuRl_Prz, 1) = 0)
       AND v1.vo_grp = 130
     GROUP BY r1.kpu_tn, r1.kpurl_datup, r1.kpurl_sf
-) t1
-ON t1.kpu_tn = s1.kpu_tn
-AND t1.kpurl_datup = s1.kpurl_datup
+) t1 
+ON t1.kpu_tn = s1.kpu_tn 
+AND t1.kpurl_datup = s1.kpurl_datup 
 AND t1.kpurl_sf = s1.kpurl_sf
-WHERE s1.kpurl_datup BETWEEN ADD_MONTHS(TRUNC(ADD_MONTHS(SYSDATE, -12), 'YEAR'), -3)
+WHERE s1.kpurl_datup BETWEEN ADD_MONTHS(TRUNC(ADD_MONTHS(SYSDATE, -12), 'YEAR'), -3) 
     AND cp.dateFrom - 1

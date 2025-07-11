@@ -1,7 +1,17 @@
 -- Стягнення (hr_employeePenalty)
+-- Забезпечення унікальності РНОКПП {
+WITH 
+employee AS (
+	SELECT /*+ MATERIALIZE */ 
+	max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 select
 	d1.KpuDOt_Rcd "ID"
-	,d1.kpu_rcd "employeeID"
+	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE d1.kpu_rcd end "employeeID"
 	,c1.kpu_cdnlp "taxCode"
 	,d1.kpu_rcd" employeeNumberID"
 	,case 
@@ -47,4 +57,7 @@ JOIN (
     FROM /*FIRM_SCHEMA*/ISPRO_8_PROD.sysste
     WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 ) ste1 ON ste1.sysste_rcd = c1.kpuc_se
-/*SYSSTE_END*/		
+/*SYSSTE_END*/
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }

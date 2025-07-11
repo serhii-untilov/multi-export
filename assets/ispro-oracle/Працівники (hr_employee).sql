@@ -1,4 +1,13 @@
 ﻿-- Працівники (hr_employee)
+WITH 
+-- Забезпечення унікальності РНОКПП {
+employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 SELECT
     TO_CHAR(x1.kpu_rcd) AS "ID",
     NVL(REGEXP_SUBSTR(c1.kpu_fio, '[^ ]+', 1, 1), '') AS "lastName",
@@ -36,7 +45,13 @@ JOIN (
     WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 ) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 /*SYSSTE_END*/
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 WHERE x1.kpu_tn < 4000000000
   AND MOD(TRUNC(Kpu_Flg / 64), 2) = 0
 --  AND BITAND(c1.kpu_flg, 2) = 0
 --  AND x1.kpu_tnosn = 0
+-- Забезпечення унікальності РНОКПП {
+  AND (employee.ID IS NULL OR c1.kpu_rcd = employee.ID)
+-- Забезпечення унікальності РНОКПП }

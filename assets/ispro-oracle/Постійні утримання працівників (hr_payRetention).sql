@@ -1,8 +1,16 @@
 -- Постійні утримання працівників (hr_payRetention)
+-- Забезпечення унікальності РНОКПП {
+WITH employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 select
 	u1.KpuUdr_Id "ID"
 	,x1.kpu_tn "tabNum"
-	,u1.kpu_rcd "employeeID"
+	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE u1.kpu_rcd END "employeeID"
 	,u1.kpu_rcd "employeeNumberID"
 	,TO_CHAR(u1.kpuUdr_datn, 'YYYY-MM-DD') "dateFrom"
 	,case
@@ -61,6 +69,9 @@ JOIN (
 /*SYSSTE_END*/
 left join /*FIRM_SCHEMA*/ISPRO_8_PROD.PtnSchk s1 on s1.ptn_rcd = u1.kpuudr_cdplc and s1.ptnsch_rcd = u1.kpuudr_cdbank
 left join /*FIRM_SCHEMA*/ISPRO_8_PROD.PtnRk k1 on k1.Ptn_Rcd = u1.kpuudr_cdplc
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 where BITAND(c1.kpu_flg, 2) = 0
 	and (kpuudr_datk <= TO_DATE('1876-12-31', 'YYYY-MM-DD')
 		or kpuudr_datk >= ADD_MONTHS(TRUNC(ADD_MONTHS(SYSDATE, -12), 'YEAR'), -3))

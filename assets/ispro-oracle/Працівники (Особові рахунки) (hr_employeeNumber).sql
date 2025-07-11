@@ -22,9 +22,17 @@ pa1 AS (
     GROUP BY kpu_rcd
 )
 -- for personalAccount }
+-- Забезпечення унікальності РНОКПП {
+,employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 SELECT
     x1.kpu_rcd AS "ID",
-    x1.kpu_rcd AS "employeeID",
+    CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE x1.kpu_rcd end AS "employeeID",
     NVL(c1.kpu_cdnlp, '') AS "taxCode",
     x1.kpu_tn AS "tabNum",
     CASE 
@@ -55,6 +63,9 @@ JOIN ste1 ON ste1.sysste_rcd = c1.kpuc_se
 LEFT JOIN pa1 ON pa1.kpu_rcd = x1.kpu_rcd
 LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuudr1 t4 ON t4.kpuudr_id = pa1.kpuudr_id
 -- for personalAccount }
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 WHERE 
     x1.kpu_tn < 4000000000
     AND MOD(TRUNC(kpu_flg / 64), 2) = 0

@@ -1,8 +1,16 @@
 -- Постійні нарахування працівника (hr_employeeAccrual)
+-- Забезпечення унікальності РНОКПП {
+WITH employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 select
 	n1.KpuNch_Id "ID"
 	,x1.kpu_tn "tabNum"
-	,n1.kpu_rcd "employeeID"
+	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE n1.kpu_rcd END "employeeID"
 	,n1.kpu_rcd "employeeNumberID"
 	,n1.kpunch_cd "payElID"
 	,case
@@ -40,5 +48,8 @@ JOIN (
     WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 ) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 /*SYSSTE_END*/
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 where n1.kpuNch_datk <= TO_DATE('1876-12-31', 'YYYY-MM-DD')
 	or n1.kpuNch_datk >= ADD_MONTHS(TRUNC(ADD_MONTHS(SYSDATE, -12), 'YEAR'), -3)
