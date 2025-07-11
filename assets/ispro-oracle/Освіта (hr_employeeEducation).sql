@@ -1,7 +1,16 @@
 -- Освіта (hr_employeeEducation)
+WITH 
+-- Забезпечення унікальності РНОКПП {
+employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 select
 	o1.KpuObr_Rcd "ID"
-	,o1.kpu_rcd "employeeID"
+	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE o1.kpu_rcd end "employeeID"
 	,c1.kpu_cdnlp "taxCode"
 	,c1.kpu_fio "fullFIO"
 	,case when c1.kpu_dtroj <= TO_DATE('1876-12-31', 'YYYY-MM-DD') then '' else TO_CHAR(c1.kpu_dtroj, 'YYYY-MM-DD') end "birthDate"
@@ -53,4 +62,7 @@ JOIN (
 /*SYSSTE_END*/
 left join /*SYS_SCHEMA*/ISPRO_8_PROD_SYS.sspr s1 on s1.sprspr_cd = 681008 and s1.spr_cdlng = 2 and s1.spr_cd = o1.KpuObr_Form
 left join /*FIRM_SCHEMA*/ISPRO_8_PROD.PtnRk k1 on k1.Ptn_Rcd = o1.KpuObr_ZavRcd
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 

@@ -5,10 +5,19 @@
 --KpuVZBP1 - Присвоение воинских званий до поступления
 --KpuBtl1 - Участие в боевых действиях
 
+WITH 
+-- Забезпечення унікальності РНОКПП {
+employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 SELECT
     --ROW_NUMBER() OVER (ORDER BY KPUC1.Kpu_CdNlp) AS "п/н",
 	w1.bookmark "ID"
-	,w1.kpu_rcd "employeeID"
+	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE w1.kpu_rcd end "employeeID"
 	,w1.kpu_rcd "employeeNumberID"
 	,x1.kpu_tn "tabNum"
 	,c1.kpu_cdnlp "taxCode"
@@ -130,6 +139,9 @@ JOIN (
     WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 ) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 /*SYSSTE_END*/
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 WHERE x1.kpu_tn < 4000000000
   AND MOD(TRUNC(Kpu_Flg / 64), 2) = 0
 --  AND BITAND(c1.kpu_flg, 2) = 0

@@ -1,4 +1,13 @@
 -- Стаж роботи працівників (hr_employeeExperience)
+WITH 
+-- Забезпечення унікальності РНОКПП {
+employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 SELECT 
     ROW_NUMBER() OVER(ORDER BY employeeID, dictExperienceID ASC) "ID",
     employeeID "employeeID",
@@ -15,7 +24,7 @@ SELECT
 FROM (
 	-- 1 Загальний стаж ----------------------------
 	select
-		c1.kpu_rcd employeeID
+		CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd END employeeID
 		,1 dictExperienceID
 		,Kpu_DtObSt calcDate
 		,null employeeNumberID
@@ -28,6 +37,9 @@ FROM (
 		WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 	) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
+	-- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
 	where x1.kpu_tnosn = 0 
 		and Kpu_DtObSt > TO_DATE('1876-12-31', 'YYYY-MM-DD') 
 		and c1.Kpu_Rcd < 4000000000
@@ -35,7 +47,7 @@ FROM (
 	-- 2 -----------------------------------------
 	union all
 	select
-		c1.kpu_rcd employeeID
+		CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd end employeeID
 		,2 dictExperienceID
 		,Kpu_DtNpSt calcDate
 		,null employeeNumberID
@@ -48,6 +60,9 @@ FROM (
 		WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 	) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
+	-- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
 	where x1.kpu_tnosn = 0 
 		and Kpu_DtNpSt > TO_DATE('1876-12-31', 'YYYY-MM-DD') 
 		and c1.Kpu_Rcd < 4000000000
@@ -55,7 +70,7 @@ FROM (
 	-- 3 -----------------------------------------
 	union all
 	select
-		c1.kpu_rcd employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
+		CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd END employeeID --CASE WHEN ISNUMERIC(kpu_cdnlp) = 1 THEN CAST(kpu_cdnlp AS numeric) ELSE c1.kpu_rcd END employeeID
 		,3 dictExperienceID
 		,Kpu_DtOrgSt calcDate --min(Kpu_DtOrgSt) calcDate
 		,null employeeNumberID
@@ -68,6 +83,9 @@ FROM (
 		WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 	) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
+	-- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
 	where x1.kpu_tnosn = 0 
 		and Kpu_DtOrgSt > TO_DATE('1876-12-31', 'YYYY-MM-DD') 
 		and c1.Kpu_Rcd < 4000000000
@@ -75,7 +93,7 @@ FROM (
 	-- 4 -----------------------------------------
 	union all
 	select
-		c1.kpu_rcd employeeID
+		CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd end employeeID
 		,4 dictExperienceID
 		,Kpu_DtSrSt calcDate
 		,null employeeNumberID
@@ -88,6 +106,9 @@ FROM (
 		WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 	) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
+	-- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
 	where x1.kpu_tnosn = 0 
 		and Kpu_DtSrSt > TO_DATE('1876-12-31', 'YYYY-MM-DD') 
 		and c1.Kpu_Rcd < 4000000000
@@ -95,7 +116,7 @@ FROM (
 	-- 5 -----------------------------------------
 	union all
 	select
-		c1.kpu_rcd employeeID
+		CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd end employeeID
 		,5 dictExperienceID
 		,Kpu_DtOtrSt calcDate
 		,null employeeNumberID
@@ -108,6 +129,9 @@ FROM (
 		WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 	) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
+	-- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
 	where x1.kpu_tnosn = 0 
 		and Kpu_DtOtrSt > TO_DATE('1876-12-31', 'YYYY-MM-DD') 
 		and c1.Kpu_Rcd < 4000000000
@@ -115,7 +139,7 @@ FROM (
 	-- 6 -----------------------------------------
 	union all
 	select
-		c1.kpu_rcd employeeID
+		CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd end employeeID
 		,6 dictExperienceID
 		,Kpu_DtGS calcDate
 		,null employeeNumberID
@@ -128,6 +152,9 @@ FROM (
 		WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 	) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
+	-- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
 	where x1.kpu_tnosn = 0 
 		and Kpu_DtGS > TO_DATE('1876-12-31', 'YYYY-MM-DD') 
 		and c1.Kpu_Rcd < 4000000000
@@ -135,7 +162,7 @@ FROM (
 	-- 7 -----------------------------------------
 	union all
 	select
-		c1.kpu_rcd employeeID
+		CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd end employeeID
 		,7 dictExperienceID
 		,Kpu_DtGSNp calcDate
 		,null employeeNumberID
@@ -148,6 +175,9 @@ FROM (
 		WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 	) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 	/*SYSSTE_END*/
+	-- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
 	where x1.kpu_tnosn = 0 
 		and Kpu_DtGSNp > TO_DATE('1876-12-31', 'YYYY-MM-DD') 
 		and c1.Kpu_Rcd < 4000000000
@@ -155,7 +185,7 @@ FROM (
 	-- 8 -----------------------------------------
 	UNION ALL
     SELECT 
-        c1.kpu_rcd employeeID,
+        CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd end employeeID,
         s1.kpustg_cd + 10 dictExperienceID,
         -- Oracle-style DATEADD with subtraction of days from SYSDATE
         SYSDATE - SUM(
@@ -176,8 +206,11 @@ FROM (
         WHERE sysste_cd = /*SYSSTE_CD*/'1500'
     ) ste1 ON ste1.sysste_rcd = c1.kpuc_se
     /*SYSSTE_END*/
+    -- Забезпечення унікальності РНОКПП {
+	LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+	-- Забезпечення унікальності РНОКПП }
     WHERE x1.kpu_tnosn = 0
       AND c1.Kpu_Rcd < 4000000000
       AND BITAND(c1.Kpu_Flg, 2) = 0
-    GROUP BY c1.kpu_rcd, s1.kpustg_cd, x1.kpu_rcd
+    GROUP BY CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE c1.kpu_rcd end, s1.kpustg_cd, x1.kpu_rcd
 ) t1

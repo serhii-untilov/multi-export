@@ -1,7 +1,16 @@
 -- Адреси працівників (ac_address)
+WITH 
+-- Забезпечення унікальності РНОКПП {
+employee AS (
+	select max(kpu_rcd) ID, KPU_CDNLP taxCode
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
+	GROUP BY KPU_CDNLP
+)
+-- Забезпечення унікальності РНОКПП }
 select 
 	a1.bookmark "ID"
-	,a1.kpu_rcd "employeeID"
+	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE a1.kpu_rcd end "employeeID"
 	,a1.kpu_rcd "employeeNumberID"
 	,x1.kpu_tn "tabNum"
 	,c1.kpu_cdnlp "taxCode"
@@ -62,6 +71,9 @@ LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.vwSAdrTow SprAdrTow ON SprAdrTow.SAdrTow_R
 LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.vwSAdrNas SprAdrNas ON SprAdrNas.SAdrNas_Rcd = KpuAdr_Plac
 LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.vwSAdrStr SprAdrStr ON SprAdrStr.SAdrStr_Rcd = KpuAdr_Str
 left join /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuudr1 u1 on a1.kpuadr_add = 2 and u1.kpu_rcd = c1.kpu_rcd and a1.kpuadr_cd = u1.kpuudr_cd and u1.kpuudr_rcd = a1.kpuadr_addRcd
+-- Забезпечення унікальності РНОКПП {
+LEFT JOIN employee ON employee.taxCode = c1.KPU_CDNLP
+-- Забезпечення унікальності РНОКПП }
 WHERE x1.kpu_tn < 4000000000
   AND MOD(TRUNC(Kpu_Flg / 64), 2) = 0
 --  AND BITAND(c1.kpu_flg, 2) = 0
