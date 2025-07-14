@@ -9,8 +9,8 @@ from /*FIRM_SCHEMA*/ISPRO_8_PROD.pspr
 where sprspr_cd = 521
 union all
 select
-	'9999' "ID"
-	,'25' "code"
+	9999 "ID"
+	,25 "code"
 	,'Держслужбовці' "name"
 	,'null' "dictTypeTaxECBID"
 	,'25 Держслужбовці' "description"
