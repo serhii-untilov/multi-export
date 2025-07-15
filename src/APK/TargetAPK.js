@@ -94,7 +94,8 @@ async function doQuery(target, queryText) {
         function writeRow(row) {
             let separator = ''
             for (const column in row) {
-                buffer += `${separator}${row[column]}`
+                const value = replaceSpecialSymbols(row[column])
+                buffer += `${separator}${value}`
                 separator = ';'
             }
             buffer += '\n'

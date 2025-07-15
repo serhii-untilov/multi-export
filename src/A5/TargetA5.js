@@ -99,7 +99,8 @@ async function doQueryPostgres(target, queryText) {
             for (const column in row) {
                 // buffer += `${separator}${row[column] ? row[column] : ''}`
                 // buffer += `${separator}${row[column]}`
-                buffer += `${separator}${row[column] !== null ? row[column] : ''}`
+                const value = replaceSpecialSymbols(row[column])
+                buffer += `${separator}${value}`
                 separator = ';'
             }
             buffer += '\n'
@@ -178,7 +179,8 @@ async function doQuerySqlServer(target, queryText) {
             for (const column in row) {
                 // eslint-disable-next-line no-prototype-builtins
                 if (row.hasOwnProperty(column)) {
-                    buffer += `${separator}${row[column] ? row[column] : ''}`
+                    const value = replaceSpecialSymbols(row[column])
+                    buffer += `${separator}${value}`
                     separator = ';'
                 }
             }

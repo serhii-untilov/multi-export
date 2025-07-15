@@ -122,7 +122,8 @@ async function doQuery(target, queryText) {
             for (const column in row) {
                 // eslint-disable-next-line no-prototype-builtins
                 if (row.hasOwnProperty(column)) {
-                    buffer += `${separator}${row[column]}`
+                    const value = replaceSpecialSymbols(row[column])
+                    buffer += `${separator}${value}`
                     separator = ';'
                 }
             }

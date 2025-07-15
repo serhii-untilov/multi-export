@@ -23,6 +23,7 @@ SELECT
 	TO_CHAR(SprPdr_DatN, 'YYYY-MM-DD') dateFrom,
 	case
         when SprPdr_DatK <= TO_DATE('1876-12-31', 'YYYY-MM-DD') then '9999-12-31'
+        when SprPdr_DatK >= TO_DATE('2054-12-31', 'YYYY-MM-DD') then '9999-12-31'
         else TO_CHAR(SprPdr_DatK, 'YYYY-MM-DD')
         end dateTo
 FROM /*FIRM_SCHEMA*/ISPRO_8_PROD.sprpdr
