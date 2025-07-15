@@ -10,7 +10,7 @@ class Position extends Entity {
         this.name = ''
         this.fullName = ''
         this.parentUnitID = ''
-        this.state = 'ACTIVE'
+        // this.state = 'ACTIVE'
         this.psCategory = ''
         this.positionType = ''
         this.dictProfessionID = ''

@@ -9,7 +9,7 @@ select
 	case when sprD_NmIm is null or len(sprD_NmIm) = 0 then cast(SprD_Cd as varchar) else sprD_NmIm end fullName,
 	--null parentUnitID,
 	cast(departmentID as varchar) parentUnitID,
-	'ACTIVE' state,
+	--'ACTIVE' state,
 	null psCategory,
 	null positionType,
 	null dictProfessionID,

@@ -25,7 +25,7 @@ select
 	case when sprD_NmIm is null or length(sprD_NmIm) = 0 then TO_CHAR(SprD_Cd) else sprD_NmIm end "fullName",
 	--null parentUnitID,
 	TO_CHAR(departmentID) "parentUnitID",
-	'ACTIVE' "state",
+	--'ACTIVE' "state",
 	'null' "psCategory",
 	'null' "positionType",
 	'null' "dictProfessionID",
