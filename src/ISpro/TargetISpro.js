@@ -58,6 +58,9 @@ async function doQuery(target, queryText) {
         request.on('recordset', (columns) => {
             buffer = ''
             writeHeader(columns)
+            // Immediately write header to file before rows arrive
+            fs.appendFileSync(target.fullFileName, buffer)
+            buffer = ''
         })
 
         // Emited for each row in a recordset
