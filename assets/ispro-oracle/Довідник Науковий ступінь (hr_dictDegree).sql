@@ -1,4 +1,4 @@
--- Довідник Рівень освіти (hr_dictDegree)
+-- Довідник Науковий ступінь (hr_dictDegree)
 select
 	spr_cd "ID",
 	spr_cd "code",

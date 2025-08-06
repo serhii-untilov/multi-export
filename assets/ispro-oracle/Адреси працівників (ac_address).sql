@@ -1,16 +1,17 @@
 -- Адреси працівників (ac_address)
-WITH 
+WITH
 -- Забезпечення унікальності РНОКПП {
 employee AS (
 	select max(kpu_rcd) ID, KPU_CDNLP taxCode
-	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
 	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
 	GROUP BY KPU_CDNLP
 )
 -- Забезпечення унікальності РНОКПП }
-select 
+select
 	a1.bookmark "ID"
 	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE a1.kpu_rcd end "employeeID"
+	,CASE WHEN employee.ID IS NOT NULL THEN employee.ID ELSE a1.kpu_rcd end "ownerID"
 	,a1.kpu_rcd "employeeNumberID"
 	,x1.kpu_tn "tabNum"
 	,c1.kpu_cdnlp "taxCode"
@@ -19,7 +20,7 @@ select
 	,case when kpuadr_add = 0 then TO_CHAR(a1.kpuadr_cd)
 		else '' end "addressType" -- (1-������.,2-������.,3-����.)
 	,a1.KpuAdr_Index "postIndex"
-	,a1.KpuAdr_Cnt "countryID"
+	,case when a1.KpuAdr_Cnt > 0 then TO_CHAR(a1.KpuAdr_Cnt) else '' end "countryID"
 	,SprAdrCnt.SAdrCnt_Cd "countryCode"
 	,CASE WHEN (KpuAdr_CntNm IS NULL OR KpuAdr_CntNm = '') THEN SprAdrCnt.SAdrCnt_Nm ELSE KpuAdr_CntNm END "countryName"
 	,a1.KpuAdr_Reg "regionID"

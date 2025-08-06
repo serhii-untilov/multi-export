@@ -5,6 +5,7 @@ declare @employeeDateFrom date = dateadd(month, -3,(select cast(cast((year(getda
 select
 	cast(a1.bookmark as varchar) ID
 	,cast(a1.kpu_rcd as varchar) employeeID
+	,cast(a1.kpu_rcd as varchar) ownerID
 	,cast(a1.kpu_rcd as varchar) employeeNumberID
 	,cast(x1.kpu_tn as varchar) tabNum
 	,c1.kpu_cdnlp taxCode
@@ -13,7 +14,7 @@ select
 	,case when kpuadr_add = 0 then cast(a1.kpuadr_cd as varchar)
 		else 'NULL' end addressType -- (1-������.,2-������.,3-����.)
 	,a1.KpuAdr_Index postIndex
-	,cast(a1.KpuAdr_Cnt as varchar) countryID
+	,case when a1.KpuAdr_Cnt > 0 then cast(a1.KpuAdr_Cnt as varchar) else '' end countryID
 	,SprAdrCnt.SAdrCnt_Cd countryCode
 	,(CASE WHEN (KpuAdr_CntNm IS NULL OR KpuAdr_CntNm = '') THEN SprAdrCnt.SAdrCnt_Nm ELSE KpuAdr_CntNm END) countryName
 	,cast(a1.KpuAdr_Reg as varchar) regionID
