@@ -43,7 +43,7 @@ select
 	,'' UNESCO
 	,'' actualCurOrg
 	,'' isMain
-	,cast(o1.KpuObr_ZavRcd as varchar) educationOrgID -- !!!
+	,case when coalesce(o1.KpuObr_ZavRcd, 0) > 0 then cast(o1.KpuObr_ZavRcd as varchar) else '' end educationOrgID -- !!!
 from kpuobr1 o1
 inner join kpuc1 c1 on c1.kpu_rcd = o1.kpu_rcd
 

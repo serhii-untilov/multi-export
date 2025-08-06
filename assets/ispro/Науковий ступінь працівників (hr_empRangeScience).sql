@@ -21,7 +21,7 @@ select
 	,cast(cast(KpuNau_DtVD as date) as varchar) docDate
 	,KpuNau_MZ comment
 	,KpuNau_YPr yearOf
-	,KpuNau_CdMZ educationOrgID
+	,case when coalesce(KpuNau_CdMZ, 0) > 0 then cast(KpuNau_CdMZ as varchar) else '' end educationOrgID
 from KpuNau1 n1
 inner join KPUC1 c1 ON C1.Kpu_Rcd = n1.Kpu_Rcd
 inner join kpux x1 on x1.kpu_rcd = n1.kpu_rcd
@@ -61,7 +61,7 @@ select
 	,cast(cast(KpuNau_DtVD as date) as varchar) docDate
 	,KpuNau_MZ comment
 	,KpuNau_YPr yearOf
-	,KpuNau_CdMZ educationOrgID
+	,case when coalesce(KpuNau_CdMZ, 0) > 0 cast(KpuNau_CdMZ as varchar) else '' end educationOrgID
 from KpuNau1 n1
 inner join KPUC1 c1 ON C1.Kpu_Rcd = n1.Kpu_Rcd
 inner join kpux x1 on x1.kpu_rcd = n1.kpu_rcd

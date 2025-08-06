@@ -1,4 +1,4 @@
--- Довідник Освіта
+-- Науковий ступінь
 select base.uuid_bigint(id::text) "ID",
 	alias "code",
 	name

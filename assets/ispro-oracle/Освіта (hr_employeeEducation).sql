@@ -1,9 +1,9 @@
 -- Освіта (hr_employeeEducation)
-WITH 
+WITH
 -- Забезпечення унікальності РНОКПП {
 employee AS (
 	select max(kpu_rcd) ID, KPU_CDNLP taxCode
-	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 
+	from /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1
 	where kpu_cdnlp is not null and length(KPU_CDNLP) > 5
 	GROUP BY KPU_CDNLP
 )
@@ -50,7 +50,7 @@ select
 	,'' "UNESCO"
 	,'' "actualCurOrg"
 	,'' "isMain"
-	,o1.KpuObr_ZavRcd "educationOrgID" -- !!!
+	,case when coalesce(o1.KpuObr_ZavRcd, 0) > 0 then TO_CHAR(o1.KpuObr_ZavRcd) else '' end "educationOrgID" -- !!!
 from /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuobr1 o1
 join /*FIRM_SCHEMA*/ISPRO_8_PROD.kpuc1 c1 on c1.kpu_rcd = o1.kpu_rcd
 /*SYSSTE_BEGIN*/
