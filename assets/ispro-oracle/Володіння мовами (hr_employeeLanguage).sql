@@ -30,4 +30,4 @@ JOIN (
     WHERE sysste_cd = /*SYSSTE_CD*/'1500'
 ) ste1 ON ste1.sysste_rcd = c1.kpuc_se
 /*SYSSTE_END*/
-LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.pspr s2 ON s2.sprspr_cd = 680966 AND s2.spr_cd = l1.KpuLng_StV;
+LEFT JOIN /*FIRM_SCHEMA*/ISPRO_8_PROD.pspr s2 ON s2.sprspr_cd = 680966 AND s2.spr_cd = l1.KpuLng_StV

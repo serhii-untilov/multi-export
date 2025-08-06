@@ -13,11 +13,11 @@ select
 		when p1.spr_nm like '%син%' then '2'
 		when p1.spr_nm like '%сын%' then '3'
 		else '0' end "isDependent"	
-	,case when s1.KpuSem_Dt <= TO_DATE('1876-12-31', 'YYYY-MM-DD') then '' else TO_CHAR(s1.KpuSem_Dt, 'YYYY-MM-DD') end + ' ' + coalesce(p1.spr_nm, ' ') + ' ' + s1.kpusem_fio "description"	
+	,case when s1.KpuSem_Dt <= TO_DATE('1876-12-31', 'YYYY-MM-DD') then '' else TO_CHAR(s1.KpuSem_Dt, 'YYYY-MM-DD') end || ' ' || coalesce(p1.spr_nm, ' ') || ' ' || s1.kpusem_fio "description"	
 	,case 
-		when length(s1.KpuSem_TelMob) > 0 then 'тел. ' + s1.KpuSem_TelMob 
-		when length(s1.KpuSem_TelDom) > 0 then 'тел. ' + s1.KpuSem_TelDom
-		when length(s1.KpuSem_TelSlg) > 0 then 'тел. ' + s1.KpuSem_TelSlg
+		when length(s1.KpuSem_TelMob) > 0 then 'тел. ' || s1.KpuSem_TelMob 
+		when length(s1.KpuSem_TelDom) > 0 then 'тел. ' || s1.KpuSem_TelDom
+		when length(s1.KpuSem_TelSlg) > 0 then 'тел. ' || s1.KpuSem_TelSlg
 		end "comment"
 from /*FIRM_SCHEMA*/ISPRO_8_PROD.KpuSem1 s1
 join /*FIRM_SCHEMA*/ISPRO_8_PROD.KPUC1 c1 ON c1.Kpu_Rcd = s1.Kpu_Rcd
