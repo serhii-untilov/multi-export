@@ -11,8 +11,13 @@ select
 	,c1.kpu_cdnlp taxCode
 	,c1.kpu_fio fullFIO
 	,case when c1.kpu_dtroj <= '1876-12-31' then '' else cast(cast(c1.kpu_dtroj as date) as varchar) end birthDate
-	,case when kpuadr_add = 0 then cast(a1.kpuadr_cd as varchar)
-		else 'NULL' end addressType -- (1-������.,2-������.,3-����.)
+	-- ІС-про: 1-Место прописки, 2-Место проживания, 3-Место рождения
+	-- А5: 1-Фактична адреса, 2-Адреса реєстрації, 3-Поштова адреса, 4-Адреса робочого місця, 5-Поточне місце розташування (критичний персонал)
+	,case
+		when kpuadr_add = 0 and a1.kpuadr_cd = 1 then '2'
+		when kpuadr_add = 0 and a1.kpuadr_cd = 2 then '1'
+		when kpuadr_add = 0 and a1.kpuadr_cd = 3 then '3'
+		else '' end addressType
 	,a1.KpuAdr_Index postIndex
 	,case when a1.KpuAdr_Cnt > 0 then cast(a1.KpuAdr_Cnt as varchar) else '' end countryID
 	,SprAdrCnt.SAdrCnt_Cd countryCode
