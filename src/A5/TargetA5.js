@@ -6,6 +6,7 @@ const { Result } = require('../Target')
 const QueryStream = require('pg-query-stream')
 const { DBtype } = require('../Config')
 const { getTableStruct, makeQuery } = require('../helper/db')
+const replaceSpecialSymbols = require('../helper/replaceSpecialSymbols')
 
 const BATCH_SIZE = 10000
 

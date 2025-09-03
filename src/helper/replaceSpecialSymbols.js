@@ -20,3 +20,5 @@ function replaceSpecialSymbols(value) {
         .replace(/\s{2,}/gm, ' ')
         .trim();
 }
+
+module.exports = replaceSpecialSymbols

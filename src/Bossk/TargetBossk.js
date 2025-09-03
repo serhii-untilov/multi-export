@@ -3,6 +3,7 @@
 const fs = require('fs')
 const removeFile = require('../helper/removeFile')
 const { Result } = require('../Target')
+const replaceSpecialSymbols = require('../helper/replaceSpecialSymbols')
 
 const BATCH_SIZE = 10000
 

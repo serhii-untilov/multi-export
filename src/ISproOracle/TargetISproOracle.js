@@ -6,6 +6,7 @@ const { Result } = require('../Target')
 const iconv = require('iconv-lite')
 const { removeHeader, replace_SYS_SCHEMA, replace_FIRM_SCHEMA, replace_SYSSTE_CD, replace_SPRPDR_CD, remove_SYSSTE } = require('../helper/queryTuner')
 const { convertName } = require('../helper/convertName')
+const replaceSpecialSymbols = require('../helper/replaceSpecialSymbols')
 
 const BATCH_SIZE = 10000
 

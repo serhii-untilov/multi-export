@@ -6,6 +6,7 @@ const { Result } = require('../Target')
 const iconv = require('iconv-lite')
 const QueryStream = require('pg-query-stream')
 // const JSONStream = require('JSONStream')
+const replaceSpecialSymbols = require('../helper/replaceSpecialSymbols')
 
 const BATCH_SIZE = 10000
 
