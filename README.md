@@ -27,7 +27,7 @@ node -v
 v20.19.2
 ```
 
-## Afrer clone from repository
+## After clone repository
 
 ``` sh
 npm ci
