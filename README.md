@@ -14,10 +14,18 @@ Export from IS-Pro Oracle DB - [Download IsproOracleExport.exe](https://drive.un
 
 Export from Kartka-Web Oracle DB - [Download KartkaExport.exe](https://drive.untilov.com.ua/d/80a5dc70686045ecb37c/?p=%2F&mode=list)
 
-##
+## Project management
 
+- [Home page and statistics](https://redmine.untilov.com.ua/projects/multi-export)
+- [Current status and roadmap](https://redmine.untilov.com.ua/projects/multi-export/roadmap)
+- [Issues](https://redmine.untilov.com.ua/projects/multi-export/issues)
+
+## Environment
+
+``` bash
 node -v
 v20.19.2
+```
 
 ## Afrer clone from repository
 
