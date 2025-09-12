@@ -6,7 +6,7 @@ The MultiExport application, which prepares files for importing into the "A5 Sys
 
 ![Preview](./assets/images/preview.png)
 
-## Download
+## Downloads
 
 [Download Multi-Export.exe](https://drive.untilov.com.ua/d/80a5dc70686045ecb37c/?p=%2F&mode=list)
 
