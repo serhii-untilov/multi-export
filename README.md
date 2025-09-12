@@ -34,7 +34,7 @@ npm ci
 npm start
 ```
 
-## To make executable file
+## Make executable file
 
 ``` powershell
 scripts\install.ps1
