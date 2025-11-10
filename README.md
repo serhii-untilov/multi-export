@@ -8,12 +8,12 @@ The MultiExport application, which prepares files for importing into the "A5 Sys
 
 ## Downloads
 
-[Download Multi-Export.exe](https://drive.untilov.com.ua/d/80a5dc70686045ecb37c/?p=%2F&mode=list)
+[Download Multi-Export.exe](https://drive.untilov.com.ua/d/f917eb60c8b24bd5b567/)
 
 ### Special solutions
 
-- Export from IS-Pro Oracle DB under a terminal server - [Download IsproOracleExport.exe](https://drive.untilov.com.ua/d/9afc552ae5904d9b9fd7/)
-- Export from Kartka-Web Oracle DB - [Download KartkaExport.exe](https://drive.untilov.com.ua/d/9afc552ae5904d9b9fd7/)
+- Export from IS-Pro Oracle DB under a terminal server - [Download IsproOracleExport.exe](https://drive.untilov.com.ua/d/f917eb60c8b24bd5b567/)
+- Export from Kartka-Web Oracle DB - [Download KartkaExport.exe](https://drive.untilov.com.ua/d/f917eb60c8b24bd5b567/)
 
 ## Project management
 
