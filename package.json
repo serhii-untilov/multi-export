@@ -53,7 +53,7 @@
     },
     "devDependencies": {
         "electron": "^35.1.5",
-        "electron-builder": "^26.0.12",
+        "electron-builder": "^26.6.0",
         "engine-version": "^1.0.2",
         "eslint": "^9.24.0",
         "eslint-config-prettier": "^10.1.2",
